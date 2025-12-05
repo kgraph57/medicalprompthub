@@ -3,7 +3,7 @@
 医療従事者のためのAIプロンプトライブラリ - AI Prompt Library for Healthcare Professionals
 
 ## 🌐 Live Demo
-[https://medical-prompt-hub-c8m6hvtt7-okaken0507-gmailcoms-projects.vercel.app](https://medical-prompt-hub-c8m6hvtt7-okaken0507-gmailcoms-projects.vercel.app)
+[https://kgraph57.github.io/medicalprompthub/](https://kgraph57.github.io/medicalprompthub/)
 
 ## 📖 About
 Medical Prompt Hubは、医師や研究者がAI（ChatGPT, Claudeなど）を臨床、研究、教育に効果的に活用するためのプロンプト集です。
