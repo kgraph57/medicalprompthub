@@ -273,6 +273,53 @@ export const fullPrompts: Prompt[] = [
     ]
   },
   {
+    id: "res-case-intro",
+    title: "Case Report Introduction Writer",
+    description: "症例報告の序論（Introduction）を作成します。なぜこの症例を報告するのかを明確にします。",
+    category: "research",
+    template: `以下の情報を基に、症例報告の序論（Introduction）を作成してください。
+簡潔に（1-2パラグラフ）、以下の要素を含めてください：
+1. 既知の事実（Known）: 疾患の一般的な知識。
+2. 未知の点（Unknown）: まだ解明されていない点や、稀な点。
+3. 報告の目的（Purpose）: なぜこの症例を報告するのか（学ぶ点）。
+※「世界初」や「非常に稀」という表現は避けてください。
+
+# 疾患・背景
+[疾患名や背景知識]
+# 本症例の特徴
+[今回の症例の特異な点]
+# 報告する意義
+[この症例から得られる教訓]`,
+    inputs: [
+      { key: 'background', label: '疾患・背景', placeholder: '例：〇〇病は通常〜という経過をたどる。', type: 'textarea' },
+      { key: 'significance', label: '報告する意義', placeholder: '例：この治療法が著効した点。', type: 'textarea' }
+    ]
+  },
+  {
+    id: "res-case-discussion",
+    title: "Case Report Discussion Writer",
+    description: "症例報告の考察（Discussion）を作成します。症例の特徴、過去の報告との比較、学ぶ点を論じます。",
+    category: "research",
+    template: `以下の情報を基に、症例報告の考察（Discussion）の構成案とドラフトを作成してください。
+以下の流れで論理を展開してください：
+1. 症例の際立った特徴と診断の根拠（要約）。
+2. 過去の報告との比較（何が新しく、何が違うのか）。
+3. 症例からの新しい知識と応用性（Learning Point）。
+4. 結論（Conclusion）。
+※過剰な一般化や、確固たる推奨は避けてください。
+
+# 症例の要約
+[症例の主な特徴]
+# 考察のポイント
+[議論したい点、文献との比較]
+# 結論・メッセージ
+[読者に伝えたいこと]`,
+    inputs: [
+      { key: 'summary', label: '症例の要約', placeholder: '例：非典型的な画像所見を呈した...', type: 'textarea' },
+      { key: 'points', label: '考察のポイント', placeholder: '例：過去の文献では〜とされているが、本症例では...', type: 'textarea' }
+    ]
+  },
+  {
     id: "res-english-proofread",
     title: "Academic English Proofreading",
     description: "医学論文の英語を、学術的に自然で洗練された表現に校正します。",
