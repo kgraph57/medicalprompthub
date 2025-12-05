@@ -6,13 +6,15 @@ import NotFound from "@/pages/NotFound";
 import PromptDetail from "./pages/PromptDetail";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Router as WouterRouter } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 function Router() {
   return (
-    <Switch>
+    <WouterRouter base={import.meta.env.BASE_URL !== "/" ? import.meta.env.BASE_URL : undefined}>
+      <Switch>
       <Route path="/" component={Home} />
       <Route path="/category/:id" component={Category} />
      <Route path={"/prompts/:id"} component={PromptDetail} />
@@ -20,7 +22,8 @@ function Router() {
       <Route path={"/guides/:id"} component={GuideDetail} />     <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
-    </Switch>
+      </Switch>
+    </WouterRouter>
   );
 }
 
