@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, BookOpen, CheckCircle2, Copy, ExternalLink, FileText, Lightbulb, ListTodo, Mail, Search, Send, Map, CheckSquare, Square } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, Copy, ExternalLink, FileText, Lightbulb, ListTodo, Mail, Search, Send, Map, CheckSquare, Square, BarChart3, Download } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useRoute } from "wouter";
 import { fullPrompts } from "../lib/prompts-full";
+import { JournalFinder } from "@/components/JournalFinder";
+import { ConsentTemplates } from "@/components/ConsentTemplates";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 
 // ガイドデータの定義
 const guides = [
@@ -57,6 +61,12 @@ const guides = [
               報告の価値があると判断したら、患者さんから同意書（Informed Consent）を取得します。
               同時に、カルテから必要な情報を漏れなく収集し、時系列に整理します。
             </p>
+            <div className="my-6">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <Download className="w-4 h-4" /> Consent Form Templates
+              </h4>
+              <ConsentTemplates />
+            </div>
             <PromptCard promptId="res-timeline-builder" />
           </div>
         )
@@ -71,6 +81,12 @@ const guides = [
               ジャーナルによって文字数制限（例：800語以内）、図表の数、フォーマットが全く異なるためです。
               後から書き直すのは時間の無駄です。
             </p>
+            <div className="my-6 border rounded-lg p-4 bg-background">
+              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <Search className="w-4 h-4" /> Journal Database
+              </h4>
+              <JournalFinder />
+            </div>
             <PromptCard promptId="res-journal-finder" />
           </div>
         )
@@ -78,6 +94,7 @@ const guides = [
       {
         title: "Step 5: 症例記述の執筆 (Writing Case Description)",
         icon: FileText,
+        hasWordCount: true,
         content: (
           <div className="space-y-4">
             <p>
@@ -91,6 +108,7 @@ const guides = [
       {
         title: "Step 6: 考察と結論の執筆 (Discussion & Conclusion)",
         icon: FileText,
+        hasWordCount: true,
         content: (
           <div className="space-y-4">
             <p>
@@ -105,6 +123,7 @@ const guides = [
       {
         title: "Step 7: 序論と要旨の執筆 (Introduction & Abstract)",
         icon: FileText,
+        hasWordCount: true,
         content: (
           <div className="space-y-4">
             <p>
@@ -329,12 +348,17 @@ export default function GuideDetail() {
   
   // LocalStorageから進捗状況を読み込む
   const [progress, setProgress] = useState<Record<string, boolean>>({});
+  const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (guideId) {
       const savedProgress = localStorage.getItem(`guide-progress-${guideId}`);
       if (savedProgress) {
         setProgress(JSON.parse(savedProgress));
+      }
+      const savedWordCounts = localStorage.getItem(`guide-wordcounts-${guideId}`);
+      if (savedWordCounts) {
+        setWordCounts(JSON.parse(savedWordCounts));
       }
     }
   }, [guideId]);
@@ -347,9 +371,18 @@ export default function GuideDetail() {
     localStorage.setItem(`guide-progress-${guideId}`, JSON.stringify(newProgress));
   };
 
+  const updateWordCount = (stepIndex: number, count: number) => {
+    if (!guideId) return;
+    const newWordCounts = { ...wordCounts, [stepIndex]: count };
+    setWordCounts(newWordCounts);
+    localStorage.setItem(`guide-wordcounts-${guideId}`, JSON.stringify(newWordCounts));
+  };
+
   const completedCount = Object.values(progress).filter(Boolean).length;
   const totalSteps = guide?.steps.length || 0;
   const progressPercentage = totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0;
+  
+  const totalWordCount = Object.values(wordCounts).reduce((a, b) => a + b, 0);
 
   if (!guide) {
     return (
@@ -391,24 +424,27 @@ export default function GuideDetail() {
           </p>
         </div>
 
-        {/* Progress Bar */}
-        <div className="sticky top-16 z-10 bg-background/95 backdrop-blur py-4 border-b mb-8">
-          <div className="flex items-center justify-between mb-2 text-sm">
-            <span className="font-medium text-primary">Your Progress</span>
-            <span className="text-muted-foreground">{progressPercentage}% Completed</span>
+        {/* Progress Bar & Stats */}
+        <div className="sticky top-16 z-10 bg-background/95 backdrop-blur py-4 border-b mb-8 space-y-4">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-4">
+              <span className="font-medium text-primary">Your Progress</span>
+              <span className="text-muted-foreground">{progressPercentage}% Completed</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <BarChart3 className="w-4 h-4" />
+              <span>Total Words: {totalWordCount}</span>
+            </div>
           </div>
-          <div className="h-2 bg-secondary rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-primary transition-all duration-500 ease-out"
-              style={{ width: `${progressPercentage}%` }}
-            />
-          </div>
+          <Progress value={progressPercentage} className="h-2" />
         </div>
 
         <div className="grid gap-8">
           {guide.steps.map((step, index) => {
             const Icon = step.icon;
             const isCompleted = progress[index];
+            // @ts-ignore
+            const hasWordCount = step.hasWordCount;
 
             return (
               <Card key={index} className={`relative transition-all duration-300 ${isCompleted ? 'border-primary/50 bg-primary/5' : ''}`}>
@@ -442,8 +478,26 @@ export default function GuideDetail() {
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-4">
+                <CardContent className="pt-4 space-y-4">
                   {step.content}
+                  
+                  {hasWordCount && (
+                    <div className="mt-4 pt-4 border-t">
+                      <div className="flex items-center gap-4">
+                        <label className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+                          Draft Word Count:
+                        </label>
+                        <Input 
+                          type="number" 
+                          placeholder="0" 
+                          className="w-24 h-8"
+                          value={wordCounts[index] || ""}
+                          onChange={(e) => updateWordCount(index, parseInt(e.target.value) || 0)}
+                        />
+                        <span className="text-xs text-muted-foreground">words</span>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             );
