@@ -857,3 +857,258 @@ const researchReviewResponsePrompts: Prompt[] = [
 ];
 
 fullPrompts.push(...researchAnalysisPrompts, ...researchWritingPrompts, ...researchReviewResponsePrompts);
+
+// --- Research: Statistical Code Generation (261-270) ---
+const researchStatsCodePrompts: Prompt[] = [
+  {
+    id: 'res-code-python-preprocessing',
+    title: 'Python: データ前処理コード生成',
+    category: 'research',
+    description: 'pandasを用いたデータの読み込み、欠損値処理、カテゴリ変数の変換を行うPythonコードを生成します。',
+    template: `以下のデータセットに対して、前処理を行うPythonコード（pandas）を作成してください。
+
+【データ形式】
+{{data_format}}
+
+【変数の詳細】
+{{variables}}
+
+【依頼内容】
+1. データの読み込み（pd.read_csvなど）
+2. 欠損値の確認と処理（数値は平均値/中央値埋め、カテゴリは最頻値/欠損カテゴリ作成など、適切な方法をコメント付きで）
+3. カテゴリ変数のダミー変数化（pd.get_dummies）
+4. 基本的な情報の表示（info, describe）`,
+    inputs: [
+      { key: 'data_format', label: 'データ形式', placeholder: '例: data.csv (UTF-8 encoding)', type: 'text' },
+      { key: 'variables', label: '変数の詳細', placeholder: '例: age(数値), sex(カテゴリ: 0=F, 1=M), outcome(2値)', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'res-code-r-tableone',
+    title: 'R: Table 1作成コード生成',
+    category: 'research',
+    description: 'Rのtableoneパッケージを使用して、論文投稿用の背景因子表（Table 1）を作成するコードを生成します。',
+    template: `Rのtableoneパッケージを使用して、以下の条件でTable 1を作成するコードを書いてください。
+
+【データフレーム名】
+{{df_name}}
+
+【層別化（群分け）変数】
+{{strata_var}}
+
+【変数リスト】
+- 正規分布する連続変数: {{normal_vars}}
+- 非正規分布の連続変数: {{non_normal_vars}}
+- カテゴリ変数: {{cat_vars}}
+
+【依頼内容】
+1. 必要なライブラリの読み込み
+2. CreateTableOne関数の実行
+3. print関数での出力設定（SMDの表示、p値の表示、nonnormal指定など）`,
+    inputs: [
+      { key: 'df_name', label: 'データフレーム名', placeholder: '例: df', type: 'text' },
+      { key: 'strata_var', label: '層別化変数', placeholder: '例: treatment_group', type: 'text' },
+      { key: 'normal_vars', label: '正規分布変数', placeholder: '例: age, height, weight', type: 'text' },
+      { key: 'non_normal_vars', label: '非正規分布変数', placeholder: '例: crp, bnp, los', type: 'text' },
+      { key: 'cat_vars', label: 'カテゴリ変数', placeholder: '例: sex, hypertension, diabetes', type: 'text' },
+    ]
+  },
+  {
+    id: 'res-code-python-logistic',
+    title: 'Python: ロジスティック回帰分析',
+    category: 'research',
+    description: 'statsmodelsまたはscikit-learnを用いて、多変量ロジスティック回帰分析を行い、オッズ比と95%信頼区間を出力するコードを生成します。',
+    template: `Python (statsmodels) を使用して、多変量ロジスティック回帰分析を行うコードを作成してください。
+
+【目的変数 (Y)】
+{{target_var}}
+
+【説明変数 (X)】
+{{explanatory_vars}}
+
+【依頼内容】
+1. 定数項の追加 (sm.add_constant)
+2. モデルの構築とフィット (sm.Logit)
+3. 結果の表示 (summary)
+4. **オッズ比と95%信頼区間の算出・表示**（ここが重要）`,
+    inputs: [
+      { key: 'target_var', label: '目的変数', placeholder: '例: death (0/1)', type: 'text' },
+      { key: 'explanatory_vars', label: '説明変数リスト', placeholder: '例: age, sex, bmi, smoking, hypertension', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'res-code-r-survival',
+    title: 'R: 生存時間解析 (Kaplan-Meier & Cox)',
+    category: 'research',
+    description: 'Rのsurvival/survminerパッケージを用いて、Kaplan-Meier曲線の描画とCox比例ハザードモデルを実行するコードを生成します。',
+    template: `Rを使用して生存時間解析を行うコードを作成してください。
+
+【データセット名】
+{{df_name}}
+
+【時間変数・イベント変数】
+- 時間: {{time_var}}
+- イベント: {{event_var}}
+
+【比較したい群】
+{{group_var}}
+
+【調整因子（Cox回帰用）】
+{{covariates}}
+
+【依頼内容】
+1. Kaplan-Meier曲線の描画 (ggsurvplot): p値、リスクテーブル付き
+2. Log-rank検定の実行
+3. 多変量Cox比例ハザードモデルの実行とハザード比(HR)の出力`,
+    inputs: [
+      { key: 'df_name', label: 'データセット名', placeholder: '例: data', type: 'text' },
+      { key: 'time_var', label: '時間変数', placeholder: '例: days_to_event', type: 'text' },
+      { key: 'event_var', label: 'イベント変数', placeholder: '例: status (0=censor, 1=event)', type: 'text' },
+      { key: 'group_var', label: '群分け変数', placeholder: '例: drug_group', type: 'text' },
+      { key: 'covariates', label: '調整因子', placeholder: '例: age + sex + diabetes', type: 'text' },
+    ]
+  },
+];
+
+// --- Research: Reference Management (271-280) ---
+const researchReferencePrompts: Prompt[] = [
+  {
+    id: 'res-ref-bibtex',
+    title: 'BibTeX/RIS形式への変換',
+    category: 'research',
+    description: '論文情報を入力すると、EndNoteやZoteroにインポート可能なBibTeX形式のテキストを出力します。',
+    template: `以下の論文情報を、文献管理ソフト（Zotero, EndNote, Mendeley）で読み込める**BibTeX形式**に変換してください。
+
+【論文情報】
+{{paper_info}}
+
+【依頼内容】
+- 正確なBibTeXフォーマット（@article{...}）で出力してください。
+- 著者名は "Lastname, Firstname" の形式で記述してください。
+- 欠落している情報があれば、適当なプレースホルダー（例: {MISSING_YEAR}）を入れてください。`,
+    inputs: [
+      { key: 'paper_info', label: '論文情報', placeholder: '例: "Efficacy of X..." by Smith J et al. NEJM 2024;390:123-130.', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'res-ref-format-convert',
+    title: '引用フォーマット変換',
+    category: 'research',
+    description: '論文リストを指定されたジャーナルの投稿規定（Vancouver, APAなど）に合わせて整形します。',
+    template: `以下の参考文献リストを、**{{style}}形式**に整形し直してください。
+
+【参考文献リスト】
+{{reference_list}}
+
+【スタイル例】
+- Vancouver: 1. Author AA, Author BB. Title. Journal. Year;Vol(Issue):Page.
+- APA: Author, A. A., & Author, B. B. (Year). Title. *Journal*, *Vol*(Issue), Page.
+
+【依頼内容】
+- 番号付けやインデントも含めて、そのままコピー＆ペーストできる形式で出力してください。`,
+    inputs: [
+      { key: 'style', label: '変換先スタイル', placeholder: '例: Vancouver style (NEJM準拠)', type: 'text' },
+      { key: 'reference_list', label: '元のリスト', placeholder: 'Paste reference list here...', type: 'textarea' },
+    ]
+  },
+];
+
+// --- Research: Reporting Guidelines (281-290) ---
+const researchGuidelinePrompts: Prompt[] = [
+  {
+    id: 'res-check-consort',
+    title: 'CONSORTチェックリスト (RCT)',
+    category: 'research',
+    description: 'ランダム化比較試験のドラフトがCONSORT声明の必須項目を満たしているかチェックします。',
+    template: `以下のRCT（ランダム化比較試験）の論文ドラフトについて、**CONSORT 2010声明**のチェックリストに基づいた評価を行ってください。
+
+【論文ドラフト（Methods/Results）】
+{{manuscript_text}}
+
+【依頼内容】
+特に以下の重要項目について、記載の有無と不十分な点を指摘してください。
+1. **Randomisation**: シークエンス生成方法、割り付け隠蔽（Allocation concealment）
+2. **Blinding**: 誰が盲検化されたか（参加者、医療者、評価者）
+3. **Sample size**: サンプルサイズ計算の根拠
+4. **Outcomes**: 主要評価項目と副次評価項目の定義
+5. **Flow diagram**: 患者フローの記述（除外理由など）`,
+    inputs: [
+      { key: 'manuscript_text', label: '論文ドラフト', placeholder: 'Paste Methods and Results sections here...', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'res-check-strobe',
+    title: 'STROBEチェックリスト (観察研究)',
+    category: 'research',
+    description: '観察研究のドラフトがSTROBE声明の必須項目を満たしているかチェックします。',
+    template: `以下の観察研究（コホート/ケースコントロール/横断研究）の論文ドラフトについて、**STROBE声明**に基づいた評価を行ってください。
+
+【論文ドラフト】
+{{manuscript_text}}
+
+【依頼内容】
+以下の項目について、記載漏れや改善点を指摘してください。
+1. **Study Design**: 研究デザインの明確な記述
+2. **Setting**: 場所、期間、フォローアップ期間
+3. **Participants**: 適格基準、除外基準、選択方法
+4. **Variables**: 全ての変数（曝露、アウトカム、交絡因子、効果修飾因子）の定義
+5. **Bias**: バイアスの評価と対処
+6. **Study Size**: サンプルサイズの決定方法`,
+    inputs: [
+      { key: 'manuscript_text', label: '論文ドラフト', placeholder: 'Paste Methods section here...', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'res-check-care',
+    title: 'CAREチェックリスト (症例報告)',
+    category: 'research',
+    description: '症例報告のドラフトがCAREガイドラインに沿っているかチェックします。',
+    template: `以下の症例報告のドラフトについて、**CAREガイドライン**に基づいたチェックを行ってください。
+
+【症例報告ドラフト】
+{{case_report_text}}
+
+【依頼内容】
+以下の項目が適切に含まれているか確認し、不足していれば具体的な加筆案を提示してください。
+1. **Timeline**: 発症から診断、治療、転帰までの時系列
+2. **Diagnostic Challenges**: 診断における課題や推論プロセス
+3. **Intervention**: 治療内容の詳細（用量、期間など）
+4. **Outcomes**: 治療後の経過（客観的データと患者の主観的評価）
+5. **Patient Perspective**: 患者の視点や体験（可能な場合）`,
+    inputs: [
+      { key: 'case_report_text', label: '症例報告ドラフト', placeholder: 'Paste Case Presentation here...', type: 'textarea' },
+    ]
+  },
+];
+
+// --- Research: Workflow Automation (291-300) ---
+const researchWorkflowPrompts: Prompt[] = [
+  {
+    id: 'res-gantt-chart',
+    title: '研究スケジュール作成 (Gantt)',
+    category: 'research',
+    description: '研究のマイルストーンから、具体的なタスクと期限をリストアップし、Mermaid記法のガントチャートコードを生成します。',
+    template: `以下の研究プロジェクトについて、現実的なスケジュール（ガントチャート）を作成してください。
+
+【研究テーマ】
+{{research_topic}}
+
+【開始日】
+{{start_date}}
+
+【目標（学会・投稿）】
+{{target_deadline}}
+
+【依頼内容】
+1. **タスク分解**: 倫理申請、データ収集、解析、執筆、投稿などの主要フェーズ
+2. **スケジュール表**: 各タスクの開始・終了時期の目安
+3. **Mermaid Code**: これをガントチャートとして可視化するためのMermaid記法のコード`,
+    inputs: [
+      { key: 'research_topic', label: '研究テーマ', placeholder: '例: 新規抗がん剤の第II相試験', type: 'text' },
+      { key: 'start_date', label: '開始日', placeholder: '例: 2025/04/01', type: 'text' },
+      { key: 'target_deadline', label: '目標期限', placeholder: '例: 2026/03の学会で発表', type: 'text' },
+    ]
+  },
+];
+
+fullPrompts.push(...researchStatsCodePrompts, ...researchReferencePrompts, ...researchGuidelinePrompts, ...researchWorkflowPrompts);
