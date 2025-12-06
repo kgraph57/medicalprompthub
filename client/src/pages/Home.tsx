@@ -54,9 +54,8 @@ export default function Home() {
             transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground leading-[1.1] max-w-5xl mx-auto"
           >
-            Clinical Clarity{" "}
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              AI Prompt Hub
+              Medical Prompt Hub
             </span>
           </motion.h1>
           
