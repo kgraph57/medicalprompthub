@@ -23,73 +23,87 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { theme, toggleTheme } = useTheme();
 
   const NavContent = () => (
-    <div className="flex flex-col h-full py-6">
+    <nav className="flex flex-col h-full py-6" aria-label="メインナビゲーション">
       <div className="px-6 mb-8 flex items-center justify-between">
         <div>
-          <Link href="/">
+          <Link href="/" aria-label="ホームページに戻る">
             <h1 className="text-xl font-bold tracking-tight text-primary flex items-center gap-2">
-              <Activity className="w-6 h-6" />
+              <Activity className="w-6 h-6" aria-hidden="true" />
               Medical Prompt Hub
             </h1>
           </Link>
           <p className="text-xs text-muted-foreground mt-1">For Healthcare Professionals</p>
         </div>
-        <Button variant="ghost" size="icon" onClick={toggleTheme} className="hidden md:flex">
-          {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleTheme} 
+          className="hidden md:flex"
+          aria-label={theme === "light" ? "ダークモードに切り替え" : "ライトモードに切り替え"}
+        >
+          {theme === "light" ? <Moon className="w-5 h-5" aria-hidden="true" /> : <Sun className="w-5 h-5" aria-hidden="true" />}
         </Button>
       </div>
 
       <ScrollArea className="flex-1 px-4">
-        <div className="space-y-1">
-          <Link href="/">
-            <Button
-              variant={location === "/" ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location === "/" && "bg-secondary text-secondary-foreground")}
-              onClick={() => setIsMobileOpen(false)}
-            >
-              <span className="mr-2">🏠</span> ホーム
-            </Button>
-          </Link>
-          <Link href="/guides">
-            <Button
-              variant={location.startsWith("/guides") ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
-              onClick={() => setIsMobileOpen(false)}
-            >
-              <span className="mr-2">📚</span> ガイド・記事
-            </Button>
-          </Link>
-          <Link href="/favorites">
-            <Button
-              variant={location === "/favorites" ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location === "/favorites" && "bg-secondary text-secondary-foreground")}
-              onClick={() => setIsMobileOpen(false)}
-            >
-              <Bookmark className="mr-2 w-4 h-4" /> お気に入り
-            </Button>
-          </Link>
-        </div>
-
-        <div className="mt-6 mb-2 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Categories
-        </div>
-        <div className="space-y-1">
-          {categories.map((category) => (
-            <Link key={category.id} href={`/category/${category.id}`}>
+        <div className="space-y-1" role="list">
+          <div role="listitem">
+            <Link href="/" aria-current={location === "/" ? "page" : undefined}>
               <Button
-                variant={location === `/category/${category.id}` ? "secondary" : "ghost"}
-                className={cn(
-                  "w-full justify-start font-medium",
-                  location === `/category/${category.id}` && "bg-secondary text-secondary-foreground"
-                )}
+                variant={location === "/" ? "secondary" : "ghost"}
+                className={cn("w-full justify-start font-medium", location === "/" && "bg-secondary text-secondary-foreground")}
                 onClick={() => setIsMobileOpen(false)}
               >
-                <span className="mr-2 text-muted-foreground group-hover:text-foreground transition-colors">
-                  {categoryIcons[category.id] || <Activity className="w-4 h-4" />}
-                </span>
-                {category.title}
+                <span className="mr-2" aria-hidden="true">🏠</span> ホーム
               </Button>
             </Link>
+          </div>
+          <div role="listitem">
+            <Link href="/guides" aria-current={location.startsWith("/guides") ? "page" : undefined}>
+              <Button
+                variant={location.startsWith("/guides") ? "secondary" : "ghost"}
+                className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
+                onClick={() => setIsMobileOpen(false)}
+              >
+                <span className="mr-2" aria-hidden="true">📚</span> ガイド・記事
+              </Button>
+            </Link>
+          </div>
+          <div role="listitem">
+            <Link href="/favorites" aria-current={location === "/favorites" ? "page" : undefined}>
+              <Button
+                variant={location === "/favorites" ? "secondary" : "ghost"}
+                className={cn("w-full justify-start font-medium", location === "/favorites" && "bg-secondary text-secondary-foreground")}
+                onClick={() => setIsMobileOpen(false)}
+              >
+                <Bookmark className="mr-2 w-4 h-4" aria-hidden="true" /> お気に入り
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-6 mb-2 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
+          Categories
+        </div>
+        <div className="space-y-1" role="list" aria-labelledby="categories-heading">
+          {categories.map((category) => (
+            <div key={category.id} role="listitem">
+              <Link href={`/category/${category.id}`} aria-current={location === `/category/${category.id}` ? "page" : undefined}>
+                <Button
+                  variant={location === `/category/${category.id}` ? "secondary" : "ghost"}
+                  className={cn(
+                    "w-full justify-start font-medium",
+                    location === `/category/${category.id}` && "bg-secondary text-secondary-foreground"
+                  )}
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  <span className="mr-2 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true">
+                    {categoryIcons[category.id] || <Activity className="w-4 h-4" />}
+                  </span>
+                  {category.title}
+                </Button>
+              </Link>
+            </div>
           ))}
         </div>
       </ScrollArea>
@@ -110,35 +124,57 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background font-sans antialiased selection:bg-primary/10 selection:text-primary">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-72 border-r border-border/50 bg-sidebar/80 backdrop-blur-xl fixed inset-y-0 z-30">
+      <aside 
+        className="hidden md:block w-72 border-r border-border/50 bg-sidebar/80 backdrop-blur-xl fixed inset-y-0 z-30"
+        aria-label="メインナビゲーション"
+      >
         <NavContent />
       </aside>
 
       {/* Mobile Header & Content */}
       <div className="flex-1 flex flex-col md:ml-72 min-w-0">
-        <header className="md:hidden h-16 border-b border-border/50 bg-background/70 backdrop-blur-xl sticky top-0 z-40 flex items-center px-5 justify-between glass">
+        <header 
+          className="md:hidden h-16 border-b border-border/50 bg-background/70 backdrop-blur-xl sticky top-0 z-40 flex items-center px-5 justify-between glass"
+          role="banner"
+        >
           <div className="flex items-center gap-2 font-bold text-primary">
-            <Activity className="w-5 h-5" />
-            Medical Prompt Hub
+            <Activity className="w-5 h-5" aria-hidden="true" />
+            <h1 className="sr-only">Medical Prompt Hub</h1>
+            <span aria-hidden="true">Medical Prompt Hub</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="mr-2">
-              {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+          <nav className="flex items-center gap-2" aria-label="ユーティリティメニュー">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={toggleTheme} 
+              className="mr-2"
+              aria-label={theme === "light" ? "ダークモードに切り替え" : "ライトモードに切り替え"}
+            >
+              {theme === "light" ? <Moon className="w-5 h-5" aria-hidden="true" /> : <Sun className="w-5 h-5" aria-hidden="true" />}
             </Button>
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="w-5 h-5" />
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  aria-label="メニューを開く"
+                  aria-expanded={isMobileOpen}
+                >
+                  <Menu className="w-5 h-5" aria-hidden="true" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-80">
+              <SheetContent side="left" className="p-0 w-80" aria-label="ナビゲーションメニュー">
                 <NavContent />
               </SheetContent>
             </Sheet>
-          </div>
+          </nav>
         </header>
 
-        <main className="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full animate-in fade-in duration-500">
+        <main 
+          className="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full animate-in fade-in duration-500"
+          role="main"
+          id="main-content"
+        >
           {children}
         </main>
       </div>

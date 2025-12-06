@@ -22,25 +22,113 @@ Medical Prompt Hubは、医師や研究者がAI（ChatGPT, Claudeなど）を臨
 3. ステップごとの解説を読み、必要なプロンプトをコピーしてAIチャットに貼り付けます。
 
 ## 🛠️ Tech Stack
-- React 19
-- TypeScript
-- Tailwind CSS
-- shadcn/ui
-- Vite
+- **Frontend**: React 19, TypeScript, Tailwind CSS, shadcn/ui
+- **Build Tool**: Vite 7
+- **Routing**: Wouter (Hash-based routing for GitHub Pages)
+- **UI Components**: Radix UI, Framer Motion
+- **Testing**: Vitest, React Testing Library
+- **PWA**: Vite PWA Plugin
+
+## 🚀 Development
+
+### Prerequisites
+- Node.js 20+
+- pnpm 10+
+
+### Installation
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build:client
+
+# Run tests
+pnpm test
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Type checking
+pnpm check
+
+# Format code
+pnpm format
+```
+
+### Environment Variables
+Create a `.env` file in the root directory:
+```env
+VITE_BASE_PATH=/medicalprompthub/
+VITE_ANALYTICS_ENDPOINT=https://your-analytics-endpoint.com
+VITE_ANALYTICS_WEBSITE_ID=your-website-id
+```
 
 ## 📁 Project Structure
 ```
 medical-prompt-hub/
-├── client/          # フロントエンドアプリケーション
-├── server/          # バックエンドAPI
-├── shared/          # 共有コード
-├── docs/            # ドキュメント
-│   ├── design/      # デザイン/設計ドキュメント
+├── client/              # フロントエンドアプリケーション
+│   ├── src/
+│   │   ├── components/  # Reactコンポーネント
+│   │   ├── pages/       # ページコンポーネント
+│   │   ├── lib/         # ユーティリティとデータ
+│   │   ├── hooks/       # カスタムフック
+│   │   ├── contexts/    # React Context
+│   │   └── test/        # テスト設定とヘルパー
+│   └── public/          # 静的ファイル
+├── server/              # バックエンドAPI
+├── shared/              # 共有コード
+├── docs/                # ドキュメント
+│   ├── design/          # デザイン/設計ドキュメント
 │   ├── implementation/  # 実装メモ
-│   ├── data/        # データファイル
-│   └── share/       # シェア用メッセージ
-└── drizzle/         # データベースマイグレーション
+│   ├── data/            # データファイル
+│   └── share/           # シェア用メッセージ
+├── drizzle/            # データベースマイグレーション
+└── .github/             # GitHub Actions ワークフロー
 ```
+
+## 🧪 Testing
+プロジェクトはVitestを使用してテストを実行します。
+
+```bash
+# すべてのテストを実行
+pnpm test
+
+# ウォッチモードでテストを実行
+pnpm test --watch
+
+# カバレッジレポートを生成
+pnpm test:coverage
+
+# UIモードでテストを実行
+pnpm test:ui
+```
+
+## 🚢 Deployment
+GitHub Pagesへのデプロイは自動化されています。`main`ブランチにプッシュすると、GitHub Actionsが自動的にビルドとデプロイを実行します。
+
+### 手動デプロイ
+```bash
+# ビルド
+VITE_BASE_PATH=/medicalprompthub/ pnpm build:client
+
+# ビルド成果物は dist/public/ に生成されます
+```
+
+## ♿ Accessibility
+- ARIA属性の適切な使用
+- キーボードナビゲーションのサポート
+- スクリーンリーダー対応
+- セマンティックHTMLの使用
+
+## 🔍 SEO
+- メタタグの最適化
+- Open Graphタグ
+- Twitter Card対応
+- 構造化データ（将来実装予定）
 
 ## 📄 License
 MIT License
