@@ -161,7 +161,7 @@ export default function Home() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: index * 0.03, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link href={`/prompt/${prompt.id}`}>
+                  <Link href={`/prompts/${prompt.id}`}>
                     <motion.div
                       whileHover={{ y: -8, scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

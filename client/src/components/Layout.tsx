@@ -9,12 +9,16 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  "clinical-diagnosis": <Stethoscope className="w-4 h-4" />,
-  "patient-communication": <MessageSquare className="w-4 h-4" />,
-  "medical-education": <BookOpen className="w-4 h-4" />,
-  "research-academic": <Microscope className="w-4 h-4" />,
+  "diagnosis": <Stethoscope className="w-4 h-4" />,
+  "treatment": <Activity className="w-4 h-4" />,
+  "documentation": <FileText className="w-4 h-4" />,
+  "medication": <Pill className="w-4 h-4" />,
+  "communication": <MessageSquare className="w-4 h-4" />,
+  "literature": <BookOpen className="w-4 h-4" />,
+  "research": <Microscope className="w-4 h-4" />,
+  "case-analysis": <Stethoscope className="w-4 h-4" />,
+  "education": <BookOpen className="w-4 h-4" />,
   "administrative": <FileText className="w-4 h-4" />,
-  "pharmacology": <Pill className="w-4 h-4" />,
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -54,7 +58,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 className={cn("w-full justify-start font-medium", location === "/" && "bg-secondary text-secondary-foreground")}
                 onClick={() => setIsMobileOpen(false)}
               >
-                <span className="mr-2" aria-hidden="true">🏠</span> ホーム
+                <span className="mr-2" aria-hidden="true">🏠</span> HOME
               </Button>
             </Link>
           </div>
@@ -65,7 +69,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
                 onClick={() => setIsMobileOpen(false)}
               >
-                <span className="mr-2" aria-hidden="true">📚</span> ガイド・記事
+                <span className="mr-2" aria-hidden="true">📚</span> Guides／Workflow
               </Button>
             </Link>
           </div>
@@ -100,7 +104,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <span className="mr-2 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true">
                     {categoryIcons[category.id] || <Activity className="w-4 h-4" />}
                   </span>
-                  {category.title}
+                  {category.label}
                 </Button>
               </Link>
             </div>
@@ -118,7 +122,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 
   return (
@@ -137,21 +141,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           className="md:hidden h-16 border-b border-border/50 bg-background/70 backdrop-blur-xl sticky top-0 z-40 flex items-center px-5 justify-between glass"
           role="banner"
         >
-          <div className="flex items-center gap-2 font-bold text-primary">
-            <Activity className="w-5 h-5" aria-hidden="true" />
-            <h1 className="sr-only">Medical Prompt Hub</h1>
-            <span aria-hidden="true">Medical Prompt Hub</span>
-          </div>
-          <nav className="flex items-center gap-2" aria-label="ユーティリティメニュー">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={toggleTheme} 
-              className="mr-2"
-              aria-label={theme === "light" ? "ダークモードに切り替え" : "ライトモードに切り替え"}
-            >
-              {theme === "light" ? <Moon className="w-5 h-5" aria-hidden="true" /> : <Sun className="w-5 h-5" aria-hidden="true" />}
-            </Button>
+          <div className="flex items-center gap-3">
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
               <SheetTrigger asChild>
                 <Button 
@@ -167,6 +157,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <NavContent />
               </SheetContent>
             </Sheet>
+            <div className="flex items-center gap-2 font-bold text-primary">
+              <Activity className="w-5 h-5" aria-hidden="true" />
+              <h1 className="sr-only">Medical Prompt Hub</h1>
+              <span aria-hidden="true">Medical Prompt Hub</span>
+            </div>
+          </div>
+          <nav className="flex items-center gap-2" aria-label="ユーティリティメニュー">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={toggleTheme} 
+              aria-label={theme === "light" ? "ダークモードに切り替え" : "ライトモードに切り替え"}
+            >
+              {theme === "light" ? <Moon className="w-5 h-5" aria-hidden="true" /> : <Sun className="w-5 h-5" aria-hidden="true" />}
+            </Button>
           </nav>
         </header>
 

@@ -15,7 +15,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { Link, useRoute } from "wouter";
 
 export default function PromptDetail() {
-  const [match, params] = useRoute("/prompt/:id");
+  const [match, params] = useRoute("/prompts/:id");
   const promptId = match ? params.id : null;
   const prompt = prompts.find((p) => p.id === promptId);
 

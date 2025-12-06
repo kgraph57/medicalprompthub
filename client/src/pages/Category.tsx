@@ -45,7 +45,7 @@ export default function Category() {
 
         <div className="grid grid-cols-1 gap-6">
           {categoryPrompts.map((prompt) => (
-            <Link key={prompt.id} href={`/prompt/${prompt.id}`}>
+            <Link key={prompt.id} href={`/prompts/${prompt.id}`}>
               <Card className="group hover:shadow-md transition-all cursor-pointer border-transparent hover:border-primary/20 bg-card/50 backdrop-blur-sm">
                 <CardHeader>
                   <div className="flex items-start justify-between">
