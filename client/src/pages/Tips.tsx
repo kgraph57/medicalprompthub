@@ -55,11 +55,13 @@ export default function Tips() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* ヘッダー */}
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold">Prompt Engineering</h1>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Sparkles className="h-10 w-10 text-blue-600 animate-pulse" />
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Prompt Engineering
+            </h1>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             AIを最大限に活用するための実践的なテクニック集。医療・研究シーンに特化した、すぐに使えるプロンプト例と解説を提供します。
           </p>
         </div>
