@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, BookOpen, FileText, Microscope } from "lucide-react";
 import { Link } from "wouter";
 
+// Updated: 2025-12-06
 export default function Guides() {
   const guides = [
     {
