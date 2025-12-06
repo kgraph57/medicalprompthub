@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, BookOpen, CheckCircle2, Copy, ExternalLink, FileText, Lightbulb, ListTodo, Mail, Search, Send, Map, CheckSquare, Square, BarChart3, Download, Clock, Calendar, User, Image, Menu, X } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, Copy, ExternalLink, FileText, Lightbulb, ListTodo, Mail, Search, Send, Map, CheckSquare, Square, BarChart3, Download, Clock, Calendar, User, Image, Menu, X, MessageSquare } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link, useRoute } from "wouter";
 import { fullPrompts } from "../lib/prompts-full";
