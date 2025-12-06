@@ -23,6 +23,13 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name]-[hash]-v2.js`,
+        chunkFileNames: `assets/[name]-[hash]-v2.js`,
+        assetFileNames: `assets/[name]-[hash]-v2.[ext]`
+      }
+    }
   },
   server: {
     port: 3000,
