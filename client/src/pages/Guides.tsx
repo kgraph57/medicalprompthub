@@ -330,60 +330,59 @@ export default function Guides() {
                 const colors = categoryColors[guide.category] || categoryColors["Research"];
                 
                 return (
-                  <motion.div
+                  <Link 
                     key={guide.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.5, 
-                      delay: index * 0.05,
-                      ease: [0.22, 1, 0.36, 1]
-                    }}
+                    href={`/guides/${guide.id}`}
+                    style={{ textDecoration: 'none', display: 'block' }}
                   >
-                    <Link href={`/guides/${guide.id}`}>
-                      <motion.div
-                        whileHover={{ y: -8, scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <Card className={`h-full cursor-pointer border-l-[3px] ${colors.border} bg-gradient-to-br ${colors.gradient} group overflow-hidden relative shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50`}>
-                          <CardHeader className="space-y-4 p-6">
-                            <div className="flex items-center justify-between">
-                              <Badge variant="secondary" className={`${colors.badge} font-medium px-3 py-1 rounded-full`}>
-                                {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
-                              </Badge>
-                              <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-                                <BookOpen className="h-3.5 w-3.5" />
-                                {guide.readTime}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ 
+                        duration: 0.5, 
+                        delay: index * 0.05,
+                        ease: [0.22, 1, 0.36, 1]
+                      }}
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Card className={`h-full cursor-pointer border-l-[3px] ${colors.border} bg-gradient-to-br ${colors.gradient} group overflow-hidden relative shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50`}>
+                        <CardHeader className="space-y-4 p-6">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="secondary" className={`${colors.badge} font-medium px-3 py-1 rounded-full`}>
+                              {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
+                            </Badge>
+                            <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                              <BookOpen className="h-3.5 w-3.5" />
+                              {guide.readTime}
+                            </span>
+                          </div>
+                          <CardTitle className="text-xl md:text-2xl font-bold leading-tight group-hover:text-primary transition-colors duration-300 pr-8">
+                            {guide.title}
+                          </CardTitle>
+                          <CardDescription className="text-base leading-relaxed line-clamp-3 text-muted-foreground">
+                            {guide.description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-6 pt-0 space-y-4">
+                          <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-2 gap-1 transition-all duration-300">
+                            <span>ガイドを読む</span>
+                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                          </div>
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {guide.tags.map(tag => (
+                              <span 
+                                key={tag} 
+                                className="text-xs px-3 py-1.5 bg-background/60 dark:bg-background/40 backdrop-blur-sm rounded-full text-muted-foreground font-medium border border-border/50"
+                              >
+                                #{tag}
                               </span>
-                            </div>
-                            <CardTitle className="text-xl md:text-2xl font-bold leading-tight group-hover:text-primary transition-colors duration-300 pr-8">
-                              {guide.title}
-                            </CardTitle>
-                            <CardDescription className="text-base leading-relaxed line-clamp-3 text-muted-foreground">
-                              {guide.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="p-6 pt-0 space-y-4">
-                            <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-2 gap-1 transition-all duration-300">
-                              <span>ガイドを読む</span>
-                              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                            </div>
-                            <div className="flex flex-wrap gap-2 pt-2">
-                              {guide.tags.map(tag => (
-                                <span 
-                                  key={tag} 
-                                  className="text-xs px-3 py-1.5 bg-background/60 dark:bg-background/40 backdrop-blur-sm rounded-full text-muted-foreground font-medium border border-border/50"
-                                >
-                                  #{tag}
-                                </span>
-                              ))}
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    </Link>
-                  </motion.div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </Link>
                 );
               })}
             </motion.div>
