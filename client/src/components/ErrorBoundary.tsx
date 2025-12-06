@@ -167,5 +167,3 @@ function ErrorFallback({
 }
 
 export default ErrorBoundary;
-
-export default ErrorBoundary;

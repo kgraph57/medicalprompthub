@@ -1,6 +1,6 @@
 import { categories } from "@/lib/prompts";
 import { cn } from "@/lib/utils";
-import { Activity, BookOpen, Bookmark, FileText, Menu, MessageSquare, Microscope, Moon, Pill, Stethoscope, Sun, X } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, Bookmark, Briefcase, ClipboardList, FileText, GraduationCap, Home, Menu, MessageSquare, Microscope, Moon, Pill, Stethoscope, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Link, useLocation } from "wouter";
@@ -16,13 +16,13 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "communication": <MessageSquare className="w-4 h-4" />,
   "literature": <BookOpen className="w-4 h-4" />,
   "research": <Microscope className="w-4 h-4" />,
-  "case-analysis": <Stethoscope className="w-4 h-4" />,
-  "education": <BookOpen className="w-4 h-4" />,
-  "administrative": <FileText className="w-4 h-4" />,
+  "case-analysis": <ClipboardList className="w-4 h-4" />,
+  "education": <GraduationCap className="w-4 h-4" />,
+  "administrative": <Briefcase className="w-4 h-4" />,
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
@@ -52,37 +52,40 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <ScrollArea className="flex-1 px-4">
         <div className="space-y-1" role="list">
           <div role="listitem">
-            <Link href="/" aria-current={location === "/" ? "page" : undefined}>
-              <Button
-                variant={location === "/" ? "secondary" : "ghost"}
-                className={cn("w-full justify-start font-medium", location === "/" && "bg-secondary text-secondary-foreground")}
-                onClick={() => setIsMobileOpen(false)}
-              >
-                <span className="mr-2" aria-hidden="true">🏠</span> HOME
-              </Button>
-            </Link>
+            <Button
+              variant={location === "/" ? "secondary" : "ghost"}
+              className={cn("w-full justify-start font-medium", location === "/" && "bg-secondary text-secondary-foreground")}
+              onClick={() => {
+                setLocation("/");
+                setIsMobileOpen(false);
+              }}
+            >
+              <Home className="mr-2 w-4 h-4" aria-hidden="true" /> HOME
+            </Button>
           </div>
           <div role="listitem">
-            <Link href="/guides" aria-current={location.startsWith("/guides") ? "page" : undefined}>
-              <Button
-                variant={location.startsWith("/guides") ? "secondary" : "ghost"}
-                className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
-                onClick={() => setIsMobileOpen(false)}
-              >
-                <span className="mr-2" aria-hidden="true">📚</span> Guides／Workflow
-              </Button>
-            </Link>
+            <Button
+              variant={location.startsWith("/guides") ? "secondary" : "ghost"}
+              className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
+              onClick={() => {
+                setLocation("/guides");
+                setIsMobileOpen(false);
+              }}
+            >
+              <ArrowRight className="mr-2 w-4 h-4" aria-hidden="true" /> Guides／Workflow
+            </Button>
           </div>
           <div role="listitem">
-            <Link href="/favorites" aria-current={location === "/favorites" ? "page" : undefined}>
-              <Button
-                variant={location === "/favorites" ? "secondary" : "ghost"}
-                className={cn("w-full justify-start font-medium", location === "/favorites" && "bg-secondary text-secondary-foreground")}
-                onClick={() => setIsMobileOpen(false)}
-              >
-                <Bookmark className="mr-2 w-4 h-4" aria-hidden="true" /> お気に入り
-              </Button>
-            </Link>
+            <Button
+              variant={location === "/favorites" ? "secondary" : "ghost"}
+              className={cn("w-full justify-start font-medium", location === "/favorites" && "bg-secondary text-secondary-foreground")}
+              onClick={() => {
+                setLocation("/favorites");
+                setIsMobileOpen(false);
+              }}
+            >
+              <Bookmark className="mr-2 w-4 h-4" aria-hidden="true" /> Fav
+            </Button>
           </div>
         </div>
 
@@ -92,21 +95,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="space-y-1" role="list" aria-labelledby="categories-heading">
           {categories.map((category) => (
             <div key={category.id} role="listitem">
-              <Link href={`/category/${category.id}`} aria-current={location === `/category/${category.id}` ? "page" : undefined}>
-                <Button
-                  variant={location === `/category/${category.id}` ? "secondary" : "ghost"}
-                  className={cn(
-                    "w-full justify-start font-medium",
-                    location === `/category/${category.id}` && "bg-secondary text-secondary-foreground"
-                  )}
-                  onClick={() => setIsMobileOpen(false)}
-                >
-                  <span className="mr-2 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true">
-                    {categoryIcons[category.id] || <Activity className="w-4 h-4" />}
-                  </span>
-                  {category.label}
-                </Button>
-              </Link>
+              <Button
+                variant={location === `/category/${category.id}` ? "secondary" : "ghost"}
+                className={cn(
+                  "w-full justify-start font-medium",
+                  location === `/category/${category.id}` && "bg-secondary text-secondary-foreground"
+                )}
+                onClick={() => {
+                  setLocation(`/category/${category.id}`);
+                  setIsMobileOpen(false);
+                }}
+              >
+                <span className="mr-2 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true">
+                  {categoryIcons[category.id] || <Activity className="w-4 h-4" />}
+                </span>
+                {category.label}
+              </Button>
             </div>
           ))}
         </div>
