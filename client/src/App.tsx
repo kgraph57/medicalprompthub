@@ -7,13 +7,15 @@ import PromptDetail from "./pages/PromptDetail";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import Tips from "./pages/Tips";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Router as WouterRouter } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 function Router() {
+  const base = import.meta.env.PROD ? '/medicalprompthub' : '';
   return (
-    <Switch>
+    <WouterRouter base={base}>
+      <Switch>
       <Route path="/" component={Home} />
       <Route path="/category/:id" component={Category} />
      <Route path={"/prompts/:id"} component={PromptDetail} />
@@ -23,6 +25,7 @@ function Router() {
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
+    </WouterRouter>
   );
 }
 
