@@ -16,15 +16,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "pnpm"  # ✨ 追加: キャッシュを有効化
+      
+      # 修正: pnpmを先にセットアップする
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"  # pnpmインストール後にキャッシュ設定を行う
+
       - name: Install dependencies
         run: pnpm install
       - name: Build
