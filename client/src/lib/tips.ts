@@ -362,7 +362,7 @@ export const newTipsPhase2 = [
       "既存の医療機器の予期せぬ使用方法を考案させる"
     ],
     relatedTips: ["multi-perspective-simulation", "ultra-deep-reasoning-mode"]
-  }
+  },
   {
     id: "reflection-prompting",
     title: "Reflection Prompting: 反省的プロンプティング",
@@ -406,9 +406,7 @@ export const newTipsPhase2 = [
       "医学史上の発見を現代のテクノロジーに例えて解説する"
     ],
     relatedTips: ["few-shot-prompting", "generate-knowledge-prompting"]
-  }
-]
-,
+  },
   {
     id: "contrastive-prompting",
     title: "Contrastive Prompting: 対照的プロンプティング",
