@@ -252,7 +252,7 @@ export const newTipsPhase2 = [
     ],
     relatedTips: ["multi-perspective-simulation", "depth-method"],
     tags: ["基本", "ペルソナ", "専門性", "視点設定"]
-  }
+  },
   {
     id: "self-consistency",
     title: "Self-Consistency: 自己整合性",
