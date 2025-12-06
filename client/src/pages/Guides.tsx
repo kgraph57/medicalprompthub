@@ -1,20 +1,11 @@
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BookOpen, FileText, Microscope, ClipboardList, Mail } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Microscope } from "lucide-react";
 import { Link } from "wouter";
 
-interface Guide {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  readTime: string;
-  tags: string[];
-}
-
 export default function Guides() {
-  const guides: Guide[] = [
+  const guides = [
     {
       id: "case-report-workflow",
       title: "症例報告作成ワークフロー：AIを活用した効率化ガイド",
@@ -22,7 +13,19 @@ export default function Guides() {
       category: "Research",
       readTime: "5 min read",
       tags: ["Case Report", "Writing", "Beginner"]
+    },
+    // 将来的に追加されるガイドのプレースホルダー
+    /*
+    {
+      id: "systematic-review-guide",
+      title: "システマティックレビューのAI支援プロセス",
+      description: "膨大な文献のスクリーニングからPRISMA準拠の報告まで。AIを「第二のスクリーナー」として活用する方法。",
+      category: "Research",
+      icon: <Microscope className="h-6 w-6 text-purple-500" />,
+      readTime: "8 min read",
+      tags: ["Systematic Review", "Advanced"]
     }
+    */
   ];
 
   return (
