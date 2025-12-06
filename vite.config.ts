@@ -3,23 +3,60 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "path";
-import { defineConfig } from "vite";
+import { defineConfig, Plugin } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 import { VitePWA } from "vite-plugin-pwa";
+
+// Escape HTML attribute values to prevent XSS
+function escapeHtmlAttribute(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// Plugin to conditionally include analytics script
+const analyticsPlugin = (): Plugin => {
+  return {
+    name: "analytics-plugin",
+    transformIndexHtml(html) {
+      const analyticsEndpoint = process.env.VITE_ANALYTICS_ENDPOINT;
+      const analyticsWebsiteId = process.env.VITE_ANALYTICS_WEBSITE_ID;
+      
+      if (analyticsEndpoint && analyticsWebsiteId) {
+        // Escape values to prevent XSS
+        const escapedEndpoint = escapeHtmlAttribute(analyticsEndpoint);
+        const escapedWebsiteId = escapeHtmlAttribute(analyticsWebsiteId);
+        
+        return html.replace(
+          "%VITE_ANALYTICS_SCRIPT%",
+          `<script defer src="${escapedEndpoint}/umami" data-website-id="${escapedWebsiteId}"></script>`
+        );
+      }
+      return html.replace("%VITE_ANALYTICS_SCRIPT%", "");
+    },
+  };
+};
 
 const plugins = [
   react(),
   tailwindcss(),
   jsxLocPlugin(),
   vitePluginManusRuntime(),
+  analyticsPlugin(),
   VitePWA({
     registerType: "autoUpdate",
+    base: process.env.VITE_BASE_PATH || "/",
+    scope: process.env.VITE_BASE_PATH || "/",
     includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
     manifest: {
       name: "Medical Prompt Hub",
       short_name: "MedPrompt",
       description: "AI Prompt Library for Healthcare Professionals",
       theme_color: "#ffffff",
+      start_url: (process.env.VITE_BASE_PATH || "/") + "index.html",
       icons: [
         {
           src: "pwa-192x192.png",
