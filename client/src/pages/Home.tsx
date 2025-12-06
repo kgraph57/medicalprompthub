@@ -6,21 +6,29 @@ import { Search, Activity, ArrowRight, ShieldCheck, Sparkles, BookOpen } from "l
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const filteredPrompts = useMemo(() => {
-    return fullPrompts.filter((prompt) => {
+    const filtered = fullPrompts.filter((prompt) => {
       const matchesSearch = 
         prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         prompt.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory ? prompt.category === selectedCategory : true;
       return matchesSearch && matchesCategory;
     });
+    console.log('Filtered prompts:', { 
+      total: fullPrompts.length, 
+      filtered: filtered.length, 
+      selectedCategory, 
+      searchQuery 
+    });
+    return filtered;
   }, [searchQuery, selectedCategory]);
 
   const categories = Array.from(new Set(fullPrompts.map((p) => p.category)));
@@ -75,27 +83,38 @@ export default function Home() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="flex flex-col sm:flex-row justify-center gap-4 pt-4"
           >
-            <Link href="/guides">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                size="lg" 
+                className="rounded-full px-8 h-14 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 relative z-10"
+                onClick={(e) => {
+                  console.log('Get Started button clicked:', { target: e.target });
+                  setLocation("/guides");
+                }}
               >
-                <Button size="lg" className="rounded-full px-8 h-14 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </motion.div>
-            </Link>
-            <Link href="/guides">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="rounded-full px-8 h-14 text-base font-semibold border-2 hover:bg-accent/50 transition-all duration-300 relative z-10"
+                onClick={(e) => {
+                  console.log('View Guides button clicked:', { target: e.target });
+                  setLocation("/guides");
+                }}
               >
-                <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-2 hover:bg-accent/50 transition-all duration-300">
-                  View Guides
-                </Button>
-              </motion.div>
-            </Link>
+                View Guides
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.section>
 
@@ -116,12 +135,25 @@ export default function Home() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center" role="tablist" aria-label="カテゴリフィルタ">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Badge 
                   variant={selectedCategory === null ? "default" : "outline"}
                   className="cursor-pointer px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                  onClick={() => setSelectedCategory(null)}
+                  onClick={(e) => {
+                    console.log('Category filter clicked:', { target: e.target, category: 'all', previousCategory: selectedCategory });
+                    setSelectedCategory(null);
+                  }}
+                  role="tab"
+                  aria-pressed={selectedCategory === null}
+                  aria-selected={selectedCategory === null}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedCategory(null);
+                    }
+                  }}
                 >
                   All
                 </Badge>
@@ -138,7 +170,20 @@ export default function Home() {
                   <Badge
                     variant={selectedCategory === cat ? "default" : "outline"}
                     className="cursor-pointer capitalize px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={(e) => {
+                      console.log('Category filter clicked:', { target: e.target, category: cat, previousCategory: selectedCategory });
+                      setSelectedCategory(cat);
+                    }}
+                    role="tab"
+                    aria-pressed={selectedCategory === cat}
+                    aria-selected={selectedCategory === cat}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedCategory(cat);
+                      }
+                    }}
                   >
                     {cat}
                   </Badge>
@@ -161,30 +206,33 @@ export default function Home() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: index * 0.03, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link href={`/prompts/${prompt.id}`}>
-                    <motion.div
-                      whileHover={{ y: -8, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <Card className="h-full min-h-[180px] flex flex-col cursor-pointer border-2 border-border/50 hover:border-primary/30 bg-gradient-apple-card group overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 rounded-xl">
-                        <CardHeader className="p-4 space-y-2 flex-1">
-                          <div className="flex justify-between items-start">
-                            <Badge variant="secondary" className="capitalize text-xs font-medium px-3 py-1 rounded-full">
-                              {prompt.category}
-                            </Badge>
-                            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-[-4px] group-hover:translate-x-0" />
-                          </div>
-                          <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors duration-300 leading-tight">
-                            {prompt.title}
-                          </CardTitle>
-                          <CardDescription className="text-sm leading-relaxed line-clamp-2">
-                            {prompt.description}
-                          </CardDescription>
-                        </CardHeader>
-                      </Card>
-                    </motion.div>
-                  </Link>
+                  <motion.div
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    onClick={(e) => {
+                      console.log('Prompt card clicked:', { target: e.target, promptId: prompt.id });
+                      setLocation(`/prompts/${prompt.id}`);
+                    }}
+                    className="relative z-10"
+                  >
+                    <Card className="h-full min-h-[180px] flex flex-col cursor-pointer border-2 border-border/50 hover:border-primary/30 bg-gradient-apple-card group overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 rounded-xl">
+                      <CardHeader className="p-4 space-y-2 flex-1">
+                        <div className="flex justify-between items-start">
+                          <Badge variant="secondary" className="capitalize text-xs font-medium px-3 py-1 rounded-full">
+                            {prompt.category}
+                          </Badge>
+                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-[-4px] group-hover:translate-x-0" />
+                        </div>
+                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors duration-300 leading-tight">
+                          {prompt.title}
+                        </CardTitle>
+                        <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                          {prompt.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -227,33 +275,36 @@ export default function Home() {
             </p>
           </motion.div>
           <div className="max-w-4xl mx-auto">
-            <Link href="/guides">
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="cursor-pointer border-2 border-dashed border-primary/30 hover:border-primary/50 bg-gradient-apple-card rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
-                  <CardHeader className="text-center py-12 px-8">
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6"
-                    >
-                      <BookOpen className="w-10 h-10 text-primary" />
-                    </motion.div>
-                    <CardTitle className="text-3xl font-bold mb-4">5つの実践ガイド</CardTitle>
-                    <CardDescription className="text-lg leading-relaxed max-w-2xl mx-auto">
-                      症例報告、統計解析、学会発表、抄読会、患者説明まで。ステップバイステップで学べる完全ガイド。
-                    </CardDescription>
-                    <div className="mt-8">
-                      <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold shadow-md hover:shadow-lg transition-all">
-                        すべてのガイドを見る <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </motion.div>
-            </Link>
+            <motion.div
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => {
+                console.log('Guides card clicked:', { target: e.target });
+                setLocation("/guides");
+              }}
+              className="relative z-10"
+            >
+              <Card className="cursor-pointer border-2 border-dashed border-primary/30 hover:border-primary/50 bg-gradient-apple-card rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <CardHeader className="text-center py-12 px-8">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6"
+                  >
+                    <BookOpen className="w-10 h-10 text-primary" />
+                  </motion.div>
+                  <CardTitle className="text-3xl font-bold mb-4">5つの実践ガイド</CardTitle>
+                  <CardDescription className="text-lg leading-relaxed max-w-2xl mx-auto">
+                    症例報告、統計解析、学会発表、抄読会、患者説明まで。ステップバイステップで学べる完全ガイド。
+                  </CardDescription>
+                  <div className="mt-8">
+                    <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold shadow-md hover:shadow-lg transition-all">
+                      すべてのガイドを見る <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </div>
+                </CardHeader>
+              </Card>
+            </motion.div>
           </div>
         </motion.section>
 
