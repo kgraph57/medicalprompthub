@@ -30,10 +30,14 @@ jobs:
         run: pnpm build:client
         env:
           VITE_BASE_PATH: /medicalprompthub/
+      - name: Create 404.html for SPA routing
+        run: |
+          cp dist/public/index.html dist/public/404.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./client/dist
+          path: ./dist/public
   deploy:
     environment:
       name: github-pages

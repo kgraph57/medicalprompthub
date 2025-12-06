@@ -7,6 +7,7 @@ import PromptDetail from "./pages/PromptDetail";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import Legal from "./pages/Legal";
+import Favorites from "./pages/Favorites";
 import { Route, Switch, Router as WouterRouter } from "wouter";
 import { useHashLocation } from "wouter/use-hash-location";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -21,7 +22,8 @@ function Router() {
      <Route path={"/prompts/:id"} component={PromptDetail} />
       <Route path={"/guides"} component={Guides} />
       <Route path={"/guides/:id"} component={GuideDetail} />
-      <Route path="/legal" component={Legal} />     <Route path="/404" component={NotFound} />
+      <Route path="/legal" component={Legal} />
+      <Route path="/favorites" component={Favorites} />     <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
       </Switch>
@@ -32,7 +34,7 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="light">
+      <ThemeProvider defaultTheme="light" switchable>
         <TooltipProvider>
           <Toaster position="top-center" />
           <Router />

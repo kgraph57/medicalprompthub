@@ -8,9 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { fullPrompts as prompts } from "@/lib/prompts-full";
-import { ArrowLeft, Check, Copy, RefreshCw, Sparkles } from "lucide-react";
+import { ArrowLeft, Bookmark, Check, Copy, RefreshCw, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useFavorites } from "@/hooks/useFavorites";
 import { Link, useRoute } from "wouter";
 
 export default function PromptDetail() {
@@ -20,6 +21,7 @@ export default function PromptDetail() {
 
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!prompt) {
     return (
@@ -79,6 +81,16 @@ export default function PromptDetail() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{prompt.title}</h1>
             <p className="text-sm text-muted-foreground">{prompt.description}</p>
+          </div>
+          <div className="ml-auto">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => toggleFavorite(prompt.id)}
+              className={isFavorite(prompt.id) ? "text-yellow-500 border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20" : "text-muted-foreground"}
+            >
+              <Bookmark className={isFavorite(prompt.id) ? "fill-current w-5 h-5" : "w-5 h-5"} />
+            </Button>
           </div>
         </div>
 
