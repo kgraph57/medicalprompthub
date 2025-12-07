@@ -320,3 +320,52 @@
     transform: scale(0.96);
   }
 }
+
+/* Zenn-like article styling */
+.prose {
+  @apply text-base;
+}
+
+.prose p {
+  @apply mb-6 leading-relaxed;
+}
+
+.prose h2 {
+  @apply mt-12 mb-6 text-2xl font-bold;
+}
+
+.prose h3 {
+  @apply mt-10 mb-4 text-xl font-bold;
+}
+
+.prose h4 {
+  @apply mt-8 mb-3 text-lg font-bold;
+}
+
+.prose ul, .prose ol {
+  @apply my-6 space-y-2;
+}
+
+.prose li {
+  @apply my-2;
+}
+
+.prose code {
+  @apply px-1.5 py-0.5 rounded text-sm bg-gray-100;
+}
+
+.prose pre {
+  @apply my-6 p-4 rounded-lg bg-gray-50 overflow-x-auto;
+}
+
+.prose blockquote {
+  @apply my-6 pl-4 border-l-4 border-gray-300 italic;
+}
+
+.prose table {
+  @apply my-6 w-full;
+}
+
+.prose th, .prose td {
+  @apply px-4 py-2 border;
+}

@@ -180,7 +180,10 @@ export default function CaseReportGuide() {
 
           {/* Main Content - 通常のページスクロール */}
           <main className="lg:col-span-3">
-            <div className="prose prose-lg max-w-none p-6 border rounded-lg bg-card">
+            <div className="prose prose-lg max-w-[680px] mx-auto p-8 border rounded-lg bg-card" style={{
+              lineHeight: '1.9',
+              fontSize: '16px'
+            }}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-3xl font-bold m-0">Step {currentStep?.number}: {currentStep?.title}</h2>
                 <Button variant="outline" size="sm" onClick={() => toggleStepCompletion(currentStepId)}>
