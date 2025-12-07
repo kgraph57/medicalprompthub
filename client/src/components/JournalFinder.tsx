@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, ExternalLink, BookOpen, BarChart3, Clock, Globe, ArrowRightLeft } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Search, ExternalLink, BookOpen, BarChart3, Clock, Globe, ArrowRightLeft, ChevronDown, ChevronUp } from "lucide-react";
 import { journals, Journal } from "@/lib/journals";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "wouter";
@@ -14,6 +15,7 @@ export function JournalFinder() {
   const [sortBy, setSortBy] = useState<"impactFactor" | "title">("impactFactor");
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
+  const [expandedJournals, setExpandedJournals] = useState<Set<string>>(new Set());
 
   const categories = Array.from(new Set(journals.flatMap(j => j.category)));
 
@@ -21,6 +23,18 @@ export function JournalFinder() {
     setSelectedForCompare(prev => 
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
+  };
+
+  const toggleExpanded = (id: string) => {
+    setExpandedJournals(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
   };
 
   const filteredJournals = useMemo(() => {
@@ -98,86 +112,121 @@ export function JournalFinder() {
         </div>
       </div>
 
-      <div className="grid gap-4">
-        {filteredJournals.map((journal) => (
-          <Card key={journal.id} className="hover:shadow-md transition-shadow overflow-hidden">
-            <CardHeader className="pb-3 bg-muted/20">
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <Checkbox 
-                        id={`compare-${journal.id}`}
-                        checked={selectedForCompare.includes(journal.id)}
-                        onCheckedChange={() => toggleCompare(journal.id)}
-                      />
-                      <Link href={`/journal/${journal.id}`}>
-                        <CardTitle className="text-lg hover:underline cursor-pointer text-primary">{journal.title}</CardTitle>
-                      </Link>
+      <div className="grid gap-3">
+        {filteredJournals.map((journal) => {
+          const isExpanded = expandedJournals.has(journal.id);
+          
+          return (
+            <Card key={journal.id} className="hover:shadow-md transition-shadow overflow-hidden">
+              <Collapsible open={isExpanded} onOpenChange={() => toggleExpanded(journal.id)}>
+                <CardHeader className="pb-3 bg-muted/20">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <Checkbox 
+                            id={`compare-${journal.id}`}
+                            checked={selectedForCompare.includes(journal.id)}
+                            onCheckedChange={() => toggleCompare(journal.id)}
+                          />
+                          <Link href={`/journal/${journal.id}`}>
+                            <CardTitle className="text-lg hover:underline cursor-pointer text-primary">{journal.title}</CardTitle>
+                          </Link>
+                        </div>
+                        {journal.openAccess && (
+                          <Badge variant="secondary" className="text-xs font-normal bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-0">
+                            <Globe className="w-3 h-3 mr-1" /> Open Access
+                          </Badge>
+                        )}
+                        <Badge variant="outline" className="flex items-center gap-1 bg-background">
+                          <BarChart3 className="w-3 h-3" /> IF: {journal.impactFactor}
+                        </Badge>
+                      </div>
+                      <CardDescription>{journal.publisher}</CardDescription>
+                      
+                      {/* Compact metrics - always visible */}
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>{journal.reviewSpeed || "N/A"}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>Acceptance: {journal.acceptanceRate || "N/A"}</span>
+                        </div>
+                      </div>
                     </div>
-                    {journal.openAccess && (
-                      <Badge variant="secondary" className="text-xs font-normal bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-0">
-                        <Globe className="w-3 h-3 mr-1" /> Open Access
-                      </Badge>
-                    )}
+                    
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" className="shrink-0">
+                        {isExpanded ? (
+                          <>
+                            詳細を隠す <ChevronUp className="w-4 h-4 ml-1" />
+                          </>
+                        ) : (
+                          <>
+                            詳細を表示 <ChevronDown className="w-4 h-4 ml-1" />
+                          </>
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
                   </div>
-                  <CardDescription>{journal.publisher}</CardDescription>
-                </div>
-                <Badge variant="outline" className="self-start md:self-center flex items-center gap-1 shrink-0 bg-background">
-                  <BarChart3 className="w-3 h-3" /> IF: {journal.impactFactor}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Metrics</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4 text-muted-foreground" />
-                      <span className="font-medium">{journal.reviewSpeed || "N/A"}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <BookOpen className="w-4 h-4 text-muted-foreground" />
-                      <span className="font-medium">Acceptance: {journal.acceptanceRate || "N/A"}</span>
-                    </div>
-                  </div>
-                </div>
+                </CardHeader>
                 
-                <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Requirements</h4>
-                  <div className="bg-muted/30 p-3 rounded-lg text-sm space-y-1.5 border border-border/50">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Word Count:</span>
-                      <span className="font-medium">{journal.requirements.wordCount}</span>
+                <CollapsibleContent>
+                  <CardContent className="pt-4">
+                    <div className="grid md:grid-cols-2 gap-6 mb-6">
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Metrics</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex items-center gap-2 text-sm">
+                            <Clock className="w-4 h-4 text-muted-foreground" />
+                            <span className="font-medium">{journal.reviewSpeed || "N/A"}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <BookOpen className="w-4 h-4 text-muted-foreground" />
+                            <span className="font-medium">Acceptance: {journal.acceptanceRate || "N/A"}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Requirements</h4>
+                        <div className="bg-muted/30 p-3 rounded-lg text-sm space-y-1.5 border border-border/50">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Word Count:</span>
+                            <span className="font-medium">{journal.requirements.wordCount}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Abstract:</span>
+                            <span className="font-medium">{journal.requirements.abstract}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Figures/Refs:</span>
+                            <span className="font-medium">{journal.requirements.figures} / {journal.requirements.references}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Abstract:</span>
-                      <span className="font-medium">{journal.requirements.abstract}</span>
+                    
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-border/50">
+                      <Button variant="outline" size="sm" className="flex-1" asChild>
+                        <a href={journal.url} target="_blank" rel="noopener noreferrer">
+                          Visit Journal <ExternalLink className="w-3 h-3 ml-2" />
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" className="flex-1" asChild>
+                        <a href={journal.guidelinesUrl} target="_blank" rel="noopener noreferrer">
+                          Author Guidelines <ExternalLink className="w-3 h-3 ml-2" />
+                        </a>
+                      </Button>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Figures/Refs:</span>
-                      <span className="font-medium">{journal.requirements.figures} / {journal.requirements.references}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-border/50">
-                <Button variant="outline" size="sm" className="flex-1" asChild>
-                  <a href={journal.url} target="_blank" rel="noopener noreferrer">
-                    Visit Journal <ExternalLink className="w-3 h-3 ml-2" />
-                  </a>
-                </Button>
-                <Button variant="outline" size="sm" className="flex-1" asChild>
-                  <a href={journal.guidelinesUrl} target="_blank" rel="noopener noreferrer">
-                    Author Guidelines <ExternalLink className="w-3 h-3 ml-2" />
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          );
+        })}
         {filteredJournals.length === 0 && (
           <div className="text-center py-12 border-2 border-dashed rounded-lg">
             <Search className="w-10 h-10 mx-auto text-muted-foreground mb-4" />
