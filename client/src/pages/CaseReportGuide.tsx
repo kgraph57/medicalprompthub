@@ -131,9 +131,9 @@ export default function CaseReportGuide() {
       {/* メインコンテンツ */}
       <div className="container max-w-[1280px] mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* 左サイドバー（固定） */}
+          {/* 左サイドバー（固定、スクロール可能） */}
           <aside className="lg:col-span-1">
-            <div className="sticky top-24 space-y-6">
+            <div className="sticky top-24 space-y-6 max-h-[calc(100vh-7rem)] overflow-y-auto">
               {/* 進捗状況 */}
               <div className="rounded-lg border bg-card p-4">
                 <h3 className="font-semibold mb-2">進捗状況</h3>
