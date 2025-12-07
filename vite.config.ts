@@ -80,6 +80,7 @@ const plugins = [
 ];
 
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/medicalprompthub/' : '/',
   plugins,
   resolve: {
     alias: {
@@ -89,13 +90,15 @@ export default defineConfig({
     },
   },
   envDir: path.resolve(import.meta.dirname),
-  base: process.env.VITE_BASE_PATH || "/",
   root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
     rollupOptions: {
       output: {
+        entryFileNames: `assets/[name]-[hash]-v6.js`,
+        chunkFileNames: `assets/[name]-[hash]-v6.js`,
+        assetFileNames: `assets/[name]-[hash]-v6.[ext]`,
         manualChunks: {
           // Vendor chunks
           'react-vendor': ['react', 'react-dom'],

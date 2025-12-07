@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 
+// Updated: 2025-12-06
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);

@@ -13,6 +13,8 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const PromptDetail = lazy(() => import("./pages/PromptDetail"));
 const Guides = lazy(() => import("./pages/Guides"));
 const GuideDetail = lazy(() => import("./pages/GuideDetail"));
+const Tips = lazy(() => import("./pages/Tips"));
+const TipDetail = lazy(() => import("./pages/TipDetail"));
 const Legal = lazy(() => import("./pages/Legal"));
 const Favorites = lazy(() => import("./pages/Favorites"));
 const JournalFinderPage = lazy(() => import("@/pages/JournalFinderPage"));
@@ -40,6 +42,8 @@ function Router() {
           <Route path={"/prompts/:id"} component={PromptDetail} />
           <Route path={"/guides"} component={Guides} />
           <Route path={"/guides/:id"} component={GuideDetail} />
+          <Route path={"/tips"} component={Tips} />
+          <Route path={"/tips/:id"} component={TipDetail} />
           <Route path="/legal" component={Legal} />
           <Route path="/favorites" component={Favorites} />
           <Route path="/journal-finder" component={JournalFinderPage} />

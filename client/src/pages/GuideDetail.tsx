@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, BookOpen, CheckCircle2, Copy, ExternalLink, FileText, Lightbulb, ListTodo, Mail, Search, Send, Map, CheckSquare, Square, BarChart3, Download, Clock, Calendar, User, Image, Menu, X, MessageSquare } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link, useRoute } from "wouter";
@@ -367,9 +368,9 @@ export default function GuideDetail() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Guide not found</h2>
+          <h2 className="text-2xl font-bold mb-4">ガイドが見つかりません</h2>
           <Link href="/guides">
-            <Button>Back to Guides</Button>
+            <Button>ガイド一覧に戻る</Button>
           </Link>
         </div>
       </div>
@@ -384,7 +385,7 @@ export default function GuideDetail() {
           <Link href="/guides">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="w-4 h-4" />
-              Back
+              ガイド一覧
             </Button>
           </Link>
           <Separator orientation="vertical" className="mx-4 h-6" />
