@@ -172,8 +172,16 @@ export default function Guides() {
       return match ? parseInt(match[1], 10) : 0;
     };
 
-    // ソート
+    // ソート: 実装済みガイドを優先表示
     filtered.sort((a, b) => {
+      const aImplemented = IMPLEMENTED_GUIDES.includes(a.id);
+      const bImplemented = IMPLEMENTED_GUIDES.includes(b.id);
+      
+      // 実装済みガイドを優先
+      if (aImplemented && !bImplemented) return -1;
+      if (!aImplemented && bImplemented) return 1;
+      
+      // 同じ実装状態の場合は、選択されたソートオプションで並び替え
       switch (sortOption) {
         case "title-asc":
           return a.title.localeCompare(b.title, "ja");
