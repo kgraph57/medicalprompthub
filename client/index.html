@@ -74,22 +74,43 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Force clear old service worker cache
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for(let registration of registrations) {
-            registration.unregister();
+      // Force clear old service worker cache and reload
+      (function() {
+        var version = 'v8'; // Increment this to force cache clear
+        var storageKey = 'app-cache-version';
+        var currentVersion = localStorage.getItem(storageKey);
+        
+        if (currentVersion !== version) {
+          console.log('Cache version mismatch, clearing caches...');
+          
+          // Unregister all service workers
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+              for(var i = 0; i < registrations.length; i++) {
+                registrations[i].unregister();
+              }
+            });
           }
-        });
-        // Clear all caches
-        if ('caches' in window) {
-          caches.keys().then(function(names) {
-            for (let name of names) {
-              caches.delete(name);
-            }
-          });
+          
+          // Clear all caches
+          if ('caches' in window) {
+            caches.keys().then(function(names) {
+              return Promise.all(
+                names.map(function(name) {
+                  return caches.delete(name);
+                })
+              );
+            }).then(function() {
+              // Update version and reload
+              localStorage.setItem(storageKey, version);
+              window.location.reload(true);
+            });
+          } else {
+            localStorage.setItem(storageKey, version);
+            window.location.reload(true);
+          }
         }
-      }
+      })();
     </script>
     %VITE_ANALYTICS_SCRIPT%
   </body>
