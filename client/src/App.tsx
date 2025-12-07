@@ -7,6 +7,7 @@ import PromptDetail from "./pages/PromptDetail";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import Tips from "./pages/Tips";
+import TipDetail from "./pages/TipDetail";
 import { Route, Switch, Router as WouterRouter } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -21,7 +22,8 @@ function Router() {
      <Route path={"/prompts/:id"} component={PromptDetail} />
       <Route path={"/guides"} component={Guides} />
       <Route path={"/guides/:id"} component={GuideDetail} />
-      <Route path={"/tips"} component={Tips} />     <Route path="/404" component={NotFound} />
+      <Route path={"/tips"} component={Tips} />
+      <Route path={"/tips/:id"} component={TipDetail} />     <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
