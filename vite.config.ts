@@ -47,7 +47,8 @@ const plugins = [
   // Only enable Manus runtime in development
   ...(process.env.NODE_ENV !== 'production' ? [vitePluginManusRuntime()] : []),
   analyticsPlugin(),
-  VitePWA({
+  // Temporarily disable PWA to fix caching issues
+  ...(process.env.NODE_ENV !== 'production' ? [VitePWA({
     registerType: "autoUpdate",
     base: process.env.VITE_BASE_PATH || "/",
     scope: process.env.VITE_BASE_PATH || "/",
@@ -77,7 +78,7 @@ const plugins = [
         },
       ],
     },
-  }),
+  })] : []),
 ];
 
 export default defineConfig({
