@@ -10,10 +10,10 @@ export const fullPrompts: Prompt[] = [
     template: `あなたは熟練した総合診療医です。以下の症例情報に基づき、鑑別診断リストを作成してください。
 
 # 症例情報
-- 主訴: [主訴を入力]
-- 現病歴: [現病歴を入力]
-- 既往歴: [既往歴を入力]
-- バイタルサイン: [バイタルサインを入力]
+- 主訴: {{chief_complaint}}
+- 現病歴: {{present_illness}}
+- 既往歴: {{past_history}}
+- バイタルサイン: 体温{{temperature}}°C、血圧{{blood_pressure}}mmHg、脈拍{{pulse}}/分、呼吸数{{respiratory_rate}}/分、SpO2 {{spo2}}%
 
 # 出力形式
 1. **Critical (見逃してはいけない疾患)**: 3つ
@@ -22,7 +22,14 @@ export const fullPrompts: Prompt[] = [
 
 各疾患について、この症例で疑う根拠と、除外するために必要な追加検査を簡潔に記載してください。`,
     inputs: [
-      { key: 'case_info', label: '症例情報', placeholder: '主訴、現病歴、既往歴、バイタルサインなどを入力', type: 'textarea' }
+      { key: 'chief_complaint', label: '主訴', placeholder: '主訴を選択または入力', type: 'select', options: ['発熱', '頭痛', '胸痛', '腹痛', '呼吸困難', '咳嗽', '嘔気・嘔吐', '下痢', 'めまい', '意識障害', '全身倦怠感', '関節痛', '腰痛', '浮腫', 'その他'] },
+      { key: 'present_illness', label: '現病歴', placeholder: '例: 3日前から発熱あり。昨日から咳嗽も出現。解熱剤を内服するも改善せず。', type: 'textarea' },
+      { key: 'past_history', label: '既往歴', placeholder: '既往歴を選択または入力', type: 'select', options: ['なし', '高血圧', '糖尿病', '脂質異常症', '心疾患', '脳血管疾患', '慢性腎臓病', '肝疾患', '悪性腫瘍', '喘息・COPD', 'その他'] },
+      { key: 'temperature', label: '体温 (°C)', placeholder: '例: 38.5', type: 'text' },
+      { key: 'blood_pressure', label: '血圧 (mmHg)', placeholder: '例: 120/80', type: 'text' },
+      { key: 'pulse', label: '脈拍 (/分)', placeholder: '例: 90', type: 'text' },
+      { key: 'respiratory_rate', label: '呼吸数 (/分)', placeholder: '例: 18', type: 'text' },
+      { key: 'spo2', label: 'SpO2 (%)', placeholder: '例: 98', type: 'text' }
     ]
   },
   {
@@ -34,7 +41,7 @@ export const fullPrompts: Prompt[] = [
 また、診断を絞り込むために追加で聴取すべき問診事項を3つ挙げてください。
 
 # 症状記述
-[患者の症状や言葉を入力]`,
+{{symptom}}`,
     inputs: [
       { key: 'symptom', label: '症状記述', placeholder: '例: 昨晩から急に右下腹部が痛くなり、歩くと響く感じがします。', type: 'textarea' }
     ]
@@ -47,9 +54,9 @@ export const fullPrompts: Prompt[] = [
     template: `以下の検査結果の異常値について、考えられる病態生理学的メカニズムと、鑑別すべき疾患を挙げてください。
 
 # 検査結果
-[異常な検査項目と数値を入力]
+{{lab_results}}
 # 患者背景
-[年齢、性別、主訴など]`,
+{{patient_info}}`,
     inputs: [
       { key: 'lab_results', label: '検査結果', placeholder: '例: Na 125, K 5.8, Cre 2.1', type: 'textarea' },
       { key: 'patient_info', label: '患者背景', placeholder: '例: 70歳男性、全身倦怠感', type: 'text' }
@@ -65,9 +72,9 @@ export const fullPrompts: Prompt[] = [
     template: `以下の診断に対する標準的な治療計画を、最新のガイドライン（UpToDateや学会ガイドライン）に基づいて提示してください。
 
 # 診断名
-[診断名を入力]
+{{diagnosis}}
 # 患者背景
-[年齢、合併症、アレルギーなど]
+{{patient_context}}
 
 # 出力要件
 1. 第一選択薬（投与量・期間含む）
@@ -86,21 +93,21 @@ export const fullPrompts: Prompt[] = [
     title: "Referral Letter Generator",
     description: "紹介先の診療科や目的に合わせた、失礼のない紹介状（診療情報提供書）を作成します。",
     category: "documentation",
-    template: `以下の情報を基に、[紹介先診療科]宛の診療情報提供書（紹介状）を作成してください。
+    template: `以下の情報を基に、{{target_dept}}宛の診療情報提供書（紹介状）を作成してください。
 丁寧で専門的な文体にしてください。
 
 # 患者情報
-- 氏名: [患者氏名] (年齢/性別)
-- 診断名/主訴: [診断名]
+- 氏名: {{patient_name}} (年齢/性別)
+- 診断名/主訴: {{diagnosis}}
 
 # 紹介目的
-[紹介の目的（例：精査加療、手術依頼）]
+{{purpose}}
 
 # 経過要約
-[これまでの経過、検査結果、治療内容]
+{{history}}
 
 # 現在の処方
-[処方薬リスト]`,
+{{medications}}`,
     inputs: [
       { key: 'target_dept', label: '紹介先診療科', placeholder: '例: 循環器内科 御机下', type: 'text' },
       { key: 'patient_name', label: '患者情報', placeholder: '例: 山田太郎 殿 (72歳男性)', type: 'text' },
@@ -117,7 +124,7 @@ export const fullPrompts: Prompt[] = [
 簡潔かつ医学的に正確な表現を使用してください。
 
 # 入院中の経過メモ
-[日付ごとのイベント、検査、治療変更などを入力]`,
+{{course}}`,
     inputs: [
       { key: 'course', label: '経過メモ', placeholder: '例: \nX月X日 入院。抗菌薬開始。\nX月Y日 解熱傾向。食事開始。\nX月Z日 退院決定。', type: 'textarea' }
     ]
@@ -129,16 +136,16 @@ export const fullPrompts: Prompt[] = [
     title: "Renal Dosing Adjustment",
     description: "腎機能（eGFR/CCr）に応じた薬剤の投与量調節を提案します。",
     category: "medication",
-    template: `以下の患者における[薬剤名]の適切な投与設計を教えてください。
+    template: `以下の患者における{{drug_name}}の適切な投与設計を教えてください。
 腎機能に応じた減量基準（添付文書やSanford Guideなど）を参照してください。
 
 # 患者情報
-- 年齢/性別: [年齢/性別]
-- 血清クレアチニン: [Cre値] mg/dL
-- 推定eGFR/CCr: [eGFRまたはCCr]
+- 年齢/性別: {{patient_age_sex}}
+- 血清クレアチニン: {{creatinine}} mg/dL
+- 推定eGFR/CCr: {{renal_function}}
 
 # 対象薬剤
-[薬剤名]`,
+{{drug_name}}`,
     inputs: [
       { key: 'drug_name', label: '薬剤名', placeholder: '例: レボフロキサシン', type: 'text' },
       { key: 'renal_function', label: '腎機能データ', placeholder: '例: Cre 2.5, eGFR 22', type: 'text' }
@@ -153,7 +160,7 @@ export const fullPrompts: Prompt[] = [
 特に「併用禁忌」と「併用注意」を明確に区別し、臨床的にどのような影響が出るか（例：血中濃度上昇、QT延長など）を説明してください。
 
 # 薬剤リスト
-[薬剤名を入力（カンマ区切りまたは改行）]`,
+{{drug_list}}`,
     inputs: [
       { key: 'drug_list', label: '薬剤リスト', placeholder: '例: ワーファリン, アスピリン, クラリスロマイシン', type: 'textarea' }
     ]
@@ -169,9 +176,9 @@ export const fullPrompts: Prompt[] = [
 不安を煽らず、かつ重要な注意点は明確に伝わるようにしてください。
 
 # 説明したい内容
-[診断名や治療法、生活指導の内容]
+{{topic}}
 # 対象
-[例：高齢の患者さん、小学生の子供を持つ親]`,
+{{target}}`,
     inputs: [
       { key: 'topic', label: '説明内容', placeholder: '例: 慢性腎臓病の食事療法（減塩とカリウム制限）', type: 'textarea' },
       { key: 'target', label: '対象患者', placeholder: '例: 80代女性とその家族', type: 'text' }
@@ -186,9 +193,9 @@ export const fullPrompts: Prompt[] = [
 特に「Knowledge（情報の伝え方）」と「Empathy（共感）」のフェーズで、具体的にどのような言葉をかけるべきか、会話例を3パターン作成してください。
 
 # 悪い知らせの内容
-[例：癌の再発、治療の中止など]
+{{news}}
 # 患者さんの状況
-[理解度、家族背景など]`,
+{{patient_context}}`,
     inputs: [
       { key: 'news', label: '悪い知らせ', placeholder: '例: 膵臓癌の肝転移が見つかり、手術適応外であること', type: 'textarea' },
       { key: 'patient_context', label: '患者状況', placeholder: '例: 60代男性、治ると信じていた', type: 'text' }
@@ -211,7 +218,7 @@ export const fullPrompts: Prompt[] = [
 5. **臨床的意義 (Clinical Implication)**: 明日の診療にどう役立つか
 
 # Abstract
-[Abstractのテキストを貼り付け]`,
+{{abstract}}`,
     inputs: [
       { key: 'abstract', label: 'Abstract本文', placeholder: 'Paste abstract here...', type: 'textarea' }
     ]
@@ -228,7 +235,7 @@ export const fullPrompts: Prompt[] = [
 症例報告では、経過の細部を記述しすぎると焦点がぼやけるため、診断と鑑別診断に必要な検査所見、重要な陰性所見、結論を導くのに必要な所見を中心に簡潔に記載してください。
 
 # カルテ記録
-[日付ごとのメモや経過を入力]
+{{notes}}
 
 # 出力形式
 | 時期 | 出来事・症状 | 検査所見 | 治療・処置 |
@@ -247,9 +254,9 @@ export const fullPrompts: Prompt[] = [
 忙しい先生に対して、要件を簡潔に伝え、相手の都合に配慮した文面にしてください。
 
 # 依頼内容
-[例：抄録の確認をお願いしたい、学会発表の予演会をお願いしたい]
+{{request}}
 # 期限や状況
-[例：来週の火曜日が締め切り、現在はドラフトが完成した段階]`,
+{{deadline}}`,
     inputs: [
       { key: 'request', label: '依頼内容', placeholder: '例：作成した抄録の確認をお願いしたい', type: 'text' },
       { key: 'deadline', label: '期限・状況', placeholder: '例：今週中に投稿が必要', type: 'text' }
@@ -264,9 +271,9 @@ export const fullPrompts: Prompt[] = [
 それぞれのジャーナルの特徴（Impact Factor、採択率の傾向、オープンアクセスかなど）と、なぜそのジャーナルが適しているかの理由も添えてください。
 
 # 研究タイトル/内容
-[タイトルや要旨を入力]
+{{content}}
 # 希望条件
-[例：Impact Factor 3以上、査読が早い、オープンアクセス希望]`,
+{{preferences}}`,
     inputs: [
       { key: 'content', label: '研究内容', placeholder: '例：稀な副作用の症例報告', type: 'textarea' },
       { key: 'preferences', label: '希望条件', placeholder: '例：症例報告を受け付けている国際誌', type: 'text' }
@@ -285,11 +292,11 @@ export const fullPrompts: Prompt[] = [
 ※「世界初」や「非常に稀」という表現は避けてください。
 
 # 疾患・背景
-[疾患名や背景知識]
+{{background}}
 # 本症例の特徴
-[今回の症例の特異な点]
+{{unique_features}}
 # 報告する意義
-[この症例から得られる教訓]`,
+{{significance}}`,
     inputs: [
       { key: 'background', label: '疾患・背景', placeholder: '例：〇〇病は通常〜という経過をたどる。', type: 'textarea' },
       { key: 'significance', label: '報告する意義', placeholder: '例：この治療法が著効した点。', type: 'textarea' }
@@ -309,11 +316,11 @@ export const fullPrompts: Prompt[] = [
 ※過剰な一般化や、確固たる推奨は避けてください。
 
 # 症例の要約
-[症例の主な特徴]
+{{summary}}
 # 考察のポイント
-[議論したい点、文献との比較]
+{{points}}
 # 結論・メッセージ
-[読者に伝えたいこと]`,
+{{conclusion}}`,
     inputs: [
       { key: 'summary', label: '症例の要約', placeholder: '例：非典型的な画像所見を呈した...', type: 'textarea' },
       { key: 'points', label: '考察のポイント', placeholder: '例：過去の文献では〜とされているが、本症例では...', type: 'textarea' }
@@ -333,7 +340,7 @@ export const fullPrompts: Prompt[] = [
 5. "The first report"や"Unique case"などの表現は避ける。
 
 # 原文
-[校正したい英文]`,
+{{text}}`,
     inputs: [
       { key: 'text', label: '英文ドラフト', placeholder: '例: We used 30 mice for this experiment.', type: 'textarea' }
     ]
@@ -421,7 +428,7 @@ export const fullPrompts: Prompt[] = [
 また、それぞれの要素について、具体的な定義（包含基準・除外基準など）の案も提示してください。
 
 # 臨床的な疑問
-[疑問の内容を入力]
+{{question}}
 
 # 出力形式
 - **P (Patient)**: 対象患者
@@ -441,7 +448,7 @@ export const fullPrompts: Prompt[] = [
 適切なMeSH Termsとキーワードを組み合わせ、論理演算子（AND, OR）を正しく使用してください。
 
 # 研究テーマ (PICO)
-[PICOの内容を入力]
+{{pico}}
 
 # 出力
 1. **検索クエリ**: コピーしてそのまま使える検索式
@@ -459,7 +466,7 @@ export const fullPrompts: Prompt[] = [
 そのギャップを埋めるための、新規性のある研究テーマのアイデアを3つ提案してください。
 
 # 先行研究の要約
-[先行研究の要約リストを入力]`,
+{{literature_summary}}`,
     inputs: [
       { key: 'summaries', label: '先行研究', placeholder: '先行研究1: ...\n先行研究2: ...', type: 'textarea' }
     ]
@@ -535,7 +542,7 @@ export const fullPrompts: Prompt[] = [
 7. **Patient Perspective**: 患者の視点・体験（もしあれば）
 
 # 症例報告ドラフト
-[ドラフトを入力]`,
+{{draft}}`,
     inputs: [
       { key: 'draft', label: 'ドラフト', placeholder: 'Paste your draft here...', type: 'textarea' }
     ]
@@ -586,10 +593,10 @@ export const fullPrompts: Prompt[] = [
 ジャーナル名の省略形や、著者名の表記順序（姓・名）などに注意してください。
 
 # 指定スタイル
-[例: Vancouver Style, APA Style, New England Journal of Medicine Style]
+{{target_style}}
 
 # 元の文献リスト
-[文献リストを入力]`,
+{{references}}`,
     inputs: [
       { key: 'style', label: 'スタイル', placeholder: '例: Vancouver Style', type: 'text' },
       { key: 'references', label: '文献リスト', placeholder: 'Paste references here...', type: 'textarea' }
@@ -848,7 +855,7 @@ A1. [回答案]（まずは感謝を述べ、簡潔に回答する。データ�
 4. **結論 (Conclusion)**: 著者らの結論は何か？臨床現場を変えるインパクトがあるか？
 
 # 論文テキスト
-[Abstractまたは本文を入力]`,
+{{paper_text}}`,
     inputs: [
       { key: 'text', label: '論文テキスト', placeholder: 'Abstractや本文を貼り付け...', type: 'textarea' }
     ]
@@ -891,7 +898,7 @@ CASPチェックリストの視点を取り入れ、以下の点について指�
 - 「既存の治療フローチャートをどう変更すべきだろうか？」
 
 # 論文の要約
-[論文の要約や結論を入力]`,
+{{paper_summary}}`,
     inputs: [
       { key: 'summary', label: '論文の要約', placeholder: '論文の結論や要約を入力...', type: 'textarea' }
     ]
@@ -913,7 +920,7 @@ CASPチェックリストの視点を取り入れ、以下の点について指�
 10. Take Home Message
 
 # 論文情報
-[論文のタイトル、要約などを入力]`,
+{{paper_info}}`,
     inputs: [
       { key: 'info', label: '論文情報', placeholder: '論文の情報を入力...', type: 'textarea' }
     ]
@@ -933,7 +940,7 @@ CASPチェックリストの視点を取り入れ、以下の点について指�
 - 「CKD（慢性腎臓病）」→「腎臓というフィルターが目詰まりして、体のゴミを捨てられなくなっている状態」
 
 # 専門用語
-[説明したい用語を入力]`,
+{{medical_term}}`,
     inputs: [
       { key: 'term', label: '専門用語', placeholder: '例：心房細動、HbA1c、ステント留置術', type: 'text' }
     ]
@@ -974,7 +981,7 @@ CASPチェックリストの視点を取り入れ、以下の点について指�
 # トピック
 [病気や治療の内容]
 # 患者さんの主な不安
-[例：痛み、費用、再発など]`,
+{{topic}}`,
     inputs: [
       { key: 'topic', label: 'トピック', placeholder: '例：抗がん剤治療の開始', type: 'text' },
       { key: 'concern', label: '主な不安', placeholder: '例：副作用で髪が抜けること、吐き気', type: 'text' }
@@ -996,7 +1003,7 @@ CASPチェックリストの視点を取り入れ、以下の点について指�
 5. こんな時はすぐに連絡を！
 
 # 説明内容
-[病気や治療の詳細]`,
+{{content}}`,
     inputs: [
       { key: 'content', label: '説明内容', placeholder: '例：インフルエンザと診断された方へ（自宅療養の注意点）', type: 'textarea' }
     ]
