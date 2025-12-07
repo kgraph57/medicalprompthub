@@ -6,7 +6,7 @@ import path from "path";
 import { defineConfig, Plugin } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 import { VitePWA } from "vite-plugin-pwa";
-import raw from "vite-plugin-raw";
+
 
 // Escape HTML attribute values to prevent XSS
 function escapeHtmlAttribute(value: string): string {
@@ -48,7 +48,7 @@ const plugins = [
   // Only enable Manus runtime in development
   ...(process.env.NODE_ENV !== 'production' ? [vitePluginManusRuntime()] : []),
   analyticsPlugin(),
-  raw({ fileRegex: /\.md$/ }),
+
   // Temporarily disable PWA to fix caching issues
   ...(process.env.NODE_ENV !== 'production' ? [VitePWA({
     registerType: "autoUpdate",
