@@ -12,24 +12,24 @@ import rehypeSanitize from "rehype-sanitize";
 import { caseReportGuideData, type Step, type Phase } from "@/lib/case-report-guide-data";
 
 // Markdownファイルを直接インポート
-import step01 from "@/../guides/case-report/01-preparation/step-01.md?raw";
-import step02 from "@/../guides/case-report/01-preparation/step-02.md?raw";
-import step03 from "@/../guides/case-report/01-preparation/step-03.md?raw";
-import step04 from "@/../guides/case-report/01-preparation/step-04.md?raw";
-import step05 from "@/../guides/case-report/01-preparation/step-05.md?raw";
-import step06 from "@/../guides/case-report/02-writing/step-06.md?raw";
-import step07 from "@/../guides/case-report/02-writing/step-07.md?raw";
-import step08 from "@/../guides/case-report/02-writing/step-08.md?raw";
-import step09 from "@/../guides/case-report/02-writing/step-09.md?raw";
-import step10 from "@/../guides/case-report/02-writing/step-10.md?raw";
-import step11 from "@/../guides/case-report/02-writing/step-11.md?raw";
-import step12 from "@/../guides/case-report/02-writing/step-12.md?raw";
-import step13 from "@/../guides/case-report/03-finishing/step-13.md?raw";
-import step14 from "@/../guides/case-report/03-finishing/step-14.md?raw";
-import step15 from "@/../guides/case-report/03-finishing/step-15.md?raw";
-import step16 from "@/../guides/case-report/03-finishing/step-16.md?raw";
-import step17 from "@/../guides/case-report/03-finishing/step-17.md?raw";
-import step18 from "@/../guides/case-report/04-submission/step-18.md?raw";
+import step01 from "@/../../guides/case-report/01-preparation/step-01.md?raw";
+import step02 from "@/../../guides/case-report/01-preparation/step-02.md?raw";
+import step03 from "@/../../guides/case-report/01-preparation/step-03.md?raw";
+import step04 from "@/../../guides/case-report/01-preparation/step-04.md?raw";
+import step05 from "@/../../guides/case-report/01-preparation/step-05.md?raw";
+import step06 from "@/../../guides/case-report/02-writing/step-06.md?raw";
+import step07 from "@/../../guides/case-report/02-writing/step-07.md?raw";
+import step08 from "@/../../guides/case-report/02-writing/step-08.md?raw";
+import step09 from "@/../../guides/case-report/02-writing/step-09.md?raw";
+import step10 from "@/../../guides/case-report/02-writing/step-10.md?raw";
+import step11 from "@/../../guides/case-report/02-writing/step-11.md?raw";
+import step12 from "@/../../guides/case-report/02-writing/step-12.md?raw";
+import step13 from "@/../../guides/case-report/03-finishing/step-13.md?raw";
+import step14 from "@/../../guides/case-report/03-finishing/step-14.md?raw";
+import step15 from "@/../../guides/case-report/03-finishing/step-15.md?raw";
+import step16 from "@/../../guides/case-report/03-finishing/step-16.md?raw";
+import step17 from "@/../../guides/case-report/03-finishing/step-17.md?raw";
+import step18 from "@/../../guides/case-report/04-submission/step-18.md?raw";
 
 const markdownMap: Record<string, string> = {
   "step-01": step01,
