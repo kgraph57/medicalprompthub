@@ -280,6 +280,169 @@ export const fullPrompts: Prompt[] = [
     ]
   },
   {
+    id: "aacr-data-structuring",
+    title: "[AACR] 症例情報の構造化",
+    description: "NotebookLM用：症例情報をCARE guidelinesに沿って構造化します（AACR Method Step 1）",
+    category: "case-analysis",
+    template: `# 指示
+アップロードされた以下の症例情報に基づき、CARE guidelinesの主要セクションに対応する形で情報を整理・抽出し、構造化されたサマリーを作成してください。
+
+# 症例情報
+{{case_data}}
+
+# 出力形式
+## 1. Title（仮）
+- 診断名 + "case report"
+
+## 2. Patient Information
+- 年齢、性別
+- 主訴
+- 既往歴、家族歴、社会的背景
+
+## 3. Clinical Findings
+- 主要な身体所見
+- 主要な検査所見（血液、生化学、画像など）
+
+## 4. Timeline
+- 発症から現在までの主要な出来事を時系列でリストアップ
+
+## 5. Diagnostic Assessment
+- 診断に至るまでのプロセス
+- 実施された主要な検査とその結果
+- 鑑別診断
+- 最終診断
+
+## 6. Therapeutic Intervention
+- 実施された治療（薬剤名、用量、期間）
+- 治療の変更とその理由
+
+## 7. Follow-up and Outcomes
+- 治療後の経過
+- 患者の転帰（改善、不変、悪化など）
+- 有害事象の有無`,
+    inputs: [
+      { key: 'case_data', label: '症例情報', placeholder: 'カルテ記録、検査結果、画像所見などを貼り付けてください', type: 'textarea' }
+    ]
+  },
+  {
+    id: "aacr-novelty-analysis",
+    title: "[AACR] 症例の新規性分析",
+    description: "Claude 3.5 Sonnet用：症例の新規性と臨床的意義を多角的に分析します（AACR Method Step 1）",
+    category: "case-analysis",
+    template: `# 指示
+あなたは経験豊富な臨床研究者です。以下の症例サマリーを読み、この症例が医学文献において持つ「新規性」と「臨床的意義」を分析してください。
+
+# 症例サマリー
+{{case_summary}}
+
+# 分析の観点
+1. **疾患の稀少性**: この疾患自体が稀なものか？
+2. **臨床像の非典型性**: 症状、所見、経過が典型的なものとどう違うか？
+3. **診断の新規性**: 新しい診断モダリティや診断基準を適用したか？
+4. **治療の新規性**: 新規治療法の有効性、あるいは既存治療の予期せぬ効果・副作用を示したか？
+5. **病態生理への示唆**: 疾患の新たなメカニズムを示唆する所見はあるか？
+
+# 出力
+上記分析に基づき、この症例を学術雑誌に報告する価値がある理由を、最も重要なものから3つ、箇条書きで簡潔に述べてください。`,
+    inputs: [
+      { key: 'case_summary', label: '症例サマリー', placeholder: 'AACR Step 1で作成した構造化サマリーを貼り付けてください', type: 'textarea' }
+    ]
+  },
+  {
+    id: "aacr-literature-analysis",
+    title: "[AACR] 文献の統合分析",
+    description: "NotebookLM用：複数論文から横断的な知見を抽出します（AACR Method Step 2）",
+    category: "literature",
+    template: `# 指示
+あなたは臨床研究の専門家です。アップロードされた論文をすべて精読・分析し、以下の問いに答えてください。
+
+# 質問
+1. **類似症例の概要**: これまでに報告されている類似症例の数、患者背景、臨床的特徴、治療法、転帰をまとめた表を作成してください。
+2. **本症例との比較**: 私の症例（{{my_case_brief}}）と、これらの既報告例との決定的な違いは何ですか？新規性あるいは特筆すべき点を3つ挙げてください。
+3. **診断・治療の標準**: これらの文献から、現在の診断および治療のベストプラクティスは何だと考えられますか？
+4. **未解決の臨床的疑問**: これらの報告を読んでもなお、解決されていない臨床的な課題や疑問点は何ですか？
+5. **引用すべき論文**: 私の症例報告のIntroductionおよびDiscussionで引用すべき最も重要な論文を10本リストアップし、その理由を簡潔に説明してください。
+
+# 出力形式
+各質問に対して、明確かつ構造化された回答を生成してください。特に質問1は表形式でお願いします。`,
+    inputs: [
+      { key: 'my_case_brief', label: '自分の症例の簡潔な説明', placeholder: '例：60代男性、非典型的な画像所見を呈した肺腺癌', type: 'text' }
+    ]
+  },
+  {
+    id: "aacr-master-prompt",
+    title: "[AACR] マスタープロンプト（執筆エージェント）",
+    description: "Claude 3.5 Sonnet用：論文の各セクションを執筆させる包括的プロンプト（AACR Method Step 4）",
+    category: "research",
+    template: `# マスタープロンプト: 症例報告執筆エージェント
+
+## 1. ペルソナ
+あなたはThe New England Journal of Medicineに論文を多数掲載している、経験豊富な臨床研究者です。あなたの文章は、明快、簡潔、かつ論理的で、常に読者へのインパクトを意識しています。
+
+## 2. コンテキスト
+
+### 2-1. 症例サマリー
+{{case_summary}}
+
+### 2-2. 文献分析
+{{literature_analysis}}
+
+### 2-3. 引用すべき論文リスト
+{{references}}
+
+### 2-4. ターゲットジャーナル規定
+{{journal_requirements}}
+
+### 2-5. 詳細アウトライン
+{{outline}}
+
+## 3. タスク
+
+以上のすべてのコンテキストを完全に理解した上で、以下の指示に従ってください。
+
+**指示**: 詳細アウトラインの【{{section}}】セクションの記述に基づき、症例報告の該当部分のドラフトを作成してください。ターゲットジャーナルの規定に従い、文字数は約{{word_count}}ワード、引用は[1]のように番号で行ってください。CAREガイドラインを遵守し、患者のプライバシーに最大限配慮してください。`,
+    inputs: [
+      { key: 'case_summary', label: '症例サマリー', placeholder: 'Step 1で作成したサマリー', type: 'textarea' },
+      { key: 'literature_analysis', label: '文献分析', placeholder: 'Step 2で作成した分析結果', type: 'textarea' },
+      { key: 'references', label: '引用論文リスト', placeholder: 'Step 2で特定した論文リスト', type: 'textarea' },
+      { key: 'journal_requirements', label: 'ジャーナル規定', placeholder: 'Step 3で要約した投稿規定', type: 'textarea' },
+      { key: 'outline', label: '詳細アウトライン', placeholder: 'Step 3で作成したアウトライン', type: 'textarea' },
+      { key: 'section', label: '執筆セクション', placeholder: '例：Introduction, Case Presentation, Discussion', type: 'text' },
+      { key: 'word_count', label: '文字数', placeholder: '例：300', type: 'text' }
+    ]
+  },
+  {
+    id: "aacr-fact-check",
+    title: "[AACR] AIファクトチェック",
+    description: "OpenAI o1用：AI生成テキストの事実確認と論理検証（AACR Method Step 4）",
+    category: "research",
+    template: `# 指示
+あなたは査読経験豊富な医学研究者です。以下の論文ドラフト（AI生成）と、その根拠となったコンテキスト情報を比較し、事実と異なる点、論理的に矛盾する点、不適切な引用がないかを徹底的に検証してください。
+
+# 論文ドラフト（一部）
+{{draft}}
+
+# 根拠情報
+## 症例サマリー
+{{case_summary}}
+
+## 引用文献
+{{references}}
+
+# 出力
+検証結果を以下の形式で報告してください。
+- **問題点**: [具体的な問題箇所を指摘]
+- **根拠**: [なぜそれが問題なのかを根拠情報に基づいて説明]
+- **修正案**: [どのように修正すべきかを提案]
+
+問題がなければ、「問題なし」と報告してください。`,
+    inputs: [
+      { key: 'draft', label: 'AI生成ドラフト', placeholder: 'Claude 3.5 Sonnetが生成したテキスト', type: 'textarea' },
+      { key: 'case_summary', label: '症例サマリー', placeholder: 'Step 1で作成したサマリー', type: 'textarea' },
+      { key: 'references', label: '引用文献', placeholder: '引用された文献の要約または本文', type: 'textarea' }
+    ]
+  },
+  {
     id: "res-case-intro",
     title: "Case Report Introduction Writer",
     description: "症例報告の序論（Introduction）を作成します。なぜこの症例を報告するのかを明確にします。",

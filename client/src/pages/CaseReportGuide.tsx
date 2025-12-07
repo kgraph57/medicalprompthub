@@ -7,6 +7,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X } from 'lucide-react';
 import { caseReportGuideData } from '@/lib/case-report-guide-data';
+import { CodeBlock } from '@/components/CodeBlock';
 
 // Markdownファイルを直接インポート
 import introMd from '@/assets/guides/case-report/00-introduction.md?raw';
@@ -221,6 +222,18 @@ export default function CaseReportGuide() {
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    if (inline) {
+                      return <code className={className} {...props}>{children}</code>;
+                    }
+                    return (
+                      <CodeBlock className={className}>
+                        {String(children).replace(/\n$/, '')}
+                      </CodeBlock>
+                    );
+                  },
+                }}
               >
                 {markdown}
               </ReactMarkdown>
