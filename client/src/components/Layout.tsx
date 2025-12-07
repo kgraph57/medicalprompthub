@@ -1,6 +1,6 @@
 import { categories } from "@/lib/prompts";
 import { cn } from "@/lib/utils";
-import { Activity, ArrowRight, BookOpen, Bookmark, Briefcase, ClipboardList, FileText, GraduationCap, Home, Menu, MessageSquare, Microscope, Moon, Pill, Stethoscope, Sun, X } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, Bookmark, Briefcase, ClipboardList, FileText, GraduationCap, Home, Lightbulb, Menu, MessageSquare, Microscope, Moon, Pill, Stethoscope, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Link, useLocation } from "wouter";
@@ -96,7 +96,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 setIsMobileOpen(false);
               }}
             >
-              <span className="mr-2">💡</span> Tips
+              <Lightbulb className="mr-2 w-4 h-4" aria-hidden="true" /> Tips
             </Button>
           </div>
         </div>
