@@ -60,31 +60,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 setIsMobileOpen(false);
               }}
             >
-              <Home className="mr-2 w-4 h-4" aria-hidden="true" /> HOME
-            </Button>
-          </div>
-          <div role="listitem">
-            <Button
-              variant={location.startsWith("/guides") ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
-              onClick={() => {
-                setLocation("/guides");
-                setIsMobileOpen(false);
-              }}
-            >
-              <ArrowRight className="mr-2 w-4 h-4" aria-hidden="true" /> Guides／Workflow
-            </Button>
-          </div>
-          <div role="listitem">
-            <Button
-              variant={location === "/favorites" ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location === "/favorites" && "bg-secondary text-secondary-foreground")}
-              onClick={() => {
-                setLocation("/favorites");
-                setIsMobileOpen(false);
-              }}
-            >
-              <Bookmark className="mr-2 w-4 h-4" aria-hidden="true" /> Fav
+              <Home className="mr-2 w-4 h-4" aria-hidden="true" /> Home
             </Button>
           </div>
           <div role="listitem">
@@ -97,6 +73,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
               }}
             >
               <Lightbulb className="mr-2 w-4 h-4" aria-hidden="true" /> Tips
+            </Button>
+          </div>
+          <div role="listitem">
+            <Button
+              variant={location.startsWith("/guides") ? "secondary" : "ghost"}
+              className={cn("w-full justify-start font-medium", location.startsWith("/guides") && "bg-secondary text-secondary-foreground")}
+              onClick={() => {
+                setLocation("/guides");
+                setIsMobileOpen(false);
+              }}
+            >
+              <ArrowRight className="mr-2 w-4 h-4" aria-hidden="true" /> Workflow
+            </Button>
+          </div>
+          <div role="listitem">
+            <Button
+              variant={location === "/favorites" ? "secondary" : "ghost"}
+              className={cn("w-full justify-start font-medium", location === "/favorites" && "bg-secondary text-secondary-foreground")}
+              onClick={() => {
+                setLocation("/favorites");
+                setIsMobileOpen(false);
+              }}
+            >
+              <Bookmark className="mr-2 w-4 h-4" aria-hidden="true" /> Fav
             </Button>
           </div>
         </div>
