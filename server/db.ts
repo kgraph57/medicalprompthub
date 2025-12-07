@@ -2,6 +2,7 @@ import { eq, desc, and, or, like, sql, ne, inArray, notInArray } from "drizzle-o
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, prompts, categories, likes, bookmarks, InsertPrompt, InsertCategory, InsertLike, InsertBookmark, courses, lessons, slides, userProgress, InsertCourse, InsertLesson, InsertSlide, InsertUserProgress, tags, promptTags, InsertTag, InsertPromptTag, comments, InsertComment } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import { logger } from './_core/logger';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -9,10 +10,20 @@ export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       _db = drizzle(process.env.DATABASE_URL);
+      logger.info("Database connection established", {
+        hasConnection: !!_db,
+      });
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      const dbError = error instanceof Error ? error : new Error(String(error));
+      logger.error("Database connection failed", dbError, {
+        errorType: dbError.name,
+        errorMessage: dbError.message,
+      });
       _db = null;
+      // 接続エラーを再スローしない（アプリケーションはデータベースなしでも動作可能）
     }
+  } else if (!process.env.DATABASE_URL) {
+    logger.debug("Database URL not configured, running without database");
   }
   return _db;
 }
@@ -24,7 +35,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot upsert user: database not available");
+    logger.warn("Cannot upsert user: database not available", { openId: user.openId });
     return;
   }
 
@@ -70,8 +81,9 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     await db.insert(users).values(values).onDuplicateKeyUpdate({
       set: updateSet,
     });
+    logger.debug("User upserted successfully", { openId: user.openId, role: values.role });
   } catch (error) {
-    console.error("[Database] Failed to upsert user:", error);
+    logger.error("Failed to upsert user", error instanceof Error ? error : new Error(String(error)), { openId: user.openId });
     throw error;
   }
 }
@@ -79,7 +91,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 export async function getUserByOpenId(openId: string) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get user: database not available");
+    logger.warn("Cannot get user: database not available", { openId });
     return undefined;
   }
 

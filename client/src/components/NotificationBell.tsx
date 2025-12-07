@@ -148,7 +148,6 @@ function NotificationItem({ notification }: { notification: any }) {
           </div>
           {!notification.read && (
             <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0" />
-          />
           )}
         </div>
       </div>

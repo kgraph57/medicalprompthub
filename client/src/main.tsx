@@ -1,6 +1,14 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import { setupGlobalErrorHandlers } from "./lib/errorTracking";
+import { startPerformanceMonitoring } from "./lib/performance";
+
+// グローバルエラーハンドラーを設定
+setupGlobalErrorHandlers();
+
+// パフォーマンス監視を開始
+startPerformanceMonitoring();
 
 // Error handling for root element
 const rootElement = document.getElementById("root");

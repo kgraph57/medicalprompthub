@@ -4,6 +4,7 @@ import { Component, ReactNode } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useLocation } from "wouter";
+import { errorTracker } from "@/lib/errorTracking";
 
 interface Props {
   children: ReactNode;
@@ -27,19 +28,16 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error to console for debugging
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
-    
     // Store error info for display
     this.setState({
       errorInfo: errorInfo.componentStack || null,
     });
 
-    // In production, you might want to log to an error reporting service
-    if (process.env.NODE_ENV === "production") {
-      // Example: log to error reporting service
-      // errorReportingService.logError(error, errorInfo);
-    }
+    // エラーを追跡サービスに送信
+    errorTracker.captureError(error, {
+      componentStack: errorInfo.componentStack,
+      type: "react_error_boundary",
+    });
   }
 
   handleReset = () => {
