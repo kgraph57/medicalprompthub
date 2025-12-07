@@ -182,7 +182,6 @@ export default function CaseReportGuide() {
                             <button
                               onClick={() => {
                                 setCurrentStepId(step.id);
-                                navigate(`/medicalprompthub/guides/case-report-complete/${step.id}`);
                               }}
                               className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
                                 isCurrent
