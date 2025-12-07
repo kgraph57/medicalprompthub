@@ -404,6 +404,13 @@
   overflow-x: auto;
   margin-top: 24px;
   margin-bottom: 24px;
+  max-width: 100%;
+}
+
+.zenn-article pre code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .dark .zenn-article pre {
@@ -428,6 +435,17 @@
   border-collapse: collapse;
   margin-top: 24px;
   margin-bottom: 24px;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.zenn-article thead,
+.zenn-article tbody,
+.zenn-article tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .zenn-article th,
@@ -435,6 +453,9 @@
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .dark .zenn-article th,
