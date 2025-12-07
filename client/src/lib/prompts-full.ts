@@ -1170,5 +1170,830 @@ CASPチェックリストの視点を取り入れ、以下の点について指�
     inputs: [
       { key: 'content', label: '説明内容', placeholder: '例：インフルエンザと診断された方へ（自宅療養の注意点）', type: 'textarea' }
     ]
+  },
+  // ========================================
+  // 新規追加: 医療研究関連プロンプト
+  // ========================================
+  {
+    id: "research-literature-review",
+    title: "Literature Review Summary",
+    description: "特定の医療トピックに関する最新の文献レビューを要約し、研究のギャップを特定します。",
+    category: "research",
+    template: `以下の医療トピックについて、最近5年間の主要な研究成果を要約し、現在の研究のギャップを特定してください。
+
+# トピック
+{{topic}}
+
+# 出力形式
+1. 主要な研究成果（3-5件）
+2. 現在のコンセンサス
+3. 研究のギャップと今後の課題
+4. 推奨される追加研究の方向性`,
+    inputs: [
+      { key: 'topic', label: '研究トピック', placeholder: '例：2型糖尿病に対するSGLT2阻害薬の心血管保護効果', type: 'text' }
+    ]
+  },
+  {
+    id: "research-hypothesis-generation",
+    title: "Research Hypothesis Generator",
+    description: "既存の研究知見から新しい研究仮説を生成し、検証可能な形で提案します。",
+    category: "research",
+    template: `以下の観察結果や既存の研究知見に基づいて、3つの検証可能な研究仮説を生成してください。
+各仮説について、その根拠と検証方法も提案してください。
+
+# 観察結果/既存知見
+{{observation}}
+
+# 出力形式
+各仮説について：
+- 仮説の内容
+- 理論的根拠
+- 推奨される検証方法（研究デザイン）
+- 期待される臨床的意義`,
+    inputs: [
+      { key: 'observation', label: '観察結果', placeholder: '例：高齢者の認知機能低下と腸内細菌叢の変化に相関が見られる', type: 'textarea' }
+    ]
+  },
+  {
+    id: "research-study-design",
+    title: "Clinical Study Design Assistant",
+    description: "臨床研究のデザインを提案し、バイアスを最小化する方法を助言します。",
+    category: "research",
+    template: `以下の研究目的に対して、適切な研究デザインを提案してください。
+バイアスを最小化する方法、必要なサンプルサイズの考え方、倫理的配慮も含めてください。
+
+# 研究目的
+{{objective}}
+
+# 対象集団
+{{population}}
+
+# 出力形式
+1. 推奨される研究デザイン（RCT、コホート研究、症例対照研究など）
+2. バイアスを最小化する具体的方法
+3. サンプルサイズの考え方
+4. 倫理的配慮事項
+5. 実施上の課題と対策`,
+    inputs: [
+      { key: 'objective', label: '研究目的', placeholder: '例：新規降圧薬Aの有効性を標準治療と比較する', type: 'text' },
+      { key: 'population', label: '対象集団', placeholder: '例：60歳以上の高血圧患者', type: 'text' }
+    ]
+  },
+  {
+    id: "research-data-analysis-plan",
+    title: "Statistical Analysis Planner",
+    description: "研究データの統計解析計画を立案し、適切な統計手法を提案します。",
+    category: "research",
+    template: `以下の研究データに対して、適切な統計解析計画を立案してください。
+
+# 研究デザイン
+{{design}}
+
+# データの種類
+- アウトカム変数：{{outcome}}
+- 説明変数：{{predictors}}
+
+# 出力形式
+1. 推奨される統計手法（検定方法、回帰モデルなど）
+2. 交絡因子の調整方法
+3. 欠損値の取り扱い
+4. サブグループ解析の提案
+5. 感度分析の方法`,
+    inputs: [
+      { key: 'design', label: '研究デザイン', placeholder: '例：前向きコホート研究', type: 'text' },
+      { key: 'outcome', label: 'アウトカム変数', placeholder: '例：5年後の心血管イベント発生（二値）', type: 'text' },
+      { key: 'predictors', label: '説明変数', placeholder: '例：年齢、性別、BMI、血圧、脂質値', type: 'text' }
+    ]
+  },
+  {
+    id: "research-grant-proposal",
+    title: "Research Grant Proposal Assistant",
+    description: "研究助成金申請書の重要セクションのドラフトを作成します。",
+    category: "research",
+    template: `以下の研究計画について、研究助成金申請書の「研究の意義」セクションのドラフトを作成してください。
+学術的意義と社会的意義の両方を明確に示してください。
+
+# 研究テーマ
+{{theme}}
+
+# 研究の背景
+{{background}}
+
+# 出力形式
+1. 研究の学術的意義（なぜこの研究が学問的に重要か）
+2. 研究の社会的意義（どのように社会に貢献するか）
+3. 独創性・新規性（既存研究との違い）
+4. 期待される波及効果`,
+    inputs: [
+      { key: 'theme', label: '研究テーマ', placeholder: '例：AIを用いた早期認知症診断システムの開発', type: 'text' },
+      { key: 'background', label: '研究の背景', placeholder: '例：認知症の早期発見が課題となっている', type: 'textarea' }
+    ]
+  },
+  {
+    id: "research-manuscript-abstract",
+    title: "Scientific Abstract Writer",
+    description: "論文の要旨（Abstract）を構造化された形式で作成します。",
+    category: "research",
+    template: `以下の研究内容について、学術誌投稿用の構造化抄録（Structured Abstract）を作成してください。
+250-300語程度で、Background, Methods, Results, Conclusionsの形式で記載してください。
+
+# 研究内容
+{{content}}
+
+# 主要な結果
+{{results}}
+
+# 出力形式（英語で作成）
+Background: 
+Methods: 
+Results: 
+Conclusions:`,
+    inputs: [
+      { key: 'content', label: '研究内容', placeholder: '例：高齢者における運動介入の認知機能への効果を検証したRCT', type: 'textarea' },
+      { key: 'results', label: '主要な結果', placeholder: '例：介入群で認知機能スコアが有意に改善（p<0.05）', type: 'text' }
+    ]
+  },
+  {
+    id: "research-peer-review-response",
+    title: "Peer Review Response Generator",
+    description: "査読者のコメントに対する返答文を作成します。",
+    category: "research",
+    template: `以下の査読コメントに対して、丁寧かつ建設的な返答文を作成してください。
+コメントを真摯に受け止めつつ、必要に応じて反論や説明も含めてください。
+
+# 査読コメント
+{{comment}}
+
+# 対応内容
+{{response}}
+
+# 出力形式
+We thank the reviewer for this insightful comment. [返答内容]`,
+    inputs: [
+      { key: 'comment', label: '査読コメント', placeholder: '例：サンプルサイズが小さく、結果の一般化可能性に疑問がある', type: 'textarea' },
+      { key: 'response', label: '対応内容', placeholder: '例：Limitationセクションに記載を追加した', type: 'textarea' }
+    ]
+  },
+  {
+    id: "research-systematic-review-protocol",
+    title: "Systematic Review Protocol",
+    description: "システマティックレビューのプロトコル（PICO、検索戦略など）を作成します。",
+    category: "research",
+    template: `以下のリサーチクエスチョンについて、システマティックレビューのプロトコルを作成してください。
+PICO形式で整理し、検索戦略も提案してください。
+
+# リサーチクエスチョン
+{{question}}
+
+# 出力形式
+1. PICO
+   - Population（対象集団）:
+   - Intervention（介入）:
+   - Comparison（比較対照）:
+   - Outcome（アウトカム）:
+
+2. 適格基準（Inclusion/Exclusion criteria）
+
+3. 検索戦略
+   - 検索データベース
+   - 検索キーワード（英語）
+   - 検索式の例
+
+4. データ抽出項目
+
+5. バイアスリスク評価の方法`,
+    inputs: [
+      { key: 'question', label: 'リサーチクエスチョン', placeholder: '例：高齢者における運動介入は認知機能低下を予防するか？', type: 'textarea' }
+    ]
+  },
+  {
+    id: "research-conference-abstract",
+    title: "Conference Abstract Creator",
+    description: "学会発表用の抄録を作成します（日本語・英語対応）。",
+    category: "research",
+    template: `以下の研究について、学会発表用の抄録を作成してください。
+{{language}}で、指定された文字数制限（{{word_limit}}）内に収めてください。
+
+# 研究内容
+{{content}}
+
+# 発表のポイント
+{{key_points}}
+
+# 出力形式
+【タイトル】
+【本文】（背景、方法、結果、結論を含む）`,
+    inputs: [
+      { key: 'content', label: '研究内容', placeholder: '例：COVID-19患者における血栓症リスク因子の解析', type: 'textarea' },
+      { key: 'key_points', label: '発表のポイント', placeholder: '例：D-dimerが独立した予測因子であることを示す', type: 'text' },
+      { key: 'language', label: '言語', placeholder: '日本語 or English', type: 'text' },
+      { key: 'word_limit', label: '文字数制限', placeholder: '例：400字 or 300 words', type: 'text' }
+    ]
+  },
+  {
+    id: "research-ethics-application",
+    title: "Ethics Committee Application Helper",
+    description: "倫理委員会申請書の主要セクションのドラフトを作成します。",
+    category: "research",
+    template: `以下の臨床研究について、倫理委員会申請書の重要セクションのドラフトを作成してください。
+
+# 研究概要
+{{overview}}
+
+# 出力形式
+1. 研究の目的と意義
+2. 対象者の選定方針（適格基準）
+3. インフォームドコンセントの取得方法
+4. 予想されるリスクと対処法
+5. 個人情報保護の方法
+6. 研究対象者への利益と不利益`,
+    inputs: [
+      { key: 'overview', label: '研究概要', placeholder: '例：新規抗がん剤の第II相試験', type: 'textarea' }
+    ]
+  },
+  // ========================================
+  // 追加: 診療補助・臨床判断支援プロンプト
+  // ========================================
+  {
+    id: "clinical-differential-diagnosis",
+    title: "Differential Diagnosis Generator",
+    description: "症状から鑑別診断リストを作成し、各疾患の可能性と推奨検査を提案します。",
+    category: "diagnosis",
+    template: `以下の症状・所見から、鑑別診断リストを作成してください。
+各疾患について、可能性の高さ（高/中/低）と推奨される検査を記載してください。
+
+# 患者情報
+年齢・性別：{{demographics}}
+主訴：{{chief_complaint}}
+現病歴：{{history}}
+身体所見：{{physical_exam}}
+
+# 出力形式
+| 鑑別診断 | 可能性 | 支持する所見 | 推奨検査 |
+|---------|---------|--------------|-----------|
+| ... | ... | ... | ... |
+
+注意：このツールは診断の補助であり、最終判断は必ず医師が行ってください。`,
+    inputs: [
+      { key: 'demographics', label: '年齢・性別', placeholder: '例：45歳女性', type: 'text' },
+      { key: 'chief_complaint', label: '主訴', placeholder: '例：胸痛', type: 'text' },
+      { key: 'history', label: '現病歴', placeholder: '例：3時間前から持続する胸部圧迫感', type: 'textarea' },
+      { key: 'physical_exam', label: '身体所見', placeholder: '例：血圧140/90、心音整、呼吸音清', type: 'textarea' }
+    ]
+  },
+  {
+    id: "clinical-drug-interaction-check",
+    title: "Drug Interaction Checker",
+    description: "複数の薬剤間の相互作用をチェックし、注意点を提示します。",
+    category: "medication",
+    template: `以下の薬剤の組み合わせについて、薬物相互作用をチェックし、臨床的に重要な相互作用と対処法を提示してください。
+
+# 処方薬剤リスト
+{{medications}}
+
+# 患者背景
+{{patient_background}}
+
+# 出力形式
+1. 重大な相互作用（あれば）
+   - 薬剤の組み合わせ
+   - 相互作用の内容
+   - 臨床的影響
+   - 対処法
+
+2. 注意が必要な相互作用
+
+3. 問題なし（相互作用なし）
+
+注意：最新の添付文書や相互作用データベースも必ず確認してください。`,
+    inputs: [
+      { key: 'medications', label: '処方薬剤', placeholder: '例：ワーファリン、ロキソプロフェン、アジスロマイシン', type: 'textarea' },
+      { key: 'patient_background', label: '患者背景', placeholder: '例：75歳、腹機能低下（eGFR 35）', type: 'text' }
+    ]
+  },
+  {
+    id: "clinical-lab-interpretation",
+    title: "Lab Result Interpreter",
+    description: "検査結果を解釈し、臨床的意義と追加検査の必要性を評価します。",
+    category: "diagnosis",
+    template: `以下の検査結果について、臨床的解釈と追加で必要な検査を提案してください。
+
+# 検査結果
+{{lab_results}}
+
+# 臨床情報
+{{clinical_context}}
+
+# 出力形式
+1. 異常値の解釈
+   - 各異常値の臨床的意義
+   - 考えられる病態
+
+2. 推奨される追加検査
+
+3. 緊急性の評価（緊急/準緊急/定期フォロー）
+
+4. 鑑別診断`,
+    inputs: [
+      { key: 'lab_results', label: '検査結果', placeholder: '例：AST 120, ALT 150, γ-GTP 200, ALP 正常', type: 'textarea' },
+      { key: 'clinical_context', label: '臨床情報', placeholder: '例：50歳男性、健診で肝機能異常を指摘', type: 'text' }
+    ]
+  },
+  {
+    id: "clinical-treatment-guideline",
+    title: "Evidence-Based Treatment Recommender",
+    description: "最新のガイドラインに基づいた治療推奨を提示します。",
+    category: "treatment",
+    template: `以下の疾患・病態について、最新のガイドラインに基づいた治療推奨を提示してください。
+エビデンスレベルも併記してください。
+
+# 疾患・病態
+{{condition}}
+
+# 患者背景
+{{patient_info}}
+
+# 出力形式
+1. 第一選択治療
+   - 推奨内容
+   - エビデンスレベル
+   - 根拠となるガイドライン
+
+2. 第二選択以降
+
+3. この患者での特別な考慮事項
+
+4. 治療目標と評価指標
+
+注意：必ず最新のガイドラインを確認してください。`,
+    inputs: [
+      { key: 'condition', label: '疾患・病態', placeholder: '例：2型糖尿病（HbA1c 8.5%）', type: 'text' },
+      { key: 'patient_info', label: '患者背景', placeholder: '例：60歳男性、肥満（BMI 32）、腹機能正常', type: 'textarea' }
+    ]
+  },
+  {
+    id: "clinical-risk-stratification",
+    title: "Clinical Risk Calculator",
+    description: "各種リスクスコアを計算し、患者のリスク層別化を行います。",
+    category: "diagnosis",
+    template: `以下の患者情報から、指定されたリスクスコアを計算し、リスク層別化と推奨される管理方針を提示してください。
+
+# リスクスコアの種類
+{{risk_score}}
+
+# 患者情報
+{{patient_data}}
+
+# 出力形式
+1. リスクスコアの計算
+   - スコア：
+   - リスク分類：（低/中/高リスク）
+   - 予測される○○年リスク：
+
+2. 臨床的解釈
+
+3. 推奨される管理方針
+
+4. フォローアップ計画`,
+    inputs: [
+      { key: 'risk_score', label: 'リスクスコア', placeholder: '例：CHADS2スコア（脳卒中リスク）、FRAXスコア（骨折リスク）', type: 'text' },
+      { key: 'patient_data', label: '患者情報', placeholder: '例：75歳女性、心房細動、高血圧、糖尿病なし', type: 'textarea' }
+    ]
+  },
+  {
+    id: "clinical-medication-dosing",
+    title: "Medication Dosing Calculator",
+    description: "腹機能や体重に応じた薬剤用量調整を提案します。",
+    category: "medication",
+    template: `以下の患者に対する薬剤投与量を、腹機能や体重を考慮して提案してください。
+
+# 薬剤
+{{medication}}
+
+# 患者情報
+- 年齢・性別：{{age_sex}}
+- 体重：{{weight}} kg
+- 腹機能：eGFR {{egfr}} mL/min/1.73m²
+- その他：{{other_factors}}
+
+# 出力形式
+1. 標準用量（腹機能正常時）
+2. この患者での推奨用量
+3. 用量調整の根拠
+4. 投与時の注意点
+5. モニタリング項目
+
+注意：必ず添付文書と最新の情報を確認してください。`,
+    inputs: [
+      { key: 'medication', label: '薬剤名', placeholder: '例：バンコマイシン', type: 'text' },
+      { key: 'age_sex', label: '年齢・性別', placeholder: '例：70歳男性', type: 'text' },
+      { key: 'weight', label: '体重', placeholder: '例：55', type: 'text' },
+      { key: 'egfr', label: 'eGFR', placeholder: '例：35', type: 'text' },
+      { key: 'other_factors', label: 'その他の因子', placeholder: '例：肝機能正常、透析なし', type: 'text' }
+    ]
+  },
+  {
+    id: "clinical-emergency-protocol",
+    title: "Emergency Protocol Guide",
+    description: "救急対応のプロトコルを時系列で提示します。",
+    category: "treatment",
+    template: `以下の救急病態に対する初期対応プロトコルを、時系列で提示してください。
+ABC（気道・呼吸・循環）の評価から始めてください。
+
+# 救急病態
+{{emergency_condition}}
+
+# 出力形式
+【初期評価（0-5分）】
+1. ABC評価
+2. バイタルサイン確認
+3. 緊急度判定
+
+【初期対応（5-15分）】
+1. 応急処置
+2. モニタリング開始
+3. 緊急検査
+
+【診断と治療（15分以降）】
+1. 鑑別診断
+2. 確定的治療
+3. 専門科コンサルトのタイミング
+
+【注意点・Pitfalls】`,
+    inputs: [
+      { key: 'emergency_condition', label: '救急病態', placeholder: '例：アナフィラキシーショック、急性冠症候群', type: 'text' }
+    ]
+  },
+  {
+    id: "clinical-polypharmacy-review",
+    title: "Polypharmacy Review Assistant",
+    description: "多剤併用患者の処方を見直し、減薬の可能性を検討します。",
+    category: "medication",
+    template: `以下の患者の処方内容を見直し、減薬の可能性や処方の適切性を評価してください。
+
+# 患者情報
+{{patient_info}}
+
+# 現在の処方
+{{current_medications}}
+
+# 出力形式
+1. 処方の適切性評価
+   - 適応のない薬剤
+   - 重複している薬効
+   - 相互作用のある組み合わせ
+
+2. 減薬の提案
+   - 中止を検討すべき薬剤
+   - 減量を検討すべき薬剤
+   - その根拠
+
+3. 処方の最適化案
+
+4. 患者への説明のポイント`,
+    inputs: [
+      { key: 'patient_info', label: '患者情報', placeholder: '例：80歳女性、高血圧、糖尿病、不眠', type: 'text' },
+      { key: 'current_medications', label: '現在の処方', placeholder: '例：降圧薬3剤、血糖降下薬2剤、睡眠薬、胃薬など計10剤', type: 'textarea' }
+  },
+  // ========================================
+  // 追加: 業務効率化・文書作成プロンプト
+  // ========================================
+  {
+    id: "admin-discharge-summary",
+    title: "Discharge Summary Generator",
+    description: "退院サマリーのドラフトを構造化された形式で作成します。",
+    category: "documentation",
+    template: `以下の入院経過から、退院サマリーを作成してください。
+簡潔かつ必要な情報を網羅した形式で記載してください。
+
+# 患者基本情報
+{{patient_basic}}
+
+# 入院経過
+{{hospital_course}}
+
+# 出力形式
+【入院時診断】
+【退院時診断】
+【入院期間】
+【主訴】
+【現病歴】
+【入院後経過】（簡潔に）
+【退院時処方】
+【退院時指導】
+【今後の方針】`,
+    inputs: [
+      { key: 'patient_basic', label: '患者基本情報', placeholder: '例：70歳男性、心不全', type: 'text' },
+      { key: 'hospital_course', label: '入院経過', placeholder: '例：利尿薬で症状改善、NYHA II度まで回復', type: 'textarea' }
+    ]
+  },
+  {
+    id: "admin-referral-letter",
+    title: "Referral Letter Writer",
+    description: "他院・他科への紹介状を作成します。",
+    category: "documentation",
+    template: `以下の患者について、{{specialty}}への紹介状を作成してください。
+紹介目的と臨床経過を簡潔に記載してください。
+
+# 患者情報
+{{patient_info}}
+
+# 紹介目的
+{{referral_purpose}}
+
+# これまでの経過
+{{clinical_course}}
+
+# 出力形式
+【紹介目的】
+【現病歴】
+【既往歴・内服薬】
+【検査所見】
+【紹介時のお願い事項】`,
+    inputs: [
+      { key: 'patient_info', label: '患者情報', placeholder: '例：55歳女性', type: 'text' },
+      { key: 'specialty', label: '紹介先', placeholder: '例：循環器内科、整形外科', type: 'text' },
+      { key: 'referral_purpose', label: '紹介目的', placeholder: '例：精査加療依頼', type: 'text' },
+      { key: 'clinical_course', label: '経過', placeholder: '例：胸痛が持続し、心電図でST変化あり', type: 'textarea' }
+    ]
+  },
+  {
+    id: "admin-medical-certificate",
+    title: "Medical Certificate Generator",
+    description: "診断書・証明書のドラフトを作成します。",
+    category: "documentation",
+    template: `以下の内容で{{certificate_type}}を作成してください。
+
+# 患者情報
+{{patient_info}}
+
+# 診断名
+{{diagnosis}}
+
+# 証明内容
+{{certificate_content}}
+
+# 出力形式
+【診断書/証明書】
+上記の者は、{{diagnosis}}にて、{{certificate_content}}。
+期間：{{period}}
+
+注意：正式な診断書は医師が内容を確認し、署名・押印が必要です。`,
+    inputs: [
+      { key: 'certificate_type', label: '証明書の種類', placeholder: '例：診断書、休業証明書、通院証明書', type: 'text' },
+      { key: 'patient_info', label: '患者情報', placeholder: '例：山田太郎様', type: 'text' },
+      { key: 'diagnosis', label: '診断名', placeholder: '例：急性上気道炎', type: 'text' },
+      { key: 'certificate_content', label: '証明内容', placeholder: '例：加療を要し、安静が必要', type: 'text' },
+      { key: 'period', label: '期間', placeholder: '例：令和○年○月○日から○日間', type: 'text' }
+    ]
+  },
+  {
+    id: "admin-patient-education-material",
+    title: "Patient Education Material Creator",
+    description: "患者向け教育資材（パンフレット）を作成します。",
+    category: "documentation",
+    template: `以下のテーマについて、患者さん向けの教育資材を作成してください。
+わかりやすい言葉で、図解の提案も含めてください。
+
+# テーマ
+{{theme}}
+
+# 対象患者
+{{target_audience}}
+
+# 出力形式
+【タイトル】
+【○○とは？】（疾患の説明）
+【なぜ起こるの？】（原因）
+【どんな症状？】
+【治療方法】
+【日常生活で気をつけること】
+【こんな時はすぐ受診！】
+【図解の提案】（どんな図があるとわかりやすいか）`,
+    inputs: [
+      { key: 'theme', label: 'テーマ', placeholder: '例：高血圧の管理、糖尿病の食事療法', type: 'text' },
+      { key: 'target_audience', label: '対象患者', placeholder: '例：新規に高血圧と診断された方', type: 'text' }
+    ]
+  },
+  {
+    id: "admin-informed-consent-document",
+    title: "Informed Consent Document Helper",
+    description: "インフォームドコンセント説明文書のドラフトを作成します。",
+    category: "documentation",
+    template: `以下の治療・検査について、インフォームドコンセント用の説明文書を作成してください。
+患者さんが理解しやすい言葉で、リスクとベネフィットを明確に記載してください。
+
+# 治療・検査
+{{procedure}}
+
+# 出力形式
+【○○について】（治療・検査の説明）
+【なぜこの治療が必要なのか】
+【治療の方法】
+【期待される効果（ベネフィット）】
+【起こりうる合併症・副作用（リスク）】
+【他の治療法との比較】
+【治療を受けない場合】
+【費用について】
+【同意の撤回について】
+
+注意：正式な同意書は施設の規定に従って作成してください。`,
+    inputs: [
+      { key: 'procedure', label: '治療・検査', placeholder: '例：内視鏡的粘膜下層剥離術（ESD）', type: 'text' }
+    ]
+  },
+  {
+    id: "admin-medical-record-summary",
+    title: "Medical Record Summarizer",
+    description: "長い診療記録を要約し、重要なポイントを抽出します。",
+    category: "documentation",
+    template: `以下の診療記録を要約し、重要なポイントを抽出してください。
+{{word_limit}}以内にまとめてください。
+
+# 診療記録
+{{medical_record}}
+
+# 出力形式
+【患者背景】
+【主要な問題点】
+【これまでの経過（時系列）】
+【現在の状態】
+【今後の方針】`,
+    inputs: [
+      { key: 'medical_record', label: '診療記録', placeholder: '長い経過記録を貼り付け', type: 'textarea' },
+      { key: 'word_limit', label: '文字数制限', placeholder: '例：400字', type: 'text' }
+    ]
+  },
+  // ========================================
+  // 追加: 一般的に有用なプロンプト
+  // ========================================
+  {
+    id: "general-meeting-summarizer",
+    title: "Meeting Summarizer",
+    description: "会議の内容を要約し、アクションアイテムを抽出します。",
+    category: "administrative",
+    template: `以下の会議の内容を要約し、決定事項とアクションアイテムを明確にしてください。
+
+# 会議内容
+{{meeting_content}}
+
+# 出力形式
+【会議の目的】
+【主な討議内容】
+【決定事項】
+【アクションアイテム】
+- 担当者：
+- 期限：
+- 内容：
+【次回会議の予定】`,
+    inputs: [
+      { key: 'meeting_content', label: '会議内容', placeholder: '会議のメモや録音の文字起こしを貼り付け', type: 'textarea' }
+    ]
+  },
+  {
+    id: "general-email-professional",
+    title: "Professional Email Writer",
+    description: "ビジネスメールを適切なトーンで作成します。",
+    category: "administrative",
+    template: `以下の内容でビジネスメールを作成してください。
+{{tone}}なトーンで、簡潔かつ丁寧に記載してください。
+
+# 宛先
+{{recipient}}
+
+# 目的
+{{purpose}}
+
+# 伝えたい内容
+{{content}}
+
+# 出力形式
+件名：
+本文：`,
+    inputs: [
+      { key: 'recipient', label: '宛先', placeholder: '例：取引先の担当者、上司', type: 'text' },
+      { key: 'purpose', label: '目的', placeholder: '例：依頼、報告、お礼', type: 'text' },
+      { key: 'content', label: '内容', placeholder: '伝えたい内容を箇条書きで', type: 'textarea' },
+      { key: 'tone', label: 'トーン', placeholder: '例：丁寧、フォーマル、フレンドリー', type: 'text' }
+    ]
+  },
+  {
+    id: "general-presentation-outline",
+    title: "Presentation Outline Creator",
+    description: "プレゼンテーションの構成案を作成します。",
+    category: "administrative",
+    template: `以下のテーマについて、{{duration}}分のプレゼンテーションの構成案を作成してください。
+
+# テーマ
+{{theme}}
+
+# 対象聴衆
+{{audience}}
+
+# 伝えたいメッセージ
+{{key_message}}
+
+# 出力形式
+【タイトル】
+【オープニング（1分）】
+【本論】
+- セクション1（○分）：
+- セクション2（○分）：
+- セクション3（○分）：
+【クロージング（1分）】
+【各スライドの内容案】`,
+    inputs: [
+      { key: 'theme', label: 'テーマ', placeholder: '例：新製品の紹介、プロジェクト報告', type: 'text' },
+      { key: 'duration', label: '時間', placeholder: '例：10、20、30', type: 'text' },
+      { key: 'audience', label: '対象聴衆', placeholder: '例：経営層、一般社員、顧客', type: 'text' },
+      { key: 'key_message', label: 'キーメッセージ', placeholder: '最も伝えたいこと', type: 'text' }
+    ]
+  },
+  {
+    id: "general-report-writer",
+    title: "Business Report Writer",
+    description: "ビジネスレポートのドラフトを作成します。",
+    category: "administrative",
+    template: `以下の内容でビジネスレポートを作成してください。
+
+# レポートの目的
+{{purpose}}
+
+# 対象読者
+{{audience}}
+
+# 含めるべき内容
+{{content}}
+
+# 出力形式
+【エグゼクティブサマリー】
+【背景】
+【現状分析】
+【課題】
+【提案/推奨事項】
+【結論】`,
+    inputs: [
+      { key: 'purpose', label: '目的', placeholder: '例：四半期業績報告、プロジェクト進捗報告', type: 'text' },
+      { key: 'audience', label: '対象読者', placeholder: '例：経営層、プロジェクトメンバー', type: 'text' },
+      { key: 'content', label: '含めるべき内容', placeholder: 'データや情報を箇条書きで', type: 'textarea' }
+    ]
+  },
+  {
+    id: "general-brainstorming-facilitator",
+    title: "Brainstorming Facilitator",
+    description: "ブレインストーミングを促進し、アイデアを整理します。",
+    category: "administrative",
+    template: `以下のテーマについて、ブレインストーミングを行い、アイデアを整理してください。
+既存の枠にとらわれない、創造的なアイデアを含めてください。
+
+# テーマ
+{{theme}}
+
+# 制約条件（あれば）
+{{constraints}}
+
+# 出力形式
+【アイデア一覧】（10-15個）
+1. アイデア名：
+   - 概要：
+   - メリット：
+   - 実現可能性：
+
+【最も有望なアイデアTop 3】
+【次のステップ】`,
+    inputs: [
+      { key: 'theme', label: 'テーマ', placeholder: '例：新サービスのアイデア、業務改善策', type: 'text' },
+      { key: 'constraints', label: '制約条件', placeholder: '例：予算100万円以内、3ヶ月で実現可能', type: 'text' }
+    ]
+  },
+  {
+    id: "general-decision-matrix",
+    title: "Decision Matrix Creator",
+    description: "複数の選択肢を評価し、意思決定を支援します。",
+    category: "administrative",
+    template: `以下の選択肢について、意思決定マトリクスを作成してください。
+
+# 決定すべきこと
+{{decision}}
+
+# 選択肢
+{{options}}
+
+# 評価基準
+{{criteria}}
+
+# 出力形式
+| 選択肢 | 基準1 | 基準2 | 基準3 | 総合評価 |
+|--------|---------|---------|---------|----------|
+| ... | ... | ... | ... | ... |
+
+【推奨される選択肢】
+【理由】
+【リスクと対策】`,
+    inputs: [
+      { key: 'decision', label: '決定すべきこと', placeholder: '例：新オフィスの場所、採用する候補者', type: 'text' },
+      { key: 'options', label: '選択肢', placeholder: '例：A案、B案、C案', type: 'text' },
+      { key: 'criteria', label: '評価基準', placeholder: '例：コスト、利便性、将来性', type: 'text' }
+    ]
   }
 ];
