@@ -22,12 +22,6 @@ export default function Home() {
       const matchesCategory = selectedCategory ? prompt.category === selectedCategory : true;
       return matchesSearch && matchesCategory;
     });
-    console.log('Filtered prompts:', { 
-      total: fullPrompts.length, 
-      filtered: filtered.length, 
-      selectedCategory, 
-      searchQuery 
-    });
     return filtered;
   }, [searchQuery, selectedCategory]);
 
@@ -90,8 +84,7 @@ export default function Home() {
               <Button 
                 size="lg" 
                 className="rounded-full px-8 h-14 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 relative z-10"
-                onClick={(e) => {
-                  console.log('Get Started button clicked:', { target: e.target });
+                onClick={() => {
                   setLocation("/guides");
                 }}
               >
@@ -107,8 +100,7 @@ export default function Home() {
                 size="lg" 
                 variant="outline" 
                 className="rounded-full px-8 h-14 text-base font-semibold border-2 hover:bg-accent/50 transition-all duration-300 relative z-10"
-                onClick={(e) => {
-                  console.log('View Guides button clicked:', { target: e.target });
+                onClick={() => {
                   setLocation("/guides");
                 }}
               >
@@ -140,8 +132,7 @@ export default function Home() {
                 <Badge 
                   variant={selectedCategory === null ? "default" : "outline"}
                   className="cursor-pointer px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                  onClick={(e) => {
-                    console.log('Category filter clicked:', { target: e.target, category: 'all', previousCategory: selectedCategory });
+                  onClick={() => {
                     setSelectedCategory(null);
                   }}
                   role="tab"
@@ -170,8 +161,7 @@ export default function Home() {
                   <Badge
                     variant={selectedCategory === cat ? "default" : "outline"}
                     className="cursor-pointer capitalize px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
-                    onClick={(e) => {
-                      console.log('Category filter clicked:', { target: e.target, category: cat, previousCategory: selectedCategory });
+                    onClick={() => {
                       setSelectedCategory(cat);
                     }}
                     role="tab"
@@ -210,8 +200,7 @@ export default function Home() {
                     whileHover={{ y: -8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    onClick={(e) => {
-                      console.log('Prompt card clicked:', { target: e.target, promptId: prompt.id });
+                    onClick={() => {
                       setLocation(`/prompts/${prompt.id}`);
                     }}
                     className="relative z-10"
@@ -279,8 +268,7 @@ export default function Home() {
               whileHover={{ y: -8, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.3 }}
-              onClick={(e) => {
-                console.log('Guides card clicked:', { target: e.target });
+              onClick={() => {
                 setLocation("/guides");
               }}
               className="relative z-10"

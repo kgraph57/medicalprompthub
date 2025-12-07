@@ -200,12 +200,12 @@ export default function Collections() {
             </Button>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {collections.map((collection: any) => (
-              <Card key={collection.id} className="p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-1">{collection.name}</h3>
+              <Card key={collection.id} className="p-4 hover:shadow-lg transition-shadow h-full min-h-[180px] flex flex-col">
+                <div className="flex items-start justify-between mb-3 flex-1">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-bold mb-1 leading-tight">{collection.name}</h3>
                     {collection.description && (
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {collection.description}
@@ -231,7 +231,7 @@ export default function Collections() {
                     </Button>
                   </Link>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 mt-auto">
                   <Button
                     variant="outline"
                     size="sm"

@@ -1,189 +1,253 @@
-import { useState } from "react";
-import { Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { tips, PromptTip } from "@/lib/tips";
+import { Search, ArrowRight, Sparkles } from "lucide-react";
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Sparkles, Lightbulb, TrendingUp, Zap, Stethoscope, MessageSquare } from "lucide-react";
-import { tips } from "@/lib/tips";
+import { Badge } from "@/components/ui/badge";
+import { useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
+
+const categoryLabels: Record<PromptTip['category'], string> = {
+  basic: '基本テクニック',
+  quality: '品質向上',
+  advanced: '高度なテクニック',
+  medical: '医療特化',
+  interactive: '対話型'
+};
+
+const levelLabels: Record<PromptTip['level'], string> = {
+  beginner: '初級',
+  intermediate: '中級',
+  advanced: '上級'
+};
 
 export default function Tips() {
+  const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<"level" | "title">("level");
+  const [selectedCategory, setSelectedCategory] = useState<PromptTip['category'] | null>(null);
 
-  // カテゴリアイコンのマッピング
-  const categoryIcons: Record<string, any> = {
-    basic: Lightbulb,
-    quality: TrendingUp,
-    advanced: Zap,
-    medical: Stethoscope,
-    interactive: MessageSquare,
-  };
-
-  // カテゴリの日本語名
-  const categoryNames: Record<string, string> = {
-    basic: "基本テクニック",
-    quality: "品質向上",
-    advanced: "高度なテクニック",
-    medical: "医療特化",
-    interactive: "対話型",
-  };
-
-  // レベルの日本語変換
-  const levelMap: Record<string, string> = {
-    beginner: "初級",
-    intermediate: "中級",
-    advanced: "上級",
-  };
-
-  // レベルの色
-  const levelColors: Record<string, string> = {
-    beginner: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-    intermediate: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-    advanced: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-  };
-
-  // フィルタリングとソート
-  const filteredTips = tips
-    .filter((tip) => {
-      const matchesSearch =
+  const filteredTips = useMemo(() => {
+    const filtered = tips.filter((tip) => {
+      const matchesSearch = 
         tip.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tip.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tip.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesCategory = selectedCategory === "all" || tip.category === selectedCategory;
-      
+        tip.content.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategory ? tip.category === selectedCategory : true;
       return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if (sortBy === "level") {
-        const levelOrder: Record<string, number> = { beginner: 1, intermediate: 2, advanced: 3 };
-        return levelOrder[a.level] - levelOrder[b.level];
-      } else {
-        return a.title.localeCompare(b.title, 'ja');
-      }
     });
+    return filtered;
+  }, [searchQuery, selectedCategory]);
+
+  const categories: PromptTip['category'][] = ['basic', 'quality', 'advanced', 'medical', 'interactive'];
+
+  const categoryCounts = useMemo(() => {
+    const counts: Record<PromptTip['category'], number> = {
+      basic: 0,
+      quality: 0,
+      advanced: 0,
+      medical: 0,
+      interactive: 0
+    };
+    tips.forEach(tip => {
+      counts[tip.category]++;
+    });
+    return counts;
+  }, []);
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* ヘッダー */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="h-10 w-10 text-blue-600" />
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              プロンプトエンジニアリング Tips
-            </h1>
-          </div>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            AIを最大限に活用するための実践的なテクニック集。医療・研究シーンに特化した、すぐに使えるプロンプト例と解説を提供します。
-          </p>
-        </div>
+      <div className="space-y-12 pb-24">
+        {/* Hero Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center space-y-6 py-12 relative overflow-hidden"
+        >
+          <div className="absolute inset-0 -z-10 gradient-apple-light opacity-50" />
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold backdrop-blur-sm border border-primary/20"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>プロンプトエンジニアリング技術</span>
+          </motion.div>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1] max-w-4xl mx-auto"
+          >
+            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Tips & Techniques
+            </span>
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+          >
+            AIプロンプトの効果を最大化するための実践的なテクニック集。医療現場での活用に最適化された41の技術を学びましょう。
+          </motion.p>
+        </motion.section>
 
-        {/* 検索バー */}
-        <div className="mb-8">
-          <Input
-            type="text"
-            placeholder="Tipsを検索..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full max-w-2xl mx-auto"
-          />
-        </div>
-
-        {/* 並び替えとカテゴリフィルター */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">並び替え:</span>
-            <div className="flex gap-2">
-              <Button
-                variant={sortBy === "level" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSortBy("level")}
-              >
-                レベル: 初級→上級
-              </Button>
+        {/* Search & Filter Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="max-w-6xl mx-auto"
+        >
+          <div className="mb-8 space-y-6">
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
+              <Input
+                placeholder="Tipsを検索 (例: 'Chain-of-Thought', '品質向上')..."
+                className="pl-14 pr-12 h-14 text-lg bg-background/60 backdrop-blur-xl border-2 focus:border-primary/50 transition-all duration-300 rounded-2xl shadow-sm hover:shadow-md"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-wrap gap-3 justify-center" role="tablist" aria-label="カテゴリフィルタ">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Badge 
+                  variant={selectedCategory === null ? "default" : "outline"}
+                  className="cursor-pointer px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                  onClick={() => {
+                    setSelectedCategory(null);
+                  }}
+                  role="tab"
+                  aria-pressed={selectedCategory === null}
+                  aria-selected={selectedCategory === null}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedCategory(null);
+                    }
+                  }}
+                >
+                  すべて ({tips.length})
+                </Badge>
+              </motion.div>
+              {categories.map((cat, index) => (
+                <motion.div
+                  key={cat}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.7 + index * 0.05 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Badge
+                    variant={selectedCategory === cat ? "default" : "outline"}
+                    className="cursor-pointer capitalize px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                    }}
+                    role="tab"
+                    aria-pressed={selectedCategory === cat}
+                    aria-selected={selectedCategory === cat}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedCategory(cat);
+                      }
+                    }}
+                  >
+                    {categoryLabels[cat]} ({categoryCounts[cat]})
+                  </Badge>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* カテゴリフィルター */}
-        <div className="flex flex-wrap gap-2 mb-8 justify-center">
-          <Button
-            variant={selectedCategory === "all" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCategory("all")}
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            すべて
-          </Button>
-          {Object.entries(categoryNames).map(([key, name]) => (
-            <Button
-              key={key}
-              variant={selectedCategory === key ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedCategory(key)}
-            >
-              {name}
-            </Button>
-          ))}
-        </div>
+            <AnimatePresence mode="popLayout">
+              {filteredTips.map((tip, index) => (
+                <motion.div
+                  key={tip.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ delay: index * 0.03, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <motion.div
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    onClick={() => {
+                      setLocation(`/tips/${tip.id}`);
+                    }}
+                    className="relative z-10"
+                  >
+                    <Card className="h-full min-h-[200px] flex flex-col cursor-pointer border-2 border-border/50 hover:border-primary/30 bg-gradient-apple-card group overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 rounded-xl">
+                      <CardHeader className="p-4 space-y-2 flex-1">
+                        <div className="flex justify-between items-start gap-2">
+                          <div className="flex gap-2 flex-wrap">
+                            <Badge variant="secondary" className="capitalize text-xs font-medium px-3 py-1 rounded-full">
+                              {categoryLabels[tip.category]}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs font-medium px-3 py-1 rounded-full">
+                              {levelLabels[tip.level]}
+                            </Badge>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-[-4px] group-hover:translate-x-0" />
+                        </div>
+                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors duration-300 leading-tight">
+                          {tip.title}
+                        </CardTitle>
+                        <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                          {tip.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+          
+          <AnimatePresence>
+            {filteredTips.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="text-center py-20 text-muted-foreground"
+              >
+                <Search className="h-16 w-16 mx-auto mb-6 opacity-40" />
+                <p className="text-xl font-semibold mb-2 text-foreground">Tipsが見つかりませんでした</p>
+                <p className="text-base">検索条件を変更してお試しください</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* Tips一覧 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTips.map((tip) => {
-            const IconComponent = categoryIcons[tip.category] || Lightbulb;
-            
-            return (
-              <Link key={tip.id} to={`/tips/${tip.id}`}>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105">
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/30">
-                        <IconComponent className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <Badge className={levelColors[tip.level]}>
-                        {levelMap[tip.level]}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-lg leading-tight mb-2">
-                      {tip.title}
-                    </CardTitle>
-                    <CardDescription className="text-sm line-clamp-3">
-                      {tip.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1">
-                      {tip.tags.slice(0, 3).map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* 検索結果が0件の場合 */}
-        {filteredTips.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">
-              該当するTipsが見つかりませんでした。
+          {/* カウント表示 */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-center mt-12 text-muted-foreground"
+          >
+            <p className="text-lg font-medium">
+              全 {filteredTips.length} 個のTips
+              {selectedCategory && ` (${categoryLabels[selectedCategory]})`}
             </p>
-          </div>
-        )}
-
-        {/* Tips総数表示 */}
-        <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-          {filteredTips.length === tips.length 
-            ? `全 ${tips.length} 個のTips` 
-            : `${filteredTips.length} / ${tips.length} 個のTips`}
-        </div>
+          </motion.div>
+        </motion.section>
       </div>
     </Layout>
   );

@@ -35,16 +35,16 @@ export default function Favorites() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {favoritePrompts.map((prompt) => (
-              <Card key={prompt.id} className="flex flex-col hover:shadow-md transition-shadow">
-                <CardHeader>
+              <Card key={prompt.id} className="flex flex-col hover:shadow-md transition-shadow h-full min-h-[180px]">
+                <CardHeader className="p-4 flex-1">
                   <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-lg line-clamp-1">{prompt.title}</CardTitle>
+                    <CardTitle className="text-lg line-clamp-1 leading-tight">{prompt.title}</CardTitle>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 -mr-2 -mt-2 text-muted-foreground hover:text-destructive"
+                      className="h-8 w-8 -mr-2 -mt-2 text-muted-foreground hover:text-destructive shrink-0"
                       onClick={(e) => {
                         e.preventDefault();
                         toggleFavorite(prompt.id);
@@ -53,9 +53,9 @@ export default function Favorites() {
                       <BookmarkX className="w-4 h-4" />
                     </Button>
                   </div>
-                  <CardDescription className="line-clamp-2">{prompt.description}</CardDescription>
+                  <CardDescription className="line-clamp-2 text-sm">{prompt.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="mt-auto pt-0">
+                <CardContent className="mt-auto pt-0 p-4">
                   <Link href={`/prompts/${prompt.id}`}>
                     <Button className="w-full group">
                       詳細を見る
