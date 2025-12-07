@@ -82,7 +82,7 @@ const plugins = [
 ];
 
 export default defineConfig({
-  base: '/',
+  base: process.env.NODE_ENV === 'production' ? '/medicalprompthub/' : '/medicalprompthub/',
   plugins,
   resolve: {
     alias: {

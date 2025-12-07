@@ -32,7 +32,7 @@ const PageLoader = () => (
 
 function Router() {
   return (
-    <WouterRouter>
+    <WouterRouter base="/medicalprompthub">
       <Suspense fallback={<PageLoader />}>
         <Switch>
           <Route path="/" component={Home} />
