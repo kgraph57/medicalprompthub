@@ -3,14 +3,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowRight, BookOpen, FileText, Microscope, ClipboardList, Mail, Image, Presentation, Search, Stethoscope, Pill, X } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Microscope, ClipboardList, Mail, Image, Presentation, Search, Stethoscope, Pill, X, Lock } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 
-// Updated: 2025-12-06
+// 実装済みのガイドIDリスト
+const IMPLEMENTED_GUIDES = [
+  "case-report-complete"
+];
+
+// Updated: 2025-12-07
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -19,7 +24,7 @@ export default function Guides() {
   const guides = [
     {
       id: "case-report-complete",
-      title: "【完全版】症例報告執筆ガイド：構想から投稿まで",
+      title: "【完全版】症例報告執筆ガイド:構想から投稿まで",
       description: "読むだけで症例報告が実際にできるレベルの完全版ガイド。18ステップで、準備から投稿まで完全サポート。各ステップに具体的なプロンプト、AIツール活用法、チェックリストを完備。",
       category: "Research",
       icon: <FileText className="h-6 w-6 text-blue-600" />,
@@ -28,7 +33,7 @@ export default function Guides() {
     },
     {
       id: "case-report-workflow",
-      title: "症例報告作成ワークフロー：AIを活用した効率化ガイド",
+      title: "症例報告作成ワークフロー:AIを活用した効率化ガイド",
       description: "症例報告は「マラソン」ではなく「400m走」です。CAREガイドラインチェックから投稿用カバーレター作成まで、AIプロンプトを活用して最短距離で完走するためのステップバイステップガイド。",
       category: "Research",
       icon: <FileText className="h-6 w-6 text-blue-500" />,
@@ -37,8 +42,8 @@ export default function Guides() {
     },
     {
       id: "statistical-analysis-guide",
-      title: "【初心者向け】医療統計解析：データの準備から結果の解釈まで",
-      description: "「p値って何？」からスタート。データの整理、適切な検定の選び方、Python/Rコードの生成までをサポートします。",
+      title: "【初心者向け】医療統計解析:データの準備から結果の解釈まで",
+      description: "「p値って何?」からスタート。データの整理、適切な検定の選び方、Python/Rコードの生成までをサポートします。",
       category: "Research",
       icon: <Microscope className="h-6 w-6 text-purple-500" />,
       readTime: "20 min read",
@@ -46,7 +51,7 @@ export default function Guides() {
     },
     {
       id: "conference-presentation-guide",
-      title: "【完全版】学会発表ガイド：抄録からスライド、質疑応答まで",
+      title: "【完全版】学会発表ガイド:抄録からスライド、質疑応答まで",
       description: "初めての学会発表でも安心。魅力的な抄録の書き方、見やすいスライド構成、想定問答集の作成までをトータルサポート。",
       category: "Presentation",
       icon: <FileText className="h-6 w-6 text-green-500" />,
@@ -55,7 +60,7 @@ export default function Guides() {
     },
     {
       id: "journal-club-guide",
-      title: "【時短】論文抄読会（Journal Club）効率化ガイド",
+      title: "【時短】論文抄読会(Journal Club)効率化ガイド",
       description: "毎週の抄読会準備を30分で完了。論文の要約から批判的吟味、スライド作成までをAIがサポートします。",
       category: "Research",
       icon: <BookOpen className="h-6 w-6 text-orange-500" />,
@@ -64,7 +69,7 @@ export default function Guides() {
     },
     {
       id: "patient-explanation-guide",
-      title: "【臨床】患者説明・インフォームドコンセント（SDM）ガイド",
+      title: "【臨床】患者説明・インフォームドコンセント(SDM)ガイド",
       description: "「専門用語が伝わらない」を解決。難しい病状や治療法を、患者さんが納得できる言葉で伝えるための翻訳ガイド。",
       category: "Clinical",
       icon: <FileText className="h-6 w-6 text-teal-500" />,
@@ -73,7 +78,7 @@ export default function Guides() {
     },
     {
       id: "soap-note-guide",
-      title: "【臨床】診療録（SOAP形式）作成ガイド",
+      title: "【臨床】診療録(SOAP形式)作成ガイド",
       description: "構造化された診療録の書き方。主観的所見と客観的所見の分離、評価と計画の明確化で、診療の質を向上させます。",
       category: "Clinical",
       icon: <ClipboardList className="h-6 w-6 text-indigo-500" />,
@@ -91,7 +96,7 @@ export default function Guides() {
     },
     {
       id: "diagram-creation-guide",
-      title: "【ツール別】医学図解作成ガイド：Nanobanana活用",
+      title: "【ツール別】医学図解作成ガイド:Nanobanana活用",
       description: "NotebookLMのNanobananaを使って、病態生理、診断フロー、治療アルゴリズムなどを視覚的に説明する図解を作成します。",
       category: "Presentation",
       icon: <Image className="h-6 w-6 text-amber-500" />,
@@ -109,7 +114,7 @@ export default function Guides() {
     },
     {
       id: "pubmed-search-guide",
-      title: "【完全版】PubMed検索ガイド：効率的な文献検索",
+      title: "【完全版】PubMed検索ガイド:効率的な文献検索",
       description: "PICOに基づいた検索式の作成、MeSH termsの活用、検索結果の絞り込みまで。効率的に文献を見つけるための完全ガイド。",
       category: "Research",
       icon: <Search className="h-6 w-6 text-blue-500" />,
@@ -118,8 +123,8 @@ export default function Guides() {
     },
     {
       id: "ebm-practice-guide",
-      title: "【完全版】エビデンスに基づいた診療（EBM）実践ガイド",
-      description: "臨床疑問の定式化（PICO）、文献検索、エビデンスの評価、臨床適用まで。EBMの5ステップを実践的に学びます。",
+      title: "【完全版】エビデンスに基づいた診療(EBM)実践ガイド",
+      description: "臨床疑問の定式化(PICO)、文献検索、エビデンスの評価、臨床適用まで。EBMの5ステップを実践的に学びます。",
       category: "Clinical",
       icon: <Stethoscope className="h-6 w-6 text-emerald-500" />,
       readTime: "20 min read",
@@ -216,7 +221,7 @@ export default function Guides() {
           <div className="relative max-w-2xl">
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
             <Input
-              placeholder="ガイドを検索（タイトル、説明、タグ）..."
+              placeholder="ガイドを検索(タイトル、説明、タグ)..."
               className="pl-14 pr-12 h-14 text-lg bg-background/50 backdrop-blur-sm border-2 focus:border-primary/50 transition-all duration-300 rounded-2xl shadow-sm hover:shadow-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -284,10 +289,10 @@ export default function Guides() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
-                  <SelectItem value="title-asc">タイトル（昇順）</SelectItem>
-                  <SelectItem value="title-desc">タイトル（降順）</SelectItem>
-                  <SelectItem value="readTime-asc">読了時間（短い順）</SelectItem>
-                  <SelectItem value="readTime-desc">読了時間（長い順）</SelectItem>
+                  <SelectItem value="title-asc">タイトル(昇順)</SelectItem>
+                  <SelectItem value="title-desc">タイトル(降順)</SelectItem>
+                  <SelectItem value="readTime-asc">読了時間(短い順)</SelectItem>
+                  <SelectItem value="readTime-desc">読了時間(長い順)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -320,6 +325,7 @@ export default function Guides() {
               className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
             >
               {filteredAndSortedGuides.map((guide, index) => {
+                const isImplemented = IMPLEMENTED_GUIDES.includes(guide.id);
                 const categoryColors: Record<string, { border: string; badge: string; gradient: string }> = {
                   "Research": { 
                     border: "border-l-blue-500", 
@@ -339,60 +345,89 @@ export default function Guides() {
                 };
                 const colors = categoryColors[guide.category] || categoryColors["Research"];
                 
-                return (
+                const cardContent = (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: index * 0.05,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                    whileHover={isImplemented ? { y: -8, scale: 1.02 } : {}}
+                    whileTap={isImplemented ? { scale: 0.98 } : {}}
+                  >
+                    <Card className={`h-full border-l-[3px] ${colors.border} bg-gradient-to-br ${colors.gradient} group overflow-hidden relative shadow-sm transition-all duration-500 border border-border/50 ${
+                      isImplemented 
+                        ? "cursor-pointer hover:shadow-xl" 
+                        : "opacity-60 cursor-not-allowed grayscale"
+                    }`}>
+                      <CardHeader className="space-y-4 p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className={`${colors.badge} font-medium px-3 py-1 rounded-full`}>
+                              {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
+                            </Badge>
+                            {!isImplemented && (
+                              <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-3 py-1 rounded-full border-gray-300 dark:border-gray-600">
+                                <Lock className="h-3 w-3 mr-1" />
+                                Coming Soon
+                              </Badge>
+                            )}
+                          </div>
+                          <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                            <BookOpen className="h-3.5 w-3.5" />
+                            {guide.readTime}
+                          </span>
+                        </div>
+                        <CardTitle className={`text-xl md:text-2xl font-bold leading-tight transition-colors duration-300 pr-8 ${
+                          isImplemented ? "group-hover:text-primary" : ""
+                        }`}>
+                          {guide.title}
+                        </CardTitle>
+                        <CardDescription className="text-base leading-relaxed line-clamp-3 text-muted-foreground">
+                          {guide.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-6 pt-0 space-y-4">
+                        {isImplemented ? (
+                          <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-2 gap-1 transition-all duration-300">
+                            <span>ガイドを読む</span>
+                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                          </div>
+                        ) : (
+                          <div className="flex items-center text-sm font-semibold text-muted-foreground gap-1">
+                            <Lock className="h-4 w-4" />
+                            <span>準備中</span>
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {guide.tags.map(tag => (
+                            <span 
+                              key={tag} 
+                              className="text-xs px-3 py-1.5 bg-background/60 dark:bg-background/40 backdrop-blur-sm rounded-full text-muted-foreground font-medium border border-border/50"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+
+                return isImplemented ? (
                   <Link 
                     key={guide.id}
                     href={`/guides/${guide.id}`}
                     style={{ textDecoration: 'none', display: 'block' }}
                   >
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ 
-                        duration: 0.5, 
-                        delay: index * 0.05,
-                        ease: [0.22, 1, 0.36, 1]
-                      }}
-                      whileHover={{ y: -8, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Card className={`h-full cursor-pointer border-l-[3px] ${colors.border} bg-gradient-to-br ${colors.gradient} group overflow-hidden relative shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50`}>
-                        <CardHeader className="space-y-4 p-6">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="secondary" className={`${colors.badge} font-medium px-3 py-1 rounded-full`}>
-                              {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
-                            </Badge>
-                            <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-                              <BookOpen className="h-3.5 w-3.5" />
-                              {guide.readTime}
-                            </span>
-                          </div>
-                          <CardTitle className="text-xl md:text-2xl font-bold leading-tight group-hover:text-primary transition-colors duration-300 pr-8">
-                            {guide.title}
-                          </CardTitle>
-                          <CardDescription className="text-base leading-relaxed line-clamp-3 text-muted-foreground">
-                            {guide.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent className="p-6 pt-0 space-y-4">
-                          <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-2 gap-1 transition-all duration-300">
-                            <span>ガイドを読む</span>
-                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                          </div>
-                          <div className="flex flex-wrap gap-2 pt-2">
-                            {guide.tags.map(tag => (
-                              <span 
-                                key={tag} 
-                                className="text-xs px-3 py-1.5 bg-background/60 dark:bg-background/40 backdrop-blur-sm rounded-full text-muted-foreground font-medium border border-border/50"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
+                    {cardContent}
                   </Link>
+                ) : (
+                  <div key={guide.id}>
+                    {cardContent}
+                  </div>
                 );
               })}
             </motion.div>
