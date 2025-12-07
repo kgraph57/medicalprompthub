@@ -137,7 +137,7 @@ export default function CaseReportGuide() {
                 <p className="text-sm text-muted-foreground">{completedSteps.size} / {caseReportGuideData.totalSteps} 完了</p>
               </div>
 
-              <nav className="space-y-4 max-h-[calc(100vh-250px)] overflow-y-auto">
+              <nav className="space-y-4">
                 {caseReportGuideData.phases.map((phase: Phase) => (
                   <div key={phase.id}>
                     <h4 className="flex items-center font-bold text-lg mb-2">
