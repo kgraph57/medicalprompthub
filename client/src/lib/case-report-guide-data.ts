@@ -101,28 +101,28 @@ export const caseReportGuideData: CaseReportGuide = {
         {
           id: "step-09",
           number: 9,
-          title: "緒言(Introduction)の執筆",
+          title: "緒言(Introduction)",
 
           estimatedTime: "1〜2時間"
         },
         {
           id: "step-10",
           number: 10,
-          title: "症例提示(Case Presentation)の執筆",
+          title: "症例提示(Case Presentation)",
 
           estimatedTime: "2〜3時間"
         },
         {
           id: "step-11",
           number: 11,
-          title: "考察(Discussion)の執筆",
+          title: "考察(Discussion)",
 
           estimatedTime: "3〜4時間"
         },
         {
           id: "step-12",
           number: 12,
-          title: "結論(Conclusion)の執筆",
+          title: "結論(Conclusion)",
 
           estimatedTime: "30分"
         }

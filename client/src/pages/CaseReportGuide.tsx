@@ -167,7 +167,7 @@ export default function CaseReportGuide() {
                               setCurrentStepId(step.id);
                               navigate(`/medicalprompthub/guides/case-report-complete/${step.id}`);
                             }}
-                            className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                            className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
                               currentStepId === step.id
                                 ? 'bg-primary/10 text-primary font-medium'
                                 : 'hover:bg-muted'
