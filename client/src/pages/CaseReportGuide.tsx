@@ -11,11 +11,50 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { caseReportGuideData, type Step, type Phase } from "@/lib/case-report-guide-data";
 
+// Markdownファイルを直接インポート
+import step01 from "@/../guides/case-report/01-preparation/step-01.md?raw";
+import step02 from "@/../guides/case-report/01-preparation/step-02.md?raw";
+import step03 from "@/../guides/case-report/01-preparation/step-03.md?raw";
+import step04 from "@/../guides/case-report/01-preparation/step-04.md?raw";
+import step05 from "@/../guides/case-report/01-preparation/step-05.md?raw";
+import step06 from "@/../guides/case-report/02-writing/step-06.md?raw";
+import step07 from "@/../guides/case-report/02-writing/step-07.md?raw";
+import step08 from "@/../guides/case-report/02-writing/step-08.md?raw";
+import step09 from "@/../guides/case-report/02-writing/step-09.md?raw";
+import step10 from "@/../guides/case-report/02-writing/step-10.md?raw";
+import step11 from "@/../guides/case-report/02-writing/step-11.md?raw";
+import step12 from "@/../guides/case-report/02-writing/step-12.md?raw";
+import step13 from "@/../guides/case-report/03-finishing/step-13.md?raw";
+import step14 from "@/../guides/case-report/03-finishing/step-14.md?raw";
+import step15 from "@/../guides/case-report/03-finishing/step-15.md?raw";
+import step16 from "@/../guides/case-report/03-finishing/step-16.md?raw";
+import step17 from "@/../guides/case-report/03-finishing/step-17.md?raw";
+import step18 from "@/../guides/case-report/04-submission/step-18.md?raw";
+
+const markdownMap: Record<string, string> = {
+  "step-01": step01,
+  "step-02": step02,
+  "step-03": step03,
+  "step-04": step04,
+  "step-05": step05,
+  "step-06": step06,
+  "step-07": step07,
+  "step-08": step08,
+  "step-09": step09,
+  "step-10": step10,
+  "step-11": step11,
+  "step-12": step12,
+  "step-13": step13,
+  "step-14": step14,
+  "step-15": step15,
+  "step-16": step16,
+  "step-17": step17,
+  "step-18": step18,
+};
+
 export default function CaseReportGuide() {
   const [currentStepId, setCurrentStepId] = useState<string>("step-01");
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-  const [markdownContent, setMarkdownContent] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // LocalStorageから進捗を読み込み
@@ -41,25 +80,8 @@ export default function CaseReportGuide() {
     localStorage.setItem("case-report-progress", JSON.stringify(data));
   }, [completedSteps, currentStepId]);
 
-  // 現在のステップのMarkdownを読み込み
+  // コンテンツエリアを最上部にスクロール
   useEffect(() => {
-    const currentStep = findStepById(currentStepId);
-    if (!currentStep) return;
-
-    setLoading(true);
-    fetch(currentStep.markdownPath)
-      .then(res => res.text())
-      .then(text => {
-        setMarkdownContent(text);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to load markdown", err);
-        setMarkdownContent("# エラー\n\nMarkdownファイルの読み込みに失敗しました。");
-        setLoading(false);
-      });
-
-    // コンテンツエリアを最上部にスクロール
     if (contentRef.current) {
       contentRef.current.scrollTop = 0;
     }
@@ -88,6 +110,7 @@ export default function CaseReportGuide() {
   const progress = (completedSteps.size / caseReportGuideData.totalSteps) * 100;
 
   const currentStep = findStepById(currentStepId);
+  const markdownContent = markdownMap[currentStepId] || "# コンテンツが見つかりません";
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,144 +123,86 @@ export default function CaseReportGuide() {
               ガイド一覧に戻る
             </Button>
           </Link>
-          <div className="ml-4 flex-1">
-            <h1 className="text-lg font-semibold truncate">{caseReportGuideData.title}</h1>
+          <div className="flex-1 text-center font-bold truncate">
+            {caseReportGuideData.title}
           </div>
+          <div className="w-24"></div>
         </div>
       </header>
 
-      {/* Main Layout */}
-      <div className="container mx-auto flex gap-6 py-6">
-        {/* Fixed Navigation Sidebar */}
-        <aside className="w-80 shrink-0">
-          <div className="sticky top-20">
-            {/* Progress */}
-            <div className="mb-6 rounded-lg border bg-card p-4">
-              <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="font-medium">進捗状況</span>
-                <span className="text-muted-foreground">
-                  {completedSteps.size} / {caseReportGuideData.totalSteps}
-                </span>
-              </div>
-              <Progress value={progress} className="h-2" />
-              <p className="mt-2 text-xs text-muted-foreground">
-                {Math.round(progress)}% 完了
-              </p>
-            </div>
-
-            {/* Navigation */}
-            <ScrollArea className="h-[calc(100vh-16rem)] rounded-lg border bg-card">
-              <nav className="p-4 space-y-4">
-                {caseReportGuideData.phases.map((phase) => (
-                  <div key={phase.id}>
-                    <div className="mb-2 flex items-center gap-2">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                        {phase.number}
-                      </div>
-                      <h3 className="font-semibold text-sm">
-                        Phase {phase.number}: {phase.title}
-                      </h3>
-                    </div>
-                    <ul className="ml-4 space-y-1">
-                      {phase.steps.map((step) => {
-                        const isActive = step.id === currentStepId;
-                        const isCompleted = completedSteps.has(step.id);
-                        return (
-                          <li key={step.id}>
-                            <button
-                              onClick={() => setCurrentStepId(step.id)}
-                              className={cn(
-                                "w-full flex items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
-                                isActive
-                                  ? "bg-primary/10 text-primary font-medium"
-                                  : "hover:bg-muted text-muted-foreground"
-                              )}
-                            >
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleStepCompletion(step.id);
-                                }}
-                                className="mt-0.5 shrink-0"
-                              >
-                                {isCompleted ? (
-                                  <CheckCircle2 className="h-4 w-4 text-green-600" />
-                                ) : (
-                                  <Circle className="h-4 w-4" />
-                                )}
-                              </button>
-                              <div className="flex-1 min-w-0">
-                                <div className="truncate">
-                                  Step {step.number}: {step.title}
-                                </div>
-                                <div className="flex items-center gap-1 mt-0.5 text-xs text-muted-foreground">
-                                  <Clock className="h-3 w-3" />
-                                  {step.estimatedTime}
-                                </div>
-                              </div>
-                            </button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </nav>
-            </ScrollArea>
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 py-8">
+        {/* Sidebar */}
+        <aside className="lg:col-span-1 lg:sticky lg:top-20 self-start">
+          <div className="p-4 border rounded-lg bg-card">
+            <h3 className="font-bold mb-2">進捗状況</h3>
+            <Progress value={progress} className="mb-2" />
+            <p className="text-sm text-muted-foreground">{completedSteps.size} / {caseReportGuideData.totalSteps} 完了</p>
           </div>
+
+          <ScrollArea className="h-[calc(100vh-200px)] mt-4">
+            <nav className="space-y-4">
+              {caseReportGuideData.phases.map((phase: Phase) => (
+                <div key={phase.id}>
+                  <h4 className="flex items-center font-bold text-lg mb-2">
+                    <span className="flex items-center justify-center w-6 h-6 mr-2 text-sm font-bold text-white bg-primary rounded-full">{phase.number}</span>
+                    Phase {phase.number}: {phase.title}
+                  </h4>
+                  <ul className="space-y-1">
+                    {phase.steps.map((step: Step) => (
+                      <li key={step.id}>
+                        <Button
+                          variant={currentStepId === step.id ? "secondary" : "ghost"}
+                          className="w-full justify-start items-center text-left h-auto py-2"
+                          onClick={() => setCurrentStepId(step.id)}
+                        >
+                          <div onClick={(e) => { e.stopPropagation(); toggleStepCompletion(step.id); }}>
+                            {completedSteps.has(step.id) ? (
+                              <CheckCircle2 className="h-5 w-5 mr-3 text-green-500" />
+                            ) : (
+                              <Circle className="h-5 w-5 mr-3 text-muted-foreground" />
+                            )}
+                          </div>
+                          <div>
+                            <p className={cn("font-semibold", currentStepId === step.id && "text-primary")}>
+                              Step {step.number}: {step.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground flex items-center mt-1">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {step.estimatedTime}
+                            </p>
+                          </div>
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+          </ScrollArea>
         </aside>
 
-        {/* Content Area */}
-        <main className="flex-1 min-w-0">
-          <div className="rounded-lg border bg-card">
-            <ScrollArea className="h-[calc(100vh-8rem)]" ref={contentRef}>
-              <article className="prose prose-slate dark:prose-invert max-w-none p-8">
-                {loading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="text-center">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                      <p className="text-muted-foreground">読み込み中...</p>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {currentStep && (
-                      <div className="not-prose mb-6 flex items-center justify-between border-b pb-4">
-                        <div>
-                          <div className="text-sm text-muted-foreground mb-1">
-                            Step {currentStep.number}
-                          </div>
-                          <h1 className="text-2xl font-bold">{currentStep.title}</h1>
-                        </div>
-                        <Button
-                          variant={completedSteps.has(currentStepId) ? "default" : "outline"}
-                          onClick={() => toggleStepCompletion(currentStepId)}
-                        >
-                          {completedSteps.has(currentStepId) ? (
-                            <>
-                              <CheckCircle2 className="mr-2 h-4 w-4" />
-                              完了済み
-                            </>
-                          ) : (
-                            <>
-                              <Circle className="mr-2 h-4 w-4" />
-                              完了にする
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    )}
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                    >
-                      {markdownContent}
-                    </ReactMarkdown>
-                  </>
-                )}
-              </article>
-            </ScrollArea>
-          </div>
+        {/* Main Content */}
+        <main className="lg:col-span-3">
+          <ScrollArea className="h-[calc(100vh-120px)]" ref={contentRef}>
+            <div className="prose prose-lg max-w-none p-6 border rounded-lg bg-card">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-3xl font-bold m-0">Step {currentStep?.number}: {currentStep?.title}</h2>
+                <Button variant="outline" size="sm" onClick={() => toggleStepCompletion(currentStepId)}>
+                  {completedSteps.has(currentStepId) ? (
+                    <><CheckCircle2 className="h-4 w-4 mr-2" />完了！</>
+                  ) : (
+                    <><Circle className="h-4 w-4 mr-2" />完了にする</>
+                  )}
+                </Button>
+              </div>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeSanitize]}
+              >
+                {markdownContent}
+              </ReactMarkdown>
+            </div>
+          </ScrollArea>
         </main>
       </div>
     </div>
