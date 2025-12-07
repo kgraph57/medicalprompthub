@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense } from "react";
 import { Route, Switch, Router as WouterRouter } from "wouter";
-import { useBrowserLocation } from "wouter/use-browser-location";
+import { useHashLocation } from "wouter/use-hash-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -33,7 +33,7 @@ const PageLoader = () => (
 
 function Router() {
   return (
-    <WouterRouter hook={useBrowserLocation} base="/medicalprompthub">
+    <WouterRouter hook={useHashLocation}>
       <Suspense fallback={<PageLoader />}>
         <Switch>
           <Route path="/" component={Home} />
