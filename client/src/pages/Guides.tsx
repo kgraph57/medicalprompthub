@@ -18,6 +18,15 @@ export default function Guides() {
 
   const guides = [
     {
+      id: "case-report-complete",
+      title: "【完全版】症例報告執筆ガイド：構想から投稿まで",
+      description: "読むだけで症例報告が実際にできるレベルの完全版ガイド。18ステップで、準備から投稿まで完全サポート。各ステップに具体的なプロンプト、AIツール活用法、チェックリストを完備。",
+      category: "Research",
+      icon: <FileText className="h-6 w-6 text-blue-600" />,
+      readTime: "60 min read",
+      tags: ["Case Report", "Writing", "Complete Guide", "AI Tools"]
+    },
+    {
       id: "case-report-workflow",
       title: "症例報告作成ワークフロー：AIを活用した効率化ガイド",
       description: "症例報告は「マラソン」ではなく「400m走」です。CAREガイドラインチェックから投稿用カバーレター作成まで、AIプロンプトを活用して最短距離で完走するためのステップバイステップガイド。",
