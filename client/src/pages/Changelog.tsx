@@ -90,23 +90,23 @@ export default function Changelog() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto space-y-8 pb-24">
+      <div className="max-w-4xl mx-auto space-y-4 pb-12">
         {/* Hero Section */}
-        <div className="text-center space-y-4 py-8">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-            <Calendar className="w-4 h-4" />
+        <div className="text-center space-y-2 py-4">
+          <div className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+            <Calendar className="w-3.5 h-3.5" />
             <span>Changelog</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
             更新履歴
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             サービスの更新内容とリリースノート
           </p>
         </div>
 
         {/* Changelog Entries */}
-        <div className="space-y-6">
+        <div className="space-y-3">
           {changelogEntries.map((entry, index) => {
             const Icon = typeIcons[entry.type];
             const label = typeLabels[entry.type];
@@ -115,30 +115,30 @@ export default function Changelog() {
             return (
               <Card key={entry.version} className="relative">
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-lg" />
-                <CardHeader>
-                  <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-primary" />
+                <CardHeader className="p-4">
+                  <div className="flex items-center justify-between flex-wrap gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Icon className="w-4 h-4 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="text-2xl">v{entry.version}</CardTitle>
-                        <CardDescription className="flex items-center gap-2 mt-1">
+                        <CardTitle className="text-lg">v{entry.version}</CardTitle>
+                        <CardDescription className="flex items-center gap-1.5 mt-0.5 text-xs">
                           <Calendar className="w-3 h-3" />
                           {entry.date}
                         </CardDescription>
                       </div>
                     </div>
-                    <Badge variant={color} className="text-xs">
+                    <Badge variant={color} className="text-[10px]">
                       {label}
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
+                <CardContent className="p-4 pt-0">
+                  <ul className="space-y-1">
                     {entry.changes.map((change, changeIndex) => (
-                      <li key={changeIndex} className="flex items-start gap-2 text-sm">
-                        <Plus className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <li key={changeIndex} className="flex items-start gap-1.5 text-xs">
+                        <Plus className="w-3.5 h-3.5 text-primary mt-0.5 flex-shrink-0" />
                         <span className="text-muted-foreground">{change}</span>
                       </li>
                     ))}
@@ -154,15 +154,15 @@ export default function Changelog() {
 
         {/* Future Updates */}
         <Card className="border-dashed">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Sparkles className="w-4 h-4 text-primary" />
               今後の予定
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm text-muted-foreground">
+          <CardContent className="p-4 pt-0 space-y-1.5 text-xs text-muted-foreground">
             <p>以下の機能を順次実装予定です：</p>
-            <ul className="list-disc pl-5 space-y-1">
+            <ul className="list-disc pl-4 space-y-0.5">
               <li>プロンプトの評価・フィードバック機能</li>
               <li>ユーザー投稿機能（コミュニティプロンプト）</li>
               <li>プロンプトのバージョン管理</li>

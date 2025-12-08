@@ -83,17 +83,17 @@ export default function TipDetail() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto pb-24 px-4">
+      <div className="max-w-4xl mx-auto pb-12 px-4">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="mb-8"
+          className="mb-4"
         >
           <Link href="/tips">
-            <Button variant="ghost" size="sm" className="-ml-2 text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+            <Button variant="ghost" size="sm" className="-ml-2 text-muted-foreground hover:text-foreground h-7 text-xs">
+              <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
               Tipsに戻る
             </Button>
           </Link>
@@ -104,22 +104,22 @@ export default function TipDetail() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-16"
+          className="mb-8"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <Badge variant="secondary" className="text-sm">
+          <div className="flex items-center gap-2 mb-2">
+            <Badge variant="secondary" className="text-[10px]">
               {categoryLabels[tip.category]}
             </Badge>
-            <Badge variant="outline" className="text-sm">
+            <Badge variant="outline" className="text-[10px]">
               {levelLabels[tip.level]}
             </Badge>
           </div>
           
-          <h1 className="text-5xl font-bold tracking-tight mb-6 leading-tight">
+          <h1 className="text-2xl font-bold tracking-tight mb-3 leading-tight">
             {tip.title}
           </h1>
           
-          <p className="text-xl text-muted-foreground leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             {tip.description}
           </p>
         </motion.header>
@@ -129,14 +129,14 @@ export default function TipDetail() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="space-y-16"
+          className="space-y-6"
         >
           {/* When to Use - 使用シーン */}
           {tip.scenario && (
             <section>
-              <h2 className="text-2xl font-bold mb-6">いつ使うのか</h2>
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-l-4 border-blue-500 p-8 rounded-r-xl">
-                <p className="text-lg leading-relaxed text-foreground">
+              <h2 className="text-xl font-bold mb-3">いつ使うのか</h2>
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-l-4 border-blue-500 p-4 rounded-r-xl">
+                <p className="text-sm leading-relaxed text-foreground">
                   {tip.scenario}
                 </p>
               </div>
@@ -145,14 +145,14 @@ export default function TipDetail() {
 
           {/* How to Use - 使い方 */}
           <section>
-            <h2 className="text-2xl font-bold mb-6">どう使うのか</h2>
+            <h2 className="text-xl font-bold mb-3">どう使うのか</h2>
             
             {/* 基本的な使い方 */}
             {basicUsage && (
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4 text-muted-foreground">このテクニックとは</h3>
-                <div className="prose prose-lg max-w-none dark:prose-invert">
-                  <p className="text-base leading-relaxed whitespace-pre-line">
+              <div className="mb-4">
+                <h3 className="text-sm font-semibold mb-2 text-muted-foreground">このテクニックとは</h3>
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <p className="text-xs leading-relaxed whitespace-pre-line">
                     {basicUsage}
                   </p>
                 </div>
@@ -162,32 +162,32 @@ export default function TipDetail() {
             {/* プロンプトテンプレート */}
             {tip.promptTemplate && (
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-muted-foreground">プロンプトテンプレート</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-muted-foreground">プロンプトテンプレート</h3>
                   <Button
                     onClick={handleCopyTemplate}
                     size="sm"
-                    className="gap-2"
+                    className="gap-1.5 h-7 text-xs"
                   >
                     {copiedTemplate ? (
                       <>
-                        <Check className="w-4 h-4" />
+                        <Check className="w-3.5 h-3.5" />
                         コピー済み
                       </>
                     ) : (
                       <>
-                        <Copy className="w-4 h-4" />
+                        <Copy className="w-3.5 h-3.5" />
                         コピー
                       </>
                     )}
                   </Button>
                 </div>
-                <div className="bg-gray-900 dark:bg-gray-950 rounded-xl p-8 border border-gray-800">
-                  <pre className="text-sm leading-relaxed whitespace-pre-wrap font-mono text-gray-100 overflow-x-auto">
+                <div className="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 border border-gray-800">
+                  <pre className="text-xs leading-relaxed whitespace-pre-wrap font-mono text-gray-100 overflow-x-auto">
                     {tip.promptTemplate}
                   </pre>
                 </div>
-                <p className="text-sm text-muted-foreground mt-4">
+                <p className="text-xs text-muted-foreground mt-2">
                   このテンプレートをコピーして、ChatGPTやClaude AIなどに貼り付けて使用できます
                 </p>
               </div>
@@ -195,10 +195,10 @@ export default function TipDetail() {
 
             {/* 実践例 */}
             {tip.example && (
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-4 text-muted-foreground">実践例</h3>
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
-                  <pre className="text-sm leading-relaxed whitespace-pre-wrap text-foreground">
+              <div className="mt-4">
+                <h3 className="text-sm font-semibold mb-2 text-muted-foreground">実践例</h3>
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
+                  <pre className="text-xs leading-relaxed whitespace-pre-wrap text-foreground">
                     {tip.example}
                   </pre>
                 </div>
@@ -209,19 +209,19 @@ export default function TipDetail() {
           {/* Key Points - ポイント */}
           {(merits.length > 0 || demerits.length > 0) && (
             <section>
-              <h2 className="text-2xl font-bold mb-6">押さえておくポイント</h2>
-              <div className="grid md:grid-cols-2 gap-8">
+              <h2 className="text-xl font-bold mb-3">押さえておくポイント</h2>
+              <div className="grid md:grid-cols-2 gap-4">
                 {/* メリット */}
                 {merits.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-4 text-green-600 dark:text-green-400">
+                    <h3 className="text-sm font-semibold mb-2 text-green-600 dark:text-green-400">
                       メリット
                     </h3>
-                    <ul className="space-y-3">
+                    <ul className="space-y-1.5">
                       {merits.map((merit, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <span className="text-green-500 mt-1 flex-shrink-0">✓</span>
-                          <span className="text-base leading-relaxed">{merit}</span>
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5 flex-shrink-0 text-xs">✓</span>
+                          <span className="text-xs leading-relaxed">{merit}</span>
                         </li>
                       ))}
                     </ul>
@@ -231,14 +231,14 @@ export default function TipDetail() {
                 {/* デメリット */}
                 {demerits.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-4 text-orange-600 dark:text-orange-400">
+                    <h3 className="text-sm font-semibold mb-2 text-orange-600 dark:text-orange-400">
                       デメリット・注意点
                     </h3>
-                    <ul className="space-y-3">
+                    <ul className="space-y-1.5">
                       {demerits.map((demerit, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <span className="text-orange-500 mt-1 flex-shrink-0">!</span>
-                          <span className="text-base leading-relaxed">{demerit}</span>
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5 flex-shrink-0 text-xs">!</span>
+                          <span className="text-xs leading-relaxed">{demerit}</span>
                         </li>
                       ))}
                     </ul>

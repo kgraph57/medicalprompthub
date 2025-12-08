@@ -23,30 +23,30 @@ export default function About() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto space-y-8 pb-24">
+      <div className="max-w-4xl mx-auto space-y-4 pb-12">
         {/* Hero Section */}
-        <div className="text-center space-y-4 py-8">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-            <Sparkles className="w-4 h-4" />
+        <div className="text-center space-y-2 py-4">
+          <div className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+            <Sparkles className="w-3.5 h-3.5" />
             <span>About Medical Prompt Hub</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
             Medical Prompt Hubについて
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             医療従事者のためのAIプロンプトライブラリ
           </p>
         </div>
 
         {/* Mission Section */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Heart className="w-5 h-5 text-primary" />
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Heart className="w-4 h-4 text-primary" />
               ミッション
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm leading-relaxed">
+          <CardContent className="p-4 pt-0 space-y-2 text-xs leading-relaxed">
             <p>
               Medical Prompt Hubは、医療従事者がAI（ChatGPT, Claude, Geminiなど）を臨床業務、研究、教育に効果的に活用できるよう、実践的で高品質なプロンプトを提供することを目的としています。
             </p>
@@ -58,47 +58,47 @@ export default function About() {
 
         {/* Features Section */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Sparkles className="w-4 h-4 text-primary" />
               主な特徴
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-primary" />
+          <CardContent className="p-4 pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-primary" />
                   100以上の専門プロンプト
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   診断支援、治療計画、論文執筆、学会発表など、医療現場で実際に使えるプロンプトを網羅
                 </p>
               </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <Code className="w-4 h-4 text-primary" />
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Code className="w-3.5 h-3.5 text-primary" />
                   実践的なワークフローガイド
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   症例報告の書き方、統計解析の方法など、ステップバイステップのガイドを提供
                 </p>
               </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <Users className="w-4 h-4 text-primary" />
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5 text-primary" />
                   医療従事者向けに最適化
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   医療現場の実際のニーズに基づいて設計された、実用的なプロンプト集
                 </p>
               </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-primary" />
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Heart className="w-3.5 h-3.5 text-primary" />
                   無料で利用可能
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   すべてのプロンプトとガイドは無料で利用でき、オープンソースとして公開されています
                 </p>
               </div>
@@ -110,22 +110,22 @@ export default function About() {
 
         {/* Developer Section */}
         <Card>
-          <CardHeader>
-            <CardTitle>開発者情報</CardTitle>
-            <CardDescription>
+          <CardHeader className="p-4">
+            <CardTitle className="text-base">開発者情報</CardTitle>
+            <CardDescription className="text-xs">
               Medical Prompt Hubの開発・運営について
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm leading-relaxed">
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
             <div>
-              <h3 className="font-semibold mb-2">開発・運営</h3>
+              <h3 className="font-semibold mb-1 text-sm">開発・運営</h3>
               <p className="text-muted-foreground">
                 Medical Prompt Hubは、医療従事者とAI技術の専門家によって開発・運営されています。
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">技術スタック</h3>
-              <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+              <h3 className="font-semibold mb-1 text-sm">技術スタック</h3>
+              <ul className="list-disc pl-4 space-y-0.5 text-muted-foreground">
                 <li>Frontend: React 19, TypeScript, Vite, Tailwind CSS</li>
                 <li>UI Components: shadcn/ui, Radix UI, Framer Motion</li>
                 <li>Hosting: GitHub Pages</li>
@@ -134,8 +134,8 @@ export default function About() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">お問い合わせ</h3>
-              <p className="text-muted-foreground mb-2">
+              <h3 className="font-semibold mb-1 text-sm">お問い合わせ</h3>
+              <p className="text-muted-foreground mb-1.5">
                 ご質問、ご意見、バグ報告などは、お問い合わせフォームからお願いいたします。
               </p>
               <Link href="/contact">
@@ -150,13 +150,13 @@ export default function About() {
 
         {/* Credits Section */}
         <Card>
-          <CardHeader>
-            <CardTitle>クレジット・謝辞</CardTitle>
+          <CardHeader className="p-4">
+            <CardTitle className="text-base">クレジット・謝辞</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm leading-relaxed">
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
             <div>
-              <h3 className="font-semibold mb-2">謝辞</h3>
-              <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+              <h3 className="font-semibold mb-1 text-sm">謝辞</h3>
+              <ul className="list-disc pl-4 space-y-0.5 text-muted-foreground">
                 <li>すべての医療従事者の皆様</li>
                 <li>AIコミュニティの貢献者</li>
                 <li>オープンソースプロジェクトの開発者</li>
@@ -164,14 +164,14 @@ export default function About() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">オープンソースライセンス</h3>
+              <h3 className="font-semibold mb-1 text-sm">オープンソースライセンス</h3>
               <p className="text-muted-foreground">
                 本プロジェクトはMIT Licenseの下で公開されています。
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">GitHub</h3>
-              <p className="text-muted-foreground mb-2">
+              <h3 className="font-semibold mb-1 text-sm">GitHub</h3>
+              <p className="text-muted-foreground mb-1.5">
                 ソースコードはGitHubで公開されています。貢献を歓迎します。
               </p>
               <a
@@ -189,13 +189,13 @@ export default function About() {
 
         {/* License Section */}
         <Card>
-          <CardHeader>
-            <CardTitle>ライセンス</CardTitle>
+          <CardHeader className="p-4">
+            <CardTitle className="text-base">ライセンス</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm leading-relaxed">
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
             <div>
-              <h3 className="font-semibold mb-2">MIT License</h3>
-              <p className="text-muted-foreground mb-2">
+              <h3 className="font-semibold mb-1 text-sm">MIT License</h3>
+              <p className="text-muted-foreground mb-1.5">
                 本プロジェクトのソースコードはMIT Licenseの下で公開されています。
               </p>
               <p className="text-muted-foreground">
@@ -205,7 +205,7 @@ export default function About() {
             </div>
             <Separator />
             <div>
-              <h3 className="font-semibold mb-2">免責事項</h3>
+              <h3 className="font-semibold mb-1 text-sm">免責事項</h3>
               <p className="text-muted-foreground">
                 本サービスで提供されるプロンプトやガイドは、医療アドバイスを提供するものではありません。
                 実際の医療行為に関する判断は、必ず医師や専門家の判断を優先し、所属する医療機関のガイドラインに従ってください。

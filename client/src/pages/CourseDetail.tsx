@@ -109,7 +109,7 @@ export default function CourseDetail() {
 
   return (
     <Layout>
-      <div className="space-y-8 pb-24">
+      <div className="space-y-4 pb-12">
         {/* ヘッダー */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -119,45 +119,45 @@ export default function CourseDetail() {
           <Button
             variant="ghost"
             onClick={() => setLocation("/courses")}
-            className="mb-6"
+            className="mb-3 h-8 text-xs"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Courses
+            <ArrowLeft className="mr-2 h-3.5 w-3.5" /> Back to Courses
           </Button>
 
-          <div className="flex items-start gap-6">
-            <div className="text-6xl">{course.badge}</div>
-            <div className="flex-1 space-y-4">
-              <div className="flex items-center gap-3">
-                <h1 className="text-4xl font-bold">{course.title}</h1>
-                <Badge variant="secondary">Level {course.level}</Badge>
+          <div className="flex items-start gap-4">
+            <div className="text-4xl">{course.badge}</div>
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold">{course.title}</h1>
+                <Badge variant="secondary" className="text-[10px]">Level {course.level}</Badge>
               </div>
-              <p className="text-xl text-muted-foreground">{course.description}</p>
+              <p className="text-base text-muted-foreground">{course.description}</p>
               
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5" />
                   <span>{totalLessons} lessons</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5" />
                   <span>約 {totalLessons * 10} 分</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Star className="w-4 h-4 text-yellow-500" />
+                <div className="flex items-center gap-1.5">
+                  <Star className="w-3.5 h-3.5 text-yellow-500" />
                   <span>{course.xpReward} XP</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4" />
+                <div className="flex items-center gap-1.5">
+                  <Award className="w-3.5 h-3.5" />
                   <span>バッジ: {course.badge}</span>
                 </div>
               </div>
 
-              <div className="space-y-2 pt-2">
-                <div className="flex justify-between text-sm text-muted-foreground">
+              <div className="space-y-1 pt-1">
+                <div className="flex justify-between text-xs text-muted-foreground">
                   <span>Course Progress</span>
                   <span>{completedLessons} / {totalLessons} completed</span>
                 </div>
-                <Progress value={progress} className="h-3" />
+                <Progress value={progress} className="h-1.5" />
               </div>
             </div>
           </div>
@@ -168,10 +168,10 @@ export default function CourseDetail() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-6xl mx-auto px-4 space-y-4"
+          className="max-w-6xl mx-auto px-4 space-y-2"
         >
-          <h2 className="text-2xl font-bold">Lessons</h2>
-          <div className="space-y-3">
+          <h2 className="text-xl font-bold">Lessons</h2>
+          <div className="space-y-2">
             {lessons.map((lesson, index) => {
               const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
               const isLocked = index > 0 && !courseProgress.completedLessons?.includes(lessons[index - 1].id);
@@ -184,41 +184,41 @@ export default function CourseDetail() {
                   transition={{ delay: 0.1 * index }}
                 >
                   <Card className={isLocked ? "opacity-60" : "hover:shadow-md transition-shadow"}>
-                    <CardHeader>
+                    <CardHeader className="p-3">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs">
                               {index + 1}
                             </div>
-                            <CardTitle className="text-xl">{lesson.title}</CardTitle>
+                            <CardTitle className="text-base">{lesson.title}</CardTitle>
                             {isCompleted && (
-                              <Badge variant="default" className="bg-green-500">
-                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                              <Badge variant="default" className="bg-green-500 text-[10px]">
+                                <CheckCircle2 className="w-3 h-3 mr-0.5" />
                                 Completed
                               </Badge>
                             )}
                             {isLocked && (
-                              <Badge variant="secondary">
-                                <Lock className="w-3 h-3 mr-1" />
+                              <Badge variant="secondary" className="text-[10px]">
+                                <Lock className="w-3 h-3 mr-0.5" />
                                 Locked
                               </Badge>
                             )}
                           </div>
-                          <CardDescription>{lesson.description}</CardDescription>
+                          <CardDescription className="text-xs">{lesson.description}</CardDescription>
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-3 pt-0">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
                           <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
+                            <Clock className="w-3.5 h-3.5" />
                             <span>{lesson.duration} 分</span>
                           </div>
                           {lesson.slides > 0 && (
                             <div className="flex items-center gap-1">
-                              <FileText className="w-4 h-4" />
+                              <FileText className="w-3.5 h-3.5" />
                               <span>{lesson.slides} slides</span>
                             </div>
                           )}
@@ -231,6 +231,7 @@ export default function CourseDetail() {
                               setLocation(`/courses/${courseId}/lessons/${lesson.id}`);
                             }
                           }}
+                          className="h-8 text-xs"
                         >
                           {isCompleted ? "Review" : isLocked ? "Locked" : "Start"}
                         </Button>

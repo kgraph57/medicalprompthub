@@ -127,6 +127,24 @@ export default function LessonDetail() {
 
   const nextLesson = getNextLesson();
 
+  // ローカルストレージから完了状態を読み込む
+  useEffect(() => {
+    if (lessonId) {
+      const progressKey = `lesson-progress-${lessonId}`;
+      const saved = localStorage.getItem(progressKey);
+      if (saved) {
+        try {
+          const progress = JSON.parse(saved);
+          if (progress.completed) {
+            setCompleted(true);
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    }
+  }, [lessonId]);
+
   // スクロール位置に応じて進捗を更新
   useEffect(() => {
     const handleScroll = () => {
@@ -416,24 +434,20 @@ export default function LessonDetail() {
                       <span className="font-semibold">+10 XP 獲得</span>
                     </div>
                     <div className="flex justify-center pt-6">
-                      {nextLesson ? (
-                        <Button 
-                          onClick={() => setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`)}
-                          size="lg"
-                          className="min-w-[180px]"
-                        >
-                          <ArrowRight className="mr-2 h-4 w-4" />
-                          次に進む
-                        </Button>
-                      ) : (
-                        <Button 
-                          onClick={() => setLocation(`/courses/${courseId}`)}
-                          size="lg"
-                          className="min-w-[180px]"
-                        >
-                          コース一覧へ
-                        </Button>
-                      )}
+                      <Button 
+                        onClick={() => {
+                          if (nextLesson) {
+                            setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+                          } else {
+                            setLocation(`/courses/${courseId}`);
+                          }
+                        }}
+                        size="lg"
+                        className="min-w-[180px]"
+                      >
+                        <ArrowRight className="mr-2 h-4 w-4" />
+                        次に進む
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

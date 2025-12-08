@@ -104,41 +104,41 @@ export default function CollectionDetail() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <div className="container py-12 max-w-6xl">
+      <div className="container py-6 max-w-6xl">
         <Link href="/collections">
-          <Button variant="ghost" className="mb-6 gap-2">
-            <ArrowLeft className="h-4 w-4" />
+          <Button variant="ghost" className="mb-4 gap-1.5 h-7 text-xs">
+            <ArrowLeft className="h-3.5 w-3.5" />
             コレクション一覧に戻る
           </Button>
         </Link>
 
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
           <div className="flex-1">
-            <div className="flex flex-wrap items-center gap-3 mb-2">
-              <h1 className="text-2xl sm:text-4xl font-black">{collection.name}</h1>
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <h1 className="text-xl sm:text-2xl font-black">{collection.name}</h1>
               {collection.isPublic === 1 ? (
-                <Badge variant="secondary" className="gap-1">
+                <Badge variant="secondary" className="gap-1 text-[10px]">
                   <Eye className="h-3 w-3" />
                   公開
                 </Badge>
               ) : (
-                <Badge variant="outline" className="gap-1">
+                <Badge variant="outline" className="gap-1 text-[10px]">
                   <EyeOff className="h-3 w-3" />
                   非公開
                 </Badge>
               )}
             </div>
             {collection.description && (
-              <p className="text-sm sm:text-base text-muted-foreground">{collection.description}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">{collection.description}</p>
             )}
-            <p className="text-xs sm:text-sm text-muted-foreground mt-2">
+            <p className="text-[10px] sm:text-xs text-muted-foreground mt-1.5">
               {collection.userName} 作成 • {prompts.length} 個のプロンプト
             </p>
           </div>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
-              <Button size="lg" className="gap-2 w-full sm:w-auto">
-                <Plus className="h-5 w-5" />
+              <Button size="default" className="gap-1.5 w-full sm:w-auto h-8 text-xs">
+                <Plus className="h-3.5 w-3.5" />
                 プロンプトを追加
               </Button>
             </DialogTrigger>
@@ -187,31 +187,31 @@ export default function CollectionDetail() {
         </div>
 
         {prompts.length === 0 ? (
-          <Card className="p-12 text-center">
-            <p className="text-muted-foreground mb-6">このコレクションにはまだプロンプトがありません</p>
-            <Button onClick={() => setIsAddDialogOpen(true)} className="gap-2">
-              <Plus className="h-4 w-4" />
+          <Card className="p-8 text-center">
+            <p className="text-sm text-muted-foreground mb-4">このコレクションにはまだプロンプトがありません</p>
+            <Button onClick={() => setIsAddDialogOpen(true)} className="gap-1.5 h-8 text-xs">
+              <Plus className="h-3.5 w-3.5" />
               最初のプロンプトを追加
             </Button>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {prompts.map((prompt: any) => (
-              <Card key={prompt.id} className="p-6">
-                <div className="flex items-start justify-between mb-4">
+              <Card key={prompt.id} className="p-4">
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <Link href={`/prompts/${prompt.id}`}>
-                      <h3 className="text-xl font-bold mb-2 hover:text-primary transition-colors cursor-pointer">
+                      <h3 className="text-base font-bold mb-1.5 hover:text-primary transition-colors cursor-pointer">
                         {prompt.title}
                       </h3>
                     </Link>
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground mb-2">
-                      <Badge variant="secondary">{prompt.categoryName}</Badge>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
+                      <Badge variant="secondary" className="text-[10px]">{prompt.categoryName}</Badge>
                       <span>{prompt.authorName}</span>
                       <span>{new Date(prompt.createdAt).toLocaleDateString("ja-JP")}</span>
                     </div>
                     {prompt.note && (
-                      <p className="text-sm text-muted-foreground italic mt-2">
+                      <p className="text-xs text-muted-foreground italic mt-1.5">
                         📝 {prompt.note}
                       </p>
                     )}
@@ -221,23 +221,23 @@ export default function CollectionDetail() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemovePrompt(prompt.id)}
-                      className="text-destructive hover:text-destructive"
+                      className="text-destructive hover:text-destructive h-7 w-7 p-0"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   )}
                 </div>
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-3 text-xs">
                   <div className="flex items-center gap-1">
-                    <Heart className="h-4 w-4" />
+                    <Heart className="h-3.5 w-3.5" />
                     {prompt.likesCount || 0}
                   </div>
                   <div className="flex items-center gap-1">
-                    <Bookmark className="h-4 w-4" />
+                    <Bookmark className="h-3.5 w-3.5" />
                     {prompt.bookmarksCount || 0}
                   </div>
                   <Link href={`/prompts/${prompt.id}`}>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="h-7 text-xs">
                       詳細を見る
                     </Button>
                   </Link>

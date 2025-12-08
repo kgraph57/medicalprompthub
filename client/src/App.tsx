@@ -33,6 +33,7 @@ const JournalDetail = lazy(() => import("@/pages/JournalDetail"));
 const JournalCompare = lazy(() => import("@/pages/JournalCompare"));
 const CaseReportGuide = lazy(() => import("@/pages/CaseReportGuide"));
 const PaperReadingGuide = lazy(() => import("@/pages/PaperReadingGuide"));
+const EnglishProofreadingGuide = lazy(() => import("@/pages/EnglishProofreadingGuide"));
 
 // Loading component
 const PageLoader = () => (
@@ -59,6 +60,7 @@ function Router() {
           <Route path="/guides" component={Guides} />
           <Route path="/guides/case-report-complete/:stepId?" component={CaseReportGuide} />
           <Route path="/guides/paper-reading-efficiency/:stepId?" component={PaperReadingGuide} />
+          <Route path="/guides/english-proofreading-guide/:stepId?" component={EnglishProofreadingGuide} />
           <Route path="/guides/:id" component={GuideDetail} />
           <Route path="/tips" component={Tips} />
           <Route path="/tips/:id" component={TipDetail} />

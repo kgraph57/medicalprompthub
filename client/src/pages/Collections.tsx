@@ -121,16 +121,16 @@ export default function Collections() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <div className="container py-12 max-w-6xl">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="container py-6 max-w-6xl">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div>
-            <h1 className="text-2xl sm:text-4xl font-black mb-2">マイコレクション</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">プロンプトをまとめて管理できます</p>
+            <h1 className="text-xl sm:text-2xl font-black mb-1">マイコレクション</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">プロンプトをまとめて管理できます</p>
           </div>
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-              <Button size="lg" className="gap-2 w-full sm:w-auto">
-                <Plus className="h-5 w-5" />
+              <Button size="default" className="gap-1.5 w-full sm:w-auto h-8 text-xs">
+                <Plus className="h-3.5 w-3.5" />
                 新しいコレクション
               </Button>
             </DialogTrigger>
@@ -188,66 +188,66 @@ export default function Collections() {
         </div>
 
         {collections.length === 0 ? (
-          <Card className="p-12 text-center">
-            <FolderOpen className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">コレクションがありません</h3>
-            <p className="text-muted-foreground mb-6">
+          <Card className="p-8 text-center">
+            <FolderOpen className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+            <h3 className="text-base font-semibold mb-1.5">コレクションがありません</h3>
+            <p className="text-xs text-muted-foreground mb-4">
               プロンプトをまとめて管理するコレクションを作成しましょう
             </p>
-            <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2">
-              <Plus className="h-4 w-4" />
+            <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-1.5 h-8 text-xs">
+              <Plus className="h-3.5 w-3.5" />
               最初のコレクションを作成
             </Button>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {collections.map((collection: any) => (
-              <Card key={collection.id} className="p-4 hover:shadow-lg transition-shadow h-full min-h-[180px] flex flex-col">
-                <div className="flex items-start justify-between mb-3 flex-1">
+              <Card key={collection.id} className="p-3 hover:shadow-lg transition-shadow h-full min-h-[140px] flex flex-col">
+                <div className="flex items-start justify-between mb-2 flex-1">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold mb-1 leading-tight">{collection.name}</h3>
+                    <h3 className="text-base font-bold mb-1 leading-tight">{collection.name}</h3>
                     {collection.description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {collection.description}
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     {collection.isPublic === 1 ? (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <Eye className="h-3.5 w-3.5 text-muted-foreground" />
                     ) : (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
                     )}
                   </div>
                 </div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-muted-foreground">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs text-muted-foreground">
                     {collection.promptCount || 0} 個のプロンプト
                   </span>
                   <Link href={`/collections/${collection.id}`}>
-                    <Button variant="ghost" size="sm" className="gap-2">
-                      <LinkIcon className="h-4 w-4" />
+                    <Button variant="ghost" size="sm" className="gap-1.5 h-7 text-xs">
+                      <LinkIcon className="h-3.5 w-3.5" />
                       開く
                     </Button>
                   </Link>
                 </div>
-                <div className="flex gap-2 mt-auto">
+                <div className="flex gap-1.5 mt-auto">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1"
+                    className="flex-1 h-7 text-xs"
                     onClick={() => handleEdit(collection)}
                   >
-                    <Edit className="h-4 w-4 mr-2" />
+                    <Edit className="h-3.5 w-3.5 mr-1.5" />
                     編集
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => handleDelete(collection.id)}
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive h-7 w-7 p-0"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               </Card>

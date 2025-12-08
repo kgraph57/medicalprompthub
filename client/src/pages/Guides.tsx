@@ -14,7 +14,8 @@ type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 // 実装済みのガイドIDリスト
 const IMPLEMENTED_GUIDES = [
   "case-report-complete",
-  "paper-reading-efficiency"
+  "paper-reading-efficiency",
+  "english-proofreading-guide"
 ];
 
 // Updated: 2025-12-07
@@ -68,6 +69,15 @@ export default function Guides() {
       icon: <BookOpen className="h-6 w-6 text-orange-500" />,
       readTime: "15 min read",
       tags: ["Paper Reading", "Literature Review", "Time-saving", "AI Tools"]
+    },
+    {
+      id: "english-proofreading-guide",
+      title: "【完全版】医学英語校正ガイド:AIツール活用からプロ校正まで",
+      description: "論文、症例報告、学会抄録、プレゼン資料まで。LLM時代の最新トレンドを反映。AIツール（Grammarly、DeepL Write、ChatGPT）の組み合わせで多くのケースに対応可能。プロ校正が必要なケースとの使い分けも徹底解説。",
+      category: "Research",
+      icon: <FileText className="h-6 w-6 text-violet-500" />,
+      readTime: "20 min read",
+      tags: ["English Editing", "Proofreading", "Academic Writing", "AI Tools"]
     },
     {
       id: "journal-club-guide",
@@ -438,10 +448,18 @@ export default function Guides() {
                   </motion.div>
                 );
 
+                // 特別なルーティングが必要なガイド
+                const getGuidePath = (id: string) => {
+                  if (id === "case-report-complete") return "/guides/case-report-complete";
+                  if (id === "paper-reading-efficiency") return "/guides/paper-reading-efficiency";
+                  if (id === "english-proofreading-guide") return "/guides/english-proofreading-guide";
+                  return `/guides/${id}`;
+                };
+
                 return isImplemented ? (
                   <Link 
                     key={guide.id}
-                    href={`/guides/${guide.id}`}
+                    href={getGuidePath(guide.id)}
                     style={{ textDecoration: 'none', display: 'block' }}
                   >
                     {cardContent}
