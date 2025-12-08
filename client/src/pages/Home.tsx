@@ -129,9 +129,8 @@ export default function Home() {
           <GamificationStats
             totalXP={stats.totalXP}
             currentLevel={stats.currentLevel}
-            currentStreak={stats.currentStreak}
-            longestStreak={stats.longestStreak}
             totalLessonsCompleted={stats.totalLessonsCompleted}
+            totalBadges={0}
           />
         </motion.section>
 

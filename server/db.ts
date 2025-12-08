@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, prompts, categories, likes, bookmarks, InsertPrompt, InsertCategory, InsertLike, InsertBookmark, courses, lessons, slides, userProgress, InsertCourse, InsertLesson, InsertSlide, InsertUserProgress, tags, promptTags, InsertTag, InsertPromptTag, comments, InsertComment } from "../drizzle/schema";
 import { ENV } from './_core/env';
 import { logger } from './_core/logger';
+import { calculateLevel } from './_core/gamification';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -1090,13 +1091,15 @@ export async function upsertUserStats(data: InsertUserStats): Promise<void> {
 export async function addXP(userId: number, xp: number): Promise<void> {
   const stats = await getUserStats(userId);
   const newTotalXP = (stats?.totalXP || 0) + xp;
+  const newLevel = calculateLevel(newTotalXP);
 
   await upsertUserStats({
     userId,
     totalXP: newTotalXP,
+    currentLevel: newLevel,
   });
 
-  logger.info("XP added", { userId, xp, newTotalXP });
+  logger.info("XP added", { userId, xp, newTotalXP, newLevel });
 }
 
 /**

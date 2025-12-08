@@ -65,6 +65,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div role="listitem">
             <Button
+              variant={location.startsWith("/courses") ? "secondary" : "ghost"}
+              className={cn("w-full justify-start font-medium", location.startsWith("/courses") && "bg-secondary text-secondary-foreground")}
+              onClick={() => {
+                setLocation("/courses");
+                setIsMobileOpen(false);
+              }}
+            >
+              <GraduationCap className="mr-2 w-4 h-4" aria-hidden="true" /> Courses
+            </Button>
+          </div>
+          <div role="listitem">
+            <Button
               variant={location.startsWith("/tips") ? "secondary" : "ghost"}
               className={cn("w-full justify-start font-medium", location.startsWith("/tips") && "bg-secondary text-secondary-foreground")}
               onClick={() => {

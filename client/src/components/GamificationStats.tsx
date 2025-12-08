@@ -5,15 +5,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { Flame, Star, TrendingUp } from "lucide-react";
+import { Star, TrendingUp, Award } from "lucide-react";
 
 interface GamificationStatsProps {
   totalXP: number;
   currentLevel: number;
-  currentStreak: number;
-  longestStreak: number;
   totalLessonsCompleted: number;
+  totalBadges?: number;
 }
 
 /**
@@ -63,9 +61,8 @@ function getXPProgress(totalXP: number) {
 export function GamificationStats({
   totalXP,
   currentLevel,
-  currentStreak,
-  longestStreak,
   totalLessonsCompleted,
+  totalBadges = 0,
 }: GamificationStatsProps) {
   const { currentLevelXP, nextLevelXP, progress } = getXPProgress(totalXP);
   const levelNames: Record<number, string> = {
@@ -101,27 +98,22 @@ export function GamificationStats({
         </CardContent>
       </Card>
 
-      {/* ストリーク */}
+      {/* バッジ数 */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Flame className="h-4 w-4 text-orange-500" />
-            連続学習
+            <Award className="h-4 w-4 text-yellow-500" />
+            獲得バッジ
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-bold">{currentStreak}</span>
-            <span className="text-sm text-muted-foreground">日</span>
+            <span className="text-2xl font-bold">{totalBadges}</span>
+            <span className="text-sm text-muted-foreground">個</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            最長記録: {longestStreak}日
+            コース完了でバッジを獲得
           </div>
-          {currentStreak > 0 && (
-            <Badge variant="secondary" className="w-fit">
-              🔥 {currentStreak}日連続！
-            </Badge>
-          )}
         </CardContent>
       </Card>
 

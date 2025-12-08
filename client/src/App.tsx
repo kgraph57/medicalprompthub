@@ -16,6 +16,7 @@ const Tips = lazy(() => import("./pages/Tips"));
 const TipDetail = lazy(() => import("./pages/TipDetail"));
 const Legal = lazy(() => import("./pages/Legal"));
 const Favorites = lazy(() => import("./pages/Favorites"));
+const Courses = lazy(() => import("./pages/Courses"));
 const JournalFinderPage = lazy(() => import("@/pages/JournalFinderPage"));
 const JournalDetail = lazy(() => import("@/pages/JournalDetail"));
 const JournalCompare = lazy(() => import("@/pages/JournalCompare"));
@@ -39,6 +40,7 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/category/:id" component={Category} />
           <Route path="/prompts/:id" component={PromptDetail} />
+          <Route path="/courses" component={Courses} />
           <Route path="/guides" component={Guides} />
           <Route path="/guides/case-report-complete/:stepId?" component={CaseReportGuide} />
           <Route path="/guides/:id" component={GuideDetail} />
