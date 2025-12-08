@@ -57,6 +57,8 @@ export default function PaperReadingGuide() {
   useEffect(() => {
     if (stepId) {
       setCurrentStepId(stepId);
+    } else {
+      setCurrentStepId('intro');
     }
   }, [stepId]);
 
@@ -168,6 +170,7 @@ export default function PaperReadingGuide() {
                   <button
                     onClick={() => {
                       setCurrentStepId('intro');
+                      navigate('/guides/paper-reading-efficiency');
                       setIsSidebarOpen(false);
                     }}
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
@@ -209,6 +212,7 @@ export default function PaperReadingGuide() {
                             <button
                               onClick={() => {
                                 setCurrentStepId(step.id);
+                                navigate(`/guides/paper-reading-efficiency/${step.id}`);
                                 setIsSidebarOpen(false);
                               }}
                               className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
@@ -284,3 +288,4 @@ export default function PaperReadingGuide() {
     </div>
   );
 }
+

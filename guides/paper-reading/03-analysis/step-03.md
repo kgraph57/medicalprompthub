@@ -234,3 +234,4 @@ AIツールに対して、以下のような質問をすることで、論文の
 ### 🔗 次のステップ
 
 論文の要約と分析が完了したら、[Step 4: 批判的吟味（Critical Appraisal）](../04-critical-appraisal/step-04.md)に進みましょう。
+
