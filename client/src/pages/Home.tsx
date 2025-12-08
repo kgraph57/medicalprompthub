@@ -60,13 +60,13 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="space-y-20 pb-24">
-        {/* Hero Section - Latest Apple Style */}
+      <div className="space-y-12 pb-24">
+        {/* Hero Section - 最適化版 */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center space-y-8 py-16 relative overflow-hidden"
+          transition={{ duration: 0.5 }}
+          className="text-center space-y-6 py-12 relative overflow-hidden"
         >
           {/* Subtle gradient background */}
           <div className="absolute inset-0 -z-10 gradient-apple-light opacity-50" />
@@ -84,8 +84,8 @@ export default function Home() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground leading-[1.1] max-w-5xl mx-auto"
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1] max-w-4xl mx-auto"
           >
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               Medical Prompt Hub
@@ -95,8 +95,8 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
           >
             医療従事者のために厳選された、高品質なAIプロンプトのコレクションです。
             臨床業務、文書作成、研究活動を精度高く支援します。
@@ -105,8 +105,8 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="flex flex-col sm:flex-row justify-center gap-4 pt-4"
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="flex flex-col sm:flex-row justify-center gap-3 pt-2"
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -141,16 +141,16 @@ export default function Home() {
           </motion.div>
         </motion.section>
 
-        {/* Gamification Stats Section */}
+        {/* Gamification Stats Section - コンパクト */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="max-w-6xl mx-auto"
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="max-w-5xl mx-auto"
         >
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-center mb-2">学習進捗</h2>
-            <p className="text-muted-foreground text-center text-sm">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold text-center mb-1">学習進捗</h2>
+            <p className="text-muted-foreground text-center text-xs">
               あなたの学習状況を確認しましょう
             </p>
           </div>
@@ -160,46 +160,46 @@ export default function Home() {
             totalLessonsCompleted={stats.totalLessonsCompleted}
             totalBadges={0}
           />
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <Button
-              size="lg"
+              size="default"
               onClick={() => setLocation("/courses")}
-              className="rounded-full px-8"
+              className="rounded-full px-6"
             >
-              <GraduationCap className="mr-2 h-5 w-5" />
+              <GraduationCap className="mr-2 h-4 w-4" />
               学習コースを始める
             </Button>
           </div>
         </motion.section>
 
-        {/* Search Section */}
+        {/* Search Section - コンパクト */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          className="max-w-4xl mx-auto"
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="max-w-3xl mx-auto"
         >
           <div className="relative">
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
             <Input
               placeholder="プロンプトを検索 (例: '診断', '紹介状', '研究')..."
-              className="pl-14 pr-12 h-14 text-lg bg-background/60 backdrop-blur-xl border-2 focus:border-primary/50 transition-all duration-300 rounded-2xl shadow-sm hover:shadow-md"
+              className="pl-12 pr-10 h-12 text-base bg-background/60 backdrop-blur-xl border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </motion.section>
 
-        {/* Search Results Section */}
+        {/* Search Results Section - 最適化 */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">
+              <h2 className="text-xl font-bold tracking-tight">
                 {searchQuery.trim() || selectedCategory ? `検索結果 ${filteredPrompts.length > 0 ? `(${filteredPrompts.length}件)` : ""}` : "すべてのプロンプト"}
               </h2>
             </div>
@@ -214,35 +214,35 @@ export default function Home() {
             )}
           </div>
           {filteredPrompts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {filteredPrompts.map((prompt, index) => (
                 <motion.div
                   key={prompt.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03, duration: 0.5 }}
+                  transition={{ delay: index * 0.02, duration: 0.3 }}
                 >
                   <motion.div
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.3 }}
+                    whileHover={{ y: -4, scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    transition={{ duration: 0.2 }}
                     onClick={() => {
                       setLocation(`/prompts/${prompt.id}`);
                     }}
                     className="relative z-10"
                   >
-                    <Card className="h-full min-h-[180px] flex flex-col cursor-pointer border-2 border-border/50 hover:border-primary/30 bg-gradient-apple-card group overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 rounded-xl">
+                    <Card className="h-full min-h-[140px] flex flex-col cursor-pointer border hover:border-primary/30 bg-card group overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 rounded-lg">
                       <CardHeader className="p-4 space-y-2 flex-1">
                         <div className="flex justify-between items-start">
-                          <Badge variant="secondary" className="capitalize text-xs font-medium px-3 py-1 rounded-full">
+                          <Badge variant="secondary" className="capitalize text-[10px] font-medium px-2 py-0.5 rounded-md">
                             {prompt.category}
                           </Badge>
-                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-[-4px] group-hover:translate-x-0" />
+                          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-all duration-200 opacity-0 group-hover:opacity-100" />
                         </div>
-                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors duration-300 leading-tight">
+                        <CardTitle className="text-base font-semibold group-hover:text-primary transition-colors duration-200 leading-tight line-clamp-2">
                           {prompt.title}
                         </CardTitle>
-                        <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                        <CardDescription className="text-xs leading-relaxed line-clamp-2">
                           {prompt.description}
                         </CardDescription>
                       </CardHeader>

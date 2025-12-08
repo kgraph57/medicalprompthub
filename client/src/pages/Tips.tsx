@@ -57,31 +57,31 @@ export default function Tips() {
 
   return (
     <Layout>
-      <div className="space-y-12 pb-24">
-        {/* Hero Section */}
+      <div className="space-y-8 pb-24">
+        {/* Hero Section - コンパクト */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center space-y-6 py-12 relative overflow-hidden"
+          transition={{ duration: 0.5 }}
+          className="text-center space-y-4 py-8 relative overflow-hidden"
         >
           <div className="absolute inset-0 -z-10 gradient-apple-light opacity-50" />
           
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold backdrop-blur-sm border border-primary/20"
+            transition={{ delay: 0.1, duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold backdrop-blur-sm border border-primary/20"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-3.5 h-3.5" />
             <span>プロンプトエンジニアリング技術</span>
           </motion.div>
           
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1] max-w-4xl mx-auto"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-[1.1] max-w-3xl mx-auto"
           >
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               Tips & Techniques
@@ -91,26 +91,26 @@ export default function Tips() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
           >
             AIプロンプトの効果を最大化するための実践的なテクニック集。医療現場での活用に最適化された41の技術を学びましょう。
           </motion.p>
         </motion.section>
 
-        {/* Search & Filter Section */}
+        {/* Search & Filter Section - コンパクト */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="max-w-6xl mx-auto"
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="max-w-5xl mx-auto"
         >
-          <div className="mb-8 space-y-6">
+          <div className="mb-6 space-y-4">
             <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
               <Input
                 placeholder="Tipsを検索 (例: 'Chain-of-Thought', '品質向上')..."
-                className="pl-14 pr-12 h-14 text-lg bg-background/60 backdrop-blur-xl border-2 focus:border-primary/50 transition-all duration-300 rounded-2xl shadow-sm hover:shadow-md"
+                className="pl-11 pr-10 h-12 text-base bg-background/60 backdrop-blur-xl border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -172,44 +172,44 @@ export default function Tips() {
 
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
           >
             <AnimatePresence mode="popLayout">
               {filteredTips.map((tip, index) => (
                 <motion.div
                   key={tip.id}
                   layout
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: index * 0.03, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: index * 0.02, duration: 0.3 }}
                 >
                   <motion.div
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ y: -4, scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    transition={{ duration: 0.2 }}
                     onClick={() => {
                       setLocation(`/tips/${tip.id}`);
                     }}
                     className="relative z-10"
                   >
-                    <Card className="h-full min-h-[200px] flex flex-col cursor-pointer border-2 border-border/50 hover:border-primary/30 bg-gradient-apple-card group overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 rounded-xl">
+                    <Card className="h-full min-h-[140px] flex flex-col cursor-pointer border hover:border-primary/30 bg-card group overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 rounded-lg">
                       <CardHeader className="p-4 space-y-2 flex-1">
                         <div className="flex justify-between items-start gap-2">
-                          <div className="flex gap-2 flex-wrap">
-                            <Badge variant="secondary" className="capitalize text-xs font-medium px-3 py-1 rounded-full">
+                          <div className="flex gap-1.5 flex-wrap">
+                            <Badge variant="secondary" className="capitalize text-[10px] font-medium px-2 py-0.5 rounded-md">
                               {categoryLabels[tip.category]}
                             </Badge>
-                            <Badge variant="outline" className="text-xs font-medium px-3 py-1 rounded-full">
+                            <Badge variant="outline" className="text-[10px] font-medium px-2 py-0.5 rounded-md">
                               {levelLabels[tip.level]}
                             </Badge>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-[-4px] group-hover:translate-x-0" />
+                          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-all duration-200 opacity-0 group-hover:opacity-100" />
                         </div>
-                        <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors duration-300 leading-tight">
+                        <CardTitle className="text-base font-semibold group-hover:text-primary transition-colors duration-200 leading-tight line-clamp-2">
                           {tip.title}
                         </CardTitle>
-                        <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                        <CardDescription className="text-xs leading-relaxed line-clamp-2">
                           {tip.description}
                         </CardDescription>
                       </CardHeader>

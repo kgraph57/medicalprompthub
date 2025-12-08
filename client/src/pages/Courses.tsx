@@ -14,6 +14,7 @@ import { BookOpen, Award, Star, CheckCircle2, Lock } from "lucide-react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 // コース一覧（AI初心者から上級者まで）
 const courses = [
@@ -141,14 +142,14 @@ export default function Courses() {
   return (
     <Layout>
       <div className="space-y-8 pb-24">
-        {/* ヘッダー */}
+        {/* ヘッダー - コンパクト */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-4 py-8"
+          className="text-center space-y-3 py-6"
         >
-          <h1 className="text-4xl font-bold tracking-tight">Learning Courses</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold tracking-tight">Learning Courses</h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
             各コースを完了するとバッジとXPを獲得できます。レベルアップを目指しましょう！
           </p>
         </motion.section>
@@ -245,7 +246,7 @@ export default function Courses() {
                             <div className="space-y-2">
                               <div className="flex justify-between text-xs text-muted-foreground">
                                 <span>Progress</span>
-                                <span>{course.completedLessons} / {course.lessons}</span>
+                                <span>{completed} / {total}</span>
                               </div>
                               <Progress value={progress} className="h-2" />
                             </div>
@@ -338,7 +339,7 @@ export default function Courses() {
                             <div className="space-y-2">
                               <div className="flex justify-between text-xs text-muted-foreground">
                                 <span>Progress</span>
-                                <span>{course.completedLessons} / {course.lessons}</span>
+                                <span>{completed} / {total}</span>
                               </div>
                               <Progress value={progress} className="h-2" />
                             </div>
@@ -431,7 +432,7 @@ export default function Courses() {
                             <div className="space-y-2">
                               <div className="flex justify-between text-xs text-muted-foreground">
                                 <span>Progress</span>
-                                <span>{course.completedLessons} / {course.lessons}</span>
+                                <span>{completed} / {total}</span>
                               </div>
                               <Progress value={progress} className="h-2" />
                             </div>

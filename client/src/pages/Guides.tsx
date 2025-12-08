@@ -7,6 +7,7 @@ import { ArrowRight, BookOpen, FileText, Microscope, ClipboardList, Mail, Image,
 import { Link } from "wouter";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 
@@ -213,18 +214,18 @@ export default function Guides() {
 
   return (
     <Layout>
-      <div className="space-y-16 pb-20">
-        {/* Hero Section - Apple Style */}
+      <div className="space-y-8 pb-20">
+        {/* Hero Section - コンパクト */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-6 pt-8"
+          transition={{ duration: 0.5 }}
+          className="space-y-4 pt-6"
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1] max-w-4xl">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-[1.1] max-w-3xl">
             Guides & Workflows
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             実際の臨床・研究プロセスでAIプロンプトをどう組み合わせるか、実践的なワークフローを解説します。
           </p>
         </motion.div>
@@ -240,7 +241,7 @@ export default function Guides() {
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
             <Input
               placeholder="ガイドを検索(タイトル、説明、タグ)..."
-              className="pl-14 pr-12 h-14 text-lg bg-background/50 backdrop-blur-sm border-2 focus:border-primary/50 transition-all duration-300 rounded-2xl shadow-sm hover:shadow-md"
+              className="pl-12 pr-10 h-12 text-base bg-background/50 backdrop-blur-sm border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -340,7 +341,7 @@ export default function Guides() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+              className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
             >
               {filteredAndSortedGuides.map((guide, index) => {
                 const isImplemented = IMPLEMENTED_GUIDES.includes(guide.id);
@@ -375,47 +376,50 @@ export default function Guides() {
                     whileHover={isImplemented ? { y: -8, scale: 1.02 } : {}}
                     whileTap={isImplemented ? { scale: 0.98 } : {}}
                   >
-                    <Card className={`h-full border-l-[3px] ${colors.border} bg-gradient-to-br ${colors.gradient} group overflow-hidden relative shadow-sm transition-all duration-500 border border-border/50 ${
+                    <Card className={cn(
+                      "h-full border-l-2 bg-card group overflow-hidden shadow-sm transition-all duration-200 border",
+                      colors.border,
                       isImplemented 
-                        ? "cursor-pointer hover:shadow-xl" 
-                        : "opacity-60 cursor-not-allowed grayscale"
-                    }`}>
-                      <CardHeader className="space-y-4 p-6">
+                        ? "cursor-pointer hover:shadow-md hover:border-primary/30" 
+                        : "opacity-60 cursor-not-allowed"
+                    )}>
+                      <CardHeader className="space-y-3 p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className={`${colors.badge} font-medium px-3 py-1 rounded-full`}>
+                            <Badge variant="secondary" className={cn("font-medium px-2 py-0.5 rounded-md text-[10px]", colors.badge)}>
                               {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
                             </Badge>
                             {!isImplemented && (
-                              <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-3 py-1 rounded-full border-gray-300 dark:border-gray-600">
+                              <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-2 py-0.5 rounded-md border-gray-300 dark:border-gray-600 text-[10px]">
                                 <Lock className="h-3 w-3 mr-1" />
-                                Coming Soon
+                                Soon
                               </Badge>
                             )}
                           </div>
-                          <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-                            <BookOpen className="h-3.5 w-3.5" />
+                          <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
+                            <BookOpen className="h-3 w-3" />
                             {guide.readTime}
                           </span>
                         </div>
-                        <CardTitle className={`text-xl md:text-2xl font-bold leading-tight transition-colors duration-300 pr-8 ${
-                          isImplemented ? "group-hover:text-primary" : ""
-                        }`}>
+                        <CardTitle className={cn(
+                          "text-base font-semibold leading-tight line-clamp-2 transition-colors duration-200",
+                          isImplemented && "group-hover:text-primary"
+                        )}>
                           {guide.title}
                         </CardTitle>
-                        <CardDescription className="text-base leading-relaxed line-clamp-3 text-muted-foreground">
+                        <CardDescription className="text-xs leading-relaxed line-clamp-2">
                           {guide.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="p-6 pt-0 space-y-4">
+                      <CardContent className="p-4 pt-0">
                         {isImplemented ? (
-                          <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-2 gap-1 transition-all duration-300">
+                          <div className="flex items-center text-xs font-semibold text-primary group-hover:gap-1.5 gap-1 transition-all duration-200">
                             <span>ガイドを読む</span>
-                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                           </div>
                         ) : (
-                          <div className="flex items-center text-sm font-semibold text-muted-foreground gap-1">
-                            <Lock className="h-4 w-4" />
+                          <div className="flex items-center text-xs font-semibold text-muted-foreground gap-1">
+                            <Lock className="h-3.5 w-3.5" />
                             <span>準備中</span>
                           </div>
                         )}

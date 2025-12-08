@@ -81,17 +81,17 @@ export default function PromptDetail() {
 
   return (
     <Layout>
-      <div className="space-y-6 h-[calc(100vh-8rem)] flex flex-col">
-        {/* Header */}
-        <div className="flex items-center gap-4 flex-none">
+      <div className="space-y-4 h-[calc(100vh-8rem)] flex flex-col">
+        {/* Header - コンパクト */}
+        <div className="flex items-center gap-3 flex-none pb-2 border-b">
           <Link href={`/category/${prompt.category}`}>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <ArrowLeft className="w-5 h-5" />
+            <Button variant="ghost" size="icon" className="rounded-full h-9 w-9">
+              <ArrowLeft className="w-4 h-4" />
             </Button>
           </Link>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">{prompt.title}</h1>
-            <p className="text-sm text-muted-foreground">{prompt.description}</p>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl font-bold tracking-tight truncate">{prompt.title}</h1>
+            <p className="text-xs text-muted-foreground line-clamp-1">{prompt.description}</p>
           </div>
           <div className="ml-auto">
             <Button
