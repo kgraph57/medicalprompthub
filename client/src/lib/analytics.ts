@@ -35,7 +35,9 @@ export function initGA4(): void {
   window.dataLayer = window.dataLayer || [];
   window.gtag = function gtag() {
     // eslint-disable-next-line prefer-rest-params
-    window.dataLayer.push(arguments);
+    if (window.dataLayer) {
+      window.dataLayer.push(arguments);
+    }
   };
 
   // GA4を設定

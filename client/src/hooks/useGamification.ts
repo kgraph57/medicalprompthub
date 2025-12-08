@@ -36,13 +36,13 @@ export function useGamification() {
   });
 
   // レベル計算関数
-  function calculateLevel(totalXP: number): number {
+  const calculateLevel = (totalXP: number): number => {
     if (totalXP < 100) return 1;
     if (totalXP < 300) return 2;
     if (totalXP < 600) return 3;
     if (totalXP < 1000) return 4;
     return 5;
-  }
+  };
 
   const addXP = async (xp: number, reason?: string) => {
     // ローカルストレージに保存（暫定実装）
@@ -70,16 +70,6 @@ export function useGamification() {
     // TODO: 実装（ストリーク機能は削除済み）
     console.log("Update streak (not implemented)");
   };
-
-  // レベル計算関数
-  function calculateLevel(totalXP: number): number {
-    if (totalXP < 100) return 1;
-    if (totalXP < 300) return 2;
-    if (totalXP < 600) return 3;
-    if (totalXP < 1000) return 4;
-    return 5;
-  }
-
 
   return {
     stats,
