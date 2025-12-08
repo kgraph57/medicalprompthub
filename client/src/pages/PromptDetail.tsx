@@ -15,6 +15,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { Link, useRoute } from "wouter";
 import { trackPromptCopy, trackPromptView } from "@/lib/analytics";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export default function PromptDetail() {
   const [match, params] = useRoute("/prompts/:id");
@@ -105,23 +106,23 @@ export default function PromptDetail() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
           {/* Left: Inputs */}
-          <Card className="flex flex-col h-full border-transparent shadow-sm bg-card/50 backdrop-blur-sm">
-            <CardHeader className="pb-3 flex-none border-b border-border/50">
+          <Card className="flex flex-col h-full border shadow-sm bg-card">
+            <CardHeader className="pb-2 flex-none border-b">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">入力項目</CardTitle>
-                <Button variant="ghost" size="sm" onClick={handleReset} className="text-muted-foreground hover:text-foreground">
-                  <RefreshCw className="w-4 h-4 mr-2" /> リセット
+                <CardTitle className="text-base font-semibold">入力項目</CardTitle>
+                <Button variant="ghost" size="sm" onClick={handleReset} className="text-muted-foreground hover:text-foreground h-8 text-xs">
+                  <RefreshCw className="w-3.5 h-3.5 mr-1.5" /> リセット
                 </Button>
               </div>
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden p-0">
-              <ScrollArea className="h-full p-6">
-                <div className="space-y-6 pr-4">
+              <ScrollArea className="h-full p-4">
+                <div className="space-y-4 pr-3">
                   {prompt.inputs.map((input) => (
-                    <div key={input.key} className="space-y-2">
-                      <Label htmlFor={input.key} className="text-sm font-medium text-foreground/80">
+                    <div key={input.key} className="space-y-1.5">
+                      <Label htmlFor={input.key} className="text-xs font-medium text-foreground/80">
                         {input.label}
                       </Label>
                       {input.type === "textarea" ? (
@@ -166,30 +167,30 @@ export default function PromptDetail() {
           </Card>
 
           {/* Right: Preview */}
-          <Card className="flex flex-col h-full border-primary/20 shadow-md bg-card">
-            <CardHeader className="pb-3 flex-none border-b border-border/50 bg-muted/30">
+          <Card className="flex flex-col h-full border-primary/20 shadow-sm bg-card">
+            <CardHeader className="pb-2 flex-none border-b bg-muted/20">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-primary" />
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
                   プレビュー
                 </CardTitle>
-                <Button onClick={handleCopy} size="sm" className={copied ? "bg-green-600 hover:bg-green-700" : ""}>
+                <Button onClick={handleCopy} size="sm" className={cn("h-8 text-xs", copied && "bg-green-600 hover:bg-green-700")}>
                   {copied ? (
                     <>
-                      <Check className="w-4 h-4 mr-2" /> コピー完了
+                      <Check className="w-3.5 h-3.5 mr-1.5" /> コピー完了
                     </>
                   ) : (
                     <>
-                      <Copy className="w-4 h-4 mr-2" /> コピーする
+                      <Copy className="w-3.5 h-3.5 mr-1.5" /> コピー
                     </>
                   )}
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="flex-1 overflow-hidden p-0 bg-muted/10">
-              <ScrollArea className="h-full p-6">
+            <CardContent className="flex-1 overflow-hidden p-0 bg-muted/5">
+              <ScrollArea className="h-full p-4">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <pre className="whitespace-pre-wrap font-mono text-sm bg-transparent p-0 border-0 text-foreground/90">
+                  <pre className="whitespace-pre-wrap font-mono text-xs bg-transparent p-0 border-0 text-foreground/90 leading-relaxed">
                     {generatePrompt()}
                   </pre>
                 </div>
