@@ -113,48 +113,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <div className="mt-6 mb-2 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider" id="support-heading">
-          Support
-        </div>
-        <div className="space-y-1" role="list" aria-labelledby="support-heading">
-          <div role="listitem">
-            <Button
-              variant={location === "/faq" ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location === "/faq" && "bg-secondary text-secondary-foreground")}
-              onClick={() => {
-                setLocation("/faq");
-                setIsMobileOpen(false);
-              }}
-            >
-              <HelpCircle className="mr-2 w-4 h-4" aria-hidden="true" /> FAQ
-            </Button>
-          </div>
-          <div role="listitem">
-            <Button
-              variant={location === "/contact" ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location === "/contact" && "bg-secondary text-secondary-foreground")}
-              onClick={() => {
-                setLocation("/contact");
-                setIsMobileOpen(false);
-              }}
-            >
-              <Mail className="mr-2 w-4 h-4" aria-hidden="true" /> お問い合わせ
-            </Button>
-          </div>
-          <div role="listitem">
-            <Button
-              variant={location === "/about" ? "secondary" : "ghost"}
-              className={cn("w-full justify-start font-medium", location === "/about" && "bg-secondary text-secondary-foreground")}
-              onClick={() => {
-                setLocation("/about");
-                setIsMobileOpen(false);
-              }}
-            >
-              <FileText className="mr-2 w-4 h-4" aria-hidden="true" /> About
-            </Button>
-          </div>
-        </div>
-
         <div className="mt-6 mb-2 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
           Categories
         </div>

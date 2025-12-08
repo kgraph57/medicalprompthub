@@ -111,6 +111,8 @@ Abstract → Methods → Results → Discussion → Introduction
 | ツール | 用途 | 優先度 |
 |---|---|---|
 | **ChatGPT** | 論文の構造理解、読む順序の提案 | ⭐⭐⭐ |
+| **Claude** | 論文の構造理解、読む順序の提案 | ⭐⭐⭐ |
+| **Gemini** | 論文の構造理解、読む順序の提案 | ⭐⭐ |
 | **NotebookLM** | 論文全体の構造化された要約 | ⭐⭐ |
 
 ### 💡 プロンプト集
@@ -211,3 +213,4 @@ Abstract → Methods → Results → Discussion → Introduction
 ### 🔗 次のステップ
 
 論文の構造を理解したら、[Step 3: AIツールを使った要約と分析](../03-analysis/step-03.md)に進みましょう。
+
