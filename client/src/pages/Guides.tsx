@@ -12,7 +12,8 @@ type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 
 // 実装済みのガイドIDリスト
 const IMPLEMENTED_GUIDES = [
-  "case-report-complete"
+  "case-report-complete",
+  "paper-reading-efficiency"
 ];
 
 // Updated: 2025-12-07
@@ -57,6 +58,15 @@ export default function Guides() {
       icon: <FileText className="h-6 w-6 text-green-500" />,
       readTime: "15 min read",
       tags: ["Conference", "Presentation", "Public Speaking"]
+    },
+    {
+      id: "paper-reading-efficiency",
+      title: "【時短】論文読解効率化ガイド",
+      description: "忙しい臨床医が効率的に論文を読んで理解するための実践的なワークフロー。AIツールを活用することで、従来の2-3時間から約1時間に短縮。5ステップで準備から記録まで完全サポート。",
+      category: "Research",
+      icon: <BookOpen className="h-6 w-6 text-orange-500" />,
+      readTime: "15 min read",
+      tags: ["Paper Reading", "Literature Review", "Time-saving", "AI Tools"]
     },
     {
       id: "journal-club-guide",

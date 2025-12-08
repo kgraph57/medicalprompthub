@@ -1,6 +1,6 @@
 /**
  * レッスン詳細ページ
- * スクロール形式でレッスンコンテンツを表示
+ * Zenn風の読みやすいスクロール形式でレッスンコンテンツを表示
  */
 
 import { Layout } from "@/components/Layout";
@@ -153,7 +153,7 @@ export default function LessonDetail() {
     parts.forEach((part, index) => {
       if (part === "[QUIZ]" && quizzes.length > 0) {
         elements.push(
-          <div key={`quiz-${quizIndex}`} className="my-8">
+          <div key={`quiz-${quizIndex}`} className="my-12">
             <Quiz
               questions={quizzes}
               onComplete={(score, totalPoints) => {
@@ -170,7 +170,7 @@ export default function LessonDetail() {
         quizIndex++;
       } else if (part === "[EXERCISE]" && exercises.length > 0 && exerciseIndex < exercises.length) {
         elements.push(
-          <div key={`exercise-${exerciseIndex}`} className="my-8">
+          <div key={`exercise-${exerciseIndex}`} className="my-12">
             <PracticeExercise
               exercise={exercises[exerciseIndex]}
               onComplete={(result) => {
@@ -185,12 +185,12 @@ export default function LessonDetail() {
         const markdownContent = part.trim();
         if (markdownContent) {
           elements.push(
-            <div key={`content-${index}`} className="prose prose-lg max-w-none dark:prose-invert">
+            <div key={`content-${index}`} className="zenn-article">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h1: ({ node, ...props }) => (
-                    <h1 className="text-3xl font-bold mb-6 mt-8 text-foreground scroll-mt-20" {...props} />
+                    <h1 className="text-3xl font-bold mb-6 mt-12 text-foreground scroll-mt-20" {...props} />
                   ),
                   h2: ({ node, ...props }) => {
                     const title = props.children?.toString() || "";
@@ -199,34 +199,54 @@ export default function LessonDetail() {
                     return (
                       <h2
                         id={id}
-                        className="text-2xl font-bold mt-12 mb-6 text-foreground border-b pb-3 scroll-mt-20"
+                        className="text-2xl font-bold mt-12 mb-6 text-foreground border-b border-border pb-3 scroll-mt-20"
                         {...props}
                       />
                     );
                   },
                   h3: ({ node, ...props }) => (
-                    <h3 className="text-xl font-semibold mt-8 mb-4 text-foreground scroll-mt-20" {...props} />
+                    <h3 className="text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
+                  ),
+                  h4: ({ node, ...props }) => (
+                    <h4 className="text-lg font-semibold mt-8 mb-3 text-foreground scroll-mt-20" {...props} />
                   ),
                   p: ({ node, ...props }) => (
-                    <p className="mb-4 text-foreground leading-relaxed" {...props} />
+                    <p className="mb-6 text-foreground leading-[1.9]" {...props} />
                   ),
                   ul: ({ node, ...props }) => (
-                    <ul className="list-disc pl-6 mb-4 space-y-2" {...props} />
+                    <ul className="list-disc pl-6 mb-6 space-y-2" {...props} />
                   ),
                   ol: ({ node, ...props }) => (
-                    <ol className="list-decimal pl-6 mb-4 space-y-2" {...props} />
+                    <ol className="list-decimal pl-6 mb-6 space-y-2" {...props} />
                   ),
                   li: ({ node, ...props }) => (
-                    <li className="text-foreground" {...props} />
+                    <li className="text-foreground leading-[1.9]" {...props} />
                   ),
                   strong: ({ node, ...props }) => (
                     <strong className="font-bold text-foreground" {...props} />
                   ),
                   code: ({ node, ...props }) => (
-                    <code className="bg-muted px-2 py-1 rounded text-sm font-mono" {...props} />
+                    <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+                  ),
+                  pre: ({ node, ...props }) => (
+                    <pre className="bg-muted p-5 rounded-lg overflow-x-auto my-6" {...props} />
                   ),
                   blockquote: ({ node, ...props }) => (
-                    <blockquote className="border-l-4 border-primary pl-4 italic my-4 text-muted-foreground" {...props} />
+                    <blockquote className="border-l-4 border-border pl-4 italic my-6 text-muted-foreground leading-[1.9]" {...props} />
+                  ),
+                  table: ({ node, ...props }) => (
+                    <div className="overflow-x-auto my-6">
+                      <table className="w-full border-collapse" {...props} />
+                    </div>
+                  ),
+                  th: ({ node, ...props }) => (
+                    <th className="border border-border px-3 py-2 bg-muted font-semibold text-left" {...props} />
+                  ),
+                  td: ({ node, ...props }) => (
+                    <td className="border border-border px-3 py-2" {...props} />
+                  ),
+                  img: ({ node, ...props }) => (
+                    <img className="max-w-full h-auto my-6 rounded-lg" {...props} />
                   ),
                 }}
               >
@@ -280,21 +300,24 @@ export default function LessonDetail() {
 
   return (
     <Layout>
-      <div className="min-h-screen flex">
+      <div className="min-h-screen flex bg-background">
         {/* サイドバー（目次）- デスクトップ */}
-        <aside className="hidden lg:block w-64 border-r bg-muted/30 p-6 sticky top-0 h-screen overflow-y-auto">
-          <div className="space-y-4">
-            <h3 className="font-semibold text-sm uppercase text-muted-foreground mb-4">目次</h3>
+        <aside className="hidden lg:block w-64 border-r border-border bg-background/50 backdrop-blur-sm p-6 sticky top-0 h-screen overflow-y-auto">
+          <div className="space-y-2">
+            <h3 className="font-semibold text-xs uppercase text-muted-foreground mb-4 tracking-wider">目次</h3>
             {sections.map((section, index) => (
               <button
                 key={`${section.id}-${index}`}
                 onClick={() => scrollToSection(section.id)}
-                className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
                   activeSection === section.id
                     ? "bg-primary text-primary-foreground font-semibold"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
-                style={{ paddingLeft: `${(section.level - 2) * 1 + 0.75}rem` }}
+                style={{ 
+                  paddingLeft: `${(section.level - 2) * 0.75 + 0.75}rem`,
+                  fontSize: section.level === 3 ? "0.875rem" : "0.9375rem"
+                }}
               >
                 {section.title}
               </button>
@@ -303,12 +326,12 @@ export default function LessonDetail() {
         </aside>
 
         {/* メインコンテンツ */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-w-0">
           {/* ヘッダー */}
-          <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-            <div className="max-w-4xl mx-auto px-4 py-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4">
+          <header className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
+            <div className="max-w-[680px] mx-auto px-6 py-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
                   {/* モバイル: サイドバートグル */}
                   <Button
                     variant="ghost"
@@ -322,53 +345,57 @@ export default function LessonDetail() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setLocation(`/courses/${courseId}`)}
+                    className="text-muted-foreground hover:text-foreground"
                   >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Course
+                    <ArrowLeft className="mr-2 h-4 w-4" /> コースに戻る
                   </Button>
                 </div>
                 {completed && (
                   <div className="flex items-center gap-2 text-primary">
                     <CheckCircle2 className="w-5 h-5" />
-                    <span className="font-semibold">完了</span>
+                    <span className="font-semibold text-sm">完了</span>
                   </div>
                 )}
               </div>
-              <Progress value={scrollProgress} className="h-2" />
+              <Progress value={scrollProgress} className="h-1" />
             </div>
           </header>
 
           {/* コンテンツエリア */}
           <div className="flex-1 overflow-y-auto" ref={contentRef}>
-            <div className="max-w-4xl mx-auto px-4 py-8">
+            <div className="max-w-[680px] mx-auto px-6 py-12">
               {completed ? (
-                <Card className="text-center py-12">
+                <Card className="text-center py-16 border-border">
                   <CardContent className="space-y-6">
-                    <div className="text-6xl mb-4">🎉</div>
-                    <h2 className="text-3xl font-bold">レッスン完了！</h2>
-                    <p className="text-muted-foreground">
+                    <div className="text-6xl mb-6">🎉</div>
+                    <h2 className="text-3xl font-bold mb-4">レッスン完了！</h2>
+                    <p className="text-muted-foreground text-lg">
                       おめでとうございます！このレッスンを完了しました。
                     </p>
-                    <div className="flex items-center justify-center gap-2 text-primary">
+                    <div className="flex items-center justify-center gap-2 text-primary mt-6">
                       <CheckCircle2 className="w-5 h-5" />
                       <span className="font-semibold">+10 XP 獲得</span>
                     </div>
-                    <div className="flex gap-4 justify-center pt-4">
+                    <div className="flex gap-4 justify-center pt-6">
                       <Button variant="outline" onClick={() => setLocation(`/courses/${courseId}`)}>
-                        Course Overview
+                        コース一覧
                       </Button>
                       <Button onClick={() => setLocation(`/courses/${courseId}`)}>
-                        Continue Learning
+                        次のレッスンへ
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
               ) : (
                 <>
-                  {renderContent()}
+                  {/* Zenn風の記事コンテンツ */}
+                  <article className="zenn-article bg-background rounded-lg">
+                    {renderContent()}
+                  </article>
                   
                   {/* 完了ボタン */}
-                  <div className="mt-12 pt-8 border-t">
-                    <Button onClick={handleComplete} size="lg" className="w-full">
+                  <div className="mt-16 pt-8 border-t border-border">
+                    <Button onClick={handleComplete} size="lg" className="w-full h-12 text-base">
                       <CheckCircle2 className="mr-2 h-5 w-5" />
                       レッスンを完了する
                     </Button>
@@ -387,9 +414,9 @@ export default function LessonDetail() {
               initial={{ x: -300 }}
               animate={{ x: 0 }}
               exit={{ x: -300 }}
-              className="absolute left-0 top-0 h-full w-64 bg-background border-r shadow-lg"
+              className="absolute left-0 top-0 h-full w-64 bg-background border-r border-border shadow-xl"
             >
-              <div className="p-4 border-b flex items-center justify-between">
+              <div className="p-4 border-b border-border flex items-center justify-between">
                 <h3 className="font-semibold">目次</h3>
                 <Button
                   variant="ghost"
@@ -405,12 +432,15 @@ export default function LessonDetail() {
                     <button
                       key={`${section.id}-${index}`}
                       onClick={() => scrollToSection(section.id)}
-                      className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                      className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
                         activeSection === section.id
                           ? "bg-primary text-primary-foreground font-semibold"
                           : "text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
-                      style={{ paddingLeft: `${(section.level - 2) * 1 + 0.75}rem` }}
+                      style={{ 
+                        paddingLeft: `${(section.level - 2) * 0.75 + 0.75}rem`,
+                        fontSize: section.level === 3 ? "0.875rem" : "0.9375rem"
+                      }}
                     >
                       {section.title}
                     </button>
