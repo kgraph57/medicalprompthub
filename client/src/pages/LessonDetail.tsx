@@ -7,7 +7,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, CheckCircle2, Menu, X } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Menu, X, ArrowRight } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
@@ -67,6 +67,32 @@ function extractSections(content: string): Array<{ id: string; title: string; le
   return sections;
 }
 
+// レッスンデータ（CourseDetail.tsxと同じ構造）
+function getLessonsForCourse(courseId: string) {
+  const lessonsData: Record<string, Array<{
+    id: string;
+    title: string;
+  }>> = {
+    "ai-basics": [
+      { id: "ai-basics-1", title: "AIとは何か" },
+      { id: "ai-basics-2", title: "AIの歴史" },
+      { id: "ai-basics-3", title: "AIの現状と未来" },
+    ],
+    "generative-ai-basics": [
+      { id: "generative-ai-1", title: "生成AIとは何か" },
+      { id: "generative-ai-2", title: "生成AIの仕組み" },
+      { id: "generative-ai-3", title: "主要な生成AIツール" },
+    ],
+    "ai-usage-basics": [
+      { id: "ai-usage-1", title: "AIチャットの基本" },
+      { id: "ai-usage-2", title: "効果的なプロンプトの書き方" },
+      { id: "ai-usage-3", title: "AIとの対話のコツ" },
+    ],
+  };
+
+  return lessonsData[courseId] || [];
+}
+
 export default function LessonDetail() {
   const [match, params] = useRoute("/courses/:courseId/lessons/:lessonId");
   const [, setLocation] = useLocation();
@@ -87,6 +113,19 @@ export default function LessonDetail() {
   // レッスンコンテンツを取得
   const content = lessonId ? lessonContent[lessonId] || "" : "";
   const sections = content ? extractSections(content) : [];
+
+  // 次のレッスンを取得
+  const getNextLesson = () => {
+    if (!courseId || !lessonId) return null;
+    const lessons = getLessonsForCourse(courseId);
+    const currentIndex = lessons.findIndex(l => l.id === lessonId);
+    if (currentIndex >= 0 && currentIndex < lessons.length - 1) {
+      return lessons[currentIndex + 1];
+    }
+    return null;
+  };
+
+  const nextLesson = getNextLesson();
 
   // スクロール位置に応じて進捗を更新
   useEffect(() => {
@@ -376,13 +415,25 @@ export default function LessonDetail() {
                       <CheckCircle2 className="w-5 h-5" />
                       <span className="font-semibold">+10 XP 獲得</span>
                     </div>
-                    <div className="flex gap-4 justify-center pt-6">
-                      <Button variant="outline" onClick={() => setLocation(`/courses/${courseId}`)}>
-                        コース一覧
-                      </Button>
-                      <Button onClick={() => setLocation(`/courses/${courseId}`)}>
-                        次のレッスンへ
-                      </Button>
+                    <div className="flex justify-center pt-6">
+                      {nextLesson ? (
+                        <Button 
+                          onClick={() => setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`)}
+                          size="lg"
+                          className="min-w-[180px]"
+                        >
+                          <ArrowRight className="mr-2 h-4 w-4" />
+                          次に進む
+                        </Button>
+                      ) : (
+                        <Button 
+                          onClick={() => setLocation(`/courses/${courseId}`)}
+                          size="lg"
+                          className="min-w-[180px]"
+                        >
+                          コース一覧へ
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
