@@ -1015,3 +1015,126 @@ export async function getCommentById(id: number) {
   const result = await db.select().from(comments).where(eq(comments.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
+
+// ==================== Gamification Functions ====================
+// 注意: これらの関数は feature/gamification-setup ブランチでのみ使用
+// 実際のデータベーススキーマが定義されたら、適切に実装します
+
+interface UserStats {
+  id: number;
+  userId: number;
+  totalXP: number;
+  currentLevel: number;
+  currentStreak: number;
+  longestStreak: number;
+  lastStudyDate: Date | null;
+  totalLessonsCompleted: number;
+  totalQuizzesPassed: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface InsertUserStats {
+  userId: number;
+  totalXP?: number;
+  currentLevel?: number;
+  currentStreak?: number;
+  longestStreak?: number;
+  lastStudyDate?: Date | null;
+  totalLessonsCompleted?: number;
+  totalQuizzesPassed?: number;
+}
+
+/**
+ * ユーザー統計を取得
+ * 注意: 実際のスキーマが定義されたら実装を更新
+ */
+export async function getUserStats(userId: number): Promise<UserStats | null> {
+  const db = await getDb();
+  if (!db) {
+    logger.warn("Cannot get user stats: database not available", { userId });
+    return null;
+  }
+
+  // TODO: 実際のスキーマが定義されたら実装
+  // const result = await db.select().from(userStats).where(eq(userStats.userId, userId)).limit(1);
+  // return result[0] || null;
+
+  return null;
+}
+
+/**
+ * ユーザー統計を更新または作成
+ */
+export async function upsertUserStats(data: InsertUserStats): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    logger.warn("Cannot upsert user stats: database not available", { userId: data.userId });
+    return;
+  }
+
+  // TODO: 実際のスキーマが定義されたら実装
+  // const existing = await getUserStats(data.userId);
+  // if (existing) {
+  //   await db.update(userStats).set(data).where(eq(userStats.userId, data.userId));
+  // } else {
+  //   await db.insert(userStats).values(data);
+  // }
+
+  logger.debug("User stats upserted (placeholder)", { userId: data.userId });
+}
+
+/**
+ * XPを追加
+ */
+export async function addXP(userId: number, xp: number): Promise<void> {
+  const stats = await getUserStats(userId);
+  const newTotalXP = (stats?.totalXP || 0) + xp;
+
+  await upsertUserStats({
+    userId,
+    totalXP: newTotalXP,
+  });
+
+  logger.info("XP added", { userId, xp, newTotalXP });
+}
+
+/**
+ * ユーザーバッジを取得
+ */
+export async function getUserBadges(userId: number): Promise<Array<{
+  id: number;
+  userId: number;
+  badgeId: string;
+  badgeName: string;
+  badgeDescription: string | null;
+  earnedAt: Date;
+}>> {
+  const db = await getDb();
+  if (!db) {
+    logger.warn("Cannot get user badges: database not available", { userId });
+    return [];
+  }
+
+  // TODO: 実際のスキーマが定義されたら実装
+  return [];
+}
+
+/**
+ * バッジを付与
+ */
+export async function awardBadge(
+  userId: number,
+  badgeId: string,
+  badgeName: string,
+  badgeDescription?: string
+): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    logger.warn("Cannot award badge: database not available", { userId, badgeId });
+    return;
+  }
+
+  // TODO: 実際のスキーマが定義されたら実装
+  logger.info("Badge awarded (placeholder)", { userId, badgeId, badgeName });
+}

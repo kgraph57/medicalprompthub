@@ -397,6 +397,78 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // ゲーミフィケーション機能（feature/gamification-setup ブランチ）
+  gamification: router({
+    // ユーザー統計を取得
+    getStats: protectedProcedure.query(async ({ ctx }) => {
+      const stats = await db.getUserStats(ctx.user.id);
+      if (!stats) {
+        // 統計が存在しない場合は初期値で作成
+        await db.upsertUserStats({
+          userId: ctx.user.id,
+          totalXP: 0,
+          currentLevel: 1,
+          currentStreak: 0,
+          longestStreak: 0,
+          totalLessonsCompleted: 0,
+          totalQuizzesPassed: 0,
+        });
+        return {
+          totalXP: 0,
+          currentLevel: 1,
+          currentStreak: 0,
+          longestStreak: 0,
+          totalLessonsCompleted: 0,
+          totalQuizzesPassed: 0,
+        };
+      }
+      return stats;
+    }),
+
+    // XPを追加
+    addXP: protectedProcedure
+      .input(z.object({
+        xp: z.number().min(1).max(100),
+        reason: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        await db.addXP(ctx.user.id, input.xp);
+        return { success: true };
+      }),
+
+    // バッジ一覧を取得
+    getBadges: protectedProcedure.query(async ({ ctx }) => {
+      return await db.getUserBadges(ctx.user.id);
+    }),
+
+    // ストリークを更新
+    updateStreak: protectedProcedure.mutation(async ({ ctx }) => {
+      const stats = await db.getUserStats(ctx.user.id);
+      if (!stats) return { success: false };
+
+      const { updateStreak } = await import("./_core/gamification");
+      const today = new Date();
+      const lastStudyDate = stats.lastStudyDate ? new Date(stats.lastStudyDate) : null;
+
+      const { newStreak, longestStreak, updated } = updateStreak(
+        stats.currentStreak,
+        lastStudyDate,
+        today
+      );
+
+      if (updated) {
+        await db.upsertUserStats({
+          userId: ctx.user.id,
+          currentStreak: newStreak,
+          longestStreak: Math.max(stats.longestStreak, longestStreak),
+          lastStudyDate: today,
+        });
+      }
+
+      return { success: true, newStreak, updated };
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
