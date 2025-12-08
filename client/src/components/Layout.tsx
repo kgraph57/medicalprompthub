@@ -185,11 +185,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <NavContent />
               </SheetContent>
             </Sheet>
-            <div className="flex items-center gap-2 font-bold text-primary">
-              <Activity className="w-5 h-5" aria-hidden="true" />
-              <h1 className="sr-only">Medical Prompt Hub</h1>
-              <span aria-hidden="true">Medical Prompt Hub</span>
-            </div>
+            <Link href="/" aria-label="ホームページに戻る">
+              <div className="flex items-center gap-2 font-bold text-primary cursor-pointer hover:opacity-80 transition-opacity">
+                <Activity className="w-5 h-5" aria-hidden="true" />
+                <h1 className="sr-only">Medical Prompt Hub</h1>
+                <span aria-hidden="true">Medical Prompt Hub</span>
+              </div>
+            </Link>
           </div>
           <nav className="flex items-center gap-2" aria-label="ユーティリティメニュー">
             <Button 
