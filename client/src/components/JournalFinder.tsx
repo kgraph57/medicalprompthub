@@ -55,20 +55,20 @@ export function JournalFinder() {
   }, [searchQuery, sortBy, filterCategory]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {selectedForCompare.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300">
+        <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300">
           <Card className="shadow-xl border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="text-sm font-medium">
+            <CardContent className="p-3 flex items-center gap-3">
+              <div className="text-xs font-medium">
                 {selectedForCompare.length} journal{selectedForCompare.length !== 1 && "s"} selected
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={() => setSelectedForCompare([])}>
+                <Button variant="outline" size="sm" onClick={() => setSelectedForCompare([])} className="h-8 text-xs">
                   Clear
                 </Button>
                 <Link href={`/journal-compare?ids=${selectedForCompare.join(",")}`}>
-                  <Button size="sm" className="gap-2">
+                  <Button size="sm" className="gap-1.5 h-8 text-xs">
                     Compare <ArrowRightLeft className="w-3 h-3" />
                   </Button>
                 </Link>
@@ -119,53 +119,54 @@ export function JournalFinder() {
           return (
             <Card key={journal.id} className="hover:shadow-md transition-shadow overflow-hidden">
               <Collapsible open={isExpanded} onOpenChange={() => toggleExpanded(journal.id)}>
-                <CardHeader className="pb-3 bg-muted/20">
-                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                    <div className="space-y-1 flex-1">
-                      <div className="flex items-center gap-3 flex-wrap">
+                <CardHeader className="pb-2 bg-muted/20 p-4">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
+                    <div className="space-y-1.5 flex-1">
+                      <div className="flex items-center gap-2.5 flex-wrap">
                         <div className="flex items-center gap-2">
                           <Checkbox 
                             id={`compare-${journal.id}`}
                             checked={selectedForCompare.includes(journal.id)}
                             onCheckedChange={() => toggleCompare(journal.id)}
+                            className="h-4 w-4"
                           />
                           <Link href={`/journal/${journal.id}`}>
-                            <CardTitle className="text-lg hover:underline cursor-pointer text-primary">{journal.title}</CardTitle>
+                            <CardTitle className="text-base hover:underline cursor-pointer text-primary font-semibold">{journal.title}</CardTitle>
                           </Link>
                         </div>
                         {journal.openAccess && (
-                          <Badge variant="secondary" className="text-xs font-normal bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-0">
+                          <Badge variant="secondary" className="text-[10px] font-normal bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-0 px-2 py-0.5">
                             <Globe className="w-3 h-3 mr-1" /> Open Access
                           </Badge>
                         )}
-                        <Badge variant="outline" className="flex items-center gap-1 bg-background">
+                        <Badge variant="outline" className="flex items-center gap-1 bg-background text-[10px] px-2 py-0.5">
                           <BarChart3 className="w-3 h-3" /> IF: {journal.impactFactor}
                         </Badge>
                       </div>
-                      <CardDescription>{journal.publisher}</CardDescription>
+                      <CardDescription className="text-xs">{journal.publisher}</CardDescription>
                       
                       {/* Compact metrics - always visible */}
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
-                        <div className="flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground pt-1">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
                           <span>{journal.reviewSpeed || "N/A"}</span>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <BookOpen className="w-3.5 h-3.5" />
+                        <div className="flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" />
                           <span>Acceptance: {journal.acceptanceRate || "N/A"}</span>
                         </div>
                       </div>
                     </div>
                     
                     <CollapsibleTrigger asChild>
-                      <Button variant="ghost" size="sm" className="shrink-0">
+                      <Button variant="ghost" size="sm" className="shrink-0 h-8 text-xs">
                         {isExpanded ? (
                           <>
-                            詳細を隠す <ChevronUp className="w-4 h-4 ml-1" />
+                            詳細を隠す <ChevronUp className="w-3.5 h-3.5 ml-1" />
                           </>
                         ) : (
                           <>
-                            詳細を表示 <ChevronDown className="w-4 h-4 ml-1" />
+                            詳細を表示 <ChevronDown className="w-3.5 h-3.5 ml-1" />
                           </>
                         )}
                       </Button>
@@ -174,25 +175,25 @@ export function JournalFinder() {
                 </CardHeader>
                 
                 <CollapsibleContent>
-                  <CardContent className="pt-4">
-                    <div className="grid md:grid-cols-2 gap-6 mb-6">
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Metrics</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="flex items-center gap-2 text-sm">
-                            <Clock className="w-4 h-4 text-muted-foreground" />
+                  <CardContent className="pt-3 p-4">
+                    <div className="grid md:grid-cols-2 gap-4 mb-4">
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Metrics</h4>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="flex items-center gap-1.5 text-xs">
+                            <Clock className="w-3.5 h-3.5 text-muted-foreground" />
                             <span className="font-medium">{journal.reviewSpeed || "N/A"}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <BookOpen className="w-4 h-4 text-muted-foreground" />
+                          <div className="flex items-center gap-1.5 text-xs">
+                            <BookOpen className="w-3.5 h-3.5 text-muted-foreground" />
                             <span className="font-medium">Acceptance: {journal.acceptanceRate || "N/A"}</span>
                           </div>
                         </div>
                       </div>
                       
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Requirements</h4>
-                        <div className="bg-muted/30 p-3 rounded-lg text-sm space-y-1.5 border border-border/50">
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Requirements</h4>
+                        <div className="bg-muted/30 p-3 rounded-lg text-xs space-y-1.5 border border-border/50">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Word Count:</span>
                             <span className="font-medium">{journal.requirements.wordCount}</span>
@@ -209,15 +210,15 @@ export function JournalFinder() {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-border/50">
-                      <Button variant="outline" size="sm" className="flex-1" asChild>
+                    <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t border-border/50">
+                      <Button variant="outline" size="sm" className="flex-1 h-8 text-xs" asChild>
                         <a href={journal.url} target="_blank" rel="noopener noreferrer">
-                          Visit Journal <ExternalLink className="w-3 h-3 ml-2" />
+                          Visit Journal <ExternalLink className="w-3 h-3 ml-1.5" />
                         </a>
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1" asChild>
+                      <Button variant="outline" size="sm" className="flex-1 h-8 text-xs" asChild>
                         <a href={journal.guidelinesUrl} target="_blank" rel="noopener noreferrer">
-                          Author Guidelines <ExternalLink className="w-3 h-3 ml-2" />
+                          Author Guidelines <ExternalLink className="w-3 h-3 ml-1.5" />
                         </a>
                       </Button>
                     </div>

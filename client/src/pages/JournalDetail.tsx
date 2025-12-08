@@ -25,28 +25,28 @@ export default function JournalDetail() {
   }
 
   return (
-    <div className="container max-w-4xl py-8 space-y-8">
-      <div className="flex items-center gap-2 text-muted-foreground mb-4">
+    <div className="container max-w-4xl py-6 space-y-6">
+      <div className="flex items-center gap-2 text-muted-foreground mb-3">
         <Link href="/journal-finder">
-          <Button variant="ghost" size="sm" className="pl-0 hover:bg-transparent hover:text-primary">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Finder
+          <Button variant="ghost" size="sm" className="pl-0 hover:bg-transparent hover:text-primary h-8 text-xs">
+            <ArrowLeft className="mr-1.5 h-3.5 w-3.5" /> Back to Finder
           </Button>
         </Link>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+      <div className="space-y-3">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-primary">{journal.title}</h1>
-            <p className="text-xl text-muted-foreground mt-1">{journal.publisher}</p>
+            <h1 className="text-2xl font-bold tracking-tight text-primary">{journal.title}</h1>
+            <p className="text-lg text-muted-foreground mt-1">{journal.publisher}</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="outline" className="text-sm py-1 px-3 flex items-center gap-1">
-              <BarChart3 className="w-4 h-4" /> IF: {journal.impactFactor}
+            <Badge variant="outline" className="text-xs py-0.5 px-2 flex items-center gap-1">
+              <BarChart3 className="w-3.5 h-3.5" /> IF: {journal.impactFactor}
             </Badge>
             {journal.openAccess && (
-              <Badge variant="secondary" className="text-sm py-1 px-3 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-0 flex items-center gap-1">
-                <Globe className="w-4 h-4" /> Open Access
+              <Badge variant="secondary" className="text-xs py-0.5 px-2 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-0 flex items-center gap-1">
+                <Globe className="w-3.5 h-3.5" /> Open Access
               </Badge>
             )}
           </div>
@@ -61,77 +61,77 @@ export default function JournalDetail() {
         </div>
 
         {journal.description && (
-          <p className="text-lg leading-relaxed text-muted-foreground border-l-4 border-primary/20 pl-4 py-1">
+          <p className="text-base leading-relaxed text-muted-foreground border-l-4 border-primary/20 pl-3 py-1">
             {journal.description}
           </p>
         )}
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-4">
         <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5 text-primary" /> Submission Requirements
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <FileText className="w-4 h-4 text-primary" /> Submission Requirements
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="bg-muted/30 p-4 rounded-lg space-y-1">
-                <span className="text-sm text-muted-foreground block">Word Count</span>
-                <span className="font-medium text-lg">{journal.requirements.wordCount}</span>
+          <CardContent className="p-4 pt-0 space-y-3">
+            <div className="grid sm:grid-cols-2 gap-3">
+              <div className="bg-muted/30 p-3 rounded-lg space-y-1">
+                <span className="text-xs text-muted-foreground block">Word Count</span>
+                <span className="font-medium text-base">{journal.requirements.wordCount}</span>
               </div>
-              <div className="bg-muted/30 p-4 rounded-lg space-y-1">
-                <span className="text-sm text-muted-foreground block">Abstract</span>
-                <span className="font-medium text-lg">{journal.requirements.abstract}</span>
+              <div className="bg-muted/30 p-3 rounded-lg space-y-1">
+                <span className="text-xs text-muted-foreground block">Abstract</span>
+                <span className="font-medium text-base">{journal.requirements.abstract}</span>
               </div>
-              <div className="bg-muted/30 p-4 rounded-lg space-y-1">
-                <span className="text-sm text-muted-foreground block">Figures</span>
-                <span className="font-medium text-lg">{journal.requirements.figures}</span>
+              <div className="bg-muted/30 p-3 rounded-lg space-y-1">
+                <span className="text-xs text-muted-foreground block">Figures</span>
+                <span className="font-medium text-base">{journal.requirements.figures}</span>
               </div>
-              <div className="bg-muted/30 p-4 rounded-lg space-y-1">
-                <span className="text-sm text-muted-foreground block">References</span>
-                <span className="font-medium text-lg">{journal.requirements.references}</span>
+              <div className="bg-muted/30 p-3 rounded-lg space-y-1">
+                <span className="text-xs text-muted-foreground block">References</span>
+                <span className="font-medium text-base">{journal.requirements.references}</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <Clock className="w-4 h-4 text-primary" /> Key Metrics
+            <CardHeader className="p-4">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5 text-primary" /> Key Metrics
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="p-4 pt-0 space-y-3">
               <div>
-                <span className="text-sm text-muted-foreground block">Review Speed</span>
-                <span className="font-medium">{journal.reviewSpeed || "N/A"}</span>
+                <span className="text-xs text-muted-foreground block">Review Speed</span>
+                <span className="font-medium text-sm">{journal.reviewSpeed || "N/A"}</span>
               </div>
               <div>
-                <span className="text-sm text-muted-foreground block">Acceptance Rate</span>
-                <span className="font-medium">{journal.acceptanceRate || "N/A"}</span>
+                <span className="text-xs text-muted-foreground block">Acceptance Rate</span>
+                <span className="font-medium text-sm">{journal.acceptanceRate || "N/A"}</span>
               </div>
               {journal.apc && (
                 <div>
-                  <span className="text-sm text-muted-foreground block flex items-center gap-1">
+                  <span className="text-xs text-muted-foreground block flex items-center gap-1">
                     <DollarSign className="w-3 h-3" /> APC (Publication Fee)
                   </span>
-                  <span className="font-medium">{journal.apc}</span>
+                  <span className="font-medium text-sm">{journal.apc}</span>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          <div className="space-y-3">
-            <Button className="w-full" asChild>
+          <div className="space-y-2">
+            <Button className="w-full h-9 text-sm" asChild>
               <a href={journal.url} target="_blank" rel="noopener noreferrer">
-                Visit Journal Website <ExternalLink className="ml-2 w-4 h-4" />
+                Visit Journal Website <ExternalLink className="ml-1.5 w-3.5 h-3.5" />
               </a>
             </Button>
-            <Button variant="outline" className="w-full" asChild>
+            <Button variant="outline" className="w-full h-9 text-sm" asChild>
               <a href={journal.guidelinesUrl} target="_blank" rel="noopener noreferrer">
-                View Author Guidelines <ExternalLink className="ml-2 w-4 h-4" />
+                View Author Guidelines <ExternalLink className="ml-1.5 w-3.5 h-3.5" />
               </a>
             </Button>
           </div>
@@ -140,15 +140,15 @@ export default function JournalDetail() {
 
       {journal.features && (
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-primary" /> Key Features
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <CheckCircle className="w-4 h-4 text-primary" /> Key Features
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <ul className="grid sm:grid-cols-2 gap-3">
+          <CardContent className="p-4 pt-0">
+            <ul className="grid sm:grid-cols-2 gap-2">
               {journal.features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-2">
+                <li key={index} className="flex items-center gap-2 text-sm">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                   <span>{feature}</span>
                 </li>
