@@ -55,7 +55,7 @@ export function JournalFinder() {
   }, [searchQuery, sortBy, filterCategory]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {selectedForCompare.length > 0 && (
         <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300">
           <Card className="shadow-xl border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

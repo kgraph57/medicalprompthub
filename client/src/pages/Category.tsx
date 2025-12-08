@@ -30,8 +30,8 @@ export default function Category() {
 
   return (
     <Layout>
-      <div className="space-y-8">
-        <div className="flex items-center gap-4 mb-8">
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 mb-4">
           <Link href="/">
             <Button variant="ghost" size="icon" className="rounded-full">
               <ArrowLeft className="w-5 h-5" />

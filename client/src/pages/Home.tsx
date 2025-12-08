@@ -60,13 +60,13 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="space-y-12 pb-24">
+      <div className="space-y-6 pb-12">
         {/* Hero Section - 最適化版 */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center space-y-6 py-12 relative overflow-hidden"
+          className="text-center space-y-3 py-6 relative overflow-hidden"
         >
           {/* Subtle gradient background */}
           <div className="absolute inset-0 -z-10 gradient-apple-light opacity-50" />
@@ -148,8 +148,8 @@ export default function Home() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="mb-4">
-            <h2 className="text-xl font-bold text-center mb-1">学習進捗</h2>
+          <div className="mb-3">
+            <h2 className="text-xl font-bold text-center mb-0.5">学習進捗</h2>
             <p className="text-muted-foreground text-center text-xs">
               あなたの学習状況を確認しましょう
             </p>
@@ -160,7 +160,7 @@ export default function Home() {
             totalLessonsCompleted={stats.totalLessonsCompleted}
             totalBadges={0}
           />
-          <div className="mt-4 text-center">
+          <div className="mt-3 text-center">
             <Button
               size="default"
               onClick={() => setLocation("/courses")}
@@ -197,7 +197,7 @@ export default function Home() {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-3 flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold tracking-tight">
                 {searchQuery.trim() || selectedCategory ? `検索結果 ${filteredPrompts.length > 0 ? `(${filteredPrompts.length}件)` : ""}` : "すべてのプロンプト"}

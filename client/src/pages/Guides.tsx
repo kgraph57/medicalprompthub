@@ -214,13 +214,13 @@ export default function Guides() {
 
   return (
     <Layout>
-      <div className="space-y-8 pb-20">
+      <div className="space-y-4 pb-12">
         {/* Hero Section - コンパクト */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-4 pt-6"
+          className="space-y-2 pt-4"
         >
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-[1.1] max-w-3xl">
             Guides & Workflows
@@ -235,7 +235,7 @@ export default function Guides() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-6"
+          className="space-y-3"
         >
           <div className="relative max-w-2xl">
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />

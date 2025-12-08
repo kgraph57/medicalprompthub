@@ -141,12 +141,12 @@ export default function Courses() {
 
   return (
     <Layout>
-      <div className="space-y-8 pb-24">
+      <div className="space-y-4 pb-12">
         {/* ヘッダー - コンパクト */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-3 py-6"
+          className="text-center space-y-2 py-4"
         >
           <h1 className="text-3xl font-bold tracking-tight">Learning Courses</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
@@ -174,19 +174,19 @@ export default function Courses() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="max-w-6xl mx-auto px-4 space-y-6"
+          className="max-w-6xl mx-auto px-4 space-y-3"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Available Courses</h2>
-            <div className="text-sm text-muted-foreground">
+            <h2 className="text-xl font-bold">Available Courses</h2>
+            <div className="text-xs text-muted-foreground">
               {courses.filter(c => !c.locked).length} / {courses.length} unlocked
             </div>
           </div>
           
           {/* レベル1: 基礎編 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-muted-foreground">レベル1: 基礎編（初心者向け）</h3>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-3">
+            <h3 className="text-base font-semibold text-muted-foreground">レベル1: 基礎編（初心者向け）</h3>
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {courses.filter(c => c.level === 1).map((course, index) => {
                 const { completed, total } = getCourseProgress(course.id);
                 const progress = getProgressPercentage(completed, total);

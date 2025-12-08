@@ -57,13 +57,13 @@ export default function Tips() {
 
   return (
     <Layout>
-      <div className="space-y-8 pb-24">
+      <div className="space-y-4 pb-12">
         {/* Hero Section - コンパクト */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center space-y-4 py-8 relative overflow-hidden"
+          className="text-center space-y-2 py-4 relative overflow-hidden"
         >
           <div className="absolute inset-0 -z-10 gradient-apple-light opacity-50" />
           
@@ -105,7 +105,7 @@ export default function Tips() {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="mb-6 space-y-4">
+          <div className="mb-3 space-y-2">
             <div className="relative max-w-2xl mx-auto">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
               <Input

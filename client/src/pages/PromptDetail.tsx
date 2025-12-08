@@ -82,9 +82,9 @@ export default function PromptDetail() {
 
   return (
     <Layout>
-      <div className="space-y-4 h-[calc(100vh-8rem)] flex flex-col">
+      <div className="space-y-3 h-[calc(100vh-8rem)] flex flex-col">
         {/* Header - コンパクト */}
-        <div className="flex items-center gap-3 flex-none pb-2 border-b">
+        <div className="flex items-center gap-2 flex-none pb-1.5 border-b">
           <Link href={`/category/${prompt.category}`}>
             <Button variant="ghost" size="icon" className="rounded-full h-9 w-9">
               <ArrowLeft className="w-4 h-4" />
@@ -106,7 +106,7 @@ export default function PromptDetail() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1 min-h-0">
           {/* Left: Inputs */}
           <Card className="flex flex-col h-full border shadow-sm bg-card">
             <CardHeader className="pb-2 flex-none border-b">
@@ -118,8 +118,8 @@ export default function PromptDetail() {
               </div>
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden p-0">
-              <ScrollArea className="h-full p-4">
-                <div className="space-y-4 pr-3">
+              <ScrollArea className="h-full p-3">
+                <div className="space-y-3 pr-2">
                   {prompt.inputs.map((input) => (
                     <div key={input.key} className="space-y-1.5">
                       <Label htmlFor={input.key} className="text-xs font-medium text-foreground/80">
@@ -188,7 +188,7 @@ export default function PromptDetail() {
               </div>
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden p-0 bg-muted/5">
-              <ScrollArea className="h-full p-4">
+              <ScrollArea className="h-full p-3">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
                   <pre className="whitespace-pre-wrap font-mono text-xs bg-transparent p-0 border-0 text-foreground/90 leading-relaxed">
                     {generatePrompt()}
