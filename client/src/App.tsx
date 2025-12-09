@@ -35,6 +35,7 @@ const JournalCompare = lazy(() => import("@/pages/JournalCompare"));
 const CaseReportGuide = lazy(() => import("@/pages/CaseReportGuide"));
 const PaperReadingGuide = lazy(() => import("@/pages/PaperReadingGuide"));
 const EnglishProofreadingGuide = lazy(() => import("@/pages/EnglishProofreadingGuide"));
+const AILiteracy = lazy(() => import("@/pages/AILiteracy"));
 
 // Loading component
 const PageLoader = () => (
@@ -67,6 +68,7 @@ function Router() {
           <Route path="/tips" component={Tips} />
           <Route path="/tips/:id" component={TipDetail} />
           <Route path="/legal" component={Legal} />
+          <Route path="/ai-literacy" component={AILiteracy} />
           <Route path="/faq" component={FAQ} />
           <Route path="/contact" component={Contact} />
           <Route path="/about" component={About} />

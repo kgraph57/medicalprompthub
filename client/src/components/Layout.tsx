@@ -133,6 +133,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="text-xs text-muted-foreground space-y-2">
           <p>© 2024 Medical Prompt Hub</p>
           <div className="flex flex-col gap-2">
+            <Link href="/ai-literacy">
+              <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
+                <Lightbulb className="w-3 h-3" />
+                AIリテラシー
+              </span>
+            </Link>
             <Link href="/faq">
               <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
                 <HelpCircle className="w-3 h-3" />
@@ -305,6 +311,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <div className="text-xs text-muted-foreground space-y-2">
                   <p>© 2024 Medical Prompt Hub</p>
                   <div className="flex flex-col gap-2">
+                    <Link href="/ai-literacy">
+                      <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
+                        <Lightbulb className="w-3 h-3" />
+                        AIリテラシー
+                      </span>
+                    </Link>
                     <Link href="/faq">
                       <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
                         <HelpCircle className="w-3 h-3" />
