@@ -4,28 +4,41 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-normal ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  // 基本スタイル - デザインチームの決定事項に基づく
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-[150ms] ease-[cubic-bezier(0.4,0,0.2,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
+        // Primary Button - Jony Iveの指示: scale(1.02)が黄金比
         default:
           "bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:shadow-md hover:scale-[1.02] active:bg-blue-800 active:shadow-sm active:scale-[0.98]",
+        
+        // Secondary Button - Dieter Ramsの指示: 控えめだが存在感がある
         secondary:
-          "bg-white text-gray-700 border border-gray-300 shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow-md hover:scale-[1.02] active:bg-gray-100 active:shadow-sm active:scale-[0.98] dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800",
+          "bg-white text-gray-700 border border-gray-300 shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow-md hover:scale-[1.02] active:bg-gray-100 active:shadow-sm active:scale-[0.98] dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:border-gray-600",
+        
+        // Outline Button
         outline:
-          "border border-gray-300 bg-transparent hover:bg-gray-100 hover:border-gray-400 hover:shadow-sm active:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-800",
+          "border border-gray-300 bg-transparent hover:bg-gray-100 hover:border-gray-400 hover:shadow-sm hover:scale-[1.02] active:bg-gray-200 active:scale-[0.98] dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:border-gray-600",
+        
+        // Ghost Button
         ghost:
-          "hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100",
+          "hover:bg-gray-100 hover:text-gray-900 hover:scale-[1.02] active:bg-gray-200 active:scale-[0.98] dark:hover:bg-gray-800 dark:hover:text-gray-100",
+        
+        // Link Button
         link:
-          "text-blue-600 underline-offset-4 hover:underline",
+          "text-blue-600 underline-offset-4 hover:underline dark:text-blue-400",
+        
+        // Destructive Button
         destructive:
           "bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-md hover:scale-[1.02] active:bg-red-800 active:shadow-sm active:scale-[0.98]",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-8 px-3 text-xs",
-        lg: "h-12 px-6 text-base",
-        icon: "h-10 w-10",
+        // Tobias Frere-Jonesの指示: タップターゲットとして十分なサイズ
+        sm: "h-8 px-3 text-xs",      // 32px height, 24px horizontal padding
+        default: "h-10 px-4 py-2",   // 40px height, 32px horizontal padding
+        lg: "h-12 px-6 text-base",   // 48px height, 48px horizontal padding
+        icon: "h-10 w-10",           // 40px × 40px
       },
     },
     defaultVariants: {
