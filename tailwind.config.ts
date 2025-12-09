@@ -32,6 +32,18 @@ export default {
         'neutral-700': 'var(--neutral-700)',
         'neutral-800': 'var(--neutral-800)',
         'neutral-900': 'var(--neutral-900)',
+        
+        // Semantic colors
+        'border': 'var(--neutral-200)',
+        'background': 'var(--neutral-0)',
+        'foreground': 'var(--neutral-900)',
+        'card': 'var(--neutral-0)',
+        'muted': 'var(--neutral-100)',
+        'muted-foreground': 'var(--neutral-600)',
+        'accent': 'var(--neutral-100)',
+        'secondary': 'var(--primary-100)',
+        'secondary-foreground': 'var(--primary-900)',
+        'primary': 'var(--primary-600)',
       },
       fontSize: {
         'display': ['56px', { lineHeight: '1.1', fontWeight: '700' }],
