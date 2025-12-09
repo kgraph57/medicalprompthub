@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { fullPrompts as prompts } from "@/lib/prompts-full";
 import { AlertTriangle, ArrowLeft, Bookmark, Check, Copy, RefreshCw, Sparkles } from "lucide-react";
+import { PromptChecklist } from "@/components/PromptChecklist";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -132,6 +133,9 @@ export default function PromptDetail() {
             <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-lg p-3">
               <p className="text-sm text-red-900 dark:text-red-400">{prompt.warningMessage}</p>
             </div>
+          )}
+          {prompt.riskLevel === 'high' && (
+            <PromptChecklist promptCategory={prompt.category} promptId={prompt.id} />
           )}
         </div>
 
