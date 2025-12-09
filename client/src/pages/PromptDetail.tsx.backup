@@ -1,25 +1,25 @@
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { fullPrompts as prompts } from "@/lib/prompts-full";
 import { AlertTriangle, ArrowLeft, Bookmark, Check, Copy, RefreshCw, Sparkles } from "lucide-react";
-import { CollapsibleWarning } from "@/components/CollapsibleWarning";
-import { PromptSidebar } from "@/components/PromptSidebar";
 import { PromptChecklist } from "@/components/PromptChecklist";
 import { FactCheckLinks } from "@/components/FactCheckLinks";
 import { PromptFeedback } from "@/components/PromptFeedback";
-import { ShareButtons } from "@/components/ShareButtons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useFavorites } from "@/hooks/useFavorites";
 import { usePromptStats } from "@/hooks/usePromptStats";
 import { Link, useRoute } from "wouter";
 import { trackPromptCopy, trackPromptView } from "@/lib/analytics";
+import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export default function PromptDetail() {
   const [match, params] = useRoute("/prompts/:id");
@@ -30,9 +30,7 @@ export default function PromptDetail() {
   const [copied, setCopied] = useState(false);
   const { favorites, toggleFavorite } = useFavorites();
   const { trackPromptUsage, getPromptUsageCount } = usePromptStats();
-  const usageCount = prompt ? getPromptUsageCount(prompt.id) : 0;
-
-  const isFavorite = (id: string) => favorites.includes(id);
+  const usageCount = prompt ? getPromptUsageCount(prompt.id) : 0;;
 
   // プロンプト閲覧を追跡
   useEffect(() => {
@@ -100,37 +98,34 @@ export default function PromptDetail() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* 左サイドバーはLayoutコンポーネントで管理 */}
-      
-      {/* メインコンテンツ */}
-      <main className="flex-1 max-w-5xl mx-auto p-8">
-        {/* ヘッダー */}
-        <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4">
+    <Layout>
+      <div className="space-y-3 h-[calc(100vh-8rem)] flex flex-col">
+        {/* Header - コンパクト */}
+        <div className="flex-none space-y-2">
+          <div className="flex items-center gap-2 pb-1.5 border-b">
             <Link href={`/category/${prompt.category}`}>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="ghost" size="icon" className="rounded-full h-9 w-9">
+                <ArrowLeft className="w-4 h-4" />
               </Button>
             </Link>
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-bold tracking-tight">{prompt.title}</h1>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-bold tracking-tight truncate">{prompt.title}</h1>
                 {prompt.riskLevel === 'high' && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
-                    <AlertTriangle className="w-4 h-4 mr-1.5" />
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                    <AlertTriangle className="w-3 h-3 mr-1" />
                     高リスク
                   </span>
                 )}
                 {prompt.riskLevel === 'medium' && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
                     中リスク
                   </span>
                 )}
               </div>
-              <p className="text-base text-muted-foreground leading-relaxed">{prompt.description}</p>
+              <p className="text-xs text-muted-foreground line-clamp-1">{prompt.description}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-2">
               <ShareButtons 
                 title={prompt.title}
                 url={window.location.href}
@@ -140,39 +135,41 @@ export default function PromptDetail() {
                 variant="outline"
                 size="icon"
                 onClick={() => toggleFavorite(prompt.id)}
-                className={isFavorite(prompt.id) ? "text-yellow-500 border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20" : ""}
+                className={isFavorite(prompt.id) ? "text-yellow-500 border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20" : "text-muted-foreground"}
               >
                 <Bookmark className={isFavorite(prompt.id) ? "fill-current w-5 h-5" : "w-5 h-5"} />
               </Button>
             </div>
           </div>
-
-          {/* 警告メッセージ（折りたたみ式） */}
           {prompt.warningMessage && (
-            <div className="mb-4">
-              <CollapsibleWarning message={prompt.warningMessage} defaultOpen={false} />
+            <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-lg p-3">
+              <p className="text-sm text-red-900 dark:text-red-400">{prompt.warningMessage}</p>
             </div>
           )}
+          {prompt.riskLevel === 'high' && (
+            <PromptChecklist promptCategory={prompt.category} promptId={prompt.id} />
+          )}
+          <FactCheckLinks promptCategory={prompt.category} promptId={prompt.id} />
+          <PromptFeedback promptId={prompt.id} />
         </div>
 
-        {/* プロンプト入力エリア */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* 左: 入力フォーム */}
-          <Card className="border-l-4 border-blue-500">
-            <CardHeader>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1 min-h-0">
+          {/* Left: Inputs */}
+          <Card className="flex flex-col h-full border shadow-sm bg-card">
+            <CardHeader className="pb-2 flex-none border-b">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-xl font-semibold">入力項目</CardTitle>
-                <Button variant="ghost" size="sm" onClick={handleReset}>
-                  <RefreshCw className="w-4 h-4 mr-2" /> リセット
+                <CardTitle className="text-base font-semibold">入力項目</CardTitle>
+                <Button variant="ghost" size="sm" onClick={handleReset} className="text-muted-foreground hover:text-foreground h-8 text-xs">
+                  <RefreshCw className="w-3.5 h-3.5 mr-1.5" /> リセット
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[400px] pr-4">
-                <div className="space-y-4">
+            <CardContent className="flex-1 overflow-hidden p-0">
+              <ScrollArea className="h-full p-3">
+                <div className="space-y-3 pr-2">
                   {prompt.inputs.map((input) => (
-                    <div key={input.key} className="space-y-2">
-                      <Label htmlFor={input.key} className="text-sm font-medium">
+                    <div key={input.key} className="space-y-1.5">
+                      <Label htmlFor={input.key} className="text-xs font-medium text-foreground/80">
                         {input.label}
                       </Label>
                       {input.type === "textarea" ? (
@@ -181,14 +178,14 @@ export default function PromptDetail() {
                           placeholder={input.placeholder}
                           value={inputValues[input.key] || ""}
                           onChange={(e) => handleInputChange(input.key, e.target.value)}
-                          className="min-h-[120px] resize-y"
+                          className="min-h-[100px] resize-y bg-background/50 focus:bg-background transition-colors"
                         />
                       ) : input.type === "select" ? (
                         <Select
                           value={inputValues[input.key] || ""}
                           onValueChange={(value) => handleInputChange(input.key, value)}
                         >
-                          <SelectTrigger id={input.key}>
+                          <SelectTrigger id={input.key} className="bg-background/50 focus:bg-background transition-colors">
                             <SelectValue placeholder={input.placeholder} />
                           </SelectTrigger>
                           <SelectContent>
@@ -202,10 +199,11 @@ export default function PromptDetail() {
                       ) : (
                         <Input
                           id={input.key}
-                          type={input.type}
+                          type="text"
                           placeholder={input.placeholder}
                           value={inputValues[input.key] || ""}
                           onChange={(e) => handleInputChange(input.key, e.target.value)}
+                          className="bg-background/50 focus:bg-background transition-colors"
                         />
                       )}
                     </div>
@@ -215,70 +213,39 @@ export default function PromptDetail() {
             </CardContent>
           </Card>
 
-          {/* 右: プレビュー */}
-          <Card className="border-l-4 border-green-500">
-            <CardHeader>
+          {/* Right: Preview */}
+          <Card className="flex flex-col h-full border-primary/20 shadow-sm bg-card">
+            <CardHeader className="pb-2 flex-none border-b bg-muted/20">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-green-600" />
-                  プロンプトプレビュー
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
+                  プレビュー
                 </CardTitle>
-                <Button onClick={handleCopy} size="lg" className="bg-blue-600 hover:bg-blue-700">
+                <Button onClick={handleCopy} size="sm" className={cn("h-8 text-xs", copied && "bg-green-600 hover:bg-green-700")}>
                   {copied ? (
                     <>
-                      <Check className="w-4 h-4 mr-2" /> コピー完了
+                      <Check className="w-3.5 h-3.5 mr-1.5" /> コピー完了
                     </>
                   ) : (
                     <>
-                      <Copy className="w-4 h-4 mr-2" /> コピー
+                      <Copy className="w-3.5 h-3.5 mr-1.5" /> コピー
                     </>
                   )}
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[400px]">
-                <pre className="whitespace-pre-wrap text-sm font-mono bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border">
-                  {generatePrompt()}
-                </pre>
+            <CardContent className="flex-1 overflow-hidden p-0 bg-muted/5">
+              <ScrollArea className="h-full p-3">
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap font-mono text-xs bg-transparent p-0 border-0 text-foreground/90 leading-relaxed">
+                    {generatePrompt()}
+                  </pre>
+                </div>
               </ScrollArea>
             </CardContent>
           </Card>
         </div>
-
-        {/* フィードバック */}
-        <div className="mt-6">
-          <PromptFeedback promptId={prompt.id} />
-        </div>
-      </main>
-
-      {/* 右サイドバー（補助ツール） */}
-      <PromptSidebar>
-        {/* 使用統計 */}
-        {usageCount > 0 && (
-          <Card className="border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-950/20">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold">使用統計</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{usageCount}回</p>
-              <p className="text-xs text-muted-foreground mt-1">このプロンプトを使用した回数</p>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* チェックリスト */}
-        {prompt.riskLevel === 'high' && (
-          <div>
-            <PromptChecklist promptCategory={prompt.category} promptId={prompt.id} />
-          </div>
-        )}
-
-        {/* ファクトチェックツール */}
-        <div>
-          <FactCheckLinks promptCategory={prompt.category} promptId={prompt.id} />
-        </div>
-      </PromptSidebar>
-    </div>
+      </div>
+    </Layout>
   );
 }

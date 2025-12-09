@@ -32,13 +32,13 @@ export function FactCheckLinks({ promptCategory, promptId }: FactCheckLinksProps
   };
 
   return (
-    <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+    <Card className="border-l-4 border-green-500 bg-green-50 dark:bg-green-950/20">
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-semibold text-green-900 dark:text-green-400 flex items-center gap-2">
-          <Search className="w-4 h-4" />
-          ファクトチェック支援ツール
+        <CardTitle className="text-base font-semibold text-green-900 dark:text-green-400 flex items-center gap-2">
+          <Search className="w-5 h-5" />
+          ファクトチェックツール
         </CardTitle>
-        <p className="text-xs text-green-800 dark:text-green-300 mt-1">
+        <p className="text-sm text-green-800 dark:text-green-300 mt-2 leading-relaxed">
           AIの出力を検証するために、以下の信頼できる情報源を活用してください。
         </p>
       </CardHeader>

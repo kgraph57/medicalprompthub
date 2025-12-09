@@ -88,18 +88,18 @@ export function PromptChecklist({ promptCategory, promptId }: PromptChecklistPro
   const allAfterCompleted = afterProgress === afterTotal;
 
   return (
-    <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/20">
+    <Card className="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-semibold text-blue-900 dark:text-blue-400 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            安全使用チェックリスト（Gawande式）
+          <CardTitle className="text-base font-semibold text-blue-900 dark:text-blue-400 flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5" />
+            安全使用チェックリスト
           </CardTitle>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="h-8 text-xs"
+            className="h-8 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/30"
           >
             {isExpanded ? (
               <>
