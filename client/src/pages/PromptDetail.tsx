@@ -125,7 +125,12 @@ export default function PromptDetail() {
               </div>
               <p className="text-xs text-muted-foreground line-clamp-1">{prompt.description}</p>
             </div>
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center gap-2">
+              <ShareButtons 
+                title={prompt.title}
+                url={window.location.href}
+                description={prompt.description}
+              />
               <Button
                 variant="outline"
                 size="icon"
