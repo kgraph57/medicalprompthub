@@ -137,6 +137,33 @@ import litReviewLesson4Md from "@/data/courses/literature-review-support/lesson-
 import advancedPromptLesson1Md from "@/data/courses/advanced-prompt-techniques/lesson-1.md?raw";
 import advancedPromptLesson2Md from "@/data/courses/advanced-prompt-techniques/lesson-2.md?raw";
 
+// machine-learning-fundamentalsコース
+import mlFundamentalsLesson1Md from "@/data/courses/machine-learning-fundamentals/lesson-1.md?raw";
+import mlFundamentalsLesson2Md from "@/data/courses/machine-learning-fundamentals/lesson-2.md?raw";
+import mlFundamentalsLesson3Md from "@/data/courses/machine-learning-fundamentals/lesson-3.md?raw";
+import mlFundamentalsLesson4Md from "@/data/courses/machine-learning-fundamentals/lesson-4.md?raw";
+import mlFundamentalsLesson5Md from "@/data/courses/machine-learning-fundamentals/lesson-5.md?raw";
+import mlFundamentalsLesson6Md from "@/data/courses/machine-learning-fundamentals/lesson-6.md?raw";
+import mlFundamentalsLesson7Md from "@/data/courses/machine-learning-fundamentals/lesson-7.md?raw";
+import mlFundamentalsLesson8Md from "@/data/courses/machine-learning-fundamentals/lesson-8.md?raw";
+
+// deep-learning-basicsコース
+import dlBasicsLesson1Md from "@/data/courses/deep-learning-basics/lesson-1.md?raw";
+import dlBasicsLesson2Md from "@/data/courses/deep-learning-basics/lesson-2.md?raw";
+import dlBasicsLesson3Md from "@/data/courses/deep-learning-basics/lesson-3.md?raw";
+import dlBasicsLesson4Md from "@/data/courses/deep-learning-basics/lesson-4.md?raw";
+import dlBasicsLesson5Md from "@/data/courses/deep-learning-basics/lesson-5.md?raw";
+import dlBasicsLesson6Md from "@/data/courses/deep-learning-basics/lesson-6.md?raw";
+import dlBasicsLesson7Md from "@/data/courses/deep-learning-basics/lesson-7.md?raw";
+import dlBasicsLesson8Md from "@/data/courses/deep-learning-basics/lesson-8.md?raw";
+
+// ai-tools-comparisonコース
+import aiToolsLesson1Md from "@/data/courses/ai-tools-comparison/lesson-1.md?raw";
+import aiToolsLesson2Md from "@/data/courses/ai-tools-comparison/lesson-2.md?raw";
+import aiToolsLesson3Md from "@/data/courses/ai-tools-comparison/lesson-3.md?raw";
+import aiToolsLesson4Md from "@/data/courses/ai-tools-comparison/lesson-4.md?raw";
+import aiToolsLesson5Md from "@/data/courses/ai-tools-comparison/lesson-5.md?raw";
+
 const lessonContent: Record<string, string> = {
   // ai-basicsコース
   "ai-basics-1": aiBasicsLesson1Md,
@@ -240,6 +267,30 @@ const lessonContent: Record<string, string> = {
   // advanced-prompt-techniquesコース
   "advanced-prompt-1": advancedPromptLesson1Md,
   "advanced-prompt-2": advancedPromptLesson2Md,
+  // machine-learning-fundamentalsコース
+  "ml-fundamentals-1": mlFundamentalsLesson1Md,
+  "ml-fundamentals-2": mlFundamentalsLesson2Md,
+  "ml-fundamentals-3": mlFundamentalsLesson3Md,
+  "ml-fundamentals-4": mlFundamentalsLesson4Md,
+  "ml-fundamentals-5": mlFundamentalsLesson5Md,
+  "ml-fundamentals-6": mlFundamentalsLesson6Md,
+  "ml-fundamentals-7": mlFundamentalsLesson7Md,
+  "ml-fundamentals-8": mlFundamentalsLesson8Md,
+  // deep-learning-basicsコース
+  "dl-basics-1": dlBasicsLesson1Md,
+  "dl-basics-2": dlBasicsLesson2Md,
+  "dl-basics-3": dlBasicsLesson3Md,
+  "dl-basics-4": dlBasicsLesson4Md,
+  "dl-basics-5": dlBasicsLesson5Md,
+  "dl-basics-6": dlBasicsLesson6Md,
+  "dl-basics-7": dlBasicsLesson7Md,
+  "dl-basics-8": dlBasicsLesson8Md,
+  // ai-tools-comparisonコース
+  "ai-tools-1": aiToolsLesson1Md,
+  "ai-tools-2": aiToolsLesson2Md,
+  "ai-tools-3": aiToolsLesson3Md,
+  "ai-tools-4": aiToolsLesson4Md,
+  "ai-tools-5": aiToolsLesson5Md,
 };
 
 // クイズデータ

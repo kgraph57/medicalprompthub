@@ -53,17 +53,17 @@ export const courses = [
     category: "基礎理論",
     locked: false,
   },
-  // レベル2: 技術理解編（中級者向け）
+  // レベル1: 技術基礎編（初心者向け）
   {
     id: "machine-learning-fundamentals",
     title: "機械学習の基礎 - 教師あり・教師なし・強化学習",
     description: "機械学習の三大カテゴリ、学習アルゴリズムの基本、過学習と汎化、評価指標を理解し、AIの学習メカニズムを把握します",
-    level: 2,
+    level: 1,
     lessons: 8,
     xpReward: 80,
     badge: "🧠",
     category: "技術",
-    locked: true,
+    locked: false,
   },
   {
     id: "medical-ai-overview",
@@ -203,12 +203,12 @@ export const courses = [
     id: "medical-ai-ethics",
     title: "医療AIの倫理とプライバシー",
     description: "医療AI利用における倫理的配慮とプライバシー保護について学びます",
-    level: 2,
+    level: 1,
     lessons: 6,
     xpReward: 60,
     badge: "⚖️",
     category: "法律倫理",
-    locked: true,
+    locked: false,
   },
   {
     id: "medical-data-legal",
@@ -380,12 +380,12 @@ export const courses = [
     id: "literature-review-support",
     title: "文献レビュー支援",
     description: "AIを活用した効率的な文献検索とレビュー作成の方法を学びます",
-    level: 3,
+    level: 1,
     lessons: 4,
     xpReward: 60,
     badge: "📚",
     category: "研究",
-    locked: true,
+    locked: false,
   },
   // レベル4: 専門編（エキスパート向け）
   {

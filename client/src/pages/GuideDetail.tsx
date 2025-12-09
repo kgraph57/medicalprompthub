@@ -3,7 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, BookOpen, CheckCircle2, Copy, ExternalLink, FileText, Lightbulb, ListTodo, Mail, Search, Send, Map, CheckSquare, Square, BarChart3, Download, Clock, Calendar, User, Image, Menu, X, MessageSquare, Presentation } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { Link, useRoute } from "wouter";
+import { Link, useRoute, useLocation } from "wouter";
+import { Layout } from "@/components/Layout";
 import { fullPrompts } from "../lib/prompts-full";
 import { JournalFinder } from "@/components/JournalFinder";
 import { ConsentTemplates } from "@/components/ConsentTemplates";
@@ -356,4 +357,70 @@ const guides = [
   }
   // english-proofreading-guideは専用ページ（EnglishProofreadingGuide.tsx）で実装されているため削除
 ];
+
+// メインコンポーネント
+export default function GuideDetail() {
+  const [match, params] = useRoute("/guides/:id");
+  const [, setLocation] = useLocation();
+  const guideId = match ? params.id : null;
+  const guide = guides.find((g) => g.id === guideId);
+
+  if (!guide) {
+    return (
+      <Layout>
+        <div className="container py-10 text-center">
+          <h2 className="text-2xl font-bold mb-4">Guide Not Found</h2>
+          <p className="text-muted-foreground mb-6">The guide you are looking for does not exist.</p>
+          <Button onClick={() => setLocation("/guides")}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Guides
+          </Button>
+        </div>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <div className="container py-10">
+        <Button
+          variant="ghost"
+          onClick={() => setLocation("/guides")}
+          className="mb-6"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Guides
+        </Button>
+        
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold mb-4">{guide.title}</h1>
+          <p className="text-muted-foreground mb-8">{guide.description}</p>
+          
+          <div className="space-y-8">
+            {guide.steps?.map((step, index) => (
+              <Card key={index} className="p-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    {step.icon && <step.icon className="w-6 h-6" />}
+                    {step.title}
+                  </CardTitle>
+                  {step.subtitle && (
+                    <CardDescription>{step.subtitle}</CardDescription>
+                  )}
+                  {step.when && (
+                    <p className="text-sm text-muted-foreground mt-2">
+                      <Clock className="w-4 h-4 inline mr-1" />
+                      {step.when}
+                    </p>
+                  )}
+                </CardHeader>
+                <CardContent>
+                  {step.content}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+}
 
