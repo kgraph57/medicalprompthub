@@ -26,6 +26,7 @@ const About = lazy(() => import("./pages/About"));
 const Changelog = lazy(() => import("./pages/Changelog"));
 const Favorites = lazy(() => import("./pages/Favorites"));
 const Courses = lazy(() => import("./pages/Courses"));
+const CategoryCourses = lazy(() => import("./pages/CategoryCourses"));
 const CourseDetail = lazy(() => import("./pages/CourseDetail"));
 const LessonDetail = lazy(() => import("./pages/LessonDetail"));
 const JournalFinderPage = lazy(() => import("@/pages/JournalFinderPage"));
@@ -55,6 +56,7 @@ function Router() {
           <Route path="/category/:id" component={Category} />
           <Route path="/prompts/:id" component={PromptDetail} />
           <Route path="/courses" component={Courses} />
+          <Route path="/courses/category/:category" component={CategoryCourses} />
           <Route path="/courses/:courseId" component={CourseDetail} />
           <Route path="/courses/:courseId/lessons/:lessonId" component={LessonDetail} />
           <Route path="/guides" component={Guides} />
