@@ -40,9 +40,74 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* 国家プロジェクトレベル デザインシステム */
+  /* 8pxグリッドシステム */
+  --spacing-1: 8px;
+  --spacing-2: 16px;
+  --spacing-3: 24px;
+  --spacing-4: 32px;
+  --spacing-5: 40px;
+  --spacing-6: 48px;
+  --spacing-8: 64px;
+  --spacing-10: 80px;
+  --spacing-12: 96px;
+  --spacing-16: 128px;
+  --spacing-20: 160px;
+  
+  /* タイポグラフィシステム */
+  --font-size-display: 56px;
+  --line-height-display: 64px;
+  --font-size-h1: 40px;
+  --line-height-h1: 48px;
+  --font-size-h2: 32px;
+  --line-height-h2: 40px;
+  --font-size-h3: 20px;
+  --line-height-h3: 28px;
+  --font-size-body: 16px;
+  --line-height-body: 24px;
+  --font-size-caption: 14px;
+  --line-height-caption: 20px;
+  
+  /* Elevation System */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 :root {
+  /* 国家プロジェクトレベル カラーシステム */
+  /* Primary - 医療の信頼性と専門性 */
+  --primary-50: #EFF6FF;
+  --primary-100: #DBEAFE;
+  --primary-200: #BFDBFE;
+  --primary-300: #93C5FD;
+  --primary-400: #60A5FA;
+  --primary-500: #3B82F6;
+  --primary-600: #2563EB;
+  --primary-700: #1D4ED8;
+  --primary-800: #1E40AF;
+  --primary-900: #1E3A8A;
+  
+  /* Neutral - 情報階層 */
+  --neutral-0: #FFFFFF;
+  --neutral-50: #F9FAFB;
+  --neutral-100: #F3F4F6;
+  --neutral-200: #E5E7EB;
+  --neutral-300: #D1D5DB;
+  --neutral-400: #9CA3AF;
+  --neutral-500: #6B7280;
+  --neutral-600: #4B5563;
+  --neutral-700: #374151;
+  --neutral-800: #1F2937;
+  --neutral-900: #111827;
+  
+  /* Semantic Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  
   /* Latest Apple Design - Light Mode (Default) */
   /* Base: Clean White with subtle warmth */
   --background: oklch(0.99 0.002 260); /* Slightly warm white */
@@ -82,7 +147,7 @@
   --ring: oklch(0.58 0.2 255); /* Matches Primary */
   
   /* Radius: More rounded, friendly */
-  --radius: 1rem; /* 16px - more rounded */
+  --radius: 0.5rem; /* 8px - aligned to 8px grid */
   
   /* Sidebar */
   --sidebar: oklch(0.985 0.002 260); /* Off-white with warmth */
@@ -217,6 +282,137 @@
       padding-left: 2rem;
       padding-right: 2rem;
       max-width: 1280px;
+    }
+  }
+  
+  /* 国家プロジェクトレベル コンポーネントクラス */
+  
+  /* Primary Button */
+  .btn-primary {
+    @apply px-6 py-3 font-semibold rounded-lg;
+    @apply transition-all duration-200;
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+    color: white;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  
+  /* Secondary Button */
+  .btn-secondary {
+    @apply px-6 py-3 font-semibold rounded-lg;
+    @apply transition-all duration-200;
+    background: var(--neutral-100);
+    color: var(--neutral-700);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--neutral-200);
+  }
+  
+  /* Card - Level 1 */
+  .card {
+    @apply rounded-xl border transition-all duration-200;
+    background: white;
+    border-color: var(--neutral-200);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .card:hover {
+    border-color: var(--primary-300);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  
+  /* Card - Level 2 (Elevated) */
+  .card-elevated {
+    @apply rounded-xl border transition-all duration-200;
+    background: white;
+    border-color: var(--neutral-200);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .card-elevated:hover {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  /* Input Field */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg border-2 transition-colors duration-200;
+    background: white;
+    border-color: var(--neutral-200);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: var(--primary-500);
+  }
+  
+  /* Typography Classes */
+  .text-display {
+    font-size: var(--font-size-display);
+    line-height: var(--line-height-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  .text-h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  .text-h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  
+  .text-h3 {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    font-weight: 600;
+  }
+  
+  .text-body {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: 400;
+  }
+  
+  .text-caption {
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    font-weight: 400;
+  }
+  
+  /* Responsive Typography */
+  @media (max-width: 768px) {
+    .text-display {
+      font-size: 40px;
+      line-height: 48px;
+    }
+    
+    .text-h1 {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    
+    .text-h2 {
+      font-size: 24px;
+      line-height: 32px;
     }
   }
   
@@ -497,49 +693,4 @@
   max-width: 100%;
   word-break: break-word;
   overflow-wrap: break-word;
-}
-
-.prose p {
-  @apply mb-8 leading-loose;
-  margin-top: 1.5rem;
-}
-
-.prose h2 {
-  @apply mt-12 mb-6 text-2xl font-bold;
-}
-
-.prose h3 {
-  @apply mt-10 mb-4 text-xl font-bold;
-}
-
-.prose h4 {
-  @apply mt-8 mb-3 text-lg font-bold;
-}
-
-.prose ul, .prose ol {
-  @apply my-6 space-y-2;
-}
-
-.prose li {
-  @apply my-2;
-}
-
-.prose code {
-  @apply px-1.5 py-0.5 rounded text-sm bg-gray-100;
-}
-
-.prose pre {
-  @apply my-6 p-4 rounded-lg bg-gray-50 overflow-x-auto;
-}
-
-.prose blockquote {
-  @apply my-6 pl-4 border-l-4 border-gray-300 italic;
-}
-
-.prose table {
-  @apply my-6 w-full;
-}
-
-.prose th, .prose td {
-  @apply px-4 py-2 border;
 }
