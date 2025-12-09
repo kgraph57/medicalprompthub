@@ -98,6 +98,37 @@ export default function Tips() {
           </motion.p>
         </motion.section>
 
+        {/* 基礎コンテンツカード（固定配置） */}
+        <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-400">
+              <Sparkles className="w-5 h-5" />
+              プロンプトエンジニアリングとは？
+            </CardTitle>
+            <CardDescription className="text-blue-800 dark:text-blue-300">
+              AIを最大限に活用するための基礎知識
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm leading-relaxed">
+            <p className="text-blue-900 dark:text-blue-300">
+              <strong>プロンプトエンジニアリング</strong>とは、AI（ChatGPT、Claudeなど）に対して、期待する出力を得るための「問いかけ方」を設計・最適化する技術です。医療現場では、曖昧な指示ではAIが不正確な情報を生成するリスクがあります。
+            </p>
+            <div className="bg-white/50 dark:bg-blue-900/20 rounded-lg p-3 space-y-2">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-400">良いプロンプトの5つの原則</h4>
+              <ol className="list-decimal pl-5 space-y-1 text-blue-800 dark:text-blue-300">
+                <li><strong>明確性：</strong>指示は具体的かつ明確に</li>
+                <li><strong>文脈：</strong>必要な背景情報を提供する</li>
+                <li><strong>形式：</strong>出力形式を指定する（例：箇条書き、表形式）</li>
+                <li><strong>制約：</strong>制約条件を明示する（例：文字数、トーン）</li>
+                <li><strong>検証：</strong>AIの出力を必ず検証する</li>
+              </ol>
+            </div>
+            <p className="text-xs text-blue-700 dark:text-blue-400">
+              💡 Tip: 以下のテクニックを学ぶことで、より高品質な出力を得られます。
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Search & Filter Section - コンパクト */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
