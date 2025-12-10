@@ -72,7 +72,7 @@ export const PromptGridSection = memo(function PromptGridSection({
         {/* プロンプトカードグリッド - レスポンシブ */}
         {prompts.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0.5 md:gap-1">
               {visiblePrompts.map((prompt) => (
                 <PromptCard key={prompt.id} prompt={prompt} />
               ))}

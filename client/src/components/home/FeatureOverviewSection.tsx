@@ -23,31 +23,31 @@ export function FeatureOverviewSection() {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-6 md:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-3 md:px-4">
+    <section ref={ref} className="py-3 md:py-12 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-2 md:px-3">
         {/* セクションヘッダー */}
         <div
-          className={`text-center mb-4 md:mb-6 transition-all duration-700 ${
+          className={`text-center mb-2 md:mb-3 transition-all duration-700 ${
             isVisible
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-lg md:text-h2 font-semibold mb-4 text-neutral-900">
+          <h2 className="text-sm md:text-lg font-semibold mb-2 text-neutral-900">
             医療従事者の業務を変革する3つの価値
           </h2>
-          <p className="text-sm md:text-body text-neutral-600 max-w-3xl mx-auto">
+          <p className="text-xs md:text-sm text-neutral-600 max-w-3xl mx-auto">
             AIを活用することで、診断の精度向上、学習の効率化、業務の自動化を実現します
           </p>
         </div>
 
         {/* 機能カード */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
           {features.map((feature, index) => {
             return (
               <div
                 key={feature.title}
-                className={`bg-white rounded-xl p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-700 ${
+                className={`bg-white rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-all duration-700 ${
                   isVisible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
@@ -56,13 +56,13 @@ export function FeatureOverviewSection() {
                   transitionDelay: isVisible ? `${index * 150}ms` : "0ms",
                 }}
               >
-                <div className="w-16 h-10 lg:h-11 md:w-20 md:h-20 mb-4">
+                <div className="w-12 h-8 md:w-14 md:h-14 mb-1.5">
                   <img src={feature.iconSrc} alt={feature.title} className="w-full h-full object-contain" />
                 </div>
-                <h3 className="text-lg md:text-h3 font-semibold mb-3 text-neutral-900">
+                <h3 className="text-sm md:text-base font-semibold mb-1 text-neutral-900">
                   {feature.title}
                 </h3>
-                <p className="text-sm md:text-body text-neutral-600 leading-relaxed">
+                <p className="text-xs md:text-sm text-neutral-600 leading-snug">
                   {feature.description}
                 </p>
               </div>

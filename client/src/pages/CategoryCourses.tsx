@@ -157,7 +157,7 @@ export default function CategoryCourses() {
                 <h2 className="text-base font-semibold text-muted-foreground border-b pb-1.5">
                   {levelLabels[level]}
                 </h2>
-                <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3" style={{gridAutoRows: '1fr'}}>
+                <div className="grid gap-1 md:grid-cols-2 lg:grid-cols-3" style={{gridAutoRows: '1fr'}}>
                   {levelCourses.map((course, index) => {
                     const { completed, total } = getCourseProgress(course.id);
                     const progress = getProgressPercentage(completed, total);
@@ -182,10 +182,10 @@ export default function CategoryCourses() {
                             }
                           }}
                         >
-                          <CardHeader className="flex-1 pb-1.5 p-2">
-                            <div className="flex items-start justify-between">
+                          <CardHeader className="flex-1 pb-1 p-1.5">
+                            <div className="flex items-start justify-between mb-0">
                               <div className="flex-1">
-                                <div className="flex items-center gap-1.5 mb-1">
+                                <div className="flex items-center gap-1 mb-0.5">
                                   <CardTitle className="text-xs">{course.title}</CardTitle>
                                   {isCompleted && (
                                     <Badge variant="default" className="bg-green-500 text-[10px]">
@@ -207,7 +207,7 @@ export default function CategoryCourses() {
                               <div className="text-lg ml-1">{course.badge}</div>
                             </div>
                           </CardHeader>
-                          <CardContent className="space-y-1.5 mt-auto min-h-[80px] flex flex-col justify-end pt-0 p-2">
+                          <CardContent className="space-y-1 mt-auto min-h-[60px] flex flex-col justify-end pt-0 p-1.5">
                             <div className="flex items-center justify-between text-xs text-muted-foreground">
                               <div className="flex items-center gap-3">
                                 <div className="flex items-center gap-1">
@@ -226,7 +226,7 @@ export default function CategoryCourses() {
                             </div>
 
                             {!course.locked && (
-                              <div className="space-y-1.5">
+                              <div className="space-y-1">
                                 <div className="space-y-0.5">
                                   <div className="flex justify-between text-[10px] text-muted-foreground">
                                     <span>Progress</span>

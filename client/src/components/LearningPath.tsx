@@ -47,15 +47,15 @@ export function LearningPath({ currentCourseId }: LearningPathProps) {
   ];
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div>
-        <h2 className="text-base font-bold mb-1">推奨学習パス</h2>
+        <h2 className="text-sm font-bold mb-0.5">推奨学習パス</h2>
         <p className="text-xs text-muted-foreground">
           効率的に学習を進めるための推奨順序です。基礎から実践、そして専門へと段階的に進めましょう。
         </p>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {recommendedPath.map((path, pathIndex) => {
           if (path.courses.length === 0) return null;
 
@@ -66,9 +66,9 @@ export function LearningPath({ currentCourseId }: LearningPathProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: pathIndex * 0.1 }}
             >
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary text-primary-foreground text-[9px] font-bold">
                     {path.level}
                   </div>
                   <div>
@@ -77,7 +77,7 @@ export function LearningPath({ currentCourseId }: LearningPathProps) {
                   </div>
                 </div>
 
-                <div className="grid gap-1.5 md:grid-cols-2 lg:grid-cols-3 pl-8">
+                <div className="grid gap-1 md:grid-cols-2 lg:grid-cols-3 pl-6">
                   {path.courses.map((course, courseIndex) => {
                     const isCurrent = course.id === currentCourseId;
                     const isLocked = course.locked;
@@ -101,10 +101,10 @@ export function LearningPath({ currentCourseId }: LearningPathProps) {
                             }
                           }}
                         >
-                          <CardHeader className="pb-1.5 p-2">
+                          <CardHeader className="pb-1 p-1.5">
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
+                                <div className="flex items-center gap-1.5 mb-0.5">
                                   <CardTitle className="text-xs">{course.title}</CardTitle>
                                   {isCurrent && (
                                     <Badge variant="default" className="text-[8px]">
@@ -125,7 +125,7 @@ export function LearningPath({ currentCourseId }: LearningPathProps) {
                               <div className="text-lg ml-1">{course.badge}</div>
                             </div>
                           </CardHeader>
-                          <CardContent className="pt-0 pb-1.5 p-2">
+                          <CardContent className="pt-0 pb-1 p-1.5">
                             <div className="flex items-center justify-between text-[10px] text-muted-foreground">
                               <span>{course.lessons} レッスン</span>
                               <span>{course.xpReward} XP</span>

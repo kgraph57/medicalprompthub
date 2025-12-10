@@ -77,31 +77,31 @@ export function ContentShowcaseSection() {
   };
 
   return (
-    <section ref={ref} className="py-6 md:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-3 md:px-4">
+    <section ref={ref} className="py-3 md:py-12 bg-white">
+      <div className="max-w-7xl mx-auto px-2 md:px-3">
         {/* セクションヘッダー */}
         <div
-          className={`text-center mb-4 md:mb-6 transition-all duration-700 ${
+          className={`text-center mb-2 md:mb-3 transition-all duration-700 ${
             isVisible
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-lg md:text-h2 font-semibold mb-4 text-neutral-900">
+          <h2 className="text-sm md:text-lg font-semibold mb-2 text-neutral-900">
             あなたに最適なコンテンツを見つけよう
           </h2>
-          <p className="text-sm md:text-body text-neutral-600 max-w-3xl mx-auto">
+          <p className="text-xs md:text-sm text-neutral-600 max-w-3xl mx-auto">
             学習スタイルや目的に応じて、4つのコンテンツタイプから選べます
           </p>
         </div>
 
         {/* コンテンツカードグリッド */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-3">
           {contentTypes.map((content, index) => {
             return (
               <div
                 key={content.title}
-                className={`rounded-xl p-6 md:p-8 border border-neutral-200 hover:border-primary-300 hover:shadow-lg transition-all duration-700 ${
+                className={`rounded-lg p-2 md:p-3 border border-neutral-200 hover:border-primary-300 hover:shadow-lg transition-all duration-700 ${
                   isVisible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
@@ -111,27 +111,27 @@ export function ContentShowcaseSection() {
                 }}
               >
                 {/* アイコンとタイトル */}
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-10 lg:h-11 flex-shrink-0">
+                <div className="flex items-start gap-2 mb-1.5">
+                  <div className="w-10 h-8 flex-shrink-0">
                     <img src={content.iconSrc} alt={content.title} className="w-full h-full object-contain" />
                   </div>
-                  <h3 className="text-lg md:text-h3 font-semibold text-neutral-900 leading-tight">
+                  <h3 className="text-sm md:text-base font-semibold text-neutral-900 leading-tight">
                     {content.title}
                   </h3>
                 </div>
 
                 {/* 説明 */}
-                <p className="text-sm md:text-body text-neutral-600 mb-4 leading-relaxed">
+                <p className="text-xs md:text-sm text-neutral-600 mb-1.5 leading-snug">
                   {content.description}
                 </p>
 
                 {/* 例 */}
-                <div className="mb-4">
-                  <div className="flex flex-wrap gap-2">
+                <div className="mb-1.5">
+                  <div className="flex flex-wrap gap-1">
                     {content.examples.map((example) => (
                       <span
                         key={example}
-                        className="px-3 py-1 bg-neutral-100 text-neutral-700 text-xs md:text-sm rounded-full"
+                        className="px-2 py-0.5 bg-neutral-100 text-neutral-700 text-[10px] md:text-xs rounded-full"
                       >
                         {example}
                       </span>

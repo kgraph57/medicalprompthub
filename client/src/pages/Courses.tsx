@@ -639,7 +639,7 @@ export default function Courses() {
           </div>
           
           {/* ジャンル一覧のみ表示（階層構造） */}
-          <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-1 md:grid-cols-2 lg:grid-cols-3">
             {categoryOrder.map((category) => {
               // このジャンルの全コース数（全レベル）
               const allCategoryCourses = courses.filter(c => c.category === category);
@@ -665,14 +665,14 @@ export default function Courses() {
                   transition={{ delay: 0.1 * categoryOrder.indexOf(category) }}
                 >
                   <Card 
-                    className="hover:shadow-lg hover:scale-[1.005] transition-all duration-300 cursor-pointer border hover:border-primary/50 min-h-[160px] flex flex-col"
+                    className="hover:shadow-lg hover:scale-[1.005] transition-all duration-300 cursor-pointer border hover:border-primary/50 min-h-[120px] flex flex-col"
                     onClick={() => setLocation(`/courses/category/${category}`)}
                   >
-                    <CardHeader className="flex-1 pb-1.5 p-2">
-                      <div className="flex items-start justify-between mb-1">
+                    <CardHeader className="flex-1 pb-1 p-1.5">
+                      <div className="flex items-start justify-between mb-0.5">
                         <div className="flex-1">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <span className="w-0.5 h-4 bg-primary rounded-full"></span>
+                          <div className="flex items-center gap-1 mb-0.5">
+                            <span className="w-0.5 h-3 bg-primary rounded-full"></span>
                             <CardTitle className="text-sm">
                               {categoryLabels[category] || category}
                             </CardTitle>
@@ -689,7 +689,7 @@ export default function Courses() {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-1.5 pt-0 p-2">
+                    <CardContent className="space-y-1 pt-0 p-1.5">
                       <div className="flex items-center gap-2 text-xs">
                         <Badge variant="secondary" className="text-[8px]">
                           {allCategoryCourses.length} コース
