@@ -614,14 +614,14 @@ export default function Courses() {
 
   return (
     <Layout>
-      <div className="space-y-2 pb-8">
+      <div className="space-y-1.5 pb-6">
         {/* ヘッダー - コンパクト */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center py-1"
+          className="text-center py-0.5"
         >
-          <h1 className="text-base font-bold tracking-tight">Learning Courses</h1>
+          <h1 className="text-sm font-bold tracking-tight">Learning Courses</h1>
         </motion.section>
 
         {/* コース一覧 */}
@@ -629,7 +629,7 @@ export default function Courses() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="max-w-6xl mx-auto px-4 space-y-1.5"
+          className="max-w-6xl mx-auto px-3 space-y-1"
         >
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold">Available Courses</h2>

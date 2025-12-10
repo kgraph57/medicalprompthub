@@ -236,7 +236,7 @@ export default function CategoryCourses() {
                                 </div>
 
                                 <Button
-                                  className="w-full h-8 text-xs"
+                                  className="w-full h-6 text-[10px]"
                                   variant={isCompleted ? "outline" : "default"}
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -249,7 +249,7 @@ export default function CategoryCourses() {
                             )}
 
                             {course.locked && (
-                              <div className="text-xs text-muted-foreground text-center py-1.5">
+                              <div className="text-[10px] text-muted-foreground text-center py-1">
                                 Complete previous courses to unlock
                               </div>
                             )}

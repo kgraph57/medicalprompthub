@@ -54,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Header with toggle button */}
       <div className={cn(
         "flex-shrink-0 flex items-center border-b border-border/50 transition-all duration-300",
-        collapsed ? "px-2 py-1.5 lg:py-2 justify-center" : "px-3 py-1.5 lg:py-2 justify-between"
+        collapsed ? "px-1.5 py-1 lg:py-1.5 justify-center" : "px-2 py-1 lg:py-1.5 justify-between"
       )}>
         {!collapsed && (
           <div>
@@ -144,7 +144,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         {!collapsed && (
           <>
-            <div className="mt-4 mb-1.5 px-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
+            <div className="mt-2 mb-1 px-1.5 text-[9px] font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
               Categories
             </div>
             <div className="space-y-1" role="list" aria-labelledby="categories-heading">
@@ -285,28 +285,28 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {/* Sidebar */}
           <aside className="lg:hidden fixed inset-y-0 left-0 w-64 bg-card border-r border-border/50 z-50 transform transition-transform">
             <div className="flex flex-col h-full">
-              <div className="px-6 py-6 flex-shrink-0 flex items-center justify-between border-b border-border/50">
+              <div className="px-3 py-3 flex-shrink-0 flex items-center justify-between border-b border-border/50">
                 <div>
                   <Link href="/" aria-label="ホームページに戻る">
-                    <h1 className="text-xl font-bold tracking-tight text-primary flex items-center gap-1.5">
-                      <Activity className="w-5 h-5" aria-hidden="true" />
+                    <h1 className="text-base font-bold tracking-tight text-primary flex items-center gap-1">
+                      <Activity className="w-4 h-4" aria-hidden="true" />
                       Medical Prompt Hub
                     </h1>
                   </Link>
-                  <p className="text-xs text-muted-foreground mt-1">For Healthcare Professionals</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">For Healthcare Professionals</p>
                 </div>
                 <button
                   onClick={() => setIsMobileOpen(false)}
-                  className="p-2 hover:bg-accent rounded-md transition-colors"
+                  className="p-1.5 hover:bg-accent rounded-md transition-colors"
                   aria-label="メニューを閉じる"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
               
               {/* Navigation Content without duplicate header */}
-              <ScrollArea className="flex-1 overflow-y-auto px-2 py-1.5 lg:py-2">
-                <div className="space-y-1" role="list">
+              <ScrollArea className="flex-1 overflow-y-auto px-1.5 py-1 lg:py-1.5">
+                <div className="space-y-0.5" role="list">
                   <NavItem
                     icon={<Home className="w-4 h-4" />}
                     label="Home"
@@ -359,7 +359,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   />
                 </div>
 
-                <div className="mt-4 mb-1.5 px-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
+                <div className="mt-2 mb-1 px-1.5 text-[9px] font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
                   Categories
                 </div>
                 <div className="space-y-1" role="list" aria-labelledby="categories-heading">
@@ -439,7 +439,7 @@ function NavItem({ icon, label, active, onClick, collapsed }: NavItemProps) {
     <Button
       variant={active ? "secondary" : "ghost"}
       className={cn(
-        "font-medium transition-all duration-200 text-xs h-8 py-1",
+        "font-medium transition-all duration-200 text-xs h-7 py-0.5",
         active && "bg-secondary text-secondary-foreground",
         collapsed ? "w-8 h-8 p-0 justify-center" : "w-full justify-start px-2"
       )}
