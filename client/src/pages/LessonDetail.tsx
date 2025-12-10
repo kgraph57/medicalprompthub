@@ -7,7 +7,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, CheckCircle2, Menu, X, ArrowRight } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ArrowRight } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
@@ -387,7 +387,7 @@ export default function LessonDetail() {
 
   const [completed, setCompleted] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const [activeSection, setActiveSection] = useState<string>("");
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -493,7 +493,7 @@ export default function LessonDetail() {
         behavior: "smooth",
       });
     }
-    setIsSidebarOpen(false);
+
   };
 
   // マークダウンコンテンツを処理（クイズと実践のヒントをインラインで配置）
@@ -668,30 +668,7 @@ export default function LessonDetail() {
 
   return (
     <Layout>
-      <div className="min-h-screen flex bg-background">
-        {/* サイドバー（目次）- デスクトップ */}
-        <aside className="hidden lg:block w-64 border-r border-border bg-background/50 backdrop-blur-sm p-6 sticky top-0 h-screen overflow-y-auto">
-          <div className="space-y-2">
-            <h3 className="font-semibold text-xs uppercase text-muted-foreground mb-4 tracking-wider">目次</h3>
-            {sections.map((section, index) => (
-              <button
-                key={`${section.id}-${index}`}
-                onClick={() => scrollToSection(section.id)}
-                className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
-                  activeSection === section.id
-                    ? "bg-primary text-primary-foreground font-semibold"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-                style={{ 
-                  paddingLeft: `${(section.level - 2) * 0.75 + 0.75}rem`,
-                  fontSize: section.level === 3 ? "0.875rem" : "0.9375rem"
-                }}
-              >
-                {section.title}
-              </button>
-            ))}
-          </div>
-        </aside>
+      <div className="min-h-screen bg-background">
 
         {/* メインコンテンツ */}
         <div className="flex-1 flex flex-col min-w-0">
@@ -700,15 +677,7 @@ export default function LessonDetail() {
             <div className="lg:max-w-[680px] lg:mx-auto px-3 lg:px-6 py-2 lg:py-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  {/* モバイル: サイドバートグル */}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsSidebarOpen(true)}
-                    className="lg:hidden"
-                  >
-                    <Menu className="h-5 w-5" />
-                  </Button>
+
                   <Button
                     variant="ghost"
                     size="sm"
@@ -782,50 +751,7 @@ export default function LessonDetail() {
           </div>
         </div>
 
-        {/* モバイルサイドバー */}
-        {isSidebarOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden">
-            <div className="absolute inset-0 bg-black/50" onClick={() => setIsSidebarOpen(false)} />
-            <motion.div
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
-              className="absolute left-0 top-0 h-full w-64 bg-background border-r border-border shadow-xl"
-            >
-              <div className="p-4 border-b border-border flex items-center justify-between">
-                <h3 className="font-semibold">目次</h3>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsSidebarOpen(false)}
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-              <div className="overflow-y-auto h-[calc(100vh-4rem)]">
-                <div className="p-4 space-y-2">
-                  {sections.map((section, index) => (
-                    <button
-                      key={`${section.id}-${index}`}
-                      onClick={() => scrollToSection(section.id)}
-                      className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
-                        activeSection === section.id
-                          ? "bg-primary text-primary-foreground font-semibold"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      }`}
-                      style={{ 
-                        paddingLeft: `${(section.level - 2) * 0.75 + 0.75}rem`,
-                        fontSize: section.level === 3 ? "0.875rem" : "0.9375rem"
-                      }}
-                    >
-                      {section.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
+
       </div>
     </Layout>
   );
