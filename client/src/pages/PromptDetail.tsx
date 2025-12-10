@@ -128,33 +128,33 @@ export default function PromptDetail() {
       {/* 左サイドバーはLayoutコンポーネントで管理 */}
       
       {/* メインコンテンツ */}
-      <main className="flex-1 max-w-5xl mx-auto p-8">
+      <main className="flex-1 max-w-5xl mx-auto p-2 md:p-3">
         {/* ヘッダー */}
-        <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4">
+        <div className="mb-2">
+          <div className="flex items-center gap-2 mb-2">
             <Link href={`/category/${prompt.category}`}>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-bold tracking-tight">{prompt.title}</h1>
+              <div className="flex items-center gap-1.5 mb-1">
+                <h1 className="text-lg md:text-xl font-bold tracking-tight">{prompt.title}</h1>
                 {prompt.riskLevel === 'high' && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-muted text-muted-foreground">
-                    <AlertTriangle className="w-4 h-4 mr-1.5" />
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-muted text-muted-foreground">
+                    <AlertTriangle className="w-3 h-3 mr-1" />
                     高リスク
                   </span>
                 )}
                 {prompt.riskLevel === 'medium' && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-muted text-muted-foreground">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-muted text-muted-foreground">
                     中リスク
                   </span>
                 )}
               </div>
-              <p className="text-base text-muted-foreground leading-relaxed">{prompt.description}</p>
+              <p className="text-sm text-muted-foreground leading-snug">{prompt.description}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <ShareButtons 
                 title={prompt.title}
                 url={window.location.href}
@@ -173,18 +173,18 @@ export default function PromptDetail() {
 
           {/* 警告メッセージ（折りたたみ式） */}
           {prompt.warningMessage && (
-            <div className="mb-4">
+            <div className="mb-1">
               <CollapsibleWarning message={prompt.warningMessage} defaultOpen={false} />
             </div>
           )}
         </div>
 
         {/* プロンプト出力エリア（Above the Fold） */}
-        <Card className="mb-6">
+        <Card className="mb-2">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                <Sparkles className="w-5 h-5" />
+              <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-1">
+                <Sparkles className="w-4 h-4" />
                 プロンプトプレビュー
               </CardTitle>
               <Button onClick={handleCopy} size="lg">
@@ -202,7 +202,7 @@ export default function PromptDetail() {
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-[300px]">
-              <pre className="whitespace-pre-wrap text-sm font-mono bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border">
+              <pre className="whitespace-pre-wrap text-xs md:text-sm font-mono bg-gray-50 dark:bg-gray-900 p-2 rounded-lg border">
                 {generatePrompt()}
               </pre>
             </ScrollArea>
@@ -210,10 +210,10 @@ export default function PromptDetail() {
         </Card>
 
         {/* 入力フォームエリア */}
-        <Card className="mb-8">
+        <Card className="mb-2">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-xl font-semibold">入力項目</CardTitle>
+                <CardTitle className="text-sm md:text-base font-semibold">入力項目</CardTitle>
                 <Button variant="ghost" size="sm" onClick={handleReset}>
                   <RefreshCw className="w-4 h-4 mr-2" /> リセット
                 </Button>
@@ -221,9 +221,9 @@ export default function PromptDetail() {
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-[400px] pr-4">
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {prompt.inputs.map((input) => (
-                    <div key={input.key} className="space-y-2">
+                    <div key={input.key} className="space-y-1">
                       <Label htmlFor={input.key} className="text-sm font-medium">
                         {input.label}
                       </Label>
@@ -268,7 +268,7 @@ export default function PromptDetail() {
           </Card>
 
         {/* フィードバック */}
-        <div className="mt-6">
+        <div className="mt-2">
           <PromptFeedback promptId={prompt.id} />
         </div>
       </main>
@@ -283,7 +283,7 @@ export default function PromptDetail() {
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{usageCount}回</p>
-              <p className="text-xs text-muted-foreground mt-1">このプロンプトを使用した回数</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">このプロンプトを使用した回数</p>
             </CardContent>
           </Card>
         )}

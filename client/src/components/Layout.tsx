@@ -54,28 +54,28 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Header with toggle button */}
       <div className={cn(
         "flex-shrink-0 flex items-center border-b border-border/50 transition-all duration-300",
-        collapsed ? "px-1.5 py-1 lg:py-1.5 justify-center" : "px-2 py-1 lg:py-1.5 justify-between"
+        collapsed ? "px-1 py-0.5 lg:py-1 justify-center" : "px-1.5 py-0.5 lg:py-1 justify-between"
       )}>
         {!collapsed && (
           <div>
             <Link href="/" aria-label="ホームページに戻る">
-              <h1 className="text-sm font-bold tracking-tight text-primary flex items-center gap-1">
-                <Activity className="w-4 h-4" aria-hidden="true" />
+              <h1 className="text-xs font-bold tracking-tight text-primary flex items-center gap-0.5">
+                <Activity className="w-3 h-3" aria-hidden="true" />
                 Medical Prompt Hub
               </h1>
             </Link>
-            <p className="text-[9px] text-muted-foreground mt-0">For Healthcare Professionals</p>
+            <p className="text-[8px] text-muted-foreground mt-0 leading-none">For Healthcare Professionals</p>
           </div>
         )}
         {collapsed && (
           <Link href="/" aria-label="ホームページに戻る">
-            <Activity className="w-4 h-4 text-primary" aria-hidden="true" />
+            <Activity className="w-3 h-3 text-primary" aria-hidden="true" />
           </Link>
         )}
         <button
           onClick={toggle}
           className={cn(
-            "p-1.5 hover:bg-accent rounded-md transition-colors",
+            "p-1 hover:bg-accent rounded-md transition-colors",
             collapsed && "mt-1"
           )}
           aria-label={collapsed ? "サイドバーを展開" : "サイドバーを折りたたむ"}
@@ -285,15 +285,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {/* Sidebar */}
           <aside className="lg:hidden fixed inset-y-0 left-0 w-64 bg-card border-r border-border/50 z-50 transform transition-transform">
             <div className="flex flex-col h-full">
-              <div className="px-3 py-3 flex-shrink-0 flex items-center justify-between border-b border-border/50">
+              <div className="px-2 py-1.5 flex-shrink-0 flex items-center justify-between border-b border-border/50">
                 <div>
                   <Link href="/" aria-label="ホームページに戻る">
-                    <h1 className="text-base font-bold tracking-tight text-primary flex items-center gap-1">
-                      <Activity className="w-4 h-4" aria-hidden="true" />
+                    <h1 className="text-xs font-bold tracking-tight text-primary flex items-center gap-0.5">
+                      <Activity className="w-3 h-3" aria-hidden="true" />
                       Medical Prompt Hub
                     </h1>
                   </Link>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">For Healthcare Professionals</p>
+                  <p className="text-[8px] text-muted-foreground mt-0 leading-none">For Healthcare Professionals</p>
                 </div>
                 <button
                   onClick={() => setIsMobileOpen(false)}

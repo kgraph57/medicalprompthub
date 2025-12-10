@@ -224,18 +224,18 @@ export default function Guides() {
 
   return (
     <Layout>
-      <div className="space-y-4 pb-12">
+      <div className="space-y-2 pb-6">
         {/* Hero Section - コンパクト */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-2 pt-4"
+          className="space-y-1 pt-2"
         >
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-[1.1] max-w-3xl">
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight max-w-3xl">
             Guides & Workflows
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl leading-snug">
             実際の臨床・研究プロセスでAIプロンプトをどう組み合わせるか、実践的なワークフローを解説します。
           </p>
         </motion.div>
@@ -245,7 +245,7 @@ export default function Guides() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-3"
+          className="space-y-1.5"
         >
           <div className="relative max-w-2xl">
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
@@ -271,16 +271,16 @@ export default function Guides() {
             </AnimatePresence>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
             {/* カテゴリフィルタ */}
-            <div className="flex flex-wrap gap-3 flex-1">
+            <div className="flex flex-wrap gap-1.5 flex-1">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Badge 
                   variant={selectedCategory === null ? "default" : "outline"}
-                  className="cursor-pointer px-5 py-2.5 text-sm font-medium hover:bg-primary/90 transition-all duration-200 rounded-full shadow-sm hover:shadow-md"
+                  className="cursor-pointer px-3 py-1.5 text-sm font-medium hover:bg-primary/90 transition-all duration-200 rounded-full shadow-sm hover:shadow-md"
                   onClick={() => setSelectedCategory(null)}
                 >
                   すべて
@@ -300,7 +300,7 @@ export default function Guides() {
                   >
                     <Badge
                       variant={selectedCategory === cat ? "default" : "outline"}
-                      className="cursor-pointer px-5 py-2.5 text-sm font-medium hover:bg-primary/90 transition-all duration-200 rounded-full shadow-sm hover:shadow-md"
+                      className="cursor-pointer px-3 py-1.5 text-sm font-medium hover:bg-primary/90 transition-all duration-200 rounded-full shadow-sm hover:shadow-md"
                       onClick={() => setSelectedCategory(cat)}
                     >
                       {categoryLabels[cat] || cat}
@@ -311,7 +311,7 @@ export default function Guides() {
             </div>
 
             {/* ソート */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
               <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">並び替え:</span>
               <Select value={sortOption} onValueChange={(value) => setSortOption(value as SortOption)}>
                 <SelectTrigger className="w-full sm:w-[200px] h-11 rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-200">
@@ -335,7 +335,7 @@ export default function Guides() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-base font-medium text-muted-foreground"
+              className="text-sm font-medium text-muted-foreground"
             >
               {filteredAndSortedGuides.length}件のガイドが見つかりました
             </motion.div>
@@ -351,7 +351,7 @@ export default function Guides() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+              className="grid gap-2 md:grid-cols-2 lg:grid-cols-3"
               style={{gridAutoRows: '1fr'}}
             >
               {filteredAndSortedGuides.map((guide, index) => {
@@ -395,47 +395,47 @@ export default function Guides() {
                         ? "cursor-pointer hover:shadow-md hover:border-primary/30" 
                         : "opacity-60 cursor-not-allowed"
                     )}>
-                      <CardHeader className="space-y-3 p-4">
+                      <CardHeader className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className={cn("font-medium px-2 py-0.5 rounded-md text-[10px]", colors.badge)}>
+                            <Badge variant="secondary" className={cn("font-medium px-2 py-0.5 rounded-md text-xs", colors.badge)}>
                               {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
                             </Badge>
                             {!isImplemented && (
-                              <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-2 py-0.5 rounded-md border-gray-300 dark:border-gray-600 text-[10px]">
+                              <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-2 py-0.5 rounded-md border-gray-300 dark:border-gray-600 text-xs">
                                 <Lock className="h-3 w-3 mr-1" />
                                 Soon
                               </Badge>
                             )}
                           </div>
-                          <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
+                          <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
                             <BookOpen className="h-3 w-3" />
                             {guide.readTime}
                           </span>
                         </div>
                         <CardTitle className={cn(
-                          "text-base font-semibold leading-tight line-clamp-2 transition-colors duration-200",
+                          "text-sm font-semibold leading-tight line-clamp-2 transition-colors duration-200",
                           isImplemented && "group-hover:text-primary"
                         )}>
                           {guide.title}
                         </CardTitle>
-                        <CardDescription className="text-xs leading-relaxed line-clamp-2">
+                        <CardDescription className="text-sm leading-snug line-clamp-2">
                           {guide.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="p-4 pt-0">
+                      <CardContent>
                         {isImplemented ? (
-                          <div className="flex items-center text-xs font-semibold text-primary group-hover:gap-1.5 gap-1 transition-all duration-200">
+                          <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-1.5 gap-1 transition-all duration-200">
                             <span>ガイドを読む</span>
                             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                           </div>
                         ) : (
-                          <div className="flex items-center text-xs font-semibold text-muted-foreground gap-1">
+                          <div className="flex items-center text-sm font-semibold text-muted-foreground gap-1">
                             <Lock className="h-3.5 w-3.5" />
                             <span>準備中</span>
                           </div>
                         )}
-                        <div className="flex flex-wrap gap-2 pt-2">
+                        <div className="flex flex-wrap gap-1 pt-1">
                           {guide.tags.map(tag => (
                             <span 
                               key={tag} 
