@@ -63,59 +63,45 @@ export default function Tips() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center space-y-2 py-4 relative overflow-hidden"
+          className="text-center space-y-2 py-4"
         >
-          <div className="absolute inset-0 -z-10 gradient-apple-light opacity-50" />
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1, duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold backdrop-blur-sm border border-primary/20"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>プロンプトエンジニアリング技術</span>
-          </motion.div>
-          
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-[1.1] max-w-3xl mx-auto"
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="text-2xl md:text-3xl font-bold tracking-tight"
           >
-            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Tips & Techniques
-            </span>
+            Tips & Techniques
           </motion.h1>
           
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto"
           >
-            AIプロンプトの効果を最大化するための実践的なテクニック集。医療現場での活用に最適化された41の技術を学びましょう。
+            AIプロンプトの効果を最大化するための実践的なテクニック集
           </motion.p>
         </motion.section>
 
         {/* 基礎コンテンツカード（固定配置） */}
-        <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
+        <Card className="border border-border">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-400">
+            <CardTitle className="flex items-center gap-2">
               <Sparkles className="w-5 h-5" />
               プロンプトエンジニアリングとは？
             </CardTitle>
-            <CardDescription className="text-blue-800 dark:text-blue-300">
+            <CardDescription>
               AIを最大限に活用するための基礎知識
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm leading-relaxed">
-            <p className="text-blue-900 dark:text-blue-300">
+          <CardContent className="space-y-4 text-sm leading-relaxed">
+            <p>
               <strong>プロンプトエンジニアリング</strong>とは、AI（ChatGPT、Claudeなど）に対して、期待する出力を得るための「問いかけ方」を設計・最適化する技術です。医療現場では、曖昧な指示ではAIが不正確な情報を生成するリスクがあります。
             </p>
-            <div className="bg-white/50 dark:bg-blue-900/20 rounded-lg p-3 space-y-2">
-              <h4 className="font-semibold text-blue-900 dark:text-blue-400">良いプロンプトの5つの原則</h4>
-              <ol className="list-decimal pl-5 space-y-1 text-blue-800 dark:text-blue-300">
+            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+              <h4 className="font-semibold">良いプロンプトの5つの原則</h4>
+              <ol className="list-decimal pl-5 space-y-2">
                 <li><strong>明確性：</strong>指示は具体的かつ明確に</li>
                 <li><strong>文脈：</strong>必要な背景情報を提供する</li>
                 <li><strong>形式：</strong>出力形式を指定する（例：箇条書き、表形式）</li>
@@ -123,9 +109,6 @@ export default function Tips() {
                 <li><strong>検証：</strong>AIの出力を必ず検証する</li>
               </ol>
             </div>
-            <p className="text-xs text-blue-700 dark:text-blue-400">
-              💡 Tip: 以下のテクニックを学ぶことで、より高品質な出力を得られます。
-            </p>
           </CardContent>
         </Card>
 
@@ -141,7 +124,7 @@ export default function Tips() {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
               <Input
                 placeholder="Tipsを検索 (例: 'Chain-of-Thought', '品質向上')..."
-                className="pl-11 pr-10 h-12 text-base bg-background/60 backdrop-blur-xl border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
+                className="pl-10 pr-4 h-10 text-sm bg-background/60 backdrop-blur-xl border focus:border-primary/50 transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
