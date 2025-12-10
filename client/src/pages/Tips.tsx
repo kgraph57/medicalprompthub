@@ -208,7 +208,7 @@ export default function Tips() {
                     }}
                     className="relative z-10"
                   >
-                    <Card className="h-full min-h-[200px] flex flex-col cursor-pointer border hover:border-primary/30 bg-card group overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 rounded-lg">
+                    <Card className="h-full flex flex-col cursor-pointer border hover:border-primary/30 bg-card group overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 rounded-lg">
                       <CardHeader className="p-4 space-y-2 flex-1">
                         <div className="flex justify-between items-start gap-2">
                           <div className="flex gap-1.5 flex-wrap">

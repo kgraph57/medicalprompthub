@@ -173,7 +173,7 @@ export default function CategoryCourses() {
                         <Card 
                           className={cn(
                             course.locked ? "opacity-60" : "hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer",
-                            "min-h-[360px] flex flex-col"
+                            "h-full flex flex-col"
                           )}
                           onClick={() => {
                             if (!course.locked) {
