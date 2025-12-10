@@ -666,9 +666,12 @@ export default function LessonDetail() {
     );
   }
 
-  return (
-    <Layout>
-      <div className="min-h-screen flex bg-background">
+  // モバイルビュー用のシンプルなレイアウト
+  const MobileLayout = () => (
+    <div className="min-h-screen flex flex-col bg-background">
+      {/* モバイル: コンテンツのみ */}
+      <div className="flex-1 overflow-y-auto" ref={contentRef}>
+        <div className="px-4 py-6">
         {/* サイドバー（目次）- デスクトップ */}
         <aside className="hidden lg:block w-64 border-r border-border bg-background/50 backdrop-blur-sm p-6 sticky top-0 h-screen overflow-y-auto">
           <div className="space-y-2">
@@ -696,8 +699,8 @@ export default function LessonDetail() {
         {/* メインコンテンツ */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* ヘッダー */}
-          <header className={`lg:sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border transition-transform duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full lg:translate-y-0'}`}>
-            <div className="lg:max-w-[680px] lg:mx-auto px-3 lg:px-6 py-2 lg:py-4">
+          <header className={`sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border transition-transform duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+            <div className="max-w-[680px] mx-auto px-6 py-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   {/* モバイル: サイドバートグル */}
@@ -731,7 +734,7 @@ export default function LessonDetail() {
 
           {/* コンテンツエリア */}
           <div className="flex-1 overflow-y-auto" ref={contentRef}>
-            <div className="lg:max-w-[680px] lg:mx-auto px-3 lg:px-6 py-6 lg:py-12">
+            <div className="max-w-[680px] mx-auto px-6 py-12">
               {completed ? (
                 <Card className="text-center py-16 border-border">
                   <CardContent className="space-y-6">
@@ -826,7 +829,87 @@ export default function LessonDetail() {
             </motion.div>
           </div>
         )}
+        </div>
+      </div>
+    </div>
+  );
+
+  // デスクトップビュー用のレイアウト
+  const DesktopLayout = () => (
+    <Layout>
+      <div className="min-h-screen flex bg-background">
+        {/* サイドバー（目次）- デスクトップ */}
+        <aside className="hidden lg:block w-64 border-r border-border bg-background/50 backdrop-blur-sm p-6 sticky top-0 h-screen overflow-y-auto">
+          <div className="space-y-2">
+            <h3 className="font-semibold text-xs uppercase text-muted-foreground mb-4 tracking-wider">目次</h3>
+            {sections.map((section, index) => (
+              <button
+                key={`${section.id}-${index}`}
+                onClick={() => scrollToSection(section.id)}
+                className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
+                  activeSection === section.id
+                    ? "bg-primary text-primary-foreground font-semibold"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+                style={{ 
+                  paddingLeft: `${(section.level - 2) * 0.75 + 0.75}rem`,
+                  fontSize: section.level === 3 ? "0.875rem" : "0.9375rem"
+                }}
+              >
+                {section.title}
+              </button>
+            ))}
+          </div>
+        </aside>
+
+        {/* メインコンテンツ */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* ヘッダー */}
+          <header className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
+            <div className="max-w-[680px] mx-auto px-6 py-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setLocation(`/courses/${courseId}`)}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" /> コースに戻る
+                  </Button>
+                </div>
+                {completed && (
+                  <div className="flex items-center gap-2 text-primary">
+                    <CheckCircle2 className="w-5 h-5" />
+                    <span className="font-semibold text-sm">完了</span>
+                  </div>
+                )}
+              </div>
+              <Progress value={scrollProgress} className="h-1" />
+            </div>
+          </header>
+
+          {/* コンテンツエリア */}
+          <div className="flex-1 overflow-y-auto" ref={contentRef}>
+            <div className="max-w-[680px] mx-auto px-6 py-12">
+              {renderContent()}
+            </div>
+          </div>
+        </div>
       </div>
     </Layout>
   );
+
+  // モバイルかデスクトップかを判定
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isMobile ? <MobileLayout /> : <DesktopLayout />;
 }
