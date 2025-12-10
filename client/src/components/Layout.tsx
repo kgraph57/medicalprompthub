@@ -9,7 +9,9 @@ import { SafetyWarningModal } from "./SafetyWarningModal";
 import { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useSidebarState } from "@/hooks/useSidebarState";
+import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { BottomNav } from "./BottomNav";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   "diagnosis": <Stethoscope className="w-4 h-4" />,
@@ -30,6 +32,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { isCollapsed, toggle } = useSidebarState();
   useKeyboardShortcuts();
+
+  // スワイプジェスチャーでサイドバーを開く（モバイルのみ）
+  useSwipeGesture({
+    onSwipeRight: () => {
+      if (window.innerWidth < 1024) {
+        setIsMobileOpen(true);
+      }
+    },
+    onSwipeLeft: () => {
+      if (window.innerWidth < 1024) {
+        setIsMobileOpen(false);
+      }
+    },
+  });
 
   const NavContent = ({ collapsed = false }: { collapsed?: boolean }) => (
     <nav className="flex flex-col h-full" aria-label="メインナビゲーション">
@@ -391,13 +407,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className={cn(
         "flex-1 overflow-y-auto transition-all duration-300",
-        "pt-16 lg:pt-0", // Add padding-top for mobile header
+        "pt-16 pb-16 lg:pt-0 lg:pb-0", // Add padding-top for mobile header and padding-bottom for bottom nav
         isCollapsed ? "lg:ml-12" : "lg:ml-52"
       )}>
         {children}
         <SafetyWarningModal />
         <KeyboardShortcutsHelp />
       </main>
+
+      {/* Bottom Navigation - Mobile Only */}
+      <BottomNav />
     </div>
   );
 }
