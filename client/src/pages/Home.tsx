@@ -3,13 +3,9 @@ import { fullPrompts } from "@/lib/prompts-full";
 import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from "react";
 import { updateSEO, addHomeStructuredData } from "@/lib/seo";
 import { trackSearch, trackCategorySelect } from "@/lib/analytics";
-import { useGamification } from "@/hooks/useGamification";
 import { HeroSection } from "@/components/home/HeroSection";
-import { QuickAccessSection } from "@/components/home/QuickAccessSection";
-import { PopularPromptsRanking } from "@/components/PopularPromptsRanking";
 
 // 遅延ローディング
-const LearningProgressSection = lazy(() => import("@/components/home/LearningProgressSection").then(m => ({ default: m.LearningProgressSection })));
 const PromptGridSection = lazy(() => import("@/components/home/PromptGridSection").then(m => ({ default: m.PromptGridSection })));
 
 // ローディングコンポーネント
@@ -34,7 +30,6 @@ export default function Home() {
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const { stats } = useGamification();
 
   // 検索イベントを追跡
   useEffect(() => {
@@ -67,8 +62,7 @@ export default function Home() {
     return filtered;
   }, [searchQuery, selectedCategory]);
 
-  // よく使われるプロンプト（上位4つ）
-  const topPrompts = useMemo(() => fullPrompts.slice(0, 4), []);
+
 
   // フィルタークリア（メモ化）
   const handleClearFilters = useCallback(() => {
@@ -89,19 +83,6 @@ export default function Home() {
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
         />
-
-        {/* クイックアクセスセクション */}
-        <QuickAccessSection prompts={topPrompts} />
-
-        {/* 人気ランキング */}
-        <div className="container mx-auto px-4 py-4">
-          <PopularPromptsRanking />
-        </div>
-
-        {/* 学習進捗セクション - 遅延ローディング */}
-        <Suspense fallback={<LoadingSpinner />}>
-          <LearningProgressSection stats={stats} />
-        </Suspense>
 
         {/* プロンプトグリッドセクション - 遅延ローディング */}
         <Suspense fallback={<LoadingSpinner />}>

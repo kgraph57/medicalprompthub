@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface HeroSectionProps {
@@ -53,6 +53,18 @@ export function HeroSection({ searchQuery, onSearchChange }: HeroSectionProps) {
             className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-body font-semibold transition-colors duration-200 text-primary-600 hover:text-primary-700"
           >
             使い方を学ぶ →
+          </button>
+        </div>
+        
+        {/* スクロールインジケーター */}
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' })}
+            className="flex flex-col items-center gap-2 text-neutral-500 hover:text-primary-600 transition-colors"
+            aria-label="下にスクロール"
+          >
+            <span className="text-sm">もっと見る</span>
+            <ChevronDown className="w-6 h-6 animate-bounce" />
           </button>
         </div>
       </div>
