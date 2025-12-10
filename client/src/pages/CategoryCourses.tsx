@@ -172,8 +172,8 @@ export default function CategoryCourses() {
                       >
                         <Card 
                           className={cn(
-                            course.locked ? "opacity-60" : "hover:shadow-lg transition-shadow cursor-pointer",
-                            "h-full"
+                            course.locked ? "opacity-60" : "hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer",
+                            "min-h-[360px] flex flex-col"
                           )}
                           onClick={() => {
                             if (!course.locked) {
@@ -181,7 +181,7 @@ export default function CategoryCourses() {
                             }
                           }}
                         >
-                          <CardHeader>
+                          <CardHeader className="flex-1">
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-2">
@@ -206,7 +206,7 @@ export default function CategoryCourses() {
                               <div className="text-3xl ml-2">{course.badge}</div>
                             </div>
                           </CardHeader>
-                          <CardContent className="space-y-4">
+                          <CardContent className="space-y-4 mt-auto">
                             <div className="flex items-center justify-between text-sm text-muted-foreground">
                               <div className="flex items-center gap-4">
                                 <div className="flex items-center gap-1">

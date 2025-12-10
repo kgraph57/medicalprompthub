@@ -597,37 +597,9 @@ export default function Courses() {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-2 py-4"
+          className="text-center py-2"
         >
-          <h1 className="text-3xl font-bold tracking-tight">Learning Courses</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
-            各コースを完了するとバッジとXPを獲得できます。レベルアップを目指しましょう！
-          </p>
-        </motion.section>
-
-        {/* 統計表示 */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="max-w-6xl mx-auto px-4"
-        >
-          <GamificationStats
-            totalXP={stats.totalXP}
-            currentLevel={stats.currentLevel}
-            totalLessonsCompleted={Object.values(courseProgress).reduce((sum, p) => sum + (p.completedLessons?.length || 0), 0)}
-            totalBadges={0}
-          />
-        </motion.section>
-
-        {/* 学習パス表示 */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="max-w-6xl mx-auto px-4 pt-8"
-        >
-          <LearningPath />
+          <h1 className="text-2xl font-bold tracking-tight">Learning Courses</h1>
         </motion.section>
 
         {/* コース一覧 */}
@@ -671,7 +643,7 @@ export default function Courses() {
                   transition={{ delay: 0.1 * categoryOrder.indexOf(category) }}
                 >
                   <Card 
-                    className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-primary/50 h-full flex flex-col"
+                    className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer border-2 hover:border-primary/50 min-h-[320px] flex flex-col"
                     onClick={() => setLocation(`/courses/category/${category}`)}
                   >
                     <CardHeader className="flex-1">
@@ -683,7 +655,7 @@ export default function Courses() {
                               {categoryLabels[category] || category}
                             </CardTitle>
                           </div>
-                          <CardDescription className="text-sm leading-relaxed">
+                          <CardDescription className="text-sm leading-relaxed line-clamp-3">
                             {category === "基礎理論" && "AIの基礎理論と概念を体系的に学びます。初心者向けの内容から始まり、AIの全体像を把握できます。"}
                             {category === "ツール" && "ChatGPT、Claude、GeminiなどのAIツールの実践的な使い方を学びます。医療現場で即座に活用できるスキルを習得します。"}
                             {category === "技術" && "AIの技術的な仕組みを深く理解します。機械学習、深層学習、API、プログラミングなど、技術的な側面を学びます。"}
@@ -720,20 +692,10 @@ export default function Courses() {
                         </div>
                       )}
                       
-                      <div className="flex items-center justify-between pt-2">
-                        <div className="text-xs text-muted-foreground">
+                      <div className="pt-2">
+                        <div className="text-xs text-muted-foreground text-center">
                           {unlockedCount} / {allCategoryCourses.length} コース利用可能
                         </div>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setLocation(`/courses/category/${category}`);
-                          }}
-                        >
-                          ジャンルを開く →
-                        </Button>
                       </div>
                     </CardContent>
                   </Card>
