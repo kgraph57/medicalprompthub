@@ -206,7 +206,7 @@ export default function CategoryCourses() {
                               <div className="text-3xl ml-2">{course.badge}</div>
                             </div>
                           </CardHeader>
-                          <CardContent className="space-y-4 mt-auto">
+                          <CardContent className="space-y-4 mt-auto min-h-[180px] flex flex-col justify-end">
                             <div className="flex items-center justify-between text-sm text-muted-foreground">
                               <div className="flex items-center gap-4">
                                 <div className="flex items-center gap-1">
@@ -225,7 +225,7 @@ export default function CategoryCourses() {
                             </div>
 
                             {!course.locked && (
-                              <>
+                              <div className="space-y-4">
                                 <div className="space-y-2">
                                   <div className="flex justify-between text-xs text-muted-foreground">
                                     <span>Progress</span>
@@ -244,7 +244,7 @@ export default function CategoryCourses() {
                                 >
                                   {isCompleted ? "Review Course" : "Start Learning"}
                                 </Button>
-                              </>
+                              </div>
                             )}
 
                             {course.locked && (

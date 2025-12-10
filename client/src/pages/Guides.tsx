@@ -387,7 +387,7 @@ export default function Guides() {
                     whileTap={isImplemented ? { scale: 0.98 } : {}}
                   >
                     <Card className={cn(
-                      "h-full border-l-2 bg-card group overflow-hidden shadow-sm transition-all duration-200 border",
+                      "h-full min-h-[240px] flex flex-col border-l-2 bg-card group overflow-hidden shadow-sm transition-all duration-200 border",
                       colors.border,
                       isImplemented 
                         ? "cursor-pointer hover:shadow-md hover:border-primary/30" 
