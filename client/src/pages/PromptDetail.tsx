@@ -117,13 +117,13 @@ export default function PromptDetail() {
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl font-bold tracking-tight">{prompt.title}</h1>
                 {prompt.riskLevel === 'high' && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-muted text-muted-foreground">
                     <AlertTriangle className="w-4 h-4 mr-1.5" />
                     高リスク
                   </span>
                 )}
                 {prompt.riskLevel === 'medium' && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-muted text-muted-foreground">
                     中リスク
                   </span>
                 )}
@@ -140,7 +140,7 @@ export default function PromptDetail() {
                 variant="outline"
                 size="icon"
                 onClick={() => toggleFavorite(prompt.id)}
-                className={isFavorite(prompt.id) ? "text-yellow-500 border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20" : ""}
+                className={isFavorite(prompt.id) ? "text-primary border-primary" : ""}
               >
                 <Bookmark className={isFavorite(prompt.id) ? "fill-current w-5 h-5" : "w-5 h-5"} />
               </Button>
@@ -156,14 +156,14 @@ export default function PromptDetail() {
         </div>
 
         {/* プロンプト出力エリア（Above the Fold） */}
-        <Card className="border-l-4 border-green-500 mb-6">
+        <Card className="mb-6">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-green-600" />
+                <Sparkles className="w-5 h-5" />
                 プロンプトプレビュー
               </CardTitle>
-              <Button onClick={handleCopy} size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleCopy} size="lg">
                 {copied ? (
                   <>
                     <Check className="w-4 h-4 mr-2" /> コピー完了
@@ -186,7 +186,7 @@ export default function PromptDetail() {
         </Card>
 
         {/* 入力フォームエリア */}
-        <Card className="border-l-4 border-blue-500 mb-8">
+        <Card className="mb-8">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl font-semibold">入力項目</CardTitle>
