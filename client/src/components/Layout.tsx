@@ -10,27 +10,29 @@ import { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useSidebarState } from "@/hooks/useSidebarState";
 import { useSwipeGesture } from "@/hooks/useSwipeGesture";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { BottomNav } from "./BottomNav";
+
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  "diagnosis": <Stethoscope className="w-4 h-4" />,
-  "treatment": <Activity className="w-4 h-4" />,
-  "documentation": <FileText className="w-4 h-4" />,
-  "medication": <Pill className="w-4 h-4" />,
-  "communication": <MessageSquare className="w-4 h-4" />,
-  "shared-decision-making": <HandHeart className="w-4 h-4" />,
-  "literature": <BookOpen className="w-4 h-4" />,
-  "research": <Microscope className="w-4 h-4" />,
-  "case-analysis": <ClipboardList className="w-4 h-4" />,
-  "education": <GraduationCap className="w-4 h-4" />,
-  "administrative": <Briefcase className="w-4 h-4" />,
+  "diagnosis": <Stethoscope className="w-3.5 h-3.5" />,
+  "treatment": <Activity className="w-3.5 h-3.5" />,
+  "documentation": <FileText className="w-3.5 h-3.5" />,
+  "medication": <Pill className="w-3.5 h-3.5" />,
+  "communication": <MessageSquare className="w-3.5 h-3.5" />,
+  "shared-decision-making": <HandHeart className="w-3.5 h-3.5" />,
+  "literature": <BookOpen className="w-3.5 h-3.5" />,
+  "research": <Microscope className="w-3.5 h-3.5" />,
+  "case-analysis": <ClipboardList className="w-3.5 h-3.5" />,
+  "education": <GraduationCap className="w-3.5 h-3.5" />,
+  "administrative": <Briefcase className="w-3.5 h-3.5" />,
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { isCollapsed, toggle } = useSidebarState();
+  const scrollDirection = useScrollDirection();
   useKeyboardShortcuts();
 
   // スワイプジェスチャーでサイドバーを開く（モバイルのみ）
@@ -249,7 +251,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Mobile/Tablet Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-background border-b border-border/50 h-10 lg:h-11">
+      <header className={cn(
+        "lg:hidden fixed top-0 left-0 right-0 z-40 bg-background border-b border-border/50 h-10 lg:h-11 transition-transform duration-300",
+        scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'
+      )}>
         <div className="flex items-center justify-between h-full px-3">
           <button
             onClick={() => setIsMobileOpen(true)}
@@ -415,8 +420,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <KeyboardShortcutsHelp />
       </main>
 
-      {/* Bottom Navigation - Mobile Only */}
-      <BottomNav />
+
     </div>
   );
 }
@@ -435,9 +439,9 @@ function NavItem({ icon, label, active, onClick, collapsed }: NavItemProps) {
     <Button
       variant={active ? "secondary" : "ghost"}
       className={cn(
-        "font-medium transition-all duration-200 text-sm",
+        "font-medium transition-all duration-200 text-xs h-8 py-1",
         active && "bg-secondary text-secondary-foreground",
-        collapsed ? "w-8 h-8 p-0 justify-center" : "w-full justify-start"
+        collapsed ? "w-8 h-8 p-0 justify-center" : "w-full justify-start px-2"
       )}
       onClick={onClick}
     >

@@ -28,7 +28,7 @@ export const PromptCard = memo(function PromptCard({ prompt }: PromptCardProps) 
     <button
       onClick={() => setLocation(`/prompts/${prompt.id}`)}
       className={`
-        group relative p-6 bg-white dark:bg-gray-900 rounded-xl 
+        group relative p-4 bg-white dark:bg-gray-900 rounded-xl 
         border-l-[3px] ${getBorderColor()}
         border border-gray-200 dark:border-gray-800
         shadow-sm hover:shadow-md
@@ -39,7 +39,7 @@ export const PromptCard = memo(function PromptCard({ prompt }: PromptCardProps) 
       `}
     >
       {/* カテゴリとリスクレベル */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span className="px-3 py-1 text-xs font-semibold rounded-md bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400">
             {prompt.category}
@@ -60,7 +60,7 @@ export const PromptCard = memo(function PromptCard({ prompt }: PromptCardProps) 
       </div>
       
       {/* タイトル */}
-      <h3 className="text-lg font-semibold mb-2 transition-colors duration-150 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+      <h3 className="text-base font-semibold mb-1.5 transition-colors duration-150 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
         {prompt.title}
       </h3>
       
