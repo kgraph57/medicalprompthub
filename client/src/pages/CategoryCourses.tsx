@@ -37,17 +37,6 @@ const categoryDescriptions: Record<string, string> = {
   "専門": "高度なAI技術と専門的な応用を学びます。システム構築、組織的な導入、最新のアーキテクチャなど、エキスパート向けの内容です。",
 };
 
-// カテゴリー画像マッピング
-const categoryImages: Record<string, string> = {
-  "基礎理論": "/medicalprompthub/images/category-basics.png",
-  "ツール": "/medicalprompthub/images/category-tools.png",
-  "技術": "/medicalprompthub/images/category-technology.png",
-  "医療応用": "/medicalprompthub/images/category-medical.png",
-  "法律倫理": "/medicalprompthub/images/category-ethics.png",
-  "研究": "/medicalprompthub/images/category-basics.png",
-  "専門": "/medicalprompthub/images/category-technology.png",
-};
-
 export default function CategoryCourses() {
   const [match, params] = useRoute("/courses/category/:category");
   const [, setLocation] = useLocation();
@@ -123,7 +112,7 @@ export default function CategoryCourses() {
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
         {/* ヘッダー */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -132,33 +121,21 @@ export default function CategoryCourses() {
           <Button
             variant="ghost"
             onClick={() => setLocation("/courses")}
-            className="mb-6 hover:bg-neutral-100"
+            className="mb-8 -ml-2 text-neutral-600 hover:text-neutral-900 hover:bg-transparent"
           >
             <ArrowLeft className="mr-2 h-4 w-4" /> コース一覧に戻る
           </Button>
 
-          {/* カテゴリーヘッダーカード */}
-          <div className="bg-gradient-to-br from-neutral-50 to-white rounded-2xl p-8 border border-neutral-200 mb-8">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-shrink-0">
-                <img 
-                  src={categoryImages[category]} 
-                  alt={categoryLabels[category]}
-                  className="w-48 h-32 object-contain"
-                />
-              </div>
-              <div className="flex-1 space-y-3 text-center md:text-left">
-                <h1 className="text-3xl font-bold tracking-tight">
-                  {categoryLabels[category]}
-                </h1>
-                <p className="text-base text-neutral-600 leading-relaxed">
-                  {categoryDescriptions[category]}
-                </p>
-                <div className="flex items-center gap-2 text-sm text-neutral-500 justify-center md:justify-start">
-                  <BookOpen className="w-4 h-4" />
-                  <span>{categoryCourses.length} コース</span>
-                </div>
-              </div>
+          <div className="space-y-4">
+            <h1 className="text-4xl font-semibold tracking-tight text-neutral-900">
+              {categoryLabels[category]}
+            </h1>
+            <p className="text-lg text-neutral-600 leading-relaxed max-w-3xl">
+              {categoryDescriptions[category]}
+            </p>
+            <div className="flex items-center gap-2 text-sm text-neutral-500">
+              <BookOpen className="w-4 h-4" />
+              <span>{categoryCourses.length} コース</span>
             </div>
           </div>
         </motion.section>
@@ -168,18 +145,18 @@ export default function CategoryCourses() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="space-y-8"
+          className="space-y-12"
         >
           {[1, 2, 3, 4].map((level) => {
             const levelCourses = coursesByLevel[level] || [];
             if (levelCourses.length === 0) return null;
 
             return (
-              <div key={level} className="space-y-4">
-                <h2 className="text-lg font-semibold text-neutral-700">
+              <div key={level} className="space-y-6">
+                <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
                   {levelLabels[level]}
                 </h2>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {levelCourses.map((course, index) => {
                     const { completed, total } = getCourseProgress(course.id);
                     const progress = getProgressPercentage(completed, total);
@@ -194,8 +171,8 @@ export default function CategoryCourses() {
                       >
                         <Card 
                           className={cn(
-                            "h-full border border-neutral-200 hover:border-neutral-300 hover:shadow-lg transition-all duration-300",
-                            course.locked && "opacity-60 cursor-not-allowed",
+                            "h-full bg-white border border-neutral-200 hover:border-neutral-300 hover:shadow-sm transition-all duration-200 rounded-lg",
+                            course.locked && "opacity-50 cursor-not-allowed",
                             !course.locked && "cursor-pointer"
                           )}
                           onClick={() => {
@@ -204,46 +181,46 @@ export default function CategoryCourses() {
                             }
                           }}
                         >
-                          <CardHeader className="p-6 pb-4">
-                            <div className="flex items-start gap-4">
-                              <div className="text-3xl">{course.badge}</div>
-                              <div className="flex-1 space-y-2">
-                                <div className="flex items-start justify-between gap-2">
-                                  <CardTitle className="text-base font-semibold leading-tight">
+                          <CardHeader className="p-5 pb-3">
+                            <div className="flex items-start gap-3">
+                              <div className="text-2xl flex-shrink-0">{course.badge}</div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between gap-2 mb-2">
+                                  <CardTitle className="text-base font-medium text-neutral-900 leading-snug">
                                     {course.title}
                                   </CardTitle>
                                   {isCompleted && (
-                                    <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                                    <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                                   )}
                                   {course.locked && (
-                                    <Lock className="w-5 h-5 text-neutral-400 flex-shrink-0" />
+                                    <Lock className="w-4 h-4 text-neutral-400 flex-shrink-0 mt-0.5" />
                                   )}
                                 </div>
-                                <CardDescription className="text-sm text-neutral-600 leading-relaxed line-clamp-2">
+                                <CardDescription className="text-sm text-neutral-500 leading-relaxed line-clamp-2">
                                   {course.description}
                                 </CardDescription>
                               </div>
                             </div>
                           </CardHeader>
-                          <CardContent className="px-6 pb-6 space-y-3">
+                          <CardContent className="px-5 pb-5 space-y-3">
                             <div className="flex items-center justify-between text-sm">
-                              <div className="flex items-center gap-4 text-neutral-600">
+                              <div className="flex items-center gap-4 text-neutral-500">
                                 <div className="flex items-center gap-1.5">
-                                  <BookOpen className="w-4 h-4" />
-                                  <span>{course.lessons}</span>
+                                  <BookOpen className="w-3.5 h-3.5" />
+                                  <span className="text-xs">{course.lessons}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
-                                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                                  <span>{course.xpReward}</span>
+                                  <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                                  <span className="text-xs">{course.xpReward}</span>
                                 </div>
                               </div>
-                              <Badge variant="secondary" className="text-xs">
+                              <Badge variant="secondary" className="text-xs font-normal bg-neutral-100 text-neutral-600 hover:bg-neutral-100">
                                 Lv.{course.level}
                               </Badge>
                             </div>
                             {!course.locked && progress > 0 && (
-                              <div className="space-y-1.5">
-                                <Progress value={progress} className="h-2" />
+                              <div className="space-y-2 pt-1">
+                                <Progress value={progress} className="h-1.5 bg-neutral-100" />
                                 <div className="flex items-center justify-between text-xs text-neutral-500">
                                   <span>{completed}/{total} レッスン完了</span>
                                   <span>{progress}%</span>
