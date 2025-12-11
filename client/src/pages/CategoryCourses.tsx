@@ -7,8 +7,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, BookOpen, Star, CheckCircle2, Lock } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2 } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -172,13 +171,10 @@ export default function CategoryCourses() {
                         <Card 
                           className={cn(
                             "h-full bg-white border border-neutral-200 hover:border-neutral-300 hover:shadow-sm transition-all duration-200 rounded-lg",
-                            course.locked && "opacity-50 cursor-not-allowed",
-                            !course.locked && "cursor-pointer"
+                            "cursor-pointer"
                           )}
                           onClick={() => {
-                            if (!course.locked) {
-                              setLocation(`/courses/${course.id}`);
-                            }
+                            setLocation(`/courses/${course.id}`);
                           }}
                         >
                           <CardHeader className="p-5 pb-3">
@@ -192,9 +188,7 @@ export default function CategoryCourses() {
                                   {isCompleted && (
                                     <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                                   )}
-                                  {course.locked && (
-                                    <Lock className="w-4 h-4 text-neutral-400 flex-shrink-0 mt-0.5" />
-                                  )}
+
                                 </div>
                                 <CardDescription className="text-sm text-neutral-500 leading-relaxed line-clamp-2">
                                   {course.description}
@@ -209,24 +203,13 @@ export default function CategoryCourses() {
                                   <BookOpen className="w-3.5 h-3.5" />
                                   <span className="text-xs">{course.lessons}</span>
                                 </div>
-                                <div className="flex items-center gap-1.5">
-                                  <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                                  <span className="text-xs">{course.xpReward}</span>
-                                </div>
+
                               </div>
                               <Badge variant="secondary" className="text-xs font-normal bg-neutral-100 text-neutral-600 hover:bg-neutral-100">
                                 Lv.{course.level}
                               </Badge>
                             </div>
-                            {!course.locked && progress > 0 && (
-                              <div className="space-y-2 pt-1">
-                                <Progress value={progress} className="h-1.5 bg-neutral-100" />
-                                <div className="flex items-center justify-between text-xs text-neutral-500">
-                                  <span>{completed}/{total} レッスン完了</span>
-                                  <span>{progress}%</span>
-                                </div>
-                              </div>
-                            )}
+
                           </CardContent>
                         </Card>
                       </motion.div>

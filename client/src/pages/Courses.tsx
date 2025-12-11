@@ -633,9 +633,6 @@ export default function Courses() {
         >
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold">Available Courses</h2>
-            <div className="text-xs text-muted-foreground">
-              {courses.filter(c => !c.locked).length} / {courses.length} unlocked
-            </div>
           </div>
           
           {/* ジャンル一覧のみ表示（階層構造） */}
@@ -645,9 +642,7 @@ export default function Courses() {
               const allCategoryCourses = courses.filter(c => c.category === category);
               if (allCategoryCourses.length === 0) return null;
               
-              const unlockedCount = allCategoryCourses.filter(c => !c.locked).length;
               const totalLessons = allCategoryCourses.reduce((sum, c) => sum + c.lessons, 0);
-              const totalXP = allCategoryCourses.reduce((sum, c) => sum + c.xpReward, 0);
               
               // このジャンルの進捗を計算
               const categoryProgress = allCategoryCourses.reduce((sum, c) => {
@@ -698,27 +693,10 @@ export default function Courses() {
                           <BookOpen className="w-3.5 h-3.5" />
                           <span className="font-medium">{totalLessons} レッスン</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
-                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                          <span className="font-medium">{totalXP} XP</span>
-                        </div>
+
                       </div>
                       
-                      {categoryProgress > 0 && (
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-xs text-muted-foreground">
-                            <span className="font-medium">進捗</span>
-                            <span>{categoryProgress} / {categoryTotal} レッスン完了</span>
-                          </div>
-                          <Progress value={categoryProgressPercent} className="h-2" />
-                        </div>
-                      )}
-                      
-                      <div className="pt-1">
-                        <div className="text-xs text-muted-foreground text-center font-medium">
-                          {unlockedCount} / {allCategoryCourses.length} コース利用可能
-                        </div>
-                      </div>
+
                     </CardContent>
                   </Card>
                 </motion.div>
