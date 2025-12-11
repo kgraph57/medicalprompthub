@@ -118,6 +118,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
             setIsMobileOpen(false);
           }}
         />
+        <NavIcon
+          icon={<BookOpen className="w-4 h-4" />}
+          label="Guides"
+          active={location.startsWith("/guides")}
+          onClick={() => {
+            setLocation("/guides");
+            setIsMobileOpen(false);
+          }}
+        />
         <div 
           className="relative"
         >
@@ -181,15 +190,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* 下部ナビゲーション */}
       <div className="flex-shrink-0 flex flex-col gap-1 p-2 border-t border-border/30">
-        <NavIcon
-          icon={<BookOpen className="w-4 h-4" />}
-          label="Guides"
-          active={location.startsWith("/guides")}
-          onClick={() => {
-            setLocation("/guides");
-            setIsMobileOpen(false);
-          }}
-        />
         <NavIcon
           icon={<HelpCircle className="w-4 h-4" />}
           label="FAQ"
