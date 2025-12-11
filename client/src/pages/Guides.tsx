@@ -224,13 +224,13 @@ export default function Guides() {
 
   return (
     <Layout>
-      <div className="space-y-6 pb-8">
+      <div className="space-y-6 pb-8 max-w-7xl mx-auto">
         {/* Hero Section - コンパクト */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-1 pt-2"
+          className="space-y-1 pt-4"
         >
           <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight max-w-3xl">
             Guides & Workflows
@@ -351,7 +351,7 @@ export default function Guides() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
               style={{gridAutoRows: '1fr'}}
             >
               {filteredAndSortedGuides.map((guide, index) => {
@@ -395,7 +395,7 @@ export default function Guides() {
                         ? "cursor-pointer hover:shadow-md hover:border-primary/30" 
                         : "opacity-60 cursor-not-allowed"
                     )}>
-                      <CardHeader className="space-y-1.5 p-4 pb-2">
+                      <CardHeader className="space-y-1.5 p-5 pb-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Badge variant="secondary" className={cn("font-medium px-2 py-0.5 rounded-md text-xs", colors.badge)}>
@@ -423,7 +423,7 @@ export default function Guides() {
                           {guide.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="p-4 pt-0 space-y-3">
+                      <CardContent className="p-5 pt-0 space-y-3">
                         {isImplemented ? (
                           <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-1.5 gap-1 transition-all duration-200">
                             <span>ガイドを読む</span>
