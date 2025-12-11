@@ -466,7 +466,7 @@ export default function CourseDetail() {
           <Button
             variant="ghost"
             onClick={() => setLocation("/courses")}
-            className="mb-2 h-7 text-xs">
+            className="mb-2 h-7 text-xs"
           >
             <ArrowLeft className="mr-2 h-3.5 w-3.5" /> Back to Courses
           </Button>
@@ -519,7 +519,7 @@ export default function CourseDetail() {
                       const targetLesson = firstIncompleteLesson || lessons[0];
                       setLocation(`/courses/${courseId}/lessons/${targetLesson.id}`);
                     }}
-                    className="w-full sm:w-auto h-7 text-[11px]">
+                    className="w-full sm:w-auto h-7 text-[11px]"
                   >
                     {completedLessons === 0 ? "コースを開始" : completedLessons === totalLessons ? "コースを再開" : "続きから再開"}
                   </Button>
