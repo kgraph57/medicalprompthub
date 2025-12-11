@@ -378,9 +378,9 @@ const courses = [
 ];
 
 export default function CourseDetail() {
-  const [match, params] = useRoute("/courses/:id");
+  const [match, params] = useRoute("/courses/:courseId");
   const [, setLocation] = useLocation();
-  const courseId = match ? params.id : null;
+  const courseId = match ? params.courseId : null;
   const course = courses.find((c) => c.id === courseId);
 
   // ローカルストレージから進捗を読み込む
