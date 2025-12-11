@@ -73,18 +73,50 @@ const plugins = [
     }),
   ] : []),
 
-  // Temporarily disable PWA to fix caching issues
-  ...(process.env.NODE_ENV !== 'production' ? [VitePWA({
+  // PWA設定（本番環境でも有効化、ただし慎重に）
+  ...(process.env.NODE_ENV === 'production' ? [VitePWA({
     registerType: "autoUpdate",
-    base: process.env.VITE_BASE_PATH || "/",
-    scope: process.env.VITE_BASE_PATH || "/",
+    base: process.env.VITE_BASE_PATH || "/medicalprompthub/",
+    scope: process.env.VITE_BASE_PATH || "/medicalprompthub/",
     includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'google-fonts-cache',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 60 * 60 * 24 * 365, // 1年
+            },
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
+          },
+        },
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images-cache',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 30, // 30日
+            },
+          },
+        },
+      ],
+    },
     manifest: {
       name: "Medical Prompt Hub",
       short_name: "MedPrompt",
       description: "AI Prompt Library for Healthcare Professionals",
       theme_color: "#ffffff",
-      start_url: (process.env.VITE_BASE_PATH || "/") + "index.html",
+      background_color: "#ffffff",
+      display: "standalone",
+      start_url: (process.env.VITE_BASE_PATH || "/medicalprompthub/") + "index.html",
       icons: [
         {
           src: "pwa-192x192.png",

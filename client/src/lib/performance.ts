@@ -112,9 +112,38 @@ function logMetric(metric: PerformanceMetric): void {
     console.log(`[Performance] ${metric.name}:`, metric);
   }
 
-  // 本番環境ではAPIに送信（実装時）
-  if (import.meta.env.PROD) {
-    // 例: fetch('/api/metrics', { method: 'POST', body: JSON.stringify(metric) })
+  // 本番環境ではLocalStorageに保存（後で分析可能）
+  if (import.meta.env.PROD && typeof window !== 'undefined') {
+    try {
+      const metrics = JSON.parse(localStorage.getItem('performance-metrics') || '[]');
+      metrics.push(metric);
+      // 最新100件のみ保持
+      const recentMetrics = metrics.slice(-100);
+      localStorage.setItem('performance-metrics', JSON.stringify(recentMetrics));
+    } catch (e) {
+      // LocalStorageが使用できない場合は無視
+    }
+  }
+}
+
+/**
+ * 保存されたパフォーマンスメトリクスを取得
+ */
+export function getStoredMetrics(): PerformanceMetric[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    return JSON.parse(localStorage.getItem('performance-metrics') || '[]');
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * パフォーマンスメトリクスをクリア
+ */
+export function clearStoredMetrics(): void {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('performance-metrics');
   }
 }
 
