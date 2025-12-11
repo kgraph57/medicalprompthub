@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Activity, BookOpen, Bookmark, GraduationCap, HelpCircle, Home, Mail, MessageSquare, Settings, Lightbulb, Stethoscope, Heart, FileText, Pill, Users, Handshake, BookMarked, Microscope, ClipboardList, School, Briefcase } from "lucide-react";
+import { Activity, BookOpen, Bookmark, GraduationCap, HelpCircle, Home, Mail, MessageSquare, Settings, Lightbulb, Stethoscope, Heart, FileText, Pill, Users, Handshake, BookMarked, Microscope, ClipboardList, School, Briefcase, Menu, PanelLeftClose, PanelLeft } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "./ui/button";
@@ -28,7 +28,7 @@ const categories = [
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isDesktopOpen, setIsDesktopOpen] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false); // 展開状態
   const [showPromptMenu, setShowPromptMenu] = useState(false);
   const scrollDirection = useScrollDirection();
   useKeyboardShortcuts();
@@ -41,75 +41,80 @@ export function Layout({ children }: { children: React.ReactNode }) {
       }
     },
     onSwipeLeft: () => {
-      if (window.innerWidth < 1024) {
+      if (window.innerWidth < 1024 && isMobileOpen) {
         setIsMobileOpen(false);
       }
     },
   });
 
-  const NavIcon = ({ 
-    icon, 
-    label, 
-    active, 
-    onClick,
-    onMouseEnter,
-    onMouseLeave 
-  }: { 
-    icon: React.ReactNode; 
-    label: string; 
-    active?: boolean; 
+  interface NavIconProps {
+    icon: React.ReactNode;
+    label: string;
+    active?: boolean;
     onClick?: () => void;
     onMouseEnter?: () => void;
-    onMouseLeave?: () => void;
-  }) => (
+  }
+
+  const NavIcon = ({ icon, label, active, onClick, onMouseEnter }: NavIconProps) => (
     <Tooltip>
       <TooltipTrigger asChild>
         <button
           onClick={onClick}
           onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
           className={cn(
-            "w-8 h-8 flex items-center justify-center rounded-md transition-all duration-200",
-            active 
-              ? "bg-primary/10 text-primary" 
-              : "hover:bg-accent text-muted-foreground hover:text-foreground"
+            "flex items-center gap-3 w-full px-3 py-2 rounded-md transition-colors",
+            active
+              ? "bg-accent text-accent-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
           )}
           aria-label={label}
         >
-          {icon}
+          <div className="flex-shrink-0">{icon}</div>
+          {isExpanded && <span className="text-sm font-medium">{label}</span>}
         </button>
       </TooltipTrigger>
-      <TooltipContent side="right" className="text-xs">
-        {label}
-      </TooltipContent>
+      {!isExpanded && (
+        <TooltipContent side="right">
+          <p>{label}</p>
+        </TooltipContent>
+      )}
     </Tooltip>
   );
 
   const NavContent = () => (
     <nav className="flex flex-col h-full bg-muted/30 border-r border-border/30" aria-label="メインナビゲーション">
-      {/* ヘッダー: ロゴ */}
-      <div className="flex-shrink-0 flex items-center justify-center py-2 border-b border-border/30">
-        <button 
-          onClick={() => {
-            if (window.innerWidth < 1024) {
-              setIsMobileOpen(!isMobileOpen);
-            } else {
-              setIsDesktopOpen(!isDesktopOpen);
-            }
-          }}
-          aria-label="サイドバーを開閉"
-          className="focus:outline-none focus:ring-2 focus:ring-primary rounded-md"
-        >
-          <Activity className="w-5 h-5 text-primary" aria-hidden="true" />
-        </button>
+      {/* ヘッダー: ロゴ + トグルボタン */}
+      <div className="flex-shrink-0 flex items-center justify-between px-3 py-3 border-b border-border/30">
+        <Link href="/" className="flex items-center gap-2">
+          <Activity className="w-5 h-5 text-primary flex-shrink-0" aria-hidden="true" />
+          {isExpanded && <span className="text-sm font-bold">Medical Prompt Hub</span>}
+        </Link>
+        {isExpanded && (
+          <button
+            onClick={() => setIsExpanded(false)}
+            className="p-1 rounded-md hover:bg-accent transition-colors"
+            aria-label="サイドバーを折りたたむ"
+          >
+            <PanelLeftClose className="w-4 h-4 text-muted-foreground" />
+          </button>
+        )}
+        {!isExpanded && (
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="p-1 rounded-md hover:bg-accent transition-colors"
+            aria-label="サイドバーを展開"
+          >
+            <PanelLeft className="w-4 h-4 text-muted-foreground" />
+          </button>
+        )}
       </div>
 
       {/* 上部ナビゲーション */}
-      <div className="flex-shrink-0 flex flex-col items-center gap-0.5 py-2 border-b border-border/30">
+      <div className="flex-shrink-0 flex flex-col gap-1 p-2 border-b border-border/30">
         <NavIcon
           icon={<Home className="w-4 h-4" />}
           label="Home"
-          active={location === "/"}
+          active={location === "/" && !location.includes("?")}
           onClick={() => {
             setLocation("/");
             setIsMobileOpen(false);
@@ -188,31 +193,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex-1"></div>
 
       {/* 下部ナビゲーション */}
-      <div className="flex-shrink-0 flex flex-col items-center gap-0.5 py-2 border-t border-border/30">
+      <div className="flex-shrink-0 flex flex-col gap-1 p-2 border-t border-border/30">
         <NavIcon
           icon={<BookOpen className="w-4 h-4" />}
-          label="Documentation"
+          label="Guides"
+          active={location.startsWith("/guides")}
           onClick={() => {
-            window.open("https://docs.example.com", "_blank");
+            setLocation("/guides");
+            setIsMobileOpen(false);
           }}
         />
         <NavIcon
           icon={<HelpCircle className="w-4 h-4" />}
-          label="Help"
+          label="FAQ"
+          active={location === "/faq"}
           onClick={() => {
-            // ヘルプモーダルを開く
+            setLocation("/faq");
+            setIsMobileOpen(false);
           }}
         />
         <NavIcon
           icon={<Mail className="w-4 h-4" />}
           label="Contact"
+          active={location === "/contact"}
           onClick={() => {
-            window.location.href = "mailto:support@example.com";
+            setLocation("/contact");
+            setIsMobileOpen(false);
           }}
         />
         <NavIcon
           icon={<Settings className="w-4 h-4" />}
           label="Settings"
+          active={location === "/settings"}
           onClick={() => {
             setLocation("/settings");
             setIsMobileOpen(false);
@@ -229,15 +241,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* デスクトップサイドバー */}
       <aside className={cn(
-        "hidden lg:block w-14 flex-shrink-0 transition-transform duration-300",
-        !isDesktopOpen && "-translate-x-full"
+        "hidden lg:block flex-shrink-0 transition-all duration-300",
+        isExpanded ? "w-64" : "w-16"
       )}>
         <NavContent />
       </aside>
 
       {/* モバイルサイドバー */}
       <aside className={cn(
-        "fixed left-0 top-0 bottom-0 w-14 bg-background z-50 lg:hidden transition-transform duration-300 ease-out border-r border-border/30",
+        "fixed left-0 top-0 bottom-0 w-64 bg-background z-50 lg:hidden transition-transform duration-300 ease-out border-r border-border/30",
         isMobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <NavContent />
@@ -259,7 +271,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => setIsMobileOpen(true)}
               aria-label="メニューを開く"
             >
-              <Activity className="h-5 w-5" />
+              <Menu className="h-5 w-5" />
             </Button>
             <Link href="/">
               <h1 className="text-sm font-bold text-primary">Medical Prompt Hub</h1>
