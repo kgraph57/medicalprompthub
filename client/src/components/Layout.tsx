@@ -1,37 +1,34 @@
-import { categories } from "@/lib/prompts";
 import { cn } from "@/lib/utils";
-import { Activity, ArrowRight, BookOpen, Bookmark, Briefcase, ChevronLeft, ChevronRight, ClipboardList, FileText, GraduationCap, HandHeart, HelpCircle, Home, Lightbulb, Mail, Menu, MessageSquare, Microscope, Pill, Stethoscope, X } from "lucide-react";
+import { Activity, BookOpen, Bookmark, GraduationCap, HelpCircle, Home, Mail, MessageSquare, Settings } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
 import { SafetyWarningModal } from "./SafetyWarningModal";
 import { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { useSidebarState } from "@/hooks/useSidebarState";
 import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-
-const categoryIcons: Record<string, React.ReactNode> = {
-  "diagnosis": <Stethoscope className="w-3 h-3" />,
-  "treatment": <Activity className="w-3 h-3" />,
-  "documentation": <FileText className="w-3 h-3" />,
-  "medication": <Pill className="w-3 h-3" />,
-  "communication": <MessageSquare className="w-3 h-3" />,
-  "shared-decision-making": <HandHeart className="w-3 h-3" />,
-  "literature": <BookOpen className="w-3 h-3" />,
-  "research": <Microscope className="w-3 h-3" />,
-  "case-analysis": <ClipboardList className="w-3 h-3" />,
-  "education": <GraduationCap className="w-3 h-3" />,
-  "administrative": <Briefcase className="w-3 h-3" />,
-};
+// プロンプトカテゴリ定義
+const categories = [
+  { id: "diagnosis", label: "診断支援", icon: "🩺" },
+  { id: "treatment", label: "治療計画", icon: "❤️‍🩹" },
+  { id: "documentation", label: "書類作成", icon: "📄" },
+  { id: "medication", label: "薬剤・処方", icon: "💊" },
+  { id: "communication", label: "患者対話", icon: "💬" },
+  { id: "shared-decision-making", label: "共同意思決定", icon: "🤝" },
+  { id: "literature", label: "医学文献", icon: "📖" },
+  { id: "research", label: "研究・学会", icon: "🔬" },
+  { id: "case-analysis", label: "症例分析", icon: "📋" },
+  { id: "education", label: "教育・学習", icon: "🎓" },
+  { id: "administrative", label: "管理・運営", icon: "💼" },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { isCollapsed, toggle } = useSidebarState();
+  const [showPromptMenu, setShowPromptMenu] = useState(false);
   const scrollDirection = useScrollDirection();
   useKeyboardShortcuts();
 
@@ -49,423 +46,207 @@ export function Layout({ children }: { children: React.ReactNode }) {
     },
   });
 
-  const NavContent = ({ collapsed = false }: { collapsed?: boolean }) => (
-    <nav className="flex flex-col h-full" aria-label="メインナビゲーション">
-      {/* Header with toggle button */}
-      <div className={cn(
-        "flex-shrink-0 flex items-center border-b border-border/50 transition-all duration-300",
-        collapsed ? "px-2 py-2 justify-center" : "px-1.5 py-0.5 justify-between"
-      )}>
-        {!collapsed && (
-          <>
-            <div>
-              <Link href="/" aria-label="ホームページに戻る">
-                <h1 className="text-[11px] font-bold tracking-tight text-primary flex items-center gap-0.5">
-                  <Activity className="w-2.5 h-2.5" aria-hidden="true" />
-                  Medical Prompt Hub
-                </h1>
-              </Link>
-              <p className="text-[7px] text-muted-foreground mt-0 leading-none">For Healthcare Professionals</p>
-            </div>
-            <button
-              onClick={toggle}
-              className="p-1 hover:bg-accent rounded-md transition-colors"
-              aria-label="サイドバーを折りたたむ"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-          </>
-        )}
-        {collapsed && (
-          <button
-            onClick={toggle}
-            className="p-1.5 hover:bg-accent rounded-md transition-colors"
-            aria-label="サイドバーを展開"
-          >
-            <Activity className="w-4 h-4 text-primary" aria-hidden="true" />
-          </button>
-        )}
+  const NavIcon = ({ 
+    icon, 
+    label, 
+    active, 
+    onClick,
+    onMouseEnter,
+    onMouseLeave 
+  }: { 
+    icon: React.ReactNode; 
+    label: string; 
+    active?: boolean; 
+    onClick?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+  }) => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          className={cn(
+            "w-10 h-10 flex items-center justify-center rounded-md transition-all duration-200",
+            active 
+              ? "bg-primary/10 text-primary" 
+              : "hover:bg-accent text-muted-foreground hover:text-foreground"
+          )}
+          aria-label={label}
+        >
+          {icon}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="right" className="text-xs">
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
+
+  const NavContent = () => (
+    <nav className="flex flex-col h-full bg-muted/30 border-r border-border/30" aria-label="メインナビゲーション">
+      {/* ヘッダー: ロゴ */}
+      <div className="flex-shrink-0 flex items-center justify-center py-3 border-b border-border/30">
+        <Link href="/" aria-label="ホームページに戻る">
+          <Activity className="w-6 h-6 text-primary" aria-hidden="true" />
+        </Link>
       </div>
 
-      <ScrollArea className="flex-1 overflow-y-auto px-1.5 py-1 lg:py-1.5">
-        <div className="space-y-0.5" role="list">
-          <NavItem
-            icon={<Home className="w-3.5 h-3.5" />}
-            label="Home"
-            active={location === "/"}
-            onClick={() => {
-              setLocation("/");
-              setIsMobileOpen(false);
-            }}
-            collapsed={collapsed}
+      {/* 上部ナビゲーション */}
+      <div className="flex-shrink-0 flex flex-col items-center gap-1 py-3 border-b border-border/30">
+        <NavIcon
+          icon={<Home className="w-5 h-5" />}
+          label="Home"
+          active={location === "/"}
+          onClick={() => {
+            setLocation("/");
+            setIsMobileOpen(false);
+          }}
+        />
+        <NavIcon
+          icon={<GraduationCap className="w-5 h-5" />}
+          label="Courses"
+          active={location.startsWith("/courses")}
+          onClick={() => {
+            setLocation("/courses");
+            setIsMobileOpen(false);
+          }}
+        />
+        <div className="relative">
+          <NavIcon
+            icon={<MessageSquare className="w-5 h-5" />}
+            label="Prompts"
+            active={location === "/" && !location.startsWith("/courses")}
+            onMouseEnter={() => setShowPromptMenu(true)}
+            onMouseLeave={() => setShowPromptMenu(false)}
           />
-          <NavItem
-            icon={<GraduationCap className="w-3.5 h-3.5" />}
-            label="Courses"
-            active={location.startsWith("/courses")}
-            onClick={() => {
-              setLocation("/courses");
-              setIsMobileOpen(false);
-            }}
-            collapsed={collapsed}
-          />
-          <NavItem
-            icon={<Lightbulb className="w-3.5 h-3.5" />}
-            label="Tips"
-            active={location.startsWith("/tips")}
-            onClick={() => {
-              setLocation("/tips");
-              setIsMobileOpen(false);
-            }}
-            collapsed={collapsed}
-          />
-          <NavItem
-            icon={<ArrowRight className="w-3.5 h-3.5" />}
-            label="Workflow"
-            active={location.startsWith("/guides")}
-            onClick={() => {
-              setLocation("/guides");
-              setIsMobileOpen(false);
-            }}
-            collapsed={collapsed}
-          />
-          <NavItem
-            icon={<Bookmark className="w-3.5 h-3.5" />}
-            label="Favorites"
-            active={location === "/favorites"}
-            onClick={() => {
-              setLocation("/favorites");
-              setIsMobileOpen(false);
-            }}
-            collapsed={collapsed}
-          />
+          {showPromptMenu && (
+            <div 
+              className="absolute left-full top-0 ml-2 w-56 bg-background border-2 border-border rounded-lg shadow-lg p-2 z-50"
+              onMouseEnter={() => setShowPromptMenu(true)}
+              onMouseLeave={() => setShowPromptMenu(false)}
+            >
+              <div className="text-xs font-semibold text-muted-foreground mb-2 px-2">Categories</div>
+              <div className="space-y-0.5">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      setLocation(`/?category=${category.id}`);
+                      setShowPromptMenu(false);
+                      setIsMobileOpen(false);
+                    }}
+                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-accent transition-colors text-left"
+                  >
+                    <span className="text-lg">{category.icon}</span>
+                    <span className="text-xs font-medium">{category.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
+        <NavIcon
+          icon={<Bookmark className="w-5 h-5" />}
+          label="Favorites"
+          active={location === "/favorites"}
+          onClick={() => {
+            setLocation("/favorites");
+            setIsMobileOpen(false);
+          }}
+        />
+      </div>
 
-        {!collapsed && (
-          <>
-            <div className="mt-2 mb-1 px-1.5 text-[9px] font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
-              Categories
-            </div>
-            <div className="space-y-1" role="list" aria-labelledby="categories-heading">
-              {categories.map((category) => (
-                <NavItem
-                  key={category.id}
-                  icon={categoryIcons[category.id] || <Activity className="w-4 h-4" />}
-                  label={category.label}
-                  active={location === `/category/${category.id}`}
-                  onClick={() => {
-                    setLocation(`/category/${category.id}`);
-                    setIsMobileOpen(false);
-                  }}
-                  collapsed={false}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </ScrollArea>
+      {/* 中央スペース（空白） */}
+      <div className="flex-1"></div>
 
-      {/* Footer */}
-      <div className={cn(
-        "flex-shrink-0 border-t border-border/50 transition-all duration-300",
-        collapsed ? "px-2 py-2 lg:py-2.5" : "px-4 py-2 lg:py-2.5"
-      )}>
-        {!collapsed && (
-          <div className="text-[10px] text-muted-foreground space-y-1.5">
-            <p>© 2024 Medical Prompt Hub</p>
-            <div className="flex flex-col gap-1.5">
-              <Link href="/ai-literacy">
-                <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
-                  <Lightbulb className="w-3 h-3" />
-                  AIリテラシー
-                </span>
-              </Link>
-              <Link href="/faq">
-                <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
-                  <HelpCircle className="w-3 h-3" />
-                  FAQ
-                </span>
-              </Link>
-              <Link href="/contact">
-                <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
-                  <Mail className="w-3 h-3" />
-                  Contact
-                </span>
-              </Link>
-            </div>
-          </div>
-        )}
-        {collapsed && (
-          <div className="flex flex-col gap-1.5 items-center">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href="/ai-literacy">
-                  <button className="p-1.5 hover:bg-accent rounded-md transition-colors">
-                    <Lightbulb className="w-3 h-3" />
-                  </button>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>AIリテラシー</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href="/faq">
-                  <button className="p-1.5 hover:bg-accent rounded-md transition-colors">
-                    <HelpCircle className="w-3 h-3" />
-                  </button>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>FAQ</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href="/contact">
-                  <button className="p-1.5 hover:bg-accent rounded-md transition-colors">
-                    <Mail className="w-3 h-3" />
-                  </button>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>Contact</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        )}
+      {/* 下部ナビゲーション */}
+      <div className="flex-shrink-0 flex flex-col items-center gap-1 py-3 border-t border-border/30">
+        <NavIcon
+          icon={<BookOpen className="w-5 h-5" />}
+          label="Documentation"
+          onClick={() => {
+            window.open("https://docs.example.com", "_blank");
+          }}
+        />
+        <NavIcon
+          icon={<HelpCircle className="w-5 h-5" />}
+          label="Help"
+          onClick={() => {
+            // ヘルプモーダルを開く
+          }}
+        />
+        <NavIcon
+          icon={<Mail className="w-5 h-5" />}
+          label="Contact"
+          onClick={() => {
+            window.location.href = "mailto:support@example.com";
+          }}
+        />
+        <NavIcon
+          icon={<Settings className="w-5 h-5" />}
+          label="Settings"
+          onClick={() => {
+            setLocation("/settings");
+            setIsMobileOpen(false);
+          }}
+        />
       </div>
     </nav>
   );
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Desktop Sidebar - Hidden on Mobile/Tablet */}
-      <aside className={cn(
-        "hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 bg-card border-r border-border/50 transition-all duration-300",
-        isCollapsed ? "lg:w-12" : "lg:w-52"
-      )}>
-        <NavContent collapsed={isCollapsed} />
+    <div className="flex h-screen overflow-hidden bg-background">
+      <SafetyWarningModal />
+      <KeyboardShortcutsHelp />
+
+      {/* デスクトップサイドバー */}
+      <aside className="hidden lg:block w-16 flex-shrink-0">
+        <NavContent />
       </aside>
 
-      {/* Mobile/Tablet Header */}
-      <header className={cn(
-        "lg:hidden fixed top-0 left-0 right-0 z-40 bg-background border-b border-border/50 h-10 lg:h-11 transition-transform duration-300",
-        scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'
-      )}>
-        <div className="flex items-center justify-between h-full px-3">
-          <button
-            onClick={() => setIsMobileOpen(true)}
-            className="p-2 hover:bg-accent rounded-md transition-colors"
-            aria-label="メニューを開く"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <Link href="/" aria-label="ホームページに戻る">
-            <h1 className="text-sm font-bold tracking-tight text-primary flex items-center gap-1.5">
-              <Activity className="w-5 h-5" aria-hidden="true" />
-              Medical Prompt Hub
-            </h1>
-          </Link>
-          <div className="w-8" /> {/* Spacer for centering */}
-        </div>
-      </header>
-
-      {/* Mobile/Tablet Sidebar Overlay */}
+      {/* モバイルサイドバー */}
       {isMobileOpen && (
         <>
-          {/* Backdrop */}
           <div
-            className="lg:hidden fixed inset-0 bg-black/50 z-50 transition-opacity"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsMobileOpen(false);
-            }}
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setIsMobileOpen(false)}
             aria-hidden="true"
           />
-          {/* Sidebar */}
-          <aside className="lg:hidden fixed inset-y-0 left-0 w-64 bg-card border-r border-border/50 z-50 transform transition-transform">
-            <div className="flex flex-col h-full">
-              <div className="px-2 py-1.5 flex-shrink-0 flex items-center justify-between border-b border-border/50">
-                <div>
-                  <Link href="/" aria-label="ホームページに戻る">
-                    <h1 className="text-[11px] font-bold tracking-tight text-primary flex items-center gap-0.5">
-                      <Activity className="w-2.5 h-2.5" aria-hidden="true" />
-                      Medical Prompt Hub
-                    </h1>
-                  </Link>
-                  <p className="text-[7px] text-muted-foreground mt-0 leading-none">For Healthcare Professionals</p>
-                </div>
-                <button
-                  onClick={() => setIsMobileOpen(false)}
-                  className="p-1.5 hover:bg-accent rounded-md transition-colors"
-                  aria-label="メニューを閉じる"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              
-              {/* Navigation Content without duplicate header */}
-              <ScrollArea className="flex-1 overflow-y-auto px-1.5 py-1 lg:py-1.5">
-                <div className="space-y-0.5" role="list">
-                  <NavItem
-                    icon={<Home className="w-3.5 h-3.5" />}
-                    label="Home"
-                    active={location === "/"}
-                    onClick={() => {
-                      setLocation("/");
-                      setIsMobileOpen(false);
-                    }}
-                    collapsed={false}
-                  />
-                  <NavItem
-                    icon={<GraduationCap className="w-3.5 h-3.5" />}
-                    label="Courses"
-                    active={location.startsWith("/courses")}
-                    onClick={() => {
-                      setLocation("/courses");
-                      setIsMobileOpen(false);
-                    }}
-                    collapsed={false}
-                  />
-                  <NavItem
-                    icon={<Lightbulb className="w-3.5 h-3.5" />}
-                    label="Tips"
-                    active={location.startsWith("/tips")}
-                    onClick={() => {
-                      setLocation("/tips");
-                      setIsMobileOpen(false);
-                    }}
-                    collapsed={false}
-                  />
-                  <NavItem
-                    icon={<ArrowRight className="w-3.5 h-3.5" />}
-                    label="Workflow"
-                    active={location.startsWith("/guides")}
-                    onClick={() => {
-                      setLocation("/guides");
-                      setIsMobileOpen(false);
-                    }}
-                    collapsed={false}
-                  />
-                  <NavItem
-                    icon={<Bookmark className="w-3.5 h-3.5" />}
-                    label="Favorites"
-                    active={location === "/favorites"}
-                    onClick={() => {
-                      setLocation("/favorites");
-                      setIsMobileOpen(false);
-                    }}
-                    collapsed={false}
-                  />
-                </div>
-
-                <div className="mt-2 mb-1 px-1.5 text-[9px] font-semibold text-muted-foreground uppercase tracking-wider" id="categories-heading">
-                  Categories
-                </div>
-                <div className="space-y-1" role="list" aria-labelledby="categories-heading">
-                  {categories.map((category) => (
-                    <NavItem
-                      key={category.id}
-                      icon={categoryIcons[category.id] || <Activity className="w-4 h-4" />}
-                      label={category.label}
-                      active={location === `/category/${category.id}`}
-                      onClick={() => {
-                        setLocation(`/category/${category.id}`);
-                        setIsMobileOpen(false);
-                      }}
-                      collapsed={false}
-                    />
-                  ))}
-                </div>
-              </ScrollArea>
-
-              <div className="flex-shrink-0 px-6 py-2 lg:py-2.5 border-t border-border/50">
-                <div className="text-xs text-muted-foreground space-y-2">
-                  <p>© 2024 Medical Prompt Hub</p>
-                  <div className="flex flex-col gap-1.5">
-                    <Link href="/ai-literacy">
-                      <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
-                        <Lightbulb className="w-3 h-3" />
-                        AIリテラシー
-                      </span>
-                    </Link>
-                    <Link href="/faq">
-                      <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
-                        <HelpCircle className="w-3 h-3" />
-                        FAQ
-                      </span>
-                    </Link>
-                    <Link href="/contact">
-                      <span className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-1">
-                        <Mail className="w-3 h-3" />
-                        Contact
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <aside className="fixed left-0 top-0 bottom-0 w-16 bg-background z-50 lg:hidden">
+            <NavContent />
           </aside>
         </>
       )}
 
-      {/* Main Content */}
-      <main className={cn(
-        "flex-1 overflow-y-auto transition-all duration-300",
-        "pt-12 pb-12 lg:pt-0 lg:pb-0", // Add padding-top for mobile header and padding-bottom for bottom nav
-        isCollapsed ? "lg:ml-12" : "lg:ml-52"
-      )}>
+      {/* メインコンテンツ */}
+      <main className="flex-1 overflow-y-auto">
+        {/* モバイルヘッダー */}
+        <header
+          className={cn(
+            "lg:hidden sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/50 transition-transform duration-300",
+            scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+          )}
+        >
+          <div className="flex items-center justify-between px-4 h-14">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileOpen(true)}
+              aria-label="メニューを開く"
+            >
+              <Activity className="h-5 w-5" />
+            </Button>
+            <Link href="/">
+              <h1 className="text-sm font-bold text-primary">Medical Prompt Hub</h1>
+            </Link>
+            <div className="w-10" />
+          </div>
+        </header>
+
         {children}
-        <SafetyWarningModal />
-        <KeyboardShortcutsHelp />
       </main>
-
-
     </div>
   );
-}
-
-// NavItem component for reusability
-interface NavItemProps {
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-  collapsed: boolean;
-}
-
-function NavItem({ icon, label, active, onClick, collapsed }: NavItemProps) {
-  const button = (
-    <Button
-      variant={active ? "secondary" : "ghost"}
-      className={cn(
-        "font-normal transition-all duration-200 text-[11px] min-h-[32px] py-1 hover:bg-accent/50",
-        active && "bg-secondary/80 text-secondary-foreground font-medium",
-        collapsed ? "w-9 h-9 p-0 justify-center" : "w-full justify-start px-2"
-      )}
-      onClick={onClick}
-    >
-      <span className={cn(collapsed ? "" : "mr-1.5", "flex-shrink-0")} aria-hidden="true">
-        {icon}
-      </span>
-      {!collapsed && <span className="truncate">{label}</span>}
-    </Button>
-  );
-
-  if (collapsed) {
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>
-          {button}
-        </TooltipTrigger>
-        <TooltipContent side="right">
-          <p>{label}</p>
-        </TooltipContent>
-      </Tooltip>
-    );
-  }
-
-  return button;
 }
