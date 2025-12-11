@@ -717,7 +717,7 @@ export default function LessonDetail() {
             <div className="lg:max-w-[1200px] lg:mx-auto px-4 lg:px-8 py-8 lg:py-16">
               <>
                   {/* Zenn風の記事コンテンツ */}
-                  <article className="zenn-article bg-background rounded-lg">
+                  <article className="zenn-article bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
                     {renderContent()}
                   </article>
                   
