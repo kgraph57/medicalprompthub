@@ -30,7 +30,7 @@ export default function Category() {
 
   return (
     <Layout>
-      <div className="space-y-4">
+      <div className="space-y-6 pb-8">
         <div className="flex items-center gap-3 mb-4">
           <Link href="/">
             <Button variant="ghost" size="icon" className="rounded-full">
@@ -43,7 +43,7 @@ export default function Category() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categoryPrompts.map((prompt) => (
             <Link key={prompt.id} href={`/prompts/${prompt.id}`}>
               <Card className="group hover:shadow-md transition-all cursor-pointer border hover:border-primary/20 bg-card h-full min-h-[140px] flex flex-col">

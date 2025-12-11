@@ -57,7 +57,7 @@ export default function Tips() {
 
   return (
     <Layout>
-      <div className="space-y-2 pb-8">
+      <div className="space-y-6 pb-8">
         {/* Hero Section - コンパクト */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -186,7 +186,7 @@ export default function Tips() {
 
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             style={{gridAutoRows: '1fr'}}
           >
             <AnimatePresence mode="popLayout">
