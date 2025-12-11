@@ -236,7 +236,7 @@ export default function FAQ() {
                 </AccordionItem>
 
                 <AccordionItem value="course-usage">
-                  <AccordionTrigger className="text-sm">コース機能の使い方を教えてください</AccordトンTrigger>
+                  <AccordionTrigger className="text-sm">コース機能の使い方を教えてください</AccordionTrigger>
                   <AccordionContent>
                     <p className="text-xs leading-relaxed">
                       コース機能では、AI活用に関する体系的な学習ができます。コース一覧から興味のあるコースを選択し、レッスンを順番に学習していきます。各レッスンには実践的な内容が含まれており、段階的にAI活用スキルを向上させることができます。
