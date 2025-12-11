@@ -83,31 +83,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const NavContent = () => (
     <nav className="flex flex-col h-full bg-muted/30 border-r border-border/30" aria-label="メインナビゲーション">
-      {/* ヘッダー: ロゴ + トグルボタン */}
-      <div className="flex-shrink-0 flex items-center justify-between px-3 py-3 border-b border-border/30">
-        <Link href="/" className="flex items-center gap-2">
-          <Activity className="w-5 h-5 text-primary flex-shrink-0" aria-hidden="true" />
-          {isExpanded && <span className="text-sm font-bold">Medical Prompt Hub</span>}
-        </Link>
-        {isExpanded && (
-          <button
-            onClick={() => setIsExpanded(false)}
-            className="p-1 rounded-md hover:bg-accent transition-colors"
-            aria-label="サイドバーを折りたたむ"
-          >
-            <PanelLeftClose className="w-4 h-4 text-muted-foreground" />
-          </button>
-        )}
-        {!isExpanded && (
-          <button
-            onClick={() => setIsExpanded(true)}
-            className="p-1 rounded-md hover:bg-accent transition-colors"
-            aria-label="サイドバーを展開"
-          >
-            <PanelLeft className="w-4 h-4 text-muted-foreground" />
-          </button>
-        )}
-      </div>
 
       {/* 上部ナビゲーション */}
       <div className="flex-shrink-0 flex flex-col gap-1 p-2 border-b border-border/30">
