@@ -476,12 +476,12 @@ export default function CourseDetail() {
             <div className="text-xl">{course.badge}</div>
             <div className="flex-1 space-y-1">
               <div className="flex items-center gap-1.5">
-                <h1 className="text-sm font-bold">{course.title}</h1>
-                <Badge variant="secondary" className="text-[10px]">Level {course.level}</Badge>
+                <h1 className="text-lg font-bold">{course.title}</h1>
+                <Badge variant="secondary" className="text-xs">Level {course.level}</Badge>
               </div>
-              <p className="text-[11px] text-muted-foreground leading-tight">{course.description}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{course.description}</p>
               
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <div className="flex items-center gap-0.5">
                   <BookOpen className="w-3 h-3" />
                   <span>{totalLessons} lessons</span>
@@ -494,7 +494,7 @@ export default function CourseDetail() {
               </div>
 
               <div className="space-y-0.5 pt-0.5">
-                <div className="flex justify-between text-[10px] text-muted-foreground">
+                <div className="flex justify-between text-xs text-muted-foreground">
                   <span>Course Progress</span>
                   <span>{completedLessons} / {totalLessons} completed</span>
                 </div>
@@ -553,7 +553,7 @@ export default function CourseDetail() {
           transition={{ delay: 0.1 }}
           className="max-w-6xl mx-auto px-4 space-y-1"
         >
-          <h2 className="text-sm font-bold mb-3">Lessons</h2>
+          <h2 className="text-lg font-bold mb-4">Lessons</h2>
           <div className="space-y-2">
             {lessons.map((lesson, index) => {
               const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
@@ -585,7 +585,7 @@ export default function CourseDetail() {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <CardTitle className="text-sm font-semibold">{lesson.title}</CardTitle>
+                              <CardTitle className="text-base font-semibold">{lesson.title}</CardTitle>
                               {isCompleted && (
                                 <CheckCircle2 className="w-4 h-4 text-green-600" />
                               )}
@@ -593,10 +593,10 @@ export default function CourseDetail() {
                                 <Lock className="w-4 h-4 text-muted-foreground" />
                               )}
                             </div>
-                            <CardDescription className="text-xs line-clamp-1">{lesson.description}</CardDescription>
+                            <CardDescription className="text-sm line-clamp-2">{lesson.description}</CardDescription>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1.5">
                             <Clock className="w-3.5 h-3.5" />
                             <span className="font-medium">{lesson.duration}分</span>
