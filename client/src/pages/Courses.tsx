@@ -591,6 +591,17 @@ export default function Courses() {
 
   const groupedCourses = groupCoursesByLevelAndCategory();
   
+  // カテゴリIDと表示名のマッピング
+  const categoryIdMap: Record<string, string> = {
+    "基礎理論": "basics",
+    "ツール": "tools",
+    "技術": "tech",
+    "医療応用": "medical",
+    "法律倫理": "legal",
+    "研究": "research",
+    "専門": "advanced",
+  };
+  
   // ジャンルの表示名と順序（適度な粒度）
   const categoryLabels: Record<string, string> = {
     "基礎理論": "基礎理論編",
@@ -661,7 +672,7 @@ export default function Courses() {
                 >
                   <Card 
                     className="group hover:shadow-xl hover:scale-[1.01] transition-all duration-300 cursor-pointer border-2 hover:border-primary/30 min-h-[140px] flex flex-col bg-gradient-to-br from-background to-accent/5 hover:from-accent/10 hover:to-accent/20"
-                    onClick={() => setLocation(`/courses/category/${category}`)}
+                    onClick={() => setLocation(`/courses/category/${categoryIdMap[category]}`)}
                   >
                     <CardHeader className="flex-1 pb-2 p-4">
                       <div className="flex items-start justify-between mb-0.5">

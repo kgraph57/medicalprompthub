@@ -14,6 +14,17 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { courses } from "./Courses";
 
+// カテゴリIDから日本語名へのマッピング
+const categoryIdToName: Record<string, string> = {
+  "basics": "基礎理論",
+  "tools": "ツール",
+  "tech": "技術",
+  "medical": "医療応用",
+  "legal": "法律倫理",
+  "research": "研究",
+  "advanced": "専門",
+};
+
 // ジャンルの表示名（適度な粒度）
 const categoryLabels: Record<string, string> = {
   "基礎理論": "基礎理論編",
@@ -39,7 +50,8 @@ const categoryDescriptions: Record<string, string> = {
 export default function CategoryCourses() {
   const [match, params] = useRoute("/courses/category/:category");
   const [, setLocation] = useLocation();
-  const category = match ? params.category : null;
+  const categoryId = match ? params.category : null;
+  const category = categoryId ? categoryIdToName[categoryId] : null;
 
   const [courseProgress, setCourseProgress] = useState<Record<string, { completedLessons: string[] }>>({});
 
