@@ -127,8 +127,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             label="Prompts"
             active={location === "/" && !location.startsWith("/courses")}
             onClick={() => {
-              setLocation("/");
-              setIsMobileOpen(false);
+              setShowPromptMenu(!showPromptMenu);
             }}
             onMouseEnter={() => setShowPromptMenu(true)}
           />
