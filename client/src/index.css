@@ -233,6 +233,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
   }
   
   button:not(:disabled),
