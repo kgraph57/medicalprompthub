@@ -28,6 +28,7 @@ const categories = [
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isDesktopOpen, setIsDesktopOpen] = useState(true);
   const [showPromptMenu, setShowPromptMenu] = useState(false);
   const scrollDirection = useScrollDirection();
   useKeyboardShortcuts();
@@ -93,10 +94,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             if (window.innerWidth < 1024) {
               setIsMobileOpen(!isMobileOpen);
             } else {
-              setLocation("/");
+              setIsDesktopOpen(!isDesktopOpen);
             }
           }}
-          aria-label="ホームページに戻る"
+          aria-label="サイドバーを開閉"
           className="focus:outline-none focus:ring-2 focus:ring-primary rounded-md"
         >
           <Activity className="w-5 h-5 text-primary" aria-hidden="true" />
@@ -227,7 +228,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <KeyboardShortcutsHelp />
 
       {/* デスクトップサイドバー */}
-      <aside className="hidden lg:block w-14 flex-shrink-0">
+      <aside className={cn(
+        "hidden lg:block w-14 flex-shrink-0 transition-transform duration-300",
+        !isDesktopOpen && "-translate-x-full"
+      )}>
         <NavContent />
       </aside>
 
