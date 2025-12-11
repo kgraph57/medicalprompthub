@@ -456,7 +456,7 @@ export default function CourseDetail() {
 
   return (
     <Layout>
-      <div className="space-y-2 pb-8">
+      <div className="space-y-1.5 pb-6">
         {/* ヘッダー */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -466,50 +466,50 @@ export default function CourseDetail() {
           <Button
             variant="ghost"
             onClick={() => setLocation("/courses")}
-            className="mb-3 h-8 text-xs"
+            className="mb-2 h-7 text-xs">
           >
             <ArrowLeft className="mr-2 h-3.5 w-3.5" /> Back to Courses
           </Button>
 
-          <div className="flex items-start gap-2">
-            <div className="text-2xl">{course.badge}</div>
+          <div className="flex items-start gap-1.5">
+            <div className="text-xl">{course.badge}</div>
             <div className="flex-1 space-y-1">
-              <div className="flex items-center gap-2">
-                <h1 className="text-base font-bold">{course.title}</h1>
+              <div className="flex items-center gap-1.5">
+                <h1 className="text-sm font-bold">{course.title}</h1>
                 <Badge variant="secondary" className="text-[10px]">Level {course.level}</Badge>
               </div>
-              <p className="text-xs text-muted-foreground">{course.description}</p>
+              <p className="text-[11px] text-muted-foreground leading-tight">{course.description}</p>
               
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                <div className="flex items-center gap-0.5">
+                  <BookOpen className="w-3 h-3" />
                   <span>{totalLessons} lessons</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-0.5">
+                  <Clock className="w-3 h-3" />
                   <span>約 {totalLessons * 10} 分</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Star className="w-3.5 h-3.5 text-yellow-500" />
+                <div className="flex items-center gap-0.5">
+                  <Star className="w-3 h-3 text-yellow-500" />
                   <span>{course.xpReward} XP</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-0.5">
+                  <Award className="w-3 h-3" />
                   <span>バッジ: {course.badge}</span>
                 </div>
               </div>
 
-              <div className="space-y-1 pt-1">
-                <div className="flex justify-between text-xs text-muted-foreground">
+              <div className="space-y-0.5 pt-0.5">
+                <div className="flex justify-between text-[10px] text-muted-foreground">
                   <span>Course Progress</span>
                   <span>{completedLessons} / {totalLessons} completed</span>
                 </div>
-                <Progress value={progress} className="h-1.5" />
+                <Progress value={progress} className="h-1" />
               </div>
               
               {/* コース開始ボタン */}
               {lessons.length > 0 && (
-                <div className="pt-1">
+                <div className="pt-0.5">
                   <Button
                     onClick={() => {
                       // 最初の未完了レッスン、または最初のレッスンに進む
@@ -519,7 +519,7 @@ export default function CourseDetail() {
                       const targetLesson = firstIncompleteLesson || lessons[0];
                       setLocation(`/courses/${courseId}/lessons/${targetLesson.id}`);
                     }}
-                    className="w-full sm:w-auto h-7 text-xs"
+                    className="w-full sm:w-auto h-7 text-[11px]">
                   >
                     {completedLessons === 0 ? "コースを開始" : completedLessons === totalLessons ? "コースを再開" : "続きから再開"}
                   </Button>
@@ -537,10 +537,10 @@ export default function CourseDetail() {
             transition={{ delay: 0.15 }}
             className="max-w-2xl mx-auto px-4"
           >
-            <div className="mb-6 text-center">
-              <GraduationCap className="w-16 h-10 lg:h-11 text-primary mx-auto mb-4" />
-              <h2 className="text-base font-bold mb-1">🎉 コース完了おめでとうございます！</h2>
-              <p className="text-sm text-muted-foreground">
+            <div className="mb-3 text-center">
+              <GraduationCap className="w-12 h-8 text-primary mx-auto mb-2" />
+              <h2 className="text-sm font-bold mb-0.5">🎉 コース完了おめでとうございます！</h2>
+              <p className="text-xs text-muted-foreground">
                 すべてのレッスンを完了しました。証明書をダウンロードできます。
               </p>
             </div>
@@ -557,10 +557,10 @@ export default function CourseDetail() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-6xl mx-auto px-4 space-y-1.5"
+          className="max-w-6xl mx-auto px-4 space-y-1"
         >
-          <h2 className="text-sm font-bold">Lessons</h2>
-          <div className="space-y-1.5">
+          <h2 className="text-xs font-bold">Lessons</h2>
+          <div className="space-y-1">
             {lessons.map((lesson, index) => {
               const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
               const isLocked = index > 0 && !courseProgress.completedLessons?.includes(lessons[index - 1].id);
@@ -573,41 +573,41 @@ export default function CourseDetail() {
                   transition={{ delay: 0.1 * index }}
                 >
                   <Card className={isLocked ? "opacity-60" : "hover:shadow-md transition-shadow"}>
-                    <CardHeader className="p-2">
+                    <CardHeader className="p-1.5">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1.5">
-                            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs">
+                          <div className="flex items-center gap-1 mb-0.5">
+                            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[10px]">
                               {index + 1}
                             </div>
-                            <CardTitle className="text-xs">{lesson.title}</CardTitle>
+                            <CardTitle className="text-[11px]">{lesson.title}</CardTitle>
                             {isCompleted && (
-                              <Badge variant="default" className="bg-green-500 text-[10px]">
-                                <CheckCircle2 className="w-3 h-3 mr-0.5" />
+                              <Badge variant="default" className="bg-green-500 text-[9px] px-1 py-0">
+                                <CheckCircle2 className="w-2.5 h-2.5 mr-0.5" />
                                 Completed
                               </Badge>
                             )}
                             {isLocked && (
-                              <Badge variant="secondary" className="text-[10px]">
-                                <Lock className="w-3 h-3 mr-0.5" />
+                              <Badge variant="secondary" className="text-[9px] px-1 py-0">
+                                <Lock className="w-2.5 h-2.5 mr-0.5" />
                                 Locked
                               </Badge>
                             )}
                           </div>
-                          <CardDescription className="text-[10px]">{lesson.description}</CardDescription>
+                          <CardDescription className="text-[10px] leading-tight">{lesson.description}</CardDescription>
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="p-2 pt-0">
+                    <CardContent className="p-1.5 pt-0">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" />
+                        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                          <div className="flex items-center gap-0.5">
+                            <Clock className="w-3 h-3" />
                             <span>{lesson.duration} 分</span>
                           </div>
                           {lesson.slides > 0 && (
-                            <div className="flex items-center gap-1">
-                              <FileText className="w-3.5 h-3.5" />
+                            <div className="flex items-center gap-0.5">
+                              <FileText className="w-3 h-3" />
                               <span>{lesson.slides} slides</span>
                             </div>
                           )}
@@ -620,7 +620,7 @@ export default function CourseDetail() {
                               setLocation(`/courses/${courseId}/lessons/${lesson.id}`);
                             }
                           }}
-                          className="h-8 text-xs"
+                          className="h-7 text-[10px] px-2"
                         >
                           {isCompleted ? "Review" : isLocked ? "Locked" : "Start"}
                         </Button>
