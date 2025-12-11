@@ -689,7 +689,7 @@ export default function LessonDetail() {
         <div className="flex-1 flex flex-col min-w-0">
           {/* ヘッダー */}
           <header className={`sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/50 transition-all duration-300 ${isHeaderVisible ? 'translate-y-0 shadow-sm' : '-translate-y-full lg:translate-y-0'}`}>
-            <div className="lg:max-w-[720px] lg:mx-auto px-4 lg:px-8">
+            <div className="lg:max-w-[900px] lg:mx-auto px-4 lg:px-8">
               <div className="flex items-center justify-between h-14">
                 <Button
                   variant="ghost"
@@ -718,7 +718,7 @@ export default function LessonDetail() {
 
           {/* コンテンツエリア */}
           <div className="flex-1 overflow-y-auto" ref={contentRef}>
-            <div className="lg:max-w-[720px] lg:mx-auto px-4 lg:px-8 py-8 lg:py-16">
+            <div className="lg:max-w-[900px] lg:mx-auto px-4 lg:px-8 py-8 lg:py-16">
               {completed ? (
                 <Card className="text-center py-16 border-border">
                   <CardContent className="space-y-6">
