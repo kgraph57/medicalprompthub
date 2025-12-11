@@ -105,32 +105,34 @@ export default function Tips() {
         </motion.section>
 
         {/* 基礎コンテンツカード（固定配置） */}
-        <Card className="border border-border">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-1.5 text-sm">
-              <Sparkles className="w-4 h-4" />
-              プロンプトエンジニアリングとは？
-            </CardTitle>
-            <CardDescription className="text-xs">
-              AIを最大限に活用するための基礎知識
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2 text-xs leading-snug">
-            <p>
-              <strong>プロンプトエンジニアリング</strong>とは、AI（ChatGPT、Claudeなど）に対して、期待する出力を得るための「問いかけ方」を設計・最適化する技術です。医療現場では、曖昧な指示ではAIが不正確な情報を生成するリスクがあります。
-            </p>
-            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-              <h4 className="font-semibold">良いプロンプトの5つの原則</h4>
-              <ol className="list-decimal pl-5 space-y-2">
-                <li><strong>明確性：</strong>指示は具体的かつ明確に</li>
-                <li><strong>文脈：</strong>必要な背景情報を提供する</li>
-                <li><strong>形式：</strong>出力形式を指定する（例：箇条書き、表形式）</li>
-                <li><strong>制約：</strong>制約条件を明示する（例：文字数、トーン）</li>
-                <li><strong>検証：</strong>AIの出力を必ず検証する</li>
-              </ol>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="max-w-5xl mx-auto">
+          <Card className="border border-border">
+            <CardHeader className="p-4">
+              <CardTitle className="flex items-center gap-1.5 text-sm">
+                <Sparkles className="w-4 h-4" />
+                プロンプトエンジニアリングとは？
+              </CardTitle>
+              <CardDescription className="text-xs">
+                AIを最大限に活用するための基礎知識
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 text-xs leading-snug p-4">
+              <p>
+                <strong>プロンプトエンジニアリング</strong>とは、AI（ChatGPT、Claudeなど）に対して、期待する出力を得るための「問いかけ方」を設計・最適化する技術です。医療現場では、曖昧な指示ではAIが不正確な情報を生成するリスクがあります。
+              </p>
+              <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                <h4 className="font-semibold">良いプロンプトの5つの原則</h4>
+                <ol className="list-decimal pl-5 space-y-2">
+                  <li><strong>明確性：</strong>指示は具体的かつ明確に</li>
+                  <li><strong>文脈：</strong>必要な背景情報を提供する</li>
+                  <li><strong>形式：</strong>出力形式を指定する（例：箇条書き、表形式）</li>
+                  <li><strong>制約：</strong>制約条件を明示する（例：文字数、トーン）</li>
+                  <li><strong>検証：</strong>AIの出力を必ず検証する</li>
+                </ol>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Search & Filter Section - コンパクト */}
         <motion.section
