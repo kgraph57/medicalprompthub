@@ -54,38 +54,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Header with toggle button */}
       <div className={cn(
         "flex-shrink-0 flex items-center border-b border-border/50 transition-all duration-300",
-        collapsed ? "px-1 py-0.5 justify-center" : "px-1.5 py-0.5 justify-between"
+        collapsed ? "px-2 py-2 justify-center" : "px-1.5 py-0.5 justify-between"
       )}>
         {!collapsed && (
-          <div>
-            <Link href="/" aria-label="ホームページに戻る">
-              <h1 className="text-[11px] font-bold tracking-tight text-primary flex items-center gap-0.5">
-                <Activity className="w-2.5 h-2.5" aria-hidden="true" />
-                Medical Prompt Hub
-              </h1>
-            </Link>
-            <p className="text-[7px] text-muted-foreground mt-0 leading-none">For Healthcare Professionals</p>
-          </div>
+          <>
+            <div>
+              <Link href="/" aria-label="ホームページに戻る">
+                <h1 className="text-[11px] font-bold tracking-tight text-primary flex items-center gap-0.5">
+                  <Activity className="w-2.5 h-2.5" aria-hidden="true" />
+                  Medical Prompt Hub
+                </h1>
+              </Link>
+              <p className="text-[7px] text-muted-foreground mt-0 leading-none">For Healthcare Professionals</p>
+            </div>
+            <button
+              onClick={toggle}
+              className="p-1 hover:bg-accent rounded-md transition-colors"
+              aria-label="サイドバーを折りたたむ"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+          </>
         )}
         {collapsed && (
-          <Link href="/" aria-label="ホームページに戻る">
-            <Activity className="w-2.5 h-2.5 text-primary" aria-hidden="true" />
-          </Link>
+          <button
+            onClick={toggle}
+            className="p-1.5 hover:bg-accent rounded-md transition-colors"
+            aria-label="サイドバーを展開"
+          >
+            <Activity className="w-4 h-4 text-primary" aria-hidden="true" />
+          </button>
         )}
-        <button
-          onClick={toggle}
-          className={cn(
-            "p-1 hover:bg-accent rounded-md transition-colors",
-            collapsed && "mt-1"
-          )}
-          aria-label={collapsed ? "サイドバーを展開" : "サイドバーを折りたたむ"}
-        >
-          {collapsed ? (
-            <ChevronRight className="w-3.5 h-3.5" />
-          ) : (
-            <ChevronLeft className="w-3.5 h-3.5" />
-          )}
-        </button>
       </div>
 
       <ScrollArea className="flex-1 overflow-y-auto px-1.5 py-1 lg:py-1.5">

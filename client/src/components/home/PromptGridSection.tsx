@@ -1,7 +1,6 @@
-import { Search, Loader2 } from "lucide-react";
-import { memo, useState } from "react";
+import { Search } from "lucide-react";
+import { memo } from "react";
 import { PromptCard } from "./PromptCard";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 interface Prompt {
   id: string;
@@ -23,27 +22,6 @@ export const PromptGridSection = memo(function PromptGridSection({
   selectedCategory,
   onClearFilters 
 }: PromptGridSectionProps) {
-  const [visibleCount, setVisibleCount] = useState(9);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const handleLoadMore = () => {
-    setIsLoading(true);
-    // ローディングアニメーションを表示するための遅延
-    setTimeout(() => {
-      setVisibleCount(prev => prev + 10);
-      setIsLoading(false);
-    }, 300);
-  };
-  
-  const hasMore = visibleCount < prompts.length;
-  const sentinelRef = useInfiniteScroll({
-    onLoadMore: handleLoadMore,
-    hasMore,
-    threshold: 200,
-    enabled: true
-  });
-  
-  const visiblePrompts = prompts.slice(0, visibleCount);
   
   return (
     <section className="py-3 md:py-4 bg-white">
@@ -73,29 +51,10 @@ export const PromptGridSection = memo(function PromptGridSection({
         {prompts.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0.5 md:gap-1">
-              {visiblePrompts.map((prompt) => (
+              {prompts.map((prompt) => (
                 <PromptCard key={prompt.id} prompt={prompt} />
               ))}
             </div>
-            
-            {/* 無限スクロールセンチネル */}
-            {hasMore && (
-              <div ref={sentinelRef} className="flex justify-center mt-8 py-4">
-                {isLoading && (
-                  <div className="flex items-center gap-2 text-primary-600">
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span className="text-sm font-medium">読み込み中...</span>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {/* 全て表示済みメッセージ */}
-            {!hasMore && prompts.length > 9 && (
-              <div className="text-center mt-8 py-4">
-                <p className="text-sm text-neutral-500">すべてのプロンプトを表示しました</p>
-              </div>
-            )}
           </>
         ) : (
           // 検索結果なし
