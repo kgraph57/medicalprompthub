@@ -236,18 +236,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* モバイルサイドバー */}
-      {isMobileOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-            onClick={() => setIsMobileOpen(false)}
-            aria-hidden="true"
-          />
-          <aside className="fixed left-0 top-0 bottom-0 w-14 bg-background z-50 lg:hidden">
-            <NavContent />
-          </aside>
-        </>
-      )}
+      <aside className={cn(
+        "fixed left-0 top-0 bottom-0 w-14 bg-background z-50 lg:hidden transition-transform duration-300 ease-out border-r border-border/30",
+        isMobileOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        <NavContent />
+      </aside>
 
       {/* メインコンテンツ */}
       <main className="flex-1 overflow-y-auto">
