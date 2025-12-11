@@ -173,8 +173,8 @@ export default function CategoryCourses() {
                       >
                         <Card 
                           className={cn(
-                            course.locked ? "opacity-60" : "hover:shadow-lg hover:scale-[1.005] transition-all duration-300 cursor-pointer",
-                            "h-full flex flex-col"
+                            course.locked ? "opacity-60" : "hover:shadow-md hover:border-primary/30 transition-all duration-200 cursor-pointer",
+                            "border-2 bg-gradient-to-r from-background to-accent/5"
                           )}
                           onClick={() => {
                             if (!course.locked) {
@@ -182,78 +182,50 @@ export default function CategoryCourses() {
                             }
                           }}
                         >
-                          <CardHeader className="flex-1 pb-1 p-1.5">
-                            <div className="flex items-start justify-between mb-0">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-1 mb-0.5">
-                                  <CardTitle className="text-xs">{course.title}</CardTitle>
-                                  {isCompleted && (
-                                    <Badge variant="default" className="bg-green-500 text-[10px]">
-                                      <CheckCircle2 className="w-2.5 h-2.5 mr-0.5" />
-                                      Completed
-                                    </Badge>
-                                  )}
-                                  {course.locked && (
-                                    <Badge variant="secondary" className="text-[10px]">
-                                      <Lock className="w-2.5 h-2.5 mr-0.5" />
-                                      Locked
-                                    </Badge>
-                                  )}
+                          <CardHeader className="p-4">
+                            <div className="flex items-center justify-between gap-4">
+                              <div className="flex items-center gap-3 flex-1">
+                                <div className="text-2xl">{course.badge}</div>
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <CardTitle className="text-sm font-semibold">{course.title}</CardTitle>
+                                    {isCompleted && (
+                                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                    )}
+                                    {course.locked && (
+                                      <Lock className="w-4 h-4 text-muted-foreground" />
+                                    )}
+                                  </div>
+                                  <CardDescription className="text-xs line-clamp-1">
+                                    {course.description}
+                                  </CardDescription>
                                 </div>
-                                <CardDescription className="text-[10px] line-clamp-1">
-                                  {course.description}
-                                </CardDescription>
                               </div>
-                              <div className="text-lg ml-1">{course.badge}</div>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1.5">
+                                  <BookOpen className="w-3.5 h-3.5" />
+                                  <span className="font-medium">{course.lessons}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                                  <span className="font-medium">{course.xpReward}</span>
+                                </div>
+                                <Badge variant="secondary" className="text-[10px]">
+                                  Lv.{course.level}
+                                </Badge>
+                              </div>
                             </div>
                           </CardHeader>
-                          <CardContent className="space-y-1 mt-auto min-h-[60px] flex flex-col justify-end pt-0 p-1.5">
-                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          {!course.locked && progress > 0 && (
+                            <CardContent className="pt-0 px-4 pb-4">
                               <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-1">
-                                  <BookOpen className="w-3.5 h-3.5" />
-                                  <span>{course.lessons} lessons</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Star className="w-3.5 h-3.5 text-yellow-500" />
-                                  <span>{course.xpReward} XP</span>
-                                </div>
+                                <Progress value={progress} className="h-1.5 flex-1" />
+                                <span className="text-xs text-muted-foreground font-medium">
+                                  {completed}/{total}
+                                </span>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <Award className="w-3.5 h-3.5" />
-                                <span>Lv.{course.level}</span>
-                              </div>
-                            </div>
-
-                            {!course.locked && (
-                              <div className="space-y-1">
-                                <div className="space-y-0.5">
-                                  <div className="flex justify-between text-[10px] text-muted-foreground">
-                                    <span>Progress</span>
-                                    <span>{completed} / {total}</span>
-                                  </div>
-                                  <Progress value={progress} className="h-1" />
-                                </div>
-
-                                <Button
-                                  className="w-full h-6 text-[10px]"
-                                  variant={isCompleted ? "outline" : "default"}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setLocation(`/courses/${course.id}`);
-                                  }}
-                                >
-                                  {isCompleted ? "Review Course" : "Start Learning"}
-                                </Button>
-                              </div>
-                            )}
-
-                            {course.locked && (
-                              <div className="text-[10px] text-muted-foreground text-center py-1">
-                                Complete previous courses to unlock
-                              </div>
-                            )}
-                          </CardContent>
+                            </CardContent>
+                          )}
                         </Card>
                       </motion.div>
                     );

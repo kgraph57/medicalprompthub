@@ -559,8 +559,8 @@ export default function CourseDetail() {
           transition={{ delay: 0.1 }}
           className="max-w-6xl mx-auto px-4 space-y-1"
         >
-          <h2 className="text-xs font-bold">Lessons</h2>
-          <div className="space-y-1">
+          <h2 className="text-sm font-bold mb-3">Lessons</h2>
+          <div className="space-y-2">
             {lessons.map((lesson, index) => {
               const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
               const isLocked = index > 0 && !courseProgress.completedLessons?.includes(lessons[index - 1].id);
@@ -572,60 +572,50 @@ export default function CourseDetail() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 * index }}
                 >
-                  <Card className={isLocked ? "opacity-60" : "hover:shadow-md transition-shadow"}>
-                    <CardHeader className="p-1.5">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-1 mb-0.5">
-                            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[10px]">
-                              {index + 1}
-                            </div>
-                            <CardTitle className="text-[11px]">{lesson.title}</CardTitle>
-                            {isCompleted && (
-                              <Badge variant="default" className="bg-green-500 text-[9px] px-1 py-0">
-                                <CheckCircle2 className="w-2.5 h-2.5 mr-0.5" />
-                                Completed
-                              </Badge>
-                            )}
-                            {isLocked && (
-                              <Badge variant="secondary" className="text-[9px] px-1 py-0">
-                                <Lock className="w-2.5 h-2.5 mr-0.5" />
-                                Locked
-                              </Badge>
-                            )}
+                  <Card 
+                    className={cn(
+                      isLocked ? "opacity-60" : "hover:shadow-sm hover:border-primary/30 transition-all duration-200 cursor-pointer",
+                      "border-2 bg-gradient-to-r from-background to-accent/5"
+                    )}
+                    onClick={() => {
+                      if (!isLocked) {
+                        setLocation(`/courses/${courseId}/lessons/${lesson.id}`);
+                      }
+                    }}
+                  >
+                    <CardHeader className="p-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3 flex-1">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                            {index + 1}
                           </div>
-                          <CardDescription className="text-[10px] leading-tight">{lesson.description}</CardDescription>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <CardTitle className="text-sm font-semibold">{lesson.title}</CardTitle>
+                              {isCompleted && (
+                                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                              )}
+                              {isLocked && (
+                                <Lock className="w-4 h-4 text-muted-foreground" />
+                              )}
+                            </div>
+                            <CardDescription className="text-xs line-clamp-1">{lesson.description}</CardDescription>
+                          </div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-1.5 pt-0">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                          <div className="flex items-center gap-0.5">
-                            <Clock className="w-3 h-3" />
-                            <span>{lesson.duration} 分</span>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="w-3.5 h-3.5" />
+                            <span className="font-medium">{lesson.duration}分</span>
                           </div>
                           {lesson.slides > 0 && (
-                            <div className="flex items-center gap-0.5">
-                              <FileText className="w-3 h-3" />
-                              <span>{lesson.slides} slides</span>
+                            <div className="flex items-center gap-1.5">
+                              <FileText className="w-3.5 h-3.5" />
+                              <span className="font-medium">{lesson.slides}</span>
                             </div>
                           )}
                         </div>
-                        <Button
-                          variant={isCompleted ? "outline" : "default"}
-                          disabled={isLocked}
-                          onClick={() => {
-                            if (!isLocked) {
-                              setLocation(`/courses/${courseId}/lessons/${lesson.id}`);
-                            }
-                          }}
-                          className="h-7 text-[10px] px-2"
-                        >
-                          {isCompleted ? "Review" : isLocked ? "Locked" : "Start"}
-                        </Button>
                       </div>
-                    </CardContent>
+                    </CardHeader>
                   </Card>
                 </motion.div>
               );
