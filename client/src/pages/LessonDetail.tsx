@@ -679,34 +679,37 @@ export default function LessonDetail() {
         {/* メインコンテンツ */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* ヘッダー */}
-          <header className={`lg:sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border transition-transform duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full lg:translate-y-0'}`}>
-            <div className="lg:max-w-[680px] lg:mx-auto px-3 lg:px-6 py-2 lg:py-2 lg:py-2.5">
-              <div className="flex items-center justify-between mb-3">
+          <header className={`sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/50 transition-all duration-300 ${isHeaderVisible ? 'translate-y-0 shadow-sm' : '-translate-y-full lg:translate-y-0'}`}>
+            <div className="lg:max-w-[720px] lg:mx-auto px-4 lg:px-8">
+              <div className="flex items-center justify-between h-14">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLocation(`/courses/${courseId}`)}
+                  className="text-muted-foreground hover:text-foreground -ml-2 h-8 text-xs"
+                >
+                  <ArrowLeft className="mr-1.5 h-3.5 w-3.5" /> コースに戻る
+                </Button>
+                
                 <div className="flex items-center gap-3">
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setLocation(`/courses/${courseId}`)}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> コースに戻る
-                  </Button>
+                  <span className="text-xs text-muted-foreground font-medium">
+                    {Math.round(scrollProgress)}%
+                  </span>
+                  {completed && (
+                    <div className="flex items-center gap-1.5 text-green-600 dark:text-green-500">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span className="font-medium text-xs">完了</span>
+                    </div>
+                  )}
                 </div>
-                {completed && (
-                  <div className="flex items-center gap-2 text-primary">
-                    <CheckCircle2 className="w-5 h-5" />
-                    <span className="font-semibold text-sm">完了</span>
-                  </div>
-                )}
               </div>
-              <Progress value={scrollProgress} className="h-1" />
+              <Progress value={scrollProgress} className="h-0.5" />
             </div>
           </header>
 
           {/* コンテンツエリア */}
           <div className="flex-1 overflow-y-auto" ref={contentRef}>
-            <div className="lg:max-w-[680px] lg:mx-auto px-3 lg:px-6 py-6 lg:py-12">
+            <div className="lg:max-w-[720px] lg:mx-auto px-4 lg:px-8 py-8 lg:py-16">
               {completed ? (
                 <Card className="text-center py-16 border-border">
                   <CardContent className="space-y-6">
@@ -745,9 +748,13 @@ export default function LessonDetail() {
                   </article>
                   
                   {/* 完了ボタンと次へボタン */}
-                  <div className="mt-16 pt-8 border-t border-border">
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Button onClick={handleComplete} size="lg" className="flex-1 h-10 lg:h-11 text-base">
+                  <div className="mt-20 pt-12 border-t border-border/50">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button 
+                        onClick={handleComplete} 
+                        size="lg" 
+                        className="flex-1 h-12 text-base font-semibold shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                      >
                         <CheckCircle2 className="mr-2 h-5 w-5" />
                         レッスンを完了する
                       </Button>
@@ -756,7 +763,7 @@ export default function LessonDetail() {
                           onClick={() => setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`)}
                           variant="outline" 
                           size="lg" 
-                          className="flex-1 h-10 lg:h-11 text-base"
+                          className="flex-1 h-12 text-base font-medium border-2 hover:bg-accent/50 transition-all duration-200 hover:-translate-y-0.5"
                         >
                           次のレッスンへ
                           <ArrowRight className="ml-2 h-5 w-5" />

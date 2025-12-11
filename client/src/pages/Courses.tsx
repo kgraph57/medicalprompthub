@@ -665,19 +665,19 @@ export default function Courses() {
                   transition={{ delay: 0.1 * categoryOrder.indexOf(category) }}
                 >
                   <Card 
-                    className="hover:shadow-lg hover:scale-[1.005] transition-all duration-300 cursor-pointer border hover:border-primary/50 min-h-[120px] flex flex-col"
+                    className="group hover:shadow-xl hover:scale-[1.01] transition-all duration-300 cursor-pointer border-2 hover:border-primary/30 min-h-[140px] flex flex-col bg-gradient-to-br from-background to-accent/5 hover:from-accent/10 hover:to-accent/20"
                     onClick={() => setLocation(`/courses/category/${category}`)}
                   >
-                    <CardHeader className="flex-1 pb-1 p-1.5">
+                    <CardHeader className="flex-1 pb-2 p-4">
                       <div className="flex items-start justify-between mb-0.5">
                         <div className="flex-1">
-                          <div className="flex items-center gap-1 mb-0.5">
-                            <span className="w-0.5 h-3 bg-primary rounded-full"></span>
-                            <CardTitle className="text-sm">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full"></div>
+                            <CardTitle className="text-base font-bold group-hover:text-primary transition-colors">
                               {categoryLabels[category] || category}
                             </CardTitle>
                           </div>
-                          <CardDescription className="text-[10px] leading-tight line-clamp-1">
+                          <CardDescription className="text-xs leading-relaxed line-clamp-2">
                             {category === "基礎理論" && "AIの基礎理論と概念を体系的に学びます。初心者向けの内容から始まり、AIの全体像を把握できます。"}
                             {category === "ツール" && "ChatGPT、Claude、GeminiなどのAIツールの実践的な使い方を学びます。医療現場で即座に活用できるスキルを習得します。"}
                             {category === "技術" && "AIの技術的な仕組みを深く理解します。機械学習、深層学習、API、プログラミングなど、技術的な側面を学びます。"}
@@ -689,33 +689,33 @@ export default function Courses() {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-1 pt-0 p-1.5">
-                      <div className="flex items-center gap-2 text-xs">
-                        <Badge variant="secondary" className="text-[8px]">
+                    <CardContent className="space-y-2 pt-0 p-4">
+                      <div className="flex items-center gap-3 text-xs">
+                        <Badge variant="secondary" className="text-[10px] px-2 py-0.5">
                           {allCategoryCourses.length} コース
                         </Badge>
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <BookOpen className="w-3 h-3" />
-                          <span>{totalLessons} レッスン</span>
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span className="font-medium">{totalLessons} レッスン</span>
                         </div>
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <Star className="w-3.5 h-3.5 text-yellow-500" />
-                          <span>{totalXP} XP</span>
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                          <span className="font-medium">{totalXP} XP</span>
                         </div>
                       </div>
                       
                       {categoryProgress > 0 && (
-                        <div className="space-y-0.5">
-                          <div className="flex justify-between text-[10px] text-muted-foreground">
-                            <span>進捗</span>
+                        <div className="space-y-1">
+                          <div className="flex justify-between text-xs text-muted-foreground">
+                            <span className="font-medium">進捗</span>
                             <span>{categoryProgress} / {categoryTotal} レッスン完了</span>
                           </div>
-                          <Progress value={categoryProgressPercent} className="h-1.5" />
+                          <Progress value={categoryProgressPercent} className="h-2" />
                         </div>
                       )}
                       
                       <div className="pt-1">
-                        <div className="text-[10px] text-muted-foreground text-center">
+                        <div className="text-xs text-muted-foreground text-center font-medium">
                           {unlockedCount} / {allCategoryCourses.length} コース利用可能
                         </div>
                       </div>
