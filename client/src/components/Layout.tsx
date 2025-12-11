@@ -15,17 +15,17 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  "diagnosis": <Stethoscope className="w-3.5 h-3.5" />,
-  "treatment": <Activity className="w-3.5 h-3.5" />,
-  "documentation": <FileText className="w-3.5 h-3.5" />,
-  "medication": <Pill className="w-3.5 h-3.5" />,
-  "communication": <MessageSquare className="w-3.5 h-3.5" />,
-  "shared-decision-making": <HandHeart className="w-3.5 h-3.5" />,
-  "literature": <BookOpen className="w-3.5 h-3.5" />,
-  "research": <Microscope className="w-3.5 h-3.5" />,
-  "case-analysis": <ClipboardList className="w-3.5 h-3.5" />,
-  "education": <GraduationCap className="w-3.5 h-3.5" />,
-  "administrative": <Briefcase className="w-3.5 h-3.5" />,
+  "diagnosis": <Stethoscope className="w-3 h-3" />,
+  "treatment": <Activity className="w-3 h-3" />,
+  "documentation": <FileText className="w-3 h-3" />,
+  "medication": <Pill className="w-3 h-3" />,
+  "communication": <MessageSquare className="w-3 h-3" />,
+  "shared-decision-making": <HandHeart className="w-3 h-3" />,
+  "literature": <BookOpen className="w-3 h-3" />,
+  "research": <Microscope className="w-3 h-3" />,
+  "case-analysis": <ClipboardList className="w-3 h-3" />,
+  "education": <GraduationCap className="w-3 h-3" />,
+  "administrative": <Briefcase className="w-3 h-3" />,
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -81,17 +81,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
           aria-label={collapsed ? "サイドバーを展開" : "サイドバーを折りたたむ"}
         >
           {collapsed ? (
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5" />
           ) : (
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3.5 h-3.5" />
           )}
         </button>
       </div>
 
-      <ScrollArea className="flex-1 overflow-y-auto px-2 py-1.5 lg:py-2">
-        <div className="space-y-1" role="list">
+      <ScrollArea className="flex-1 overflow-y-auto px-1.5 py-1 lg:py-1.5">
+        <div className="space-y-0.5" role="list">
           <NavItem
-            icon={<Home className="w-4 h-4" />}
+            icon={<Home className="w-3.5 h-3.5" />}
             label="Home"
             active={location === "/"}
             onClick={() => {
@@ -101,7 +101,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             collapsed={collapsed}
           />
           <NavItem
-            icon={<GraduationCap className="w-4 h-4" />}
+            icon={<GraduationCap className="w-3.5 h-3.5" />}
             label="Courses"
             active={location.startsWith("/courses")}
             onClick={() => {
@@ -111,7 +111,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             collapsed={collapsed}
           />
           <NavItem
-            icon={<Lightbulb className="w-4 h-4" />}
+            icon={<Lightbulb className="w-3.5 h-3.5" />}
             label="Tips"
             active={location.startsWith("/tips")}
             onClick={() => {
@@ -121,7 +121,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             collapsed={collapsed}
           />
           <NavItem
-            icon={<ArrowRight className="w-4 h-4" />}
+            icon={<ArrowRight className="w-3.5 h-3.5" />}
             label="Workflow"
             active={location.startsWith("/guides")}
             onClick={() => {
@@ -131,7 +131,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             collapsed={collapsed}
           />
           <NavItem
-            icon={<Bookmark className="w-4 h-4" />}
+            icon={<Bookmark className="w-3.5 h-3.5" />}
             label="Favorites"
             active={location === "/favorites"}
             onClick={() => {
@@ -202,7 +202,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <TooltipTrigger asChild>
                 <Link href="/ai-literacy">
                   <button className="p-1.5 hover:bg-accent rounded-md transition-colors">
-                    <Lightbulb className="w-3.5 h-3.5" />
+                    <Lightbulb className="w-3 h-3" />
                   </button>
                 </Link>
               </TooltipTrigger>
@@ -214,7 +214,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <TooltipTrigger asChild>
                 <Link href="/faq">
                   <button className="p-1.5 hover:bg-accent rounded-md transition-colors">
-                    <HelpCircle className="w-3.5 h-3.5" />
+                    <HelpCircle className="w-3 h-3" />
                   </button>
                 </Link>
               </TooltipTrigger>
@@ -226,7 +226,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <TooltipTrigger asChild>
                 <Link href="/contact">
                   <button className="p-1.5 hover:bg-accent rounded-md transition-colors">
-                    <Mail className="w-3.5 h-3.5" />
+                    <Mail className="w-3 h-3" />
                   </button>
                 </Link>
               </TooltipTrigger>
@@ -311,7 +311,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <ScrollArea className="flex-1 overflow-y-auto px-1.5 py-1 lg:py-1.5">
                 <div className="space-y-0.5" role="list">
                   <NavItem
-                    icon={<Home className="w-4 h-4" />}
+                    icon={<Home className="w-3.5 h-3.5" />}
                     label="Home"
                     active={location === "/"}
                     onClick={() => {
@@ -321,7 +321,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     collapsed={false}
                   />
                   <NavItem
-                    icon={<GraduationCap className="w-4 h-4" />}
+                    icon={<GraduationCap className="w-3.5 h-3.5" />}
                     label="Courses"
                     active={location.startsWith("/courses")}
                     onClick={() => {
@@ -331,7 +331,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     collapsed={false}
                   />
                   <NavItem
-                    icon={<Lightbulb className="w-4 h-4" />}
+                    icon={<Lightbulb className="w-3.5 h-3.5" />}
                     label="Tips"
                     active={location.startsWith("/tips")}
                     onClick={() => {
@@ -341,7 +341,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     collapsed={false}
                   />
                   <NavItem
-                    icon={<ArrowRight className="w-4 h-4" />}
+                    icon={<ArrowRight className="w-3.5 h-3.5" />}
                     label="Workflow"
                     active={location.startsWith("/guides")}
                     onClick={() => {
@@ -351,7 +351,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     collapsed={false}
                   />
                   <NavItem
-                    icon={<Bookmark className="w-4 h-4" />}
+                    icon={<Bookmark className="w-3.5 h-3.5" />}
                     label="Favorites"
                     active={location === "/favorites"}
                     onClick={() => {
@@ -442,16 +442,16 @@ function NavItem({ icon, label, active, onClick, collapsed }: NavItemProps) {
     <Button
       variant={active ? "secondary" : "ghost"}
       className={cn(
-        "font-medium transition-all duration-200 text-xs min-h-[44px] py-2",
-        active && "bg-secondary text-secondary-foreground",
-        collapsed ? "w-11 h-11 p-0 justify-center" : "w-full justify-start px-3"
+        "font-normal transition-all duration-200 text-[11px] min-h-[32px] py-1 hover:bg-accent/50",
+        active && "bg-secondary/80 text-secondary-foreground font-medium",
+        collapsed ? "w-9 h-9 p-0 justify-center" : "w-full justify-start px-2"
       )}
       onClick={onClick}
     >
-      <span className={cn(collapsed ? "" : "mr-2", "flex-shrink-0")} aria-hidden="true">
+      <span className={cn(collapsed ? "" : "mr-1.5", "flex-shrink-0")} aria-hidden="true">
         {icon}
       </span>
-      {!collapsed && label}
+      {!collapsed && <span className="truncate">{label}</span>}
     </Button>
   );
 
