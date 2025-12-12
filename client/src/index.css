@@ -976,6 +976,16 @@ textarea:focus-visible,
   will-change: transform;
 }
 
+/* スクロールバー非表示（横スクロールタブ用） */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 /* スムーズスクロール */
 @media (prefers-reduced-motion: no-preference) {
   html {

@@ -128,9 +128,9 @@ export default function PaperReadingGuide() {
               variant="ghost"
               size="icon"
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden flex-shrink-0"
+              className="lg:hidden flex-shrink-0 h-7 w-7"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4" />
             </Button>
             
             <Button
@@ -174,8 +174,9 @@ export default function PaperReadingGuide() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsSidebarOpen(false)}
+                  className="h-7 w-7"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
               {/* Progress Card */}

@@ -465,6 +465,13 @@ export default function LessonDetail() {
     }
   }, [lessonId]);
 
+  // レッスンが変わったときにページトップにスクロール
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [lessonId]);
+
   // スクロール位置に応じて進捗を更新
   useEffect(() => {
     const handleScroll = () => {
@@ -690,12 +697,22 @@ export default function LessonDetail() {
       }
     }
     
+    // ページトップにスクロール
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
     // 次のレッスンがあれば即座に遷移
     if (nextLesson) {
-      setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+      // スクロール完了を待ってから遷移（少し遅延を入れる）
+      setTimeout(() => {
+        setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+      }, 300);
     } else {
       // 最後のレッスンの場合はコース詳細ページに戻る
-      setLocation(`/courses/${courseId}`);
+      setTimeout(() => {
+        setLocation(`/courses/${courseId}`);
+      }, 300);
     }
   };
 

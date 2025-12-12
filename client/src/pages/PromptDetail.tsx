@@ -7,12 +7,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getPromptById, loadPrompts } from "@/lib/prompts-loader";
+import { cn } from "@/lib/utils";
 import { AlertTriangle, ArrowLeft, Bookmark, Check, Copy, RefreshCw, Sparkles } from "lucide-react";
 import { CollapsibleWarning } from "@/components/CollapsibleWarning";
 import { PromptSidebar } from "@/components/PromptSidebar";
 import { PromptChecklist } from "@/components/PromptChecklist";
 import { FactCheckLinks } from "@/components/FactCheckLinks";
-import { PromptFeedback } from "@/components/PromptFeedback";
 import { ShareButtons } from "@/components/ShareButtons";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -195,8 +195,8 @@ export default function PromptDetail() {
         <div className="mb-2">
           <div className="flex items-center gap-2 mb-2">
             <Link href={`/category/${prompt.category}`}>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="ghost" size="icon" className="rounded-full h-7 w-7">
+                <ArrowLeft className="w-4 h-4" />
               </Button>
             </Link>
             <div className="flex-1">
@@ -226,19 +226,15 @@ export default function PromptDetail() {
                 variant="outline"
                 size="icon"
                 onClick={() => toggleFavorite(prompt.id)}
-                className={isFavorite(prompt.id) ? "text-primary border-primary" : ""}
+                className={cn(
+                  "h-7 w-7",
+                  isFavorite(prompt.id) ? "text-primary border-primary" : ""
+                )}
               >
-                <Bookmark className={isFavorite(prompt.id) ? "fill-current w-5 h-5" : "w-5 h-5"} />
+                <Bookmark className={isFavorite(prompt.id) ? "fill-current w-4 h-4" : "w-4 h-4"} />
               </Button>
             </div>
           </div>
-
-          {/* 警告メッセージ（折りたたみ式） */}
-          {prompt.warningMessage && (
-            <div className="mb-1">
-              <CollapsibleWarning message={prompt.warningMessage} defaultOpen={false} />
-            </div>
-          )}
         </div>
 
         {/* プロンプト出力エリア（Above the Fold） */}
@@ -249,14 +245,14 @@ export default function PromptDetail() {
                 <Sparkles className="w-4 h-4" />
                 プロンプトプレビュー
               </CardTitle>
-              <Button onClick={handleCopy} size="lg">
+              <Button onClick={handleCopy} variant="ghost" size="sm">
                 {copied ? (
                   <>
-                    <Check className="w-4 h-4 mr-2" /> コピー完了
+                    <Check className="w-3 h-3 mr-1" /> コピー完了
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 mr-2" /> コピー
+                    <Copy className="w-3 h-3 mr-1" /> コピー
                   </>
                 )}
               </Button>
@@ -329,10 +325,12 @@ export default function PromptDetail() {
             </CardContent>
           </Card>
 
-        {/* フィードバック */}
-        <div className="mt-2">
-          <PromptFeedback promptId={prompt.id} />
-        </div>
+          {/* 警告メッセージ（折りたたみ式）- ページ下部に目立たない配置 */}
+          {prompt.warningMessage && (
+            <div className="mt-4 mb-2">
+              <CollapsibleWarning message={prompt.warningMessage} defaultOpen={false} />
+            </div>
+          )}
       </main>
 
       {/* 右サイドバー（補助ツール） */}

@@ -37,12 +37,18 @@ const PaperReadingGuide = lazy(() => import("@/pages/PaperReadingGuide"));
 const EnglishProofreadingGuide = lazy(() => import("@/pages/EnglishProofreadingGuide"));
 const AILiteracy = lazy(() => import("@/pages/AILiteracy"));
 
-// Loading component
+// Loading component（アクセシビリティ改善）
 const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen">
+  <div className="flex items-center justify-center min-h-screen" role="status" aria-live="polite">
     <div className="text-center">
-      <div className="animate-spin rounded-full h-10 lg:h-11 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-      <p className="text-muted-foreground">読み込み中...</p>
+      <div 
+        className="animate-spin rounded-full h-10 lg:h-11 w-12 border-b-2 border-primary mx-auto mb-4"
+        aria-hidden="true"
+      />
+      <p className="text-muted-foreground">
+        <span className="sr-only">読み込み中</span>
+        <span aria-hidden="true">読み込み中...</span>
+      </p>
     </div>
   </div>
 );

@@ -643,7 +643,7 @@ export default function Courses() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center py-0.5"
         >
-          <h1 className="text-sm font-bold tracking-tight">Learning Courses</h1>
+          <h1 className="text-xl font-bold tracking-tight">Learning Courses</h1>
         </motion.section>
 
         {/* コース一覧 */}
@@ -653,10 +653,6 @@ export default function Courses() {
           transition={{ delay: 0.2 }}
           className="max-w-6xl mx-auto px-3 space-y-1"
         >
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold">Available Courses</h2>
-          </div>
-          
           {/* ジャンル一覧のみ表示（階層構造） */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {categoryOrder.map((category) => {

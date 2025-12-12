@@ -2,7 +2,6 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { setupGlobalErrorHandlers } from "./lib/errorTracking";
-import { startPerformanceMonitoring } from "./lib/performance";
 import { initSentry } from "./lib/sentry";
 import { enhanceFocusStyles, addSkipLink } from "./lib/accessibility";
 
@@ -13,9 +12,6 @@ initSentry().catch((error) => {
 
 // グローバルエラーハンドラーを設定
 setupGlobalErrorHandlers();
-
-// パフォーマンス監視を開始
-startPerformanceMonitoring();
 
 // アクセシビリティの改善
 enhanceFocusStyles();

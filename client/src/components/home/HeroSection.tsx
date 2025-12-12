@@ -1,4 +1,4 @@
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface HeroSectionProps {
@@ -10,62 +10,69 @@ export function HeroSection({ searchQuery, onSearchChange }: HeroSectionProps) {
   const [, setLocation] = useLocation();
 
   return (
-    <section className="relative py-1.5 lg:py-2 md:py-6 bg-white">
-      <div className="max-w-7xl mx-auto px-3 md:px-4">
-        {/* メインメッセージ */}
-        <div className="text-center mb-2 md:mb-3">
-          <h1 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-neutral-900 leading-tight">
-            医療従事者のための
-            <br />
-            AIプロンプトライブラリ
-          </h1>
-          <p className="text-[10px] md:text-xs font-normal max-w-2xl mx-auto text-neutral-600">
-            100以上の実践的なプロンプトで、診断、研究、文書作成を支援
-          </p>
-          <div className="mt-3 max-w-3xl mx-auto">
-            <p className="text-[10px] md:text-xs text-primary-700 font-medium italic">
-              「このツールで生まれた時間を、患者さんとの対話のために。」
-            </p>
-            <p className="text-[10px] md:text-xs text-neutral-500 mt-1">
-              AIは医療を効率化するだけではなく、医師が患者と向き合う時間を増やすためのツールです。
-            </p>
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-white">
+      {/* 控えめな背景装飾 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-gradient-to-b from-primary-50/40 via-transparent to-transparent"></div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 md:px-6 lg:px-8 relative z-10 w-full">
+        <div className="text-center">
+          {/* メインタイトル - Vercel風のクリーンなタイポグラフィ */}
+          <div className="mb-12 md:mb-16">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-neutral-900 leading-[1.1] tracking-tight">
+              医療の情熱を
+              <br />
+              <span className="text-primary-600">プロンプトで解き放つ</span>
+            </h1>
+            
+            {/* サブタイトル - シンプルで読みやすい */}
+            <div className="max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-neutral-600 leading-relaxed mb-2">
+                100以上の実践プロンプトで、あなたの専門性を高める
+              </p>
+              <p className="text-base md:text-lg text-neutral-500">
+                日常業務を効率化し、患者との対話に集中できる時間を生み出します
+              </p>
+            </div>
           </div>
-        </div>
-        
-        {/* 検索バー - 最優先機能 */}
-        <div className="max-w-2xl mx-auto mb-3 md:mb-4">
-          <div className="relative">
-            <Search className="absolute left-2.5 md:left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 md:w-4 md:h-4 text-neutral-400" />
-            <input
-              type="text"
-              placeholder="プロンプトを検索（例：鑑別診断、症例報告、統計解析）"
-              className="input-field w-full h-8 lg:h-9 md:h-9 lg:h-9 pl-8 md:pl-10 pr-2.5 md:pr-3 text-[10px] md:text-xs"
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-            />
+
+          {/* 検索バー - シンプルで洗練されたデザイン */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <div className="flex items-center bg-white border border-neutral-200 rounded-lg shadow-sm hover:shadow-md transition-shadow focus-within:shadow-md focus-within:border-primary-300">
+                <div className="pl-4 pr-3">
+                  <Search className="w-5 h-5 text-neutral-400" />
+                  </div>
+                  <input
+                    type="text"
+                  placeholder="プロンプトを検索..."
+                  className="flex-1 h-12 md:h-14 pr-4 text-base bg-transparent border-0 focus:outline-none focus:ring-0 text-neutral-900 placeholder:text-neutral-400"
+                    value={searchQuery}
+                    onChange={(e) => onSearchChange(e.target.value)}
+                  />
+              </div>
+            </div>
           </div>
-        </div>
-        
-        {/* セカンダリアクション */}
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => setLocation('/guides')}
-            className="px-2.5 md:px-4 py-1.5 md:py-2 lg:py-2 text-xs md:text-sm font-semibold transition-colors duration-200 text-primary-600 hover:text-primary-700"
-          >
-            使い方を学ぶ →
-          </button>
-        </div>
-        
-        {/* スクロールインジケーター */}
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={() => window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' })}
-            className="flex flex-col items-center gap-2 text-neutral-500 hover:text-primary-600 transition-colors"
-            aria-label="下にスクロール"
-          >
-            <span className="text-xs">もっと見る</span>
-            <ChevronDown className="w-5 h-5 animate-bounce" />
-          </button>
+          
+          {/* CTAボタン - ミニマルで洗練されたデザイン */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
+            <button
+              onClick={() => setLocation('/guides')}
+              className="group inline-flex items-center gap-2 px-6 py-3 text-base font-medium text-white bg-neutral-900 rounded-lg hover:bg-neutral-800 transition-colors"
+              aria-label="ガイドページへ移動"
+            >
+                はじめる
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+            
+            <button
+              onClick={() => window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' })}
+              className="inline-flex items-center px-6 py-3 text-base font-medium text-neutral-700 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors"
+            >
+              プロンプトを探す
+            </button>
+          </div>
         </div>
       </div>
     </section>

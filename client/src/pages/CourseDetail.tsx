@@ -610,17 +610,17 @@ export default function CourseDetail() {
                     <CardHeader className="p-4">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3 flex-1">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-base">
                             {index + 1}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                               <CardTitle className="text-base font-semibold">{lesson.title}</CardTitle>
                               {isCompleted && (
-                                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                <CheckCircle2 className="w-3 h-3 text-green-600" />
                               )}
                               {isLocked && (
-                                <Lock className="w-4 h-4 text-muted-foreground" />
+                                <Lock className="w-3 h-3 text-muted-foreground" />
                               )}
                             </div>
                             <CardDescription className="text-sm line-clamp-2">{lesson.description}</CardDescription>
