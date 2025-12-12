@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { tips, PromptTip } from "@/lib/tips";
 import { ArrowLeft, Copy, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Link, useRoute } from "wouter";
 import { motion } from "framer-motion";
+import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
 
 const categoryLabels: Record<PromptTip['category'], string> = {
   basic: '基本テクニック',
@@ -80,6 +81,39 @@ export default function TipDetail() {
 
   const { merits, demerits } = extractKeyPoints(tip.content);
   const basicUsage = extractBasicUsage(tip.content);
+
+  // SEO設定
+  useEffect(() => {
+    if (tip) {
+      updateSEO({
+        title: `${tip.title} | AI活用Tips | Medical Prompt Hub`,
+        description: tip.content.substring(0, 150) || `${tip.title}のAI活用Tips。プロンプトエンジニアリングのテクニックを学べます。`,
+        path: `/tips/${tipId}`,
+        keywords: `${tip.title},AI活用Tips,プロンプトエンジニアリング,${tip.category},${tip.level}`
+      });
+
+      // 構造化データ（Article）を追加
+      addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": tip.title,
+        "description": tip.content.substring(0, 200) || `${tip.title}のAI活用Tips`,
+        "author": {
+          "@type": "Organization",
+          "name": "Medical Prompt Hub"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Medical Prompt Hub",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${BASE_URL}/og-image-new.png`
+          }
+        },
+        "url": `${BASE_URL}/tips/${tipId}`
+      });
+    }
+  }, [tip, tipId]);
 
   return (
     <Layout>

@@ -1,7 +1,18 @@
 import { JournalFinder } from "@/components/JournalFinder";
 import { Activity } from "lucide-react";
+import { useEffect } from "react";
+import { updateSEO } from "@/lib/seo";
 
 export default function JournalFinderPage() {
+  useEffect(() => {
+    updateSEO({
+      title: "ジャーナル検索 | Medical Prompt Hub",
+      description: "医学雑誌を検索・比較。インパクトファクター、レビュー速度、投稿要件などを確認して、最適なジャーナルを選べます。",
+      path: "/journal-finder",
+      keywords: "ジャーナル検索,医学雑誌,インパクトファクター,論文投稿,ジャーナル比較"
+    });
+  }, []);
+
   return (
     <div className="container py-2 lg:py-2.5 space-y-3">
       <div className="space-y-2">

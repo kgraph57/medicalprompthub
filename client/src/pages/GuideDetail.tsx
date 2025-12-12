@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
 
 // PromptCard Component
 const PromptCard = ({ promptId }: { promptId: string }) => {
@@ -364,6 +365,33 @@ export default function GuideDetail() {
   const [, setLocation] = useLocation();
   const guideId = match ? params.id : null;
   const guide = guides.find((g) => g.id === guideId);
+
+  // SEO設定
+  useEffect(() => {
+    if (guide) {
+      updateSEO({
+        title: `${guide.title} | Medical Prompt Hub`,
+        description: guide.description || `${guide.title}のワークフローガイド。医療従事者がAIを活用して効率的に作業を進める方法を学べます。`,
+        path: `/guides/${guideId}`,
+        keywords: `${guide.title},ワークフローガイド,${guide.category},医療研究,AI活用`
+      });
+
+      // 構造化データ（HowTo）を追加
+      addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": guide.title,
+        "description": guide.description || `${guide.title}のワークフローガイド`,
+        "step": guide.steps?.map((step, index) => ({
+          "@type": "HowToStep",
+          "position": index + 1,
+          "name": step.title,
+          "text": typeof step.content === 'string' ? step.content : step.subtitle || ""
+        })) || [],
+        "url": `${BASE_URL}/guides/${guideId}`
+      });
+    }
+  }, [guide, guideId]);
 
   if (!guide) {
     return (

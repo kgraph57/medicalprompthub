@@ -6,10 +6,21 @@ import { fullPrompts } from "@/lib/prompts-full";
 import { ArrowRight, Bookmark, BookmarkX } from "lucide-react";
 import { Link } from "wouter";
 import { ExportFavorites } from "@/components/ExportFavorites";
+import { useEffect } from "react";
+import { updateSEO } from "@/lib/seo";
 
 export default function Favorites() {
   const { favorites, toggleFavorite } = useFavorites();
   const favoritePrompts = fullPrompts.filter((p) => favorites.includes(p.id));
+
+  useEffect(() => {
+    updateSEO({
+      title: "お気に入りプロンプト | Medical Prompt Hub",
+      description: "保存したプロンプトの一覧。よく使うプロンプトに素早くアクセスできます。",
+      path: "/favorites",
+      keywords: "お気に入り,ブックマーク,保存,プロンプト"
+    });
+  }, []);
 
   return (
     <Layout>

@@ -68,7 +68,7 @@ export function LearningPath({ currentCourseId }: LearningPathProps) {
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary text-primary-foreground text-[9px] font-bold">
+                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-bold">
                     {path.level}
                   </div>
                   <div>

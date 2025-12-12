@@ -2,8 +2,19 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CookieSettingsButton } from "@/components/CookieSettingsButton";
+import { useEffect } from "react";
+import { updateSEO } from "@/lib/seo";
 
 export default function Legal() {
+  useEffect(() => {
+    updateSEO({
+      title: "利用規約・プライバシーポリシー | Medical Prompt Hub",
+      description: "Medical Prompt Hubの利用規約、プライバシーポリシー、免責事項。医療情報の取り扱い、個人情報保護、GDPR準拠について詳しく説明しています。",
+      path: "/legal",
+      keywords: "利用規約,プライバシーポリシー,免責事項,GDPR,個人情報保護,医療情報"
+    });
+  }, []);
+
   return (
     <Layout>
       <div className="space-y-8 pb-12">
@@ -133,9 +144,38 @@ export default function Legal() {
               </section>
               <Separator />
               <section>
-                <h3 className="font-semibold mb-2">3. サービスの変更・停止</h3>
+                <h3 className="font-semibold mb-2">3. 知的財産権</h3>
                 <p>
-                  運営者は、ユーザーへの事前の通知なく、本サービスの内容を変更、または提供を停止することができるものとします。
+                  本サービスに含まれるすべてのコンテンツ（プロンプト、テキスト、画像、デザイン等）の著作権およびその他の知的財産権は、運営者または正当な権利者に帰属します。ユーザーは、本サービスの利用目的の範囲内でのみ、これらのコンテンツを使用することができます。
+                </p>
+                <p className="mt-2">
+                  プロンプトはMITライセンスの下で公開されており、自由に使用・改変・配布できますが、医療情報の正確性には十分注意してください。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">4. 利用者の責任</h3>
+                <p>ユーザーは、以下の責任を負います：</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>本サービスの利用に伴うすべての行為についての責任</li>
+                  <li>AIの出力内容の事実確認（ファクトチェック）の責任</li>
+                  <li>医療情報の正確性の確認の責任</li>
+                  <li>患者情報の匿名化の責任</li>
+                  <li>法令遵守の責任</li>
+                </ul>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">5. サービスの変更・停止</h3>
+                <p>
+                  運営者は、ユーザーへの事前の通知なく、本サービスの内容を変更、または提供を停止することができるものとします。ただし、重要な変更や停止については、可能な限り事前に通知いたします。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">6. 準拠法・管轄裁判所</h3>
+                <p>
+                  本利用規約は、日本法に準拠して解釈されるものとします。本サービスに関する紛争については、運営者の所在地を管轄する裁判所を第一審の専属的合意管轄裁判所とします。
                 </p>
               </section>
             </CardContent>
@@ -171,9 +211,104 @@ export default function Legal() {
               </section>
               <Separator />
               <section>
-                <h3 className="font-semibold mb-2">3. 患者情報の取り扱いについて</h3>
+                <h3 className="font-semibold mb-2">3. データの保存期間</h3>
+                <p>
+                  本サービスで収集するデータの保存期間は以下の通りです：
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>アクセス解析データ（Google Analytics等）: 26ヶ月（Google Analyticsのデフォルト設定に準拠）</li>
+                  <li>お気に入りデータ（ローカルストレージ）: ユーザーが削除するまで、またはブラウザのデータをクリアするまで</li>
+                  <li>Cookieデータ: 各Cookieの有効期限に従う（通常1年以内）</li>
+                </ul>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  データの保存期間は、法的要件やサービスの運営に必要な期間を考慮して設定されています。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">4. 第三者への提供</h3>
+                <p>
+                  本サービスでは、以下の場合を除き、個人情報を第三者に提供することはありません：
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>ユーザーの同意がある場合</li>
+                  <li>法令に基づく場合</li>
+                  <li>人の生命、身体または財産の保護のために必要がある場合</li>
+                  <li>公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合</li>
+                </ul>
+                <p className="mt-2">
+                  <strong>アクセス解析ツールについて：</strong>Google Analytics等のアクセス解析ツールを使用していますが、これらは匿名のトラフィックデータのみを収集し、個人を特定するものではありません。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">5. データのセキュリティ対策</h3>
+                <p>
+                  本サービスでは、個人情報の保護のため、以下のセキュリティ対策を実施しています：
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>HTTPSによる暗号化通信</li>
+                  <li>個人情報の収集を最小限に抑制</li>
+                  <li>サーバーへの個人情報送信を回避（ローカルストレージのみ使用）</li>
+                  <li>定期的なセキュリティ監査</li>
+                  <li>最新のセキュリティパッチの適用</li>
+                </ul>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">6. データ主体の権利（GDPR準拠）</h3>
+                <p>
+                  本サービスは、GDPR（EU一般データ保護規則）および日本の個人情報保護法に準拠しています。データ主体（ユーザー）は、以下の権利を有します：
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li><strong>アクセス権：</strong>自分の個人情報がどのように処理されているかを確認する権利</li>
+                  <li><strong>訂正権：</strong>不正確な個人情報を訂正する権利</li>
+                  <li><strong>削除権（忘れられる権利）：</strong>個人情報の削除を要求する権利</li>
+                  <li><strong>処理制限権：</strong>個人情報の処理を制限する権利</li>
+                  <li><strong>データポータビリティ権：</strong>自分の個人情報を機械可読形式で受け取る権利</li>
+                  <li><strong>異議申立権：</strong>個人情報の処理に異議を申し立てる権利</li>
+                </ul>
+                <p className="mt-2">
+                  これらの権利を行使したい場合は、<a href="/contact" className="text-primary underline">お問い合わせフォーム</a>からご連絡ください。30日以内に対応いたします。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">7. 患者情報の取り扱いについて</h3>
                 <p className="text-destructive font-medium">
-                  重要：本サービス内で提供されるプロンプトを使用する際、ChatGPT等の外部AIサービスに患者の個人情報（氏名、ID、生年月日など）を絶対に入力しないでください。
+                  重要：本サービス内で提供されるプロンプトを使用する際、ChatGPT等の外部AIサービスに患者の個人情報（氏名、ID、生年月日、住所など）を絶対に入力しないでください。
+                </p>
+                <p className="mt-2">
+                  患者情報の取り扱いについては、以下の規制に準拠する必要があります：
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>個人情報保護法（日本）</li>
+                  <li>医療法、医師法（日本）</li>
+                  <li>HIPAA（米国、該当する場合）</li>
+                  <li>GDPR（EU、該当する場合）</li>
+                </ul>
+                <p className="mt-2">
+                  プロンプトを使用する際は、必ず個人情報を削除または仮名に置き換えるなどの匿名化処理を行ってください。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">8. お問い合わせ先</h3>
+                <p>
+                  プライバシーに関するお問い合わせ、データ主体の権利の行使、苦情等については、<a href="/contact" className="text-primary underline">お問い合わせフォーム</a>からご連絡ください。
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  お問い合わせへの返信は、通常24時間以内に行います。重要な問題については、できるだけ早く対応いたします。
+                </p>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">9. プライバシーポリシーの変更</h3>
+                <p>
+                  本プライバシーポリシーは、法令の変更やサービスの改善に伴い、予告なく変更される場合があります。重要な変更については、本ページで通知いたします。
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  最終更新日: 2025年1月
                 </p>
               </section>
             </CardContent>

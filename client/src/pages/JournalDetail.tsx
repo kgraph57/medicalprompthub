@@ -4,11 +4,38 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, ExternalLink, Globe, BarChart3, Clock, BookOpen, FileText, CheckCircle, DollarSign } from "lucide-react";
+import { useEffect } from "react";
+import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
 
 export default function JournalDetail() {
   const [match, params] = useRoute("/journal/:id");
   const journalId = match ? params.id : null;
   const journal = journals.find((j) => j.id === journalId);
+
+  // SEO設定
+  useEffect(() => {
+    if (journal) {
+      updateSEO({
+        title: `${journal.title} | ジャーナル情報 | Medical Prompt Hub`,
+        description: `${journal.title}の詳細情報。インパクトファクター、レビュー速度、投稿要件などを確認できます。`,
+        path: `/journal/${journalId}`,
+        keywords: `${journal.title},ジャーナル,インパクトファクター,医学雑誌,${journal.publisher}`
+      });
+
+      // 構造化データ（Periodical）を追加
+      addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "Periodical",
+        "name": journal.title,
+        "publisher": {
+          "@type": "Organization",
+          "name": journal.publisher
+        },
+        "url": journal.url,
+        "description": `${journal.title}の詳細情報`
+      });
+    }
+  }, [journal, journalId]);
 
   if (!journal) {
     return (

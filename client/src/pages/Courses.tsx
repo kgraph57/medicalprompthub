@@ -16,6 +16,7 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { updateSEO } from "@/lib/seo";
 
 // コース一覧（AI初心者から上級者まで）
 export const courses = [
@@ -538,6 +539,16 @@ export default function Courses() {
   const { stats } = useGamification();
   const [courseProgress, setCourseProgress] = useState<Record<string, { completedLessons: string[] }>>({});
 
+  // SEO設定
+  useEffect(() => {
+    updateSEO({
+      title: "AI学習コース | Medical Prompt Hub",
+      description: "医療従事者向けのAI学習コース。AI基礎から上級テクニックまで、段階的にAI活用スキルを向上させます。各コースには実践的なレッスンとバッジ・XP報酬が用意されています。",
+      path: "/courses",
+      keywords: "AI学習,コース,医療従事者,教育,レッスン,バッジ,XP,ゲーミフィケーション"
+    });
+  }, []);
+
   // ローカルストレージから進捗を読み込む
   useEffect(() => {
     const progress: Record<string, { completedLessons: string[] }> = {};
@@ -632,7 +643,7 @@ export default function Courses() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center py-0.5"
         >
-          <h1 className="text-sm font-bold tracking-tight">Learning Courses</h1>
+          <h1 className="text-xl font-bold tracking-tight">Learning Courses</h1>
         </motion.section>
 
         {/* コース一覧 */}
@@ -642,10 +653,6 @@ export default function Courses() {
           transition={{ delay: 0.2 }}
           className="max-w-6xl mx-auto px-3 space-y-1"
         >
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold">Available Courses</h2>
-          </div>
-          
           {/* ジャンル一覧のみ表示（階層構造） */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {categoryOrder.map((category) => {

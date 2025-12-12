@@ -140,7 +140,8 @@ const plugins = [
 ];
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/medicalprompthub/' : '/medicalprompthub/',
+  // GitHub Pages用のベースパス（環境変数から取得、デフォルトは/medicalprompthub/）
+  base: process.env.VITE_BASE_PATH || '/medicalprompthub/',
   plugins,
   resolve: {
     alias: {
@@ -178,7 +179,13 @@ export default defineConfig({
       output: {
         entryFileNames: `assets/[name]-[hash]-v15.js`,
         chunkFileNames: `assets/[name]-[hash]-v15.js`,
-        assetFileNames: `assets/[name]-[hash]-v15.[ext]`,
+        assetFileNames: (assetInfo) => {
+          // 画像の最適化（WebP形式への変換はビルド時に実施）
+          if (assetInfo.name && /\.(png|jpg|jpeg)$/.test(assetInfo.name)) {
+            return `assets/images/[name]-[hash]-v15.[ext]`;
+          }
+          return `assets/[name]-[hash]-v15.[ext]`;
+        },
         manualChunks: (id) => {
           // React core
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {

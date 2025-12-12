@@ -7,7 +7,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, CheckCircle2, ArrowRight } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ArrowRight, Clock, FileText } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
@@ -18,6 +18,7 @@ import { PracticeTips } from "@/components/PracticeTips";
 import { lesson1Quizzes, lesson2Quizzes, lesson3Quizzes, lesson4Quizzes, lesson5Quizzes, lesson6Quizzes, lesson7Quizzes, lesson8Quizzes } from "@/data/courses/ai-basics/quizzes";
 import { lesson1Tips } from "@/data/courses/ai-basics/tips";
 import { useGamification } from "@/hooks/useGamification";
+import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
 
 // レッスンコンテンツ（Markdownファイルから読み込み）
 // ai-basicsコース
@@ -347,16 +348,19 @@ function getLessonsForCourse(courseId: string) {
   const lessonsData: Record<string, Array<{
     id: string;
     title: string;
+    description?: string;
+    duration?: number;
+    slides?: number;
   }>> = {
     "ai-basics": [
-      { id: "ai-basics-1", title: "AIとは何か" },
-      { id: "ai-basics-2", title: "AIの歴史" },
-      { id: "ai-basics-3", title: "AIの現状と未来" },
-      { id: "ai-basics-4", title: "AIの分類と種類" },
-      { id: "ai-basics-5", title: "機械学習の基本概念" },
-      { id: "ai-basics-6", title: "AIの能力と限界" },
-      { id: "ai-basics-7", title: "AIの社会的影響と倫理" },
-      { id: "ai-basics-8", title: "AI学習の次のステップ" },
+      { id: "ai-basics-1", title: "AIとは何か", description: "AIとは何か、知能の定義、チューリングテスト、強いAIと弱いAIの違いを理解します", duration: 15, slides: 8 },
+      { id: "ai-basics-2", title: "AIの歴史", description: "1950年代のダートマス会議から現在までのAIの発展、AI冬の時代、深層学習革命をたどります", duration: 20, slides: 12 },
+      { id: "ai-basics-3", title: "AIの現状と未来", description: "最新のAI技術動向、医療分野での活用例、今後の可能性と課題を学びます", duration: 18, slides: 10 },
+      { id: "ai-basics-4", title: "AIの分類と種類", description: "ルールベースAI、機械学習、深層学習、専門家システムなど、AIの分類体系を理解します", duration: 18, slides: 10 },
+      { id: "ai-basics-5", title: "機械学習の基本概念", description: "教師あり学習、教師なし学習、強化学習の違い、学習データの重要性を学びます", duration: 15, slides: 8 },
+      { id: "ai-basics-6", title: "AIの能力と限界", description: "現在のAIが得意なこと、苦手なこと、汎化能力、バイアスの問題を理解します", duration: 15, slides: 8 },
+      { id: "ai-basics-7", title: "AIの社会的影響と倫理", description: "AIの社会的影響、雇用への影響、倫理的課題、責任あるAI開発と使用を理解します", duration: 15, slides: 8 },
+      { id: "ai-basics-8", title: "AI学習の次のステップ", description: "AI基礎を学んだ後の学習パス、実践的な活用方法、継続的な学習リソースを学びます", duration: 12, slides: 6 },
     ],
     "generative-ai-basics": [
       { id: "generative-ai-1", title: "生成AIとは何か - 基本概念" },
@@ -391,6 +395,7 @@ export default function LessonDetail() {
   const [activeSection, setActiveSection] = useState<string>("");
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [completed, setCompleted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { addXP } = useGamification();
 
@@ -415,6 +420,33 @@ export default function LessonDetail() {
 
   const nextLesson = getNextLesson();
 
+  // 現在のレッスン情報を取得
+  const currentLesson = courseId && lessonId ? getLessonsForCourse(courseId).find(l => l.id === lessonId) : null;
+
+  // SEO設定
+  useEffect(() => {
+    if (currentLesson && courseId) {
+      updateSEO({
+        title: `${currentLesson.title} | Medical Prompt Hub`,
+        description: currentLesson.description || `${currentLesson.title}のレッスン。医療従事者がAIを効果的に活用するための実践的なレッスンです。`,
+        path: `/courses/${courseId}/lessons/${lessonId}`,
+        keywords: `${currentLesson.title},AI学習,レッスン,医療従事者,教育`
+      });
+
+      // 構造化データ（LearningResource）を追加
+      addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        "name": currentLesson.title,
+        "description": currentLesson.description || `${currentLesson.title}のレッスン`,
+        "educationalLevel": "Professional",
+        "learningResourceType": "Lesson",
+        "url": `${BASE_URL}/courses/${courseId}/lessons/${lessonId}`,
+        "timeRequired": currentLesson.duration ? `PT${currentLesson.duration}M` : undefined
+      });
+    }
+  }, [currentLesson, courseId, lessonId]);
+
   // ローカルストレージから完了状態を読み込む
   useEffect(() => {
     if (lessonId) {
@@ -431,6 +463,13 @@ export default function LessonDetail() {
       //     // ignore
       //   }
       // }
+    }
+  }, [lessonId]);
+
+  // レッスンが変わったときにページトップにスクロール
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [lessonId]);
 
@@ -545,7 +584,7 @@ export default function LessonDetail() {
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h1: ({ node, ...props }) => (
-                    <h1 className="text-2xl md:text-3xl font-bold mb-6 mt-12 text-foreground scroll-mt-20" {...props} />
+                    <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props} />
                   ),
                   h2: ({ node, ...props }) => {
                     const title = props.children?.toString() || "";
@@ -554,40 +593,40 @@ export default function LessonDetail() {
                     return (
                       <h2
                         id={id}
-                        className="text-xl md:text-2xl font-bold mt-12 mb-6 text-foreground border-b border-border pb-3 scroll-mt-20"
+                        className="text-2xl md:text-3xl font-bold mt-16 mb-8 text-foreground scroll-mt-20 tracking-tight"
                         {...props}
                       />
                     );
                   },
                   h3: ({ node, ...props }) => (
-                    <h3 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
+                    <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
                   ),
                   h4: ({ node, ...props }) => (
-                    <h4 className="text-base md:text-lg font-semibold mt-8 mb-3 text-foreground scroll-mt-20" {...props} />
+                    <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
                   ),
                   p: ({ node, ...props }) => (
-                    <p className="mb-6 text-base md:text-lg text-foreground leading-[1.9]" {...props} />
+                    <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
                   ),
                   ul: ({ node, ...props }) => (
-                    <ul className="list-disc pl-6 mb-6 space-y-2" {...props} />
+                    <ul className="list-disc pl-8 mb-6 space-y-3" {...props} />
                   ),
                   ol: ({ node, ...props }) => (
-                    <ol className="list-decimal pl-6 mb-6 space-y-2" {...props} />
+                    <ol className="list-decimal pl-8 mb-6 space-y-3" {...props} />
                   ),
                   li: ({ node, ...props }) => (
-                    <li className="text-base md:text-lg text-foreground leading-[1.9]" {...props} />
+                    <li className="text-lg md:text-xl text-foreground leading-[1.85] pl-2" {...props} />
                   ),
                   strong: ({ node, ...props }) => (
                     <strong className="font-bold text-foreground" {...props} />
                   ),
                   code: ({ node, ...props }) => (
-                    <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+                    <code className="bg-muted/80 px-2 py-1 rounded-md text-base font-mono border border-border/50" {...props} />
                   ),
                   pre: ({ node, ...props }) => (
-                    <pre className="bg-muted p-5 rounded-lg overflow-x-auto my-6" {...props} />
+                    <pre className="bg-muted/80 p-6 rounded-xl overflow-x-auto my-8 border border-border/50 shadow-sm" {...props} />
                   ),
                   blockquote: ({ node, ...props }) => (
-                    <blockquote className="border-l-4 border-border pl-4 italic my-6 text-base md:text-lg text-muted-foreground leading-[1.9]" {...props} />
+                    <blockquote className="border-l-4 border-primary pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
                   ),
                   table: ({ node, ...props }) => (
                     <div className="overflow-x-auto my-6">
@@ -659,12 +698,22 @@ export default function LessonDetail() {
       }
     }
     
+    // ページトップにスクロール
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
     // 次のレッスンがあれば即座に遷移
     if (nextLesson) {
-      setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+      // スクロール完了を待ってから遷移（少し遅延を入れる）
+      setTimeout(() => {
+        setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+      }, 300);
     } else {
       // 最後のレッスンの場合はコース詳細ページに戻る
-      setLocation(`/courses/${courseId}`);
+      setTimeout(() => {
+        setLocation(`/courses/${courseId}`);
+      }, 300);
     }
   };
 
@@ -688,54 +737,153 @@ export default function LessonDetail() {
 
         {/* メインコンテンツ */}
         <div className="flex-1 flex flex-col min-w-0">
-          {/* ヘッダー */}
-          <header className={`sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/50 transition-all duration-300 ${isHeaderVisible ? 'translate-y-0 shadow-sm' : '-translate-y-full lg:translate-y-0'}`}>
-            <div className="lg:max-w-[1200px] lg:mx-auto px-4 lg:px-8">
+          {/* ヘッダー - ミニマルで洗練されたデザイン */}
+          <header className={`sticky top-0 z-30 bg-background/80 backdrop-blur-2xl border-b border-border/40 transition-all duration-300 ${isHeaderVisible ? 'translate-y-0 shadow-sm' : '-translate-y-full lg:translate-y-0'}`}>
+            <div className="lg:max-w-[900px] lg:mx-auto px-4 lg:px-8">
               <div className="flex items-center justify-between h-14">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setLocation(`/courses/${courseId}`)}
-                  className="text-muted-foreground hover:text-foreground -ml-2 h-8 text-xs"
-                >
-                  <ArrowLeft className="mr-1.5 h-3.5 w-3.5" /> コースに戻る
-                </Button>
-                
-
+                <div className="flex items-center gap-3 flex-1">
+                  <Progress value={scrollProgress} className="h-0.5 flex-1 max-w-xs bg-muted/30" />
+                </div>
+                {completed && (
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span className="font-semibold text-xs">完了</span>
+                  </div>
+                )}
               </div>
-
             </div>
           </header>
 
           {/* コンテンツエリア */}
           <div className="flex-1 overflow-y-auto" ref={contentRef}>
-            <div className="lg:max-w-[1200px] lg:mx-auto px-4 lg:px-8 py-8 lg:py-16">
+            <div className="lg:max-w-[900px] lg:mx-auto">
               <>
-                  {/* Zenn風の記事コンテンツ */}
-                  <article className="zenn-article bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
-                    {renderContent()}
-                  </article>
-                  
-                  {/* 次へ進むボタン */}
-                  <div className="mt-20 pt-12 border-t border-border/50">
-                    <div className="flex justify-center">
-                      <Button 
-                        onClick={handleComplete}
-                        size="lg" 
-                        className="w-full max-w-md h-12 text-base font-semibold shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
-                      >
-                        {nextLesson ? (
-                          <>
-                            次へ進む
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle2 className="mr-2 h-5 w-5" />
-                            コースに戻る
-                          </>
+                  {/* ヒーローセクション - 洗練されたデザイン */}
+                  {currentLesson && (
+                    <div className="relative px-4 lg:px-8 pt-12 lg:pt-20 pb-8 lg:pb-12">
+                      {/* 背景グラデーション */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5 -z-10" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--primary)_0%,_transparent_50%)] opacity-20 -z-10" />
+                      
+                      {/* コンテンツ */}
+                      <div className="relative">
+                        {/* バッジ */}
+                        <div className="flex items-center gap-3 mb-6">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setLocation(`/courses/${courseId}`)}
+                            className="text-muted-foreground hover:text-foreground hover:bg-accent/50 h-8 text-xs font-medium transition-all duration-200"
+                          >
+                            <ArrowLeft className="mr-1.5 h-3.5 w-3.5" /> コースに戻る
+                          </Button>
+                          {completed && (
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span className="font-semibold text-xs">完了</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* タイトル */}
+                        <motion.h1
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground tracking-tight leading-[1.1]"
+                        >
+                          {currentLesson.title}
+                        </motion.h1>
+                        
+                        {/* 説明 */}
+                        {currentLesson.description && (
+                          <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl"
+                          >
+                            {currentLesson.description}
+                          </motion.p>
                         )}
-                      </Button>
+                        
+                        {/* メタ情報 */}
+                        {(currentLesson.duration || currentLesson.slides) && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="flex items-center gap-6 mt-8 text-sm text-muted-foreground"
+                          >
+                            {currentLesson.duration && (
+                              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+                                <Clock className="w-4 h-4" />
+                                <span>約 {currentLesson.duration} 分</span>
+                              </div>
+                            )}
+                            {currentLesson.slides && currentLesson.slides > 0 && (
+                              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+                                <FileText className="w-4 h-4" />
+                                <span>{currentLesson.slides} スライド</span>
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* モダンな記事コンテンツ - 2025 Design Refresh - Professional */}
+                  <div className="px-4 lg:px-8 pb-16 lg:pb-24">
+                    <div className="max-w-4xl mx-auto">
+                      <article className="zenn-article relative">
+                        {/* 装飾的な背景要素 */}
+                        <div className="absolute inset-0 -z-10">
+                          <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+                          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+                        </div>
+                        
+                        {/* コンテンツ */}
+                        <div className="relative bg-background/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 border border-border/50 shadow-xl">
+                          {renderContent()}
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                  
+                  {/* 次へ進むボタン - より洗練されたデザイン */}
+                  <div className="px-4 lg:px-8 pb-8 lg:pb-12">
+                    <div className="max-w-2xl mx-auto">
+                      <div className="pt-16 border-t border-border/30">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <Button
+                            variant="ghost"
+                            onClick={() => setLocation(`/courses/${courseId}`)}
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            コースに戻る
+                          </Button>
+                          
+                          <Button 
+                            onClick={handleComplete}
+                            size="lg" 
+                            className="w-full sm:w-auto min-w-[200px] h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 bg-gradient-to-r from-primary via-primary to-primary/90 hover:from-primary/90 hover:via-primary hover:to-primary"
+                          >
+                            {nextLesson ? (
+                              <>
+                                次へ進む
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle2 className="mr-2 h-5 w-5" />
+                                コースに戻る
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>

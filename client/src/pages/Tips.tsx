@@ -2,12 +2,13 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { loadTips } from "@/lib/tips-loader";
 import type { PromptTip } from "@/lib/tips";
-import { Search, ArrowRight, Sparkles } from "lucide-react";
+import { Search, ArrowRight, Brain } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { updateSEO } from "@/lib/seo";
 
 const categoryLabels: Record<PromptTip['category'], string> = {
   basic: '基本テクニック',
@@ -30,13 +31,28 @@ export default function Tips() {
   const [tips, setTips] = useState<PromptTip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // SEO設定
+  useEffect(() => {
+    updateSEO({
+      title: "AI活用Tips | Medical Prompt Hub",
+      description: "プロンプトエンジニアリングの基礎から応用まで、医療従事者向けに解説したAI活用Tips。初心者から上級者まで、レベルに応じたテクニックを学べます。",
+      path: "/tips",
+      keywords: "AI活用Tips,プロンプトエンジニアリング,医療AI,テクニック,ベストプラクティス"
+    });
+  }, []);
+
   useEffect(() => {
     // requestIdleCallbackを使用して、ブラウザがアイドル状態の時にデータを読み込む
     const loadData = () => {
-      loadTips().then((loadedTips) => {
-        setTips(loadedTips);
-        setIsLoading(false);
-      });
+      loadTips()
+        .then((loadedTips) => {
+          setTips(loadedTips);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error('Failed to load tips:', error);
+          setIsLoading(false);
+        });
     };
 
     if ('requestIdleCallback' in window) {
@@ -47,7 +63,7 @@ export default function Tips() {
   }, []);
 
   const filteredTips = useMemo(() => {
-    if (isLoading) return [];
+    if (isLoading || tips.length === 0) return [];
     const filtered = tips.filter((tip) => {
       const matchesSearch = 
         tip.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -57,7 +73,7 @@ export default function Tips() {
       return matchesSearch && matchesCategory;
     });
     return filtered;
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, tips, isLoading]);
 
   const categories: PromptTip['category'][] = ['basic', 'quality', 'advanced', 'medical', 'interactive'];
 
@@ -73,7 +89,7 @@ export default function Tips() {
       counts[tip.category]++;
     });
     return counts;
-  }, []);
+  }, [tips]);
 
   return (
     <Layout>
@@ -89,7 +105,7 @@ export default function Tips() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-lg md:text-xl font-bold tracking-tight"
+            className="text-xl md:text-2xl font-bold tracking-tight"
           >
             Tips & Techniques
           </motion.h1>
@@ -109,7 +125,10 @@ export default function Tips() {
           <Card className="border border-border">
             <CardHeader className="p-4">
               <CardTitle className="flex items-center gap-1.5 text-sm">
-                <Sparkles className="w-4 h-4" />
+                <div className="relative inline-flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/30 to-orange-500/30 rounded-full blur-md animate-sparkle-pulse" />
+                  <Brain className="w-5 h-5 relative text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 drop-shadow-sm" />
+                </div>
                 プロンプトエンジニアリングとは？
               </CardTitle>
               <CardDescription className="text-xs">
@@ -259,7 +278,7 @@ export default function Tips() {
           </motion.div>
           
           <AnimatePresence>
-            {filteredTips.length === 0 && (
+            {!isLoading && filteredTips.length === 0 && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

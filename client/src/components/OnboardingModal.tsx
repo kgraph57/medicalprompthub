@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, ArrowLeft, X, Search, FileText, BookOpen, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft, X, Search, ClipboardList, GraduationCap, Stethoscope, Activity } from "lucide-react";
 import { useLocation } from "wouter";
 
 const ONBOARDING_KEY = "onboarding_completed";
@@ -26,25 +26,25 @@ const onboardingSteps: OnboardingStep[] = [
     id: "welcome",
     title: "Medical Prompt Hubへようこそ",
     description: "医療従事者のためのAIプロンプトライブラリです。100以上の専門プロンプトで、臨床業務、研究、教育を効率化できます。",
-    icon: <Sparkles className="w-8 h-8 text-primary" />,
+    icon: <Stethoscope className="w-8 h-8 text-primary" />,
   },
   {
     id: "search",
     title: "プロンプトを検索",
     description: "検索バーから目的のプロンプトを素早く見つけられます。例：「診断」「紹介状」「研究」など。",
-    icon: <Search className="w-8 h-8 text-primary" />,
+    icon: <Activity className="w-8 h-8 text-primary" />,
   },
   {
     id: "recommended",
     title: "おすすめプロンプトから始める",
     description: "ホームページには、よく使われる人気のプロンプトが表示されます。まずはここから試してみましょう。",
-    icon: <FileText className="w-8 h-8 text-primary" />,
+    icon: <ClipboardList className="w-8 h-8 text-primary" />,
   },
   {
     id: "guides",
     title: "ワークフローガイドを活用",
     description: "症例報告や統計解析など、複雑なタスクをステップバイステップで学べるガイドを提供しています。",
-    icon: <BookOpen className="w-8 h-8 text-primary" />,
+    icon: <GraduationCap className="w-8 h-8 text-primary" />,
   },
 ];
 
@@ -106,8 +106,9 @@ export function OnboardingModal() {
               size="icon"
               onClick={handleSkip}
               aria-label="スキップ"
+              className="h-7 w-7"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </Button>
           </div>
           <DialogDescription className="text-base">

@@ -97,11 +97,11 @@ export function CookieConsentBanner() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 h-7 w-7"
                       onClick={() => setShowBanner(false)}
                       aria-label="閉じる"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3.5 h-3.5" />
                     </Button>
                   </div>
                 </CardHeader>
@@ -143,8 +143,9 @@ export function CookieConsentBanner() {
                       size="icon"
                       onClick={() => setShowSettings(false)}
                       aria-label="戻る"
+                      className="h-7 w-7"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3.5 h-3.5" />
                     </Button>
                   </div>
                   <CardDescription className="text-sm">

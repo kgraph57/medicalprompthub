@@ -1,8 +1,19 @@
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, Brain, Shield, TrendingUp } from "lucide-react";
+import { useEffect } from "react";
+import { updateSEO } from "@/lib/seo";
 
 export default function AILiteracy() {
+  useEffect(() => {
+    updateSEO({
+      title: "AIリテラシーガイド | Medical Prompt Hub",
+      description: "医療現場でAIを安全に活用するために知っておくべきこと。AIの限界、ハルシネーション、ファクトチェックの重要性を解説します。",
+      path: "/ai-literacy",
+      keywords: "AIリテラシー,ハルシネーション,ファクトチェック,医療AI,安全なAI活用"
+    });
+  }, []);
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8 max-w-4xl">

@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRight, BookOpen, FileText, Microscope, ClipboardList, Mail, Image, Presentation, Search, Stethoscope, Pill, X, Lock } from "lucide-react";
 import { Link } from "wouter";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { updateSEO } from "@/lib/seo";
 
 type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 
@@ -23,6 +24,16 @@ export default function Guides() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<SortOption>("title-asc");
+
+  // SEO設定
+  useEffect(() => {
+    updateSEO({
+      title: "ワークフローガイド | Medical Prompt Hub",
+      description: "症例報告、論文執筆、統計解析など、医療従事者が直面する複雑なタスクを段階的にサポートするワークフローガイド。AIを活用して効率的に作業を進める方法を学べます。",
+      path: "/guides",
+      keywords: "ワークフローガイド,症例報告,論文執筆,統計解析,医療研究,AI活用"
+    });
+  }, []);
 
   const guides = [
     {
@@ -232,7 +243,7 @@ export default function Guides() {
           transition={{ duration: 0.5 }}
           className="space-y-1 pt-4"
         >
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight max-w-3xl">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground leading-tight max-w-3xl">
             Guides & Workflows
           </h1>
           <p className="text-sm md:text-base text-muted-foreground max-w-2xl leading-snug">
@@ -248,7 +259,7 @@ export default function Guides() {
           className="space-y-1.5"
         >
           <div className="relative max-w-2xl">
-            <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 z-10" />
+            <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
             <Input
               placeholder="ガイドを検索(タイトル、説明、タグ)..."
               className="pl-12 pr-10 h-10 lg:h-11 text-base bg-background/50 backdrop-blur-sm border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"

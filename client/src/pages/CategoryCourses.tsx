@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { courses } from "./Courses";
+import { updateSEO } from "@/lib/seo";
 
 // カテゴリIDから日本語名へのマッピング
 const categoryIdToName: Record<string, string> = {
@@ -52,6 +53,18 @@ export default function CategoryCourses() {
   const [, setLocation] = useLocation();
   const categoryId = match ? params.category : null;
   const category = categoryId ? categoryIdToName[categoryId] : null;
+
+  // SEO設定
+  useEffect(() => {
+    if (category) {
+      updateSEO({
+        title: `${categoryLabels[category] || category} | コース一覧 | Medical Prompt Hub`,
+        description: categoryDescriptions[category] || `${category}カテゴリの学習コース一覧。`,
+        path: `/courses/category/${categoryId}`,
+        keywords: `${category},AI学習,コース,医療従事者,教育`
+      });
+    }
+  }, [category, categoryId]);
 
   const [courseProgress, setCourseProgress] = useState<Record<string, { completedLessons: string[] }>>({});
 

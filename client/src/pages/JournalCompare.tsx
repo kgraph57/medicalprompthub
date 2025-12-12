@@ -5,10 +5,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, X, Check, Minus, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
+import { updateSEO } from "@/lib/seo";
 
 export default function JournalCompare() {
   const [location] = useLocation();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    updateSEO({
+      title: "ジャーナル比較 | Medical Prompt Hub",
+      description: "複数の医学雑誌を比較。インパクトファクター、レビュー速度、投稿要件などを並べて比較できます。",
+      path: "/journal-compare",
+      keywords: "ジャーナル比較,医学雑誌,インパクトファクター,論文投稿"
+    });
+  }, []);
 
   useEffect(() => {
     // Parse query params manually since wouter doesn't have a built-in hook for it

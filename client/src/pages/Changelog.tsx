@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Sparkles, Bug, Plus, Settings, FileText } from "lucide-react";
 import { useEffect } from "react";
-import { updateSEO } from "@/lib/seo";
+import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
 import { Link } from "wouter";
 
 interface ChangelogEntry {
@@ -81,10 +81,29 @@ const typeColors = {
 export default function Changelog() {
   useEffect(() => {
     updateSEO({
-      title: "更新履歴 - Medical Prompt Hub",
+      title: "更新履歴 | Medical Prompt Hub",
       description: "Medical Prompt Hubの更新履歴とリリースノート。新機能、バグ修正、改善内容を確認できます。",
       path: "/changelog",
       keywords: "更新履歴,Changelog,リリースノート,新機能,バグ修正"
+    });
+
+    // 構造化データ（CollectionPage）を追加
+    addStructuredData({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Medical Prompt Hub 更新履歴",
+      "description": "Medical Prompt Hubの更新履歴",
+      "url": `${BASE_URL}/changelog`,
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": changelogEntries.length,
+        "itemListElement": changelogEntries.map((entry, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": `バージョン ${entry.version}`,
+          "description": entry.changes.join(", ")
+        }))
+      }
     });
   }, []);
 

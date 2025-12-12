@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X } from 'lucide-react';
 import { caseReportGuideData } from '@/lib/case-report-guide-data';
 import { CodeBlock } from '@/components/CodeBlock';
+import { updateSEO } from '@/lib/seo';
 
 // Markdownファイルを直接インポート
 import introMd from '@/assets/guides/case-report/00-introduction.md?raw';
@@ -34,6 +35,16 @@ export default function CaseReportGuide() {
   const [currentStepId, setCurrentStepId] = useState<string>(stepId || 'intro');
   const [markdown, setMarkdown] = useState<string>('');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
+  // SEO設定
+  useEffect(() => {
+    updateSEO({
+      title: "症例報告執筆ガイド | Medical Prompt Hub",
+      description: "症例報告の書き方を段階的にサポート。構想から投稿まで、AIを活用して効率的に症例報告を作成できます。",
+      path: `/guides/case-report-complete${stepId ? `/${stepId}` : ''}`,
+      keywords: "症例報告,Case Report,論文執筆,医療研究,AI活用"
+    });
+  }, [stepId]);
 
   // LocalStorageから進捗を読み込み
   useEffect(() => {
@@ -93,9 +104,9 @@ export default function CaseReportGuide() {
               variant="ghost"
               size="icon"
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden flex-shrink-0"
+              className="lg:hidden flex-shrink-0 h-7 w-7"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4" />
             </Button>
             
             <Button
@@ -139,8 +150,9 @@ export default function CaseReportGuide() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsSidebarOpen(false)}
+                  className="h-7 w-7"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
               {/* Progress Card */}
@@ -218,15 +230,51 @@ export default function CaseReportGuide() {
 
           {/* Right Content - Scrollable Article */}
           <main className="flex-1 min-w-0">
-            <article className="zenn-article bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <article className="zenn-article">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
                 components={{
+                  h1: ({ node, ...props }) => (
+                    <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props} />
+                  ),
+                  h2: ({ node, ...props }) => {
+                    const id = typeof props.children === 'string' 
+                      ? props.children.toLowerCase().replace(/\s+/g, '-')
+                      : undefined;
+                    return (
+                      <h2
+                        id={id}
+                        className="text-2xl md:text-3xl font-bold mt-16 mb-8 text-foreground scroll-mt-20 tracking-tight"
+                        {...props}
+                      />
+                    );
+                  },
+                  h3: ({ node, ...props }) => (
+                    <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
+                  ),
+                  h4: ({ node, ...props }) => (
+                    <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
+                  ),
+                  ul: ({ node, ...props }) => (
+                    <ul className="list-disc pl-8 mb-6 space-y-3" {...props} />
+                  ),
+                  ol: ({ node, ...props }) => (
+                    <ol className="list-decimal pl-8 mb-6 space-y-3" {...props} />
+                  ),
+                  li: ({ node, ...props }) => (
+                    <li className="text-lg md:text-xl text-foreground leading-[1.85] pl-2" {...props} />
+                  ),
+                  strong: ({ node, ...props }) => (
+                    <strong className="font-semibold text-foreground" {...props} />
+                  ),
                   code({ node, className, children, ...props }: any) {
                     const inline = !className;
                     if (inline) {
-                      return <code className={className} {...props}>{children}</code>;
+                      return <code className="bg-muted/80 px-2 py-1 rounded-md text-base font-mono border border-border/50" {...props}>{children}</code>;
                     }
                     return (
                       <CodeBlock className={className}>
@@ -234,6 +282,12 @@ export default function CaseReportGuide() {
                       </CodeBlock>
                     );
                   },
+                  pre: ({ node, ...props }) => (
+                    <pre className="bg-muted/80 p-6 rounded-xl overflow-x-auto my-8 border border-border/50 shadow-sm" {...props} />
+                  ),
+                  blockquote: ({ node, ...props }) => (
+                    <blockquote className="border-l-4 border-primary pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
+                  ),
                 }}
               >
                 {markdown}

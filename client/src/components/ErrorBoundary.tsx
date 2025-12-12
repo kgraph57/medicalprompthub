@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
-import { AlertTriangle, RotateCcw, Home } from "lucide-react";
+import { AlertTriangle, RotateCcw, Home, Mail } from "lucide-react";
 import { Component, ReactNode } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { errorTracker } from "@/lib/errorTracking";
 import { captureError as sentryCaptureError } from "@/lib/sentry";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   children: ReactNode;
@@ -44,6 +45,13 @@ class ErrorBoundary extends Component<Props, State> {
     sentryCaptureError(error, {
       componentStack: errorInfo.componentStack,
       type: "react_error_boundary",
+    });
+
+    // アナリティクスにエラーイベントを送信
+    trackEvent("error_boundary_triggered", {
+      error_name: error.name,
+      error_message: error.message,
+      component_stack: errorInfo.componentStack?.substring(0, 200),
     });
   }
 
@@ -169,9 +177,15 @@ function ErrorFallback({
 
           {!isDevelopment && (
             <div className="pt-4 border-t text-sm text-muted-foreground">
-              <p>
+              <p className="mb-2">
                 問題が続く場合は、お問い合わせください。
               </p>
+              <Link href="/contact">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Mail size={14} aria-hidden="true" />
+                  お問い合わせ
+                </Button>
+              </Link>
             </div>
           )}
         </CardContent>
