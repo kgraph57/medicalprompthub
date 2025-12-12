@@ -518,24 +518,17 @@
   }
 }
 
-/* Modern article styling - 2025 Design Refresh */
+/* Modern article styling - 2025 Design Refresh - Professional */
 .zenn-article {
-  max-width: 720px; /* より広い読みやすい幅 */
+  max-width: 800px; /* より広い読みやすい幅 */
   margin: 0 auto;
-  padding: 48px 40px; /* より余裕のあるパディング */
-  background: linear-gradient(135deg, 
-    oklch(1 0 0) 0%,
-    oklch(0.998 0.001 260) 100%); /* わずかなグラデーション */
-  border-radius: 16px; /* より丸みのある角 */
+  padding: 0; /* パディングは外側で管理 */
+  background: transparent; /* 背景は透明にして、親要素で管理 */
+  border-radius: 0; /* 角丸は不要 */
   font-size: 18px; /* より読みやすいサイズ */
-  line-height: 1.8;
+  line-height: 1.85;
   color: #0f172a; /* より読みやすいダークグレー */
   font-feature-settings: "liga" 1, "calt" 1;
-  box-shadow: 
-    0 1px 3px 0 rgba(0, 0, 0, 0.05),
-    0 4px 12px 0 rgba(0, 0, 0, 0.08),
-    0 8px 24px 0 rgba(0, 0, 0, 0.04); /* より明確な影 */
-  border: 1px solid oklch(0.95 0.003 260); /* わずかなボーダー */
 }
 
 .dark .zenn-article {
