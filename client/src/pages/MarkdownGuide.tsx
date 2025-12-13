@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import { ArrowLeft, BookOpen, Clock, Loader2, ChevronRight, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 import { updateSEO } from "@/lib/seo";
 
 // ガイドのメタデータ定義
