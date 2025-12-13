@@ -125,7 +125,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
 
   return (
     <section 
-      className="relative py-16 md:py-24 lg:py-32 xl:py-40 overflow-hidden min-h-[88vh] flex items-center"
+      className="relative py-8 md:py-16 lg:py-20 xl:py-24 overflow-hidden min-h-[88vh] flex items-center"
       onMouseMove={handleMouseMove}
     >
       {/* Linear風: 完璧に洗練された背景 */}
@@ -141,7 +141,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
       <MouseFollowEffect x={x} y={y} />
       
       <motion.div 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full"
+        className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10 w-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -257,7 +257,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         
         {/* Linear風: 統計情報（検索バーの下、横並び） */}
         <motion.div 
-          className="grid grid-cols-3 gap-4 sm:gap-8 md:gap-10 max-w-4xl mx-auto mb-8 md:mb-10 px-2"
+          className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 max-w-4xl mx-auto mb-8 md:mb-10 px-1"
           variants={itemVariants}
         >
           {[
@@ -293,7 +293,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         >
           <motion.button
             onClick={() => setLocation('/guides')}
-            className="group relative inline-flex items-center gap-3 px-10 sm:px-14 py-5 sm:py-7 text-[14px] sm:text-[16px] font-medium text-white bg-neutral-900 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.2),0_16px_48px_rgba(0,0,0,0.14)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.25),0_20px_64px_rgba(0,0,0,0.18)] transition-all duration-200 w-full sm:w-auto justify-center"
+            className="group relative inline-flex items-center gap-2 px-6 sm:px-14 py-3 sm:py-7 text-[13px] sm:text-[16px] font-medium text-white bg-neutral-900 rounded-lg sm:rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.2),0_16px_48px_rgba(0,0,0,0.14)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.25),0_20px_64px_rgba(0,0,0,0.18)] transition-all duration-200 w-full sm:w-auto justify-center"
             whileHover={{ 
               scale: 1.02,
               y: -1.5,
@@ -319,7 +319,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
               const element = document.getElementById('prompts');
               element?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="inline-flex items-center px-10 sm:px-14 py-5 sm:py-7 text-[14px] sm:text-[16px] font-medium text-neutral-700 bg-white border border-neutral-300/70 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 w-full sm:w-auto justify-center"
+            className="inline-flex items-center px-6 sm:px-14 py-3 sm:py-7 text-[13px] sm:text-[16px] font-medium text-neutral-700 bg-white border border-neutral-300/70 rounded-lg sm:rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 w-full sm:w-auto justify-center"
             whileHover={{ 
               scale: 1.02,
               y: -1.5,

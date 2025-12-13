@@ -280,7 +280,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* メインコンテンツ */}
-      <main id="main-content" className="flex-1 overflow-y-auto px-4 lg:px-8 xl:px-12" role="main" aria-label="メインコンテンツ">
+      <main id="main-content" className="flex-1 overflow-y-auto px-2 sm:px-4 lg:px-6 xl:px-8" role="main" aria-label="メインコンテンツ">
         {/* モバイルヘッダー */}
         <header
           className={cn(
@@ -305,7 +305,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <div className="py-6 lg:py-8">
+        <div className="py-3 sm:py-4 lg:py-6">
           {children}
         </div>
       </main>
