@@ -238,9 +238,9 @@ export default function MarkdownGuide() {
           </div>
 
           {/* メインコンテンツ */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 min-w-0">
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-6 overflow-hidden">
                 {loading ? (
                   <div className="flex items-center justify-center py-12">
                     <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -253,10 +253,22 @@ export default function MarkdownGuide() {
                     </Button>
                   </div>
 ) : (
-                  <div className="prose prose-slate dark:prose-invert max-w-none prose-table:border-collapse prose-table:w-full prose-th:border prose-th:border-slate-300 prose-th:bg-slate-50 prose-th:p-3 prose-th:text-left prose-td:border prose-td:border-slate-300 prose-td:p-3 dark:prose-th:border-slate-700 dark:prose-th:bg-slate-800 dark:prose-td:border-slate-700">
+                  <div className="prose prose-slate dark:prose-invert max-w-none prose-table:border-collapse prose-table:w-full prose-th:border prose-th:border-slate-300 prose-th:bg-slate-50 prose-th:p-3 prose-th:text-left prose-td:border prose-td:border-slate-300 prose-td:p-3 dark:prose-th:border-slate-700 dark:prose-th:bg-slate-800 dark:prose-td:border-slate-700 break-words overflow-wrap-anywhere">
                     <ReactMarkdown 
                       remarkPlugins={[remarkGfm]}
                       components={{
+                        code: ({node, inline, ...props}) => (
+                          inline ? 
+                            <code className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-sm" {...props} /> :
+                            <div className="overflow-x-auto my-4">
+                              <code className="block p-4 rounded bg-slate-100 dark:bg-slate-800 text-sm" {...props} />
+                            </div>
+                        ),
+                        pre: ({node, ...props}) => (
+                          <div className="overflow-x-auto my-4 rounded">
+                            <pre className="p-4 bg-slate-100 dark:bg-slate-800" {...props} />
+                          </div>
+                        ),
                         table: ({node, ...props}) => (
                           <div className="overflow-x-auto my-6">
                             <table className="min-w-full divide-y divide-slate-300 dark:divide-slate-700 border border-slate-300 dark:border-slate-700" {...props} />
