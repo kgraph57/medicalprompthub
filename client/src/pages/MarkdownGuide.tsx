@@ -253,21 +253,30 @@ export default function MarkdownGuide() {
                     </Button>
                   </div>
 ) : (
-                  <div className="prose prose-slate dark:prose-invert max-w-none prose-table:border-collapse prose-table:w-full prose-th:border prose-th:border-slate-300 prose-th:bg-slate-50 prose-th:p-3 prose-th:text-left prose-td:border prose-td:border-slate-300 prose-td:p-3 dark:prose-th:border-slate-700 dark:prose-th:bg-slate-800 dark:prose-td:border-slate-700 break-words overflow-wrap-anywhere">
+                  <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-3xl prose-h1:mb-6 prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-700 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h4:text-lg prose-h4:mt-6 prose-h4:mb-2 prose-p:text-base prose-p:leading-relaxed prose-p:my-4 prose-li:my-2 prose-li:leading-relaxed prose-ul:my-4 prose-ol:my-4 prose-strong:font-semibold prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:my-6 prose-blockquote:not-italic prose-table:border-collapse prose-table:w-full prose-th:border prose-th:border-slate-300 prose-th:bg-slate-50 prose-th:p-3 prose-th:text-left prose-td:border prose-td:border-slate-300 prose-td:p-3 dark:prose-th:border-slate-700 dark:prose-th:bg-slate-800 dark:prose-td:border-slate-700 break-words overflow-wrap-anywhere">
                     <ReactMarkdown 
                       remarkPlugins={[remarkGfm]}
                       components={{
                         code: ({node, inline, ...props}) => (
                           inline ? 
-                            <code className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-sm" {...props} /> :
-                            <div className="overflow-x-auto my-4">
-                              <code className="block p-4 rounded bg-slate-100 dark:bg-slate-800 text-sm" {...props} />
+                            <code className="px-2 py-1 rounded-md bg-primary/10 text-primary font-mono text-sm" {...props} /> :
+                            <div className="overflow-x-auto my-6 rounded-lg border border-slate-200 dark:border-slate-700">
+                              <code className="block p-5 bg-slate-50 dark:bg-slate-900 text-sm font-mono leading-relaxed" {...props} />
                             </div>
                         ),
                         pre: ({node, ...props}) => (
-                          <div className="overflow-x-auto my-4 rounded">
-                            <pre className="p-4 bg-slate-100 dark:bg-slate-800" {...props} />
+                          <div className="overflow-x-auto my-6 rounded-lg border border-slate-200 dark:border-slate-700">
+                            <pre className="p-5 bg-slate-50 dark:bg-slate-900 leading-relaxed" {...props} />
                           </div>
+                        ),
+                        ul: ({node, ...props}) => (
+                          <ul className="space-y-2 my-6" {...props} />
+                        ),
+                        ol: ({node, ...props}) => (
+                          <ol className="space-y-2 my-6" {...props} />
+                        ),
+                        li: ({node, ...props}) => (
+                          <li className="leading-relaxed" {...props} />
                         ),
                         table: ({node, ...props}) => (
                           <div className="overflow-x-auto my-6">
