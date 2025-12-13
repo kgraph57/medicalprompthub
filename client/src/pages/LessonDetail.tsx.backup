@@ -423,25 +423,6 @@ export default function LessonDetail() {
   // 現在のレッスン情報を取得
   const currentLesson = courseId && lessonId ? getLessonsForCourse(courseId).find(l => l.id === lessonId) : null;
 
-  // 全レッスンと進捗情報
-  const allLessons = courseId ? getLessonsForCourse(courseId) : [];
-  const currentLessonIndex = allLessons.findIndex(l => l.id === lessonId);
-  const totalLessons = allLessons.length;
-  const completedCount = allLessons.filter(l => courseProgress.completedLessons?.includes(l.id)).length;
-
-  // 前のレッスンを取得
-  const getPreviousLesson = () => {
-    if (!courseId || !lessonId) return null;
-    const lessons = getLessonsForCourse(courseId);
-    const currentIndex = lessons.findIndex(l => l.id === lessonId);
-    if (currentIndex > 0) {
-      return lessons[currentIndex - 1];
-    }
-    return null;
-  };
-
-  const previousLesson = getPreviousLesson();
-
   // SEO設定
   useEffect(() => {
     if (currentLesson && courseId) {
@@ -752,185 +733,165 @@ export default function LessonDetail() {
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto py-8 px-4">
-        <div className="mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setLocation(`/courses/${courseId}`)}
-            className="mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            コースに戻る
-          </Button>
-        </div>
+      <div className="min-h-screen bg-background">
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* サイドバー（レッスンナビゲーション） */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-4">
-              <CardContent className="p-4">
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  目次
-                </h3>
-                <div className="mb-4">
-                  <div className="text-sm text-muted-foreground mb-1">進捗状況</div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-medium">完了</div>
-                    <div className="text-sm text-muted-foreground">{completedCount}/{totalLessons}</div>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${totalLessons > 0 ? (completedCount / totalLessons) * 100 : 0}%` }}
-                    />
-                  </div>
+        {/* メインコンテンツ */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* ヘッダー - ミニマルで洗練されたデザイン */}
+          <header className={`sticky top-0 z-30 bg-background/80 backdrop-blur-2xl border-b border-border/40 transition-all duration-300 ${isHeaderVisible ? 'translate-y-0 shadow-sm' : '-translate-y-full lg:translate-y-0'}`}>
+            <div className="lg:max-w-[900px] lg:mx-auto px-4 lg:px-8">
+              <div className="flex items-center justify-between h-14">
+                <div className="flex items-center gap-3 flex-1">
+                  <Progress value={scrollProgress} className="h-0.5 flex-1 max-w-xs bg-muted/30" />
                 </div>
-                <nav className="space-y-1">
-                  {allLessons.map((lesson) => {
-                    const isCompleted = courseProgress.completedLessons?.includes(lesson.id);
-                    const isCurrent = lesson.id === lessonId;
-                    return (
-                      <button
-                        key={lesson.id}
-                        onClick={() => setLocation(`/courses/${courseId}/lessons/${lesson.id}`)}
-                        className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                          isCurrent
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-muted"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          {isCompleted && <CheckCircle2 className="w-3 h-3 flex-shrink-0" />}
-                          <span className="truncate">{lesson.title}</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
+                {completed && (
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span className="font-semibold text-xs">完了</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </header>
 
-          {/* メインコンテンツ */}
-          <div className="lg:col-span-3 min-w-0">
-            <Card>
-              <CardContent className="p-6">
-                <div className="max-w-none">
-                  {/* レッスンタイトル */}
+          {/* コンテンツエリア */}
+          <div className="flex-1 overflow-y-auto" ref={contentRef}>
+            <div className="lg:max-w-[900px] lg:mx-auto">
+              <>
+                  {/* ヒーローセクション - 洗練されたデザイン */}
                   {currentLesson && (
-                    <div className="mb-6">
-                      <h1 className="text-3xl font-bold mb-2">{currentLesson.title}</h1>
-                      {currentLesson.description && (
-                        <p className="text-lg text-muted-foreground">{currentLesson.description}</p>
-                      )}
-                      {(currentLesson.duration || currentLesson.slides) && (
-                        <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
-                          {currentLesson.duration && (
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              <span>約 {currentLesson.duration} 分</span>
-                            </div>
-                          )}
-                          {currentLesson.slides && currentLesson.slides > 0 && (
-                            <div className="flex items-center gap-1">
-                              <FileText className="w-4 h-4" />
-                              <span>{currentLesson.slides} スライド</span>
+                    <div className="relative px-4 lg:px-8 pt-12 lg:pt-20 pb-8 lg:pb-12">
+                      {/* 背景グラデーション */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5 -z-10" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--primary)_0%,_transparent_50%)] opacity-20 -z-10" />
+                      
+                      {/* コンテンツ */}
+                      <div className="relative">
+                        {/* バッジ */}
+                        <div className="flex items-center gap-3 mb-6">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setLocation(`/courses/${courseId}`)}
+                            className="text-muted-foreground hover:text-foreground hover:bg-accent/50 h-8 text-xs font-medium transition-all duration-200"
+                          >
+                            <ArrowLeft className="mr-1.5 h-3.5 w-3.5" /> コースに戻る
+                          </Button>
+                          {completed && (
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span className="font-semibold text-xs">完了</span>
                             </div>
                           )}
                         </div>
-                      )}
+                        
+                        {/* タイトル */}
+                        <motion.h1
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground tracking-tight leading-[1.1]"
+                        >
+                          {currentLesson.title}
+                        </motion.h1>
+                        
+                        {/* 説明 */}
+                        {currentLesson.description && (
+                          <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl"
+                          >
+                            {currentLesson.description}
+                          </motion.p>
+                        )}
+                        
+                        {/* メタ情報 */}
+                        {(currentLesson.duration || currentLesson.slides) && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="flex items-center gap-6 mt-8 text-sm text-muted-foreground"
+                          >
+                            {currentLesson.duration && (
+                              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+                                <Clock className="w-4 h-4" />
+                                <span>約 {currentLesson.duration} 分</span>
+                              </div>
+                            )}
+                            {currentLesson.slides && currentLesson.slides > 0 && (
+                              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+                                <FileText className="w-4 h-4" />
+                                <span>{currentLesson.slides} スライド</span>
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+                      </div>
                     </div>
                   )}
                   
-                  {/* コンテンツ */}
-                  <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-3xl prose-h1:mb-6 prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-700 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h4:text-lg prose-h4:mt-6 prose-h4:mb-2 prose-p:text-base prose-p:leading-relaxed prose-p:my-4 prose-li:my-2 prose-li:leading-relaxed prose-ul:my-4 prose-ol:my-4 prose-strong:font-semibold prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:my-6 prose-blockquote:not-italic">
-                    {renderContent()}
+                  {/* モダンな記事コンテンツ - 2025 Design Refresh - Professional */}
+                  <div className="px-4 lg:px-8 pb-16 lg:pb-24">
+                    <div className="max-w-4xl mx-auto">
+                      <article className="zenn-article relative">
+                        {/* 装飾的な背景要素 */}
+                        <div className="absolute inset-0 -z-10">
+                          <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+                          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+                        </div>
+                        
+                        {/* コンテンツ */}
+                        <div className="relative bg-background/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 border border-border/50 shadow-xl">
+                          {renderContent()}
+                        </div>
+                      </article>
+                    </div>
                   </div>
                   
-                  {/* ナビゲーションボタン */}
-                  <div className="flex justify-between mt-8 pt-6 border-t">
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        if (previousLesson) {
-                          setLocation(`/courses/${courseId}/lessons/${previousLesson.id}`);
-                        }
-                      }}
-                      disabled={!previousLesson}
-                    >
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      前のステップ
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        // レッスン完了を記録
-                        addXP(10, "レッスン完了");
-                        const progressKey = `lesson-progress-${lessonId}`;
-                        localStorage.setItem(progressKey, JSON.stringify({ completed: true, completedAt: new Date().toISOString() }));
-                        
-                        // コースの進捗も更新
-                        const courseProgressKey = `course-progress-${courseId}`;
-                        let courseProgress: { completedLessons?: string[] } = {};
-                        try {
-                          const saved = localStorage.getItem(courseProgressKey);
-                          if (saved) {
-                            courseProgress = JSON.parse(saved);
-                          }
-                        } catch (e) {
-                          courseProgress = {};
-                        }
-                        const completedLessons = courseProgress.completedLessons || [];
-                        if (lessonId && !completedLessons.includes(lessonId)) {
-                          completedLessons.push(lessonId);
-                          const updatedProgress = {
-                            ...courseProgress,
-                            completedLessons,
-                            lastUpdated: new Date().toISOString(),
-                          };
-                          localStorage.setItem(courseProgressKey, JSON.stringify(updatedProgress));
-
-                          // コース完了チェック
-                          const allLessons = getLessonsForCourse(courseId || "");
-                          if (completedLessons.length === allLessons.length && allLessons.length > 0) {
-                            const completionDate = new Date().toLocaleDateString("ja-JP");
-                            localStorage.setItem(`course-completed-${courseId}`, JSON.stringify({
-                              completed: true,
-                              completedDate: completionDate,
-                              completedAt: new Date().toISOString(),
-                            }));
-                            addXP(20, "コース完了ボーナス");
-                          }
-                        }
-                        
-                        // 次のレッスンがあれば遷移
-                        if (nextLesson) {
-                          setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
-                        } else {
-                          setLocation(`/courses/${courseId}`);
-                        }
-                      }}
-                      disabled={!nextLesson && currentLessonIndex === totalLessons - 1}
-                    >
-                      {nextLesson ? (
-                        <>
-                          次のステップ
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </>
-                      ) : (
-                        <>
-                          コースに戻る
-                          <CheckCircle2 className="w-4 h-4 ml-2" />
-                        </>
-                      )}
-                    </Button>
+                  {/* 次へ進むボタン - より洗練されたデザイン */}
+                  <div className="px-4 lg:px-8 pb-8 lg:pb-12">
+                    <div className="max-w-2xl mx-auto">
+                      <div className="pt-16 border-t border-border/30">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <Button
+                            variant="ghost"
+                            onClick={() => setLocation(`/courses/${courseId}`)}
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            コースに戻る
+                          </Button>
+                          
+                          <Button 
+                            onClick={handleComplete}
+                            size="lg" 
+                            className="w-full sm:w-auto min-w-[200px] h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 bg-gradient-to-r from-primary via-primary to-primary/90 hover:from-primary/90 hover:via-primary hover:to-primary"
+                          >
+                            {nextLesson ? (
+                              <>
+                                次へ進む
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle2 className="mr-2 h-5 w-5" />
+                                コースに戻る
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </>
+            </div>
           </div>
         </div>
+
+
       </div>
     </Layout>
   );
