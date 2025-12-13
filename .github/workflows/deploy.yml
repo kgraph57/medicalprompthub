@@ -48,6 +48,14 @@ jobs:
           NODE_ENV: production
           VITE_BASE_PATH: /medicalprompthub/
 
+      - name: Verify build output
+        run: |
+          echo "Build output verification:"
+          ls -la dist/ | head -20
+          test -f dist/index.html && echo "✓ index.html exists" || echo "✗ index.html missing"
+          test -f dist/404.html && echo "✓ 404.html exists" || echo "✗ 404.html missing"
+          test -f dist/.nojekyll && echo "✓ .nojekyll exists" || echo "✗ .nojekyll missing"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
