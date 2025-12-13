@@ -133,8 +133,8 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
       
       {/* 微細な装飾（Linear風の控えめなアクセント） */}
       <div className="absolute inset-0 opacity-[0.012]">
-        <div className="absolute top-[20%] left-[10%] w-[800px] h-[800px] bg-primary-500 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-[20%] right-[10%] w-[800px] h-[800px] bg-purple-500 rounded-full blur-3xl"></div>
+        <div className="absolute top-[20%] left-[10%] w-[800px] h-[800px] bg-blue-500 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-[20%] right-[10%] w-[800px] h-[800px] bg-cyan-400 rounded-full blur-3xl"></div>
       </div>
       
       {/* マウス追従エフェクト */}
@@ -165,12 +165,12 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
           variants={titleVariants}
         >
           <h1 
-            className="text-[60px] md:text-[80px] lg:text-[100px] xl:text-[120px] font-black mb-5 md:mb-6 leading-[0.94] tracking-[-0.048em] text-neutral-900"
+            className="text-[48px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[120px] font-black mb-5 md:mb-6 leading-[0.94] tracking-[-0.048em] text-neutral-900"
             style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}
           >
             <span className="block">Medical AI,</span>
             <motion.span 
-              className="block mt-2 md:mt-3 bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+              className="block mt-2 md:mt-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400 bg-clip-text text-transparent"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ 
@@ -184,7 +184,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
           </h1>
           
           <motion.p 
-            className="text-[19px] md:text-[24px] lg:text-[28px] text-neutral-600 mb-3 max-w-2xl mx-auto font-normal leading-[1.4] tracking-[-0.02em]"
+            className="text-[16px] sm:text-[19px] md:text-[24px] lg:text-[28px] text-neutral-600 mb-3 max-w-2xl mx-auto font-normal leading-[1.4] tracking-[-0.02em] px-4"
             variants={itemVariants}
             style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
           >
@@ -203,7 +203,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
               <motion.div 
                 className="absolute -inset-4 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3), transparent 70%)",
+                  background: "linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(6, 182, 212, 0.3), rgba(96, 165, 250, 0.3), transparent 70%)",
                 }}
               />
               
@@ -224,20 +224,20 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="flex items-center h-[88px] md:h-[104px] lg:h-[120px]">
-                  <div className="pl-9 md:pl-11 pr-5 md:pr-7 flex-shrink-0">
+                <div className="flex items-center h-[72px] sm:h-[88px] md:h-[104px] lg:h-[120px]">
+                  <div className="pl-6 sm:pl-9 md:pl-11 pr-4 sm:pr-5 md:pr-7 flex-shrink-0">
                     <motion.div
                       whileHover={{ scale: 1.15, rotate: 8 }}
                       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <Search className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary-500" strokeWidth={2.5} />
+                      <Search className="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary-500" strokeWidth={2.5} />
                     </motion.div>
                   </div>
                   <input
                     ref={searchInputRef}
                     type="text"
                     placeholder="Search for prompts (e.g., differential diagnosis, case report, statistical analysis)"
-                    className="flex-1 h-full pr-9 md:pr-11 text-[21px] md:text-[24px] lg:text-[26px] bg-transparent border-0 focus:outline-none focus:ring-0 placeholder:text-neutral-400 text-neutral-900 font-semibold tracking-[-0.022em]"
+                    className="flex-1 h-full pr-6 sm:pr-9 md:pr-11 text-[16px] sm:text-[21px] md:text-[24px] lg:text-[26px] bg-transparent border-0 focus:outline-none focus:ring-0 placeholder:text-neutral-400 text-neutral-900 font-semibold tracking-[-0.022em]"
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
                     onFocus={() => setIsSearchFocused(true)}
@@ -257,13 +257,13 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         
         {/* Linear風: 統計情報（検索バーの下、横並び） */}
         <motion.div 
-          className="grid grid-cols-3 gap-8 md:gap-10 max-w-3xl mx-auto mb-8 md:mb-10"
+          className="grid grid-cols-3 gap-4 sm:gap-8 md:gap-10 max-w-3xl mx-auto mb-8 md:mb-10 px-4"
           variants={itemVariants}
         >
           {[
-            { value: "100+", label: "Prompts", color: "text-primary-600" },
-            { value: "24/7", label: "Support", color: "text-purple-600" },
-            { value: "AI", label: "Powered", color: "text-pink-600" },
+            { value: "100+", label: "Prompts", color: "text-blue-600" },
+            { value: "24/7", label: "Support", color: "text-cyan-500" },
+            { value: "AI", label: "Powered", color: "text-blue-400" },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -276,10 +276,10 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                 ease: [0.16, 1, 0.3, 1] 
               }}
             >
-              <div className={`text-[52px] md:text-[64px] lg:text-[72px] font-black mb-2.5 tracking-[-0.045em] leading-[0.94] ${stat.color}`} style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
+              <div className={`text-[36px] sm:text-[52px] md:text-[64px] lg:text-[72px] font-black mb-2.5 tracking-[-0.045em] leading-[0.94] ${stat.color}`} style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
                 {stat.value}
               </div>
-              <div className="text-[13px] md:text-[14px] text-neutral-600 font-medium tracking-[-0.006em]">
+              <div className="text-[11px] sm:text-[13px] md:text-[14px] text-neutral-600 font-medium tracking-[-0.006em]">
                 {stat.label}
               </div>
             </motion.div>
@@ -288,12 +288,12 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         
         {/* Linear風: 完璧に洗練されたCTA（中央配置） */}
         <motion.div 
-          className="flex flex-col sm:flex-row justify-center items-center gap-4"
+          className="flex flex-col sm:flex-row justify-center items-center gap-4 px-4"
           variants={itemVariants}
         >
           <motion.button
             onClick={() => setLocation('/guides')}
-            className="group relative inline-flex items-center gap-3 px-14 py-7 text-[16px] font-medium text-white bg-neutral-900 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.2),0_16px_48px_rgba(0,0,0,0.14)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.25),0_20px_64px_rgba(0,0,0,0.18)] transition-all duration-200"
+            className="group relative inline-flex items-center gap-3 px-10 sm:px-14 py-5 sm:py-7 text-[14px] sm:text-[16px] font-medium text-white bg-neutral-900 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.2),0_16px_48px_rgba(0,0,0,0.14)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.25),0_20px_64px_rgba(0,0,0,0.18)] transition-all duration-200 w-full sm:w-auto justify-center"
             whileHover={{ 
               scale: 1.02,
               y: -1.5,
@@ -319,7 +319,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
               const element = document.getElementById('prompts');
               element?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="inline-flex items-center px-14 py-7 text-[16px] font-medium text-neutral-700 bg-white border border-neutral-300/70 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200"
+            className="inline-flex items-center px-10 sm:px-14 py-5 sm:py-7 text-[14px] sm:text-[16px] font-medium text-neutral-700 bg-white border border-neutral-300/70 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 w-full sm:w-auto justify-center"
             whileHover={{ 
               scale: 1.02,
               y: -1.5,
