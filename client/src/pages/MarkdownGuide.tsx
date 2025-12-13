@@ -50,6 +50,139 @@ const guideMetadata: Record<string, {
     readTime: "40 min",
     category: "Clinical",
     basePath: "/assets/guides/medical-documents"
+  },
+  "research-protocol": {
+    title: "研究計画書作成支援",
+    description: "AIを活用した質の高い研究計画書の作成",
+    readTime: "50 min",
+    category: "Research",
+    basePath: "/assets/guides/research-protocol"
+  },
+  "conference-presentation-slides": {
+    title: "学会発表スライド作成支援",
+    description: "インパクトのある学会発表スライドの作成",
+    readTime: "45 min",
+    category: "Presentation",
+    basePath: "/assets/guides/conference-presentation-slides"
+  },
+  "ethics-review-application": {
+    title: "倫理審査申請書類作成支援",
+    description: "倫理審査申請書類の効率的な作成",
+    readTime: "45 min",
+    category: "Research",
+    basePath: "/assets/guides/ethics-review-application"
+  },
+  "new-drug-information": {
+    title: "新薬情報収集・要約",
+    description: "最新の新薬情報を効率的に収集・要約",
+    readTime: "35 min",
+    category: "Clinical",
+    basePath: "/assets/guides/new-drug-information"
+  },
+  "rare-disease-information": {
+    title: "希少疾患情報収集",
+    description: "希少疾患に関する最新情報の収集",
+    readTime: "35 min",
+    category: "Clinical",
+    basePath: "/assets/guides/rare-disease-information"
+  },
+  "guideline-comparison": {
+    title: "治療ガイドライン比較",
+    description: "複数のガイドラインを比較・統合",
+    readTime: "30 min",
+    category: "Clinical",
+    basePath: "/assets/guides/guideline-comparison"
+  },
+  "multilingual-medical-consultation": {
+    title: "多言語医療相談支援",
+    description: "多言語での医療相談を円滑に",
+    readTime: "25 min",
+    category: "Clinical",
+    basePath: "/assets/guides/multilingual-medical-consultation"
+  },
+  "medical-news-commentary": {
+    title: "医療ニュース・トピック解説",
+    description: "最新の医療ニュースをわかりやすく解説",
+    readTime: "25 min",
+    category: "Research",
+    basePath: "/assets/guides/medical-news-commentary"
+  },
+  "patient-education-materials": {
+    title: "患者教育資料作成",
+    description: "わかりやすい患者教育資料の作成",
+    readTime: "35 min",
+    category: "Clinical",
+    basePath: "/assets/guides/patient-education-materials"
+  },
+  "incident-report-creation": {
+    title: "インシデントレポート作成支援",
+    description: "正確で建設的なインシデントレポートの作成",
+    readTime: "30 min",
+    category: "Clinical",
+    basePath: "/assets/guides/incident-report-creation"
+  },
+  "consultation-email": {
+    title: "専門医へのコンサルトメール作成",
+    description: "効果的なコンサルトメールの作成",
+    readTime: "30 min",
+    category: "Clinical",
+    basePath: "/assets/guides/consultation-email"
+  },
+  "clinical-trial-search": {
+    title: "臨床試験情報検索",
+    description: "関連する臨床試験情報の効率的な検索",
+    readTime: "35 min",
+    category: "Research",
+    basePath: "/assets/guides/clinical-trial-search"
+  },
+  "medical-statistics-consultation": {
+    title: "医療統計・データ分析相談",
+    description: "AIを活用した医療統計の理解と分析",
+    readTime: "45 min",
+    category: "Research",
+    basePath: "/assets/guides/medical-statistics-consultation"
+  },
+  "image-diagnosis-report-reading": {
+    title: "画像診断レポート読解支援",
+    description: "画像診断レポートの理解を深める",
+    readTime: "30 min",
+    category: "Clinical",
+    basePath: "/assets/guides/image-diagnosis-report-reading"
+  },
+  "post-discharge-follow-up": {
+    title: "退院後フォローアップ計画作成",
+    description: "包括的な退院後フォローアップ計画の作成",
+    readTime: "35 min",
+    category: "Clinical",
+    basePath: "/assets/guides/post-discharge-follow-up"
+  },
+  "medical-safety-manual": {
+    title: "医療安全マニュアル作成",
+    description: "実践的な医療安全マニュアルの作成",
+    readTime: "45 min",
+    category: "Clinical",
+    basePath: "/assets/guides/medical-safety-manual"
+  },
+  "infection-control-manual": {
+    title: "感染対策マニュアル作成",
+    description: "効果的な感染対策マニュアルの作成",
+    readTime: "45 min",
+    category: "Clinical",
+    basePath: "/assets/guides/infection-control-manual"
+  },
+  "polypharmacy-support": {
+    title: "ポリファーマシー対策支援",
+    description: "多剤併用の適正化を支援",
+    readTime: "40 min",
+    category: "Clinical",
+    basePath: "/assets/guides/polypharmacy-support"
+  },
+  "palliative-care-planning": {
+    title: "緩和ケア計画立案支援",
+    description: "患者中心の緩和ケア計画の立案",
+    readTime: "45 min",
+    category: "Clinical",
+    basePath: "/assets/guides/palliative-care-planning"
   }
 };
 

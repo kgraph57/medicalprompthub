@@ -78,6 +78,25 @@ function Router() {
           <Route path="/guides/patient-explanation" component={MarkdownGuide} />
           <Route path="/guides/literature-search" component={MarkdownGuide} />
           <Route path="/guides/medical-documents" component={MarkdownGuide} />
+          <Route path="/guides/research-protocol" component={MarkdownGuide} />
+          <Route path="/guides/conference-presentation-slides" component={MarkdownGuide} />
+          <Route path="/guides/ethics-review-application" component={MarkdownGuide} />
+          <Route path="/guides/new-drug-information" component={MarkdownGuide} />
+          <Route path="/guides/rare-disease-information" component={MarkdownGuide} />
+          <Route path="/guides/guideline-comparison" component={MarkdownGuide} />
+          <Route path="/guides/multilingual-medical-consultation" component={MarkdownGuide} />
+          <Route path="/guides/medical-news-commentary" component={MarkdownGuide} />
+          <Route path="/guides/patient-education-materials" component={MarkdownGuide} />
+          <Route path="/guides/incident-report-creation" component={MarkdownGuide} />
+          <Route path="/guides/consultation-email" component={MarkdownGuide} />
+          <Route path="/guides/clinical-trial-search" component={MarkdownGuide} />
+          <Route path="/guides/medical-statistics-consultation" component={MarkdownGuide} />
+          <Route path="/guides/image-diagnosis-report-reading" component={MarkdownGuide} />
+          <Route path="/guides/post-discharge-follow-up" component={MarkdownGuide} />
+          <Route path="/guides/medical-safety-manual" component={MarkdownGuide} />
+          <Route path="/guides/infection-control-manual" component={MarkdownGuide} />
+          <Route path="/guides/polypharmacy-support" component={MarkdownGuide} />
+          <Route path="/guides/palliative-care-planning" component={MarkdownGuide} />
           <Route path="/guides/:id" component={GuideDetail} />
           <Route path="/tips" component={Tips} />
           <Route path="/tips/:id" component={TipDetail} />
