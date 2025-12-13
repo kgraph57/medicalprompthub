@@ -210,9 +210,30 @@ export default function MarkdownGuide() {
                       再読み込み
                     </Button>
                   </div>
-                ) : (
-                  <div className="prose prose-slate dark:prose-invert max-w-none">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+) : (
+                  <div className="prose prose-slate dark:prose-invert max-w-none prose-table:border-collapse prose-table:w-full prose-th:border prose-th:border-slate-300 prose-th:bg-slate-50 prose-th:p-3 prose-th:text-left prose-td:border prose-td:border-slate-300 prose-td:p-3 dark:prose-th:border-slate-700 dark:prose-th:bg-slate-800 dark:prose-td:border-slate-700">
+                    <ReactMarkdown 
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        table: ({node, ...props}) => (
+                          <div className="overflow-x-auto my-6">
+                            <table className="min-w-full divide-y divide-slate-300 dark:divide-slate-700 border border-slate-300 dark:border-slate-700" {...props} />
+                          </div>
+                        ),
+                        thead: ({node, ...props}) => (
+                          <thead className="bg-slate-50 dark:bg-slate-800" {...props} />
+                        ),
+                        th: ({node, ...props}) => (
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-300 dark:border-slate-700" {...props} />
+                        ),
+                        td: ({node, ...props}) => (
+                          <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700" {...props} />
+                        ),
+                        tr: ({node, ...props}) => (
+                          <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/50" {...props} />
+                        )
+                      }}
+                    >
                       {content}
                     </ReactMarkdown>
                   </div>
