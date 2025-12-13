@@ -1,0 +1,63 @@
+> 本ドキュメントは、Manus AIによって2025年12月12日に作成されました。
+
+# Medical AI Research Workflow (MARW): 医療専門家のためのAI駆動型論文執筆ガイド
+
+## はじめに
+
+近年、人工知能（AI）技術、特に生成AIの進化は、学術研究と論文執筆のプロセスに革命をもたらしています。しかし、その強力な能力を効果的かつ倫理的に活用するためには、体系的なアプローチが不可欠です。特に、患者の生命と健康に直結する医療分野では、その重要性が一層高まります。
+
+この課題に対応するため、Medical Prompt Hubは、世界の最新ベストプラクティスを統合し、医療研究に特化した包括的かつ実践的なAI論文執筆ワークフロー**「Medical AI Research Workflow (MARW)」**を開発しました。MARWは、研究のアイデア創出から論文出版、査読対応まで、研究プロセスの全段階を網羅する7つのステップで構成されています。
+
+本ワークフローは、ハーバード大学 [1]、JAMA [2]、ICMJE（国際医学雑誌編集者委員会）[3] などの主要な学術機関や医学ジャーナルのガイドライン、さらには高被引用学術研究 [4] [5] に基づいて設計されています。MARWは、AIを単なるツールとしてではなく、研究者の能力を拡張する「共著者」ならぬ「共操縦士」として位置づけ、透明性、再現性、倫理性を確保しながら、研究の質と効率を最大化することを目指します。
+
+## MARWの7段階
+
+MARWは、研究プロセスを以下の7つの段階に分割します。各段階は相互に関連しており、必要に応じて反復することが推奨されます。
+
+| 段階 | 名称 | 目的 |
+|:---|:---|:---|
+| **段階1** | **研究課題の設定と文献探索** | 研究の方向性を定め、既存の知識のギャップを特定し、研究課題を明確化する。 |
+| **段階2** | **体系的文献レビュー** | 研究課題に関連する既存の知識を体系的に収集、評価、統合する。 |
+| **段階3** | **研究計画とアウトライン作成** | 研究デザインを決定し、論文の構造を計画する。 |
+| **段階4** | **データ収集と分析** | 研究を実施し、データを収集・分析する。 |
+| **段階5** | **原稿執筆** | 研究結果をIMRAD構造に基づき学術論文として執筆する。 |
+| **段階6** | **編集と査読対応** | 原稿を洗練し、査読プロセスに対応する。 |
+| **段階7** | **倫理・コンプライアンス確認** | 研究と論文執筆のすべての段階で倫理的基準とコンプライアンスを確保する。 |
+
+各段階の詳細なガイドについては、以下のリンクを参照してください。
+
+- **[段階1: 研究課題の設定と文献探索](./marw_stage1.md)**
+- **[段階2: 体系的文献レビュー](./marw_stage2.md)**
+- **[段階3: 研究計画とアウトライン作成](./marw_stage3.md)**
+- **[段階4: データ収集と分析](./marw_stage4.md)**
+- **[段階5: 原稿執筆](./marw_stage5.md)**
+- **[段階6: 編集と査読対応](./marw_stage6.md)**
+- **[段階7: 倫理・コンプライアンス確認](./marw_stage7.md)**
+
+## MARWの基本原則
+
+MARWは、以下の5つの基本原則に基づいています。
+
+1.  **透明性と開示**: AIの使用は、方法セクションでツール、バージョン、プロンプトを含めて詳細に記述されるべきです [3]。MARWは、各段階でAI使用記録テンプレートを提供し、透明性を確保します。
+
+2.  **人間による最終責任**: AIは強力な補助ツールですが、生成されたコンテンツの正確性、妥当性、独創性に対する最終的な責任は著者が負います [2]。AIを共著者として記載することは認められていません。
+
+3.  **段階的アプローチ**: 複雑な論文執筆プロセスを管理可能な7つの段階に分解することで、各ステップで適切なツールとテクニックを適用し、進捗を明確に管理します。
+
+4.  **医療分野への特化**: 患者データのプライバシー保護、ICMJE推奨事項への準拠、エビデンスレベルの理解、臨床的意義の評価など、医療研究特有の倫理的・実践的課題に対応します。
+
+5.  **実践性と再現可能性**: 各段階で具体的なプロンプト例、推奨ツール、検証チェックポイントを提供することで、研究者が即座に実践でき、かつそのプロセスが再現可能であることを目指します。
+
+---
+
+## 参考文献
+
+[1] Harvard University. (2025). *Generative AI Guidelines*. Retrieved from https://www.huit.harvard.edu/ai/guidelines
+
+[2] JAMA. (2023). *Guidance for Authors, Peer Reviewers, and Editors on Use of AI*. Retrieved from https://jamanetwork.com/journals/jama/fullarticle/2807956
+
+[3] International Committee of Medical Journal Editors. (2025). *Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals*. Retrieved from https://www.icmje.org/recommendations/
+
+[4] Khalifa, M., et al. (2024). Using Artificial Intelligence in Academic Writing and Research: An Essential Productivity Tool. *Computer Methods and Programs in Biomedicine Update*, *4*, 100143. Retrieved from https://www.sciencedirect.com/science/article/pii/S2666990024000120
+
+[5] Shabanov, I. (2025). *Using AI for Literature Review in 2025*. Effortless Academic. Retrieved from https://effortlessacademic.com/using-ai-for-literature-review-in-2025/
