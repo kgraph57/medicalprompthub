@@ -8,9 +8,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles.tsx";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, CheckCircle2, ArrowRight, Clock, FileText } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ArrowRight, Clock, FileText, BookOpen } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -20,6 +20,7 @@ import { lesson1Quizzes, lesson2Quizzes, lesson3Quizzes, lesson4Quizzes, lesson5
 import { lesson1Tips } from "@/data/courses/ai-basics/tips";
 import { useGamification } from "@/hooks/useGamification";
 import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
+import { fastStorage } from "@/lib/fastJsonStorage";
 
 // レッスンコンテンツ（Markdownファイルから読み込み）
 // ai-basicsコース
@@ -424,6 +425,21 @@ export default function LessonDetail() {
   // 現在のレッスン情報を取得
   const currentLesson = courseId && lessonId ? getLessonsForCourse(courseId).find(l => l.id === lessonId) : null;
 
+  // コースの進捗情報をローカルストレージから読み込む
+  const courseProgressKey = courseId ? `course-progress-${courseId}` : null;
+  let courseProgress: { completedLessons?: string[] } = {};
+  if (courseProgressKey) {
+    try {
+      const saved = localStorage.getItem(courseProgressKey);
+      if (saved) {
+        courseProgress = JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error("Failed to parse course progress from localStorage", e);
+      courseProgress = {};
+    }
+  }
+
   // 全レッスンと進捗情報
   const allLessons = courseId ? getLessonsForCourse(courseId) : [];
   const currentLessonIndex = allLessons.findIndex(l => l.id === lessonId);
@@ -487,20 +503,72 @@ export default function LessonDetail() {
   }, [lessonId]);
 
   // レッスンが変わったときにページトップにスクロール
+  // スクロール位置を監視して、確実に0になるまで繰り返し実行
+  useLayoutEffect(() => {
+    if (lessonId) {
+      let attempts = 0;
+      const maxAttempts = 20; // 最大20回試行
+      
+      const forceScrollToTop = () => {
+        // すべての方法でスクロール位置を0に設定
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
+        // 現在のスクロール位置を確認
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        
+        // まだ0でない場合、次のフレームで再試行
+        if (currentScroll > 0 && attempts < maxAttempts) {
+          attempts++;
+          requestAnimationFrame(forceScrollToTop);
+        }
+      };
+      
+      // 即座に実行
+      forceScrollToTop();
+    }
+  }, [lessonId]);
+  
+  // さらに、少し遅延してからも実行（確実性のため）
   useEffect(() => {
-    if (contentRef.current) {
-      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    if (lessonId) {
+      let attempts = 0;
+      const maxAttempts = 15;
+      
+      const ensureScrollToTop = () => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        
+        if (currentScroll > 0 && attempts < maxAttempts) {
+          attempts++;
+          setTimeout(ensureScrollToTop, 50);
+        }
+      };
+      
+      // 複数のタイミングで実行
+      const timeout1 = setTimeout(ensureScrollToTop, 50);
+      const timeout2 = setTimeout(ensureScrollToTop, 150);
+      const timeout3 = setTimeout(ensureScrollToTop, 300);
+      const timeout4 = setTimeout(ensureScrollToTop, 500);
+      
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+        clearTimeout(timeout4);
+      };
     }
   }, [lessonId]);
 
-  // スクロール位置に応じて進捗を更新
+  // スクロール位置に応じて進捗を更新（Zenn風 - ページ全体のスクロールを検出）
   useEffect(() => {
     const handleScroll = () => {
-      if (!contentRef.current) return;
-      
-      const element = contentRef.current;
-      const scrollTop = element.scrollTop;
-      const scrollHeight = element.scrollHeight - element.clientHeight;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
       setScrollProgress(progress);
 
@@ -516,13 +584,13 @@ export default function LessonDetail() {
         setLastScrollY(scrollTop);
       }
 
-      // アクティブなセクションを検出
-      const sectionElements = element.querySelectorAll("h2[id], h3[id]");
+      // アクティブなセクションを検出（Zenn風）
+      const sectionElements = document.querySelectorAll("h2[id], h3[id]");
       let currentSection = "";
       
       sectionElements.forEach((section) => {
         const rect = section.getBoundingClientRect();
-        if (rect.top <= 150) {
+        if (rect.top <= 200) {
           currentSection = section.id;
         }
       });
@@ -532,28 +600,24 @@ export default function LessonDetail() {
       }
     };
 
-    const element = contentRef.current;
-    if (element) {
-      element.addEventListener("scroll", handleScroll);
-      handleScroll(); // 初期化
-      return () => element.removeEventListener("scroll", handleScroll);
-    }
-  }, [content]);
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // 初期化
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [content, lastScrollY]);
 
-  // セクションへのジャンプ
+  // セクションへのジャンプ（Zenn風）
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    if (element && contentRef.current) {
+    if (element) {
       const offset = 100; // ヘッダーの高さ分
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + contentRef.current.scrollTop - offset;
+      const offsetPosition = window.scrollY + elementPosition - offset;
       
-      contentRef.current.scrollTo({
+      window.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
       });
     }
-
   };
 
   // マークダウンコンテンツを処理（クイズと実践のヒントをインラインで配置）
@@ -565,6 +629,7 @@ export default function LessonDetail() {
     const elements: React.ReactNode[] = [];
     let quizIndex = 0;
     let tipIndex = 0;
+    // extractSectionsと同じ順序でidを生成するため、sectionsのインデックスを使用
     let sectionIndex = 0;
 
     parts.forEach((part, index) => {
@@ -596,7 +661,74 @@ export default function LessonDetail() {
         tipIndex++;
       } else if (part.trim()) {
         // Markdownコンテンツをレンダリング
-        const markdownContent = part.trim();
+        let markdownContent = part.trim();
+        
+        // 最初のパートの場合、Markdownの最初のh1（# で始まる行）を削除
+        // ページタイトルとして既に表示されているため
+        if (index === 0 || (index === 2 && parts[0].trim() === "")) {
+          const lines = markdownContent.split('\n');
+          // 最初の行が # で始まる場合は削除
+          if (lines.length > 0 && lines[0].trim().startsWith('# ')) {
+            markdownContent = lines.slice(1).join('\n');
+          }
+        }
+        
+        // 連続する同じ参考文献をまとめる処理
+        // リストアイテム内の参考文献パターンを検出して処理
+        const refPattern = /\[([\d,]+?)\]/g;
+        const lines = markdownContent.split('\n');
+        const processedLines: string[] = [];
+        let previousRefs: string | null = null;
+        let inList = false;
+        
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const trimmedLine = line.trim();
+          
+          // リストアイテムかどうかを判定
+          const isListItem = /^[-*+]\s/.test(trimmedLine) || /^\d+\.\s/.test(trimmedLine);
+          
+          if (isListItem) {
+            inList = true;
+            const refMatches = Array.from(trimmedLine.matchAll(refPattern));
+            
+            if (refMatches.length > 0) {
+              // 参考文献が見つかった場合、正規化（ソートして比較）
+              const currentRefs = refMatches
+                .map(m => m[1])
+                .join(',')
+                .split(',')
+                .sort()
+                .join(',');
+              
+              // 前のリストアイテムと同じ参考文献の場合は、この行から参考文献を削除
+              if (previousRefs === currentRefs && previousRefs !== null) {
+                // 参考文献を削除（末尾の空白も削除）
+                const lineWithoutRefs = trimmedLine.replace(refPattern, '').trim();
+                processedLines.push(line.replace(trimmedLine, lineWithoutRefs));
+              } else {
+                // 異なる参考文献の場合はそのまま
+                processedLines.push(line);
+                previousRefs = currentRefs;
+              }
+            } else {
+              // 参考文献がない場合は、前の参考文献をリセット
+              processedLines.push(line);
+              previousRefs = null;
+            }
+          } else {
+            // リストアイテムでない場合
+            if (inList && trimmedLine === '') {
+              // 空行でリストが終了した場合
+              inList = false;
+              previousRefs = null;
+            }
+            processedLines.push(line);
+          }
+        }
+        
+        markdownContent = processedLines.join('\n');
+        
         if (markdownContent) {
           elements.push(
             <div key={`content-${index}`} className="zenn-article">
@@ -604,7 +736,7 @@ export default function LessonDetail() {
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h1: ({ node, ...props }) => (
-                    <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props} />
+                    <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-0 first:mt-0 text-foreground scroll-mt-20 tracking-tight" {...props} />
                   ),
                   h2: ({ node, ...props }) => {
                     const title = props.children?.toString() || "";
@@ -613,28 +745,37 @@ export default function LessonDetail() {
                     return (
                       <h2
                         id={id}
-                        className="text-2xl md:text-3xl font-bold mt-16 mb-8 text-foreground scroll-mt-20 tracking-tight"
+                        className="text-2xl md:text-3xl font-bold mt-8 mb-6 first:mt-0 text-foreground scroll-mt-20 tracking-tight"
                         {...props}
                       />
                     );
                   },
-                  h3: ({ node, ...props }) => (
-                    <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                  ),
+                  h3: ({ node, ...props }) => {
+                    const title = props.children?.toString() || "";
+                    const id = `section-${sectionIndex}`;
+                    sectionIndex++;
+                    return (
+                      <h3
+                        id={id}
+                        className="text-xl md:text-2xl font-semibold mt-8 mb-6 first:mt-0 text-foreground scroll-mt-20 tracking-tight"
+                        {...props}
+                      />
+                    );
+                  },
                   h4: ({ node, ...props }) => (
-                    <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
+                    <h4 className="text-lg md:text-xl font-semibold mt-6 mb-4 first:mt-0 text-foreground scroll-mt-20" {...props} />
                   ),
                   p: ({ node, ...props }) => (
                     <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
                   ),
                   ul: ({ node, ...props }) => (
-                    <ul className="list-disc pl-8 mb-6 space-y-3" {...props} />
+                    <ul className="list-disc pl-6 mb-4 space-y-1.5" {...props} />
                   ),
                   ol: ({ node, ...props }) => (
-                    <ol className="list-decimal pl-8 mb-6 space-y-3" {...props} />
+                    <ol className="list-decimal pl-6 mb-4 space-y-1.5" {...props} />
                   ),
                   li: ({ node, ...props }) => (
-                    <li className="text-lg md:text-xl text-foreground leading-[1.85] pl-2" {...props} />
+                    <li className="text-base md:text-lg text-foreground leading-relaxed pl-1" {...props} />
                   ),
                   strong: ({ node, ...props }) => (
                     <strong className="font-bold text-foreground" {...props} />
@@ -662,6 +803,7 @@ export default function LessonDetail() {
                   img: ({ node, ...props }) => (
                     <img className="max-w-full h-auto my-6 rounded-lg" {...props} />
                   ),
+                  hr: () => null, // 水平線を非表示にする
                 }}
               >
                 {markdownContent}
@@ -678,50 +820,41 @@ export default function LessonDetail() {
   const handleComplete = () => {
     // レッスン完了を記録
     addXP(10, "レッスン完了");
-    // ローカルストレージに進捗を保存
-    const progressKey = `lesson-progress-${lessonId}`;
-    localStorage.setItem(progressKey, JSON.stringify({ completed: true, completedAt: new Date().toISOString() }));
+    // fast-json-stringifyを使用してローカルストレージに進捗を保存
+    fastStorage.setLessonProgress(lessonId || "", {
+      completed: true,
+      completedAt: new Date().toISOString(),
+    });
     
     // コースの進捗も更新
-    const courseProgressKey = `course-progress-${courseId}`;
-    let courseProgress: { completedLessons?: string[] } = {};
-    try {
-      const saved = localStorage.getItem(courseProgressKey);
-      if (saved) {
-        courseProgress = JSON.parse(saved);
-      }
-    } catch (e) {
-      console.error("Failed to parse course progress from localStorage", e);
-      courseProgress = {};
-    }
-    const completedLessons = courseProgress.completedLessons || [];
-    if (lessonId && !completedLessons.includes(lessonId)) {
-      completedLessons.push(lessonId);
-      const updatedProgress = {
-        ...courseProgress,
-        completedLessons,
-        lastUpdated: new Date().toISOString(),
-      };
-      localStorage.setItem(courseProgressKey, JSON.stringify(updatedProgress));
+    if (courseId) {
+      const courseProgress = fastStorage.getCourseProgress(courseId) || { completedLessons: [] };
+      const completedLessons = courseProgress.completedLessons || [];
+      if (lessonId && !completedLessons.includes(lessonId)) {
+        completedLessons.push(lessonId);
+        const updatedProgress = {
+          completedLessons,
+          lastUpdated: new Date().toISOString(),
+        };
+        fastStorage.setCourseProgress(courseId, updatedProgress);
 
-      // コース完了チェック
-      const allLessons = getLessonsForCourse(courseId || "");
-      if (completedLessons.length + 1 === allLessons.length && allLessons.length > 0) {
-        // コース完了
-        const completionDate = new Date().toLocaleDateString("ja-JP");
-        localStorage.setItem(`course-completed-${courseId}`, JSON.stringify({
-          completed: true,
-          completedDate: completionDate,
-          completedAt: new Date().toISOString(),
-        }));
-        addXP(20, "コース完了ボーナス");
+        // コース完了チェック
+        const allLessons = getLessonsForCourse(courseId);
+        if (completedLessons.length + 1 === allLessons.length && allLessons.length > 0) {
+          // コース完了
+          const completionDate = new Date().toLocaleDateString("ja-JP");
+          fastStorage.setCourseCompleted(courseId, {
+            completed: true,
+            completedDate: completionDate,
+            completedAt: new Date().toISOString(),
+          });
+          addXP(20, "コース完了ボーナス");
+        }
       }
     }
     
     // ページトップにスクロール
-    if (contentRef.current) {
-      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
     // 次のレッスンがあれば即座に遷移
     if (nextLesson) {
@@ -753,71 +886,54 @@ export default function LessonDetail() {
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto py-8 px-4">
-        <div className="mb-6">
+      <div className="max-w-7xl mx-auto pt-4 pb-8 px-4">
+        <div className="mb-6 space-y-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setLocation(`/courses/${courseId}`)}
-            className="mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             コースに戻る
           </Button>
+          
+          {/* レッスンナビゲーション */}
+          {allLessons.length > 0 && (
+            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">レッスン:</span>
+              <div className="flex gap-2">
+                {allLessons.map((lesson) => {
+                  const isCompleted = courseProgress.completedLessons?.includes(lesson.id);
+                  const isCurrent = lesson.id === lessonId;
+                  return (
+                    <button
+                      key={lesson.id}
+                      onClick={() => setLocation(`/courses/${courseId}/lessons/${lesson.id}`)}
+                      className={`px-3 py-1.5 rounded-md text-sm whitespace-nowrap transition-colors ${
+                        isCurrent
+                          ? "bg-primary text-primary-foreground"
+                          : isCompleted
+                          ? "bg-muted text-foreground hover:bg-muted/80"
+                          : "bg-background border border-border hover:bg-muted"
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        {isCompleted && <CheckCircle2 className="w-3 h-3 flex-shrink-0" />}
+                        <span>{lesson.title}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* サイドバー（レッスンナビゲーション） */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-4">
-              <CardContent className="p-4">
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  目次
-                </h3>
-                <div className="mb-4">
-                  <div className="text-sm text-muted-foreground mb-1">進捗状況</div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-medium">完了</div>
-                    <div className="text-sm text-muted-foreground">{completedCount}/{totalLessons}</div>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${totalLessons > 0 ? (completedCount / totalLessons) * 100 : 0}%` }}
-                    />
-                  </div>
-                </div>
-                <nav className="space-y-1">
-                  {allLessons.map((lesson) => {
-                    const isCompleted = courseProgress.completedLessons?.includes(lesson.id);
-                    const isCurrent = lesson.id === lessonId;
-                    return (
-                      <button
-                        key={lesson.id}
-                        onClick={() => setLocation(`/courses/${courseId}/lessons/${lesson.id}`)}
-                        className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                          isCurrent
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-muted"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          {isCompleted && <CheckCircle2 className="w-3 h-3 flex-shrink-0" />}
-                          <span className="truncate">{lesson.title}</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
-
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* メインコンテンツ */}
-          <div className="lg:col-span-3 min-w-0">
+          <div className="lg:col-span-8 min-w-0">
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="pt-2 pb-6 px-6">
                 <div className="max-w-none">
                   {/* レッスンタイトル */}
                   {currentLesson && (
@@ -846,12 +962,12 @@ export default function LessonDetail() {
                   )}
                   
                   {/* コンテンツ */}
-                  <div className={UNIFIED_PROSE_CLASSES}>
+                  <div className={`${UNIFIED_PROSE_CLASSES} [&>h1:first-child]:mt-0 [&>h2:first-child]:mt-0 [&>h3:first-child]:mt-0`}>
                     {renderContent()}
                   </div>
                   
                   {/* ナビゲーションボタン */}
-                  <div className="flex justify-between mt-8 pt-6 border-t">
+                  <div className="flex justify-between mt-8 pt-6">
                     <Button
                       variant="outline"
                       onClick={() => {
@@ -868,48 +984,89 @@ export default function LessonDetail() {
                       onClick={() => {
                         // レッスン完了を記録
                         addXP(10, "レッスン完了");
-                        const progressKey = `lesson-progress-${lessonId}`;
-                        localStorage.setItem(progressKey, JSON.stringify({ completed: true, completedAt: new Date().toISOString() }));
+                        // fast-json-stringifyを使用してローカルストレージに進捗を保存
+                        fastStorage.setLessonProgress(lessonId || "", {
+                          completed: true,
+                          completedAt: new Date().toISOString(),
+                        });
                         
                         // コースの進捗も更新
-                        const courseProgressKey = `course-progress-${courseId}`;
-                        let courseProgress: { completedLessons?: string[] } = {};
-                        try {
-                          const saved = localStorage.getItem(courseProgressKey);
-                          if (saved) {
-                            courseProgress = JSON.parse(saved);
-                          }
-                        } catch (e) {
-                          courseProgress = {};
-                        }
-                        const completedLessons = courseProgress.completedLessons || [];
-                        if (lessonId && !completedLessons.includes(lessonId)) {
-                          completedLessons.push(lessonId);
-                          const updatedProgress = {
-                            ...courseProgress,
-                            completedLessons,
-                            lastUpdated: new Date().toISOString(),
-                          };
-                          localStorage.setItem(courseProgressKey, JSON.stringify(updatedProgress));
+                        if (courseId) {
+                          const courseProgress = fastStorage.getCourseProgress(courseId) || { completedLessons: [] };
+                          const completedLessons = courseProgress.completedLessons || [];
+                          if (lessonId && !completedLessons.includes(lessonId)) {
+                            completedLessons.push(lessonId);
+                            const updatedProgress = {
+                              completedLessons,
+                              lastUpdated: new Date().toISOString(),
+                            };
+                            fastStorage.setCourseProgress(courseId, updatedProgress);
 
-                          // コース完了チェック
-                          const allLessons = getLessonsForCourse(courseId || "");
-                          if (completedLessons.length === allLessons.length && allLessons.length > 0) {
-                            const completionDate = new Date().toLocaleDateString("ja-JP");
-                            localStorage.setItem(`course-completed-${courseId}`, JSON.stringify({
-                              completed: true,
-                              completedDate: completionDate,
-                              completedAt: new Date().toISOString(),
-                            }));
-                            addXP(20, "コース完了ボーナス");
+                            // コース完了チェック
+                            const allLessons = getLessonsForCourse(courseId);
+                            if (completedLessons.length === allLessons.length && allLessons.length > 0) {
+                              const completionDate = new Date().toLocaleDateString("ja-JP");
+                              fastStorage.setCourseCompleted(courseId, {
+                                completed: true,
+                                completedDate: completionDate,
+                                completedAt: new Date().toISOString(),
+                              });
+                              addXP(20, "コース完了ボーナス");
+                            }
                           }
                         }
                         
-                        // 次のレッスンがあれば遷移
+                        // 次のレッスンがあれば遷移（遷移後、確実にトップにスクロール）
                         if (nextLesson) {
+                          // ページ遷移
                           setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+                          
+                          // 遷移後に確実にトップにスクロールする関数（繰り返し実行）
+                          let attempts = 0;
+                          const maxAttempts = 30;
+                          
+                          const ensureScrollToTop = () => {
+                            // すべての方法でスクロール位置を0に設定
+                            window.scrollTo(0, 0);
+                            document.documentElement.scrollTop = 0;
+                            document.body.scrollTop = 0;
+                            
+                            // 現在のスクロール位置を確認
+                            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                            
+                            // まだ0でない場合、再試行
+                            if (currentScroll > 0 && attempts < maxAttempts) {
+                              attempts++;
+                              setTimeout(ensureScrollToTop, 50);
+                            }
+                          };
+                          
+                          // 複数のタイミングで確実に実行
+                          setTimeout(ensureScrollToTop, 0);
+                          setTimeout(ensureScrollToTop, 100);
+                          setTimeout(ensureScrollToTop, 300);
                         } else {
+                          // コース一覧ページへの遷移
                           setLocation(`/courses/${courseId}`);
+                          
+                          let attempts = 0;
+                          const maxAttempts = 20;
+                          
+                          const ensureScrollToTop = () => {
+                            window.scrollTo(0, 0);
+                            document.documentElement.scrollTop = 0;
+                            document.body.scrollTop = 0;
+                            
+                            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                            
+                            if (currentScroll > 0 && attempts < maxAttempts) {
+                              attempts++;
+                              setTimeout(ensureScrollToTop, 50);
+                            }
+                          };
+                          
+                          setTimeout(ensureScrollToTop, 100);
+                          setTimeout(ensureScrollToTop, 300);
                         }
                       }}
                       disabled={!nextLesson && currentLessonIndex === totalLessons - 1}
@@ -921,7 +1078,7 @@ export default function LessonDetail() {
                         </>
                       ) : (
                         <>
-                          コースに戻る
+                          終了
                           <CheckCircle2 className="w-4 h-4 ml-2" />
                         </>
                       )}
@@ -930,6 +1087,44 @@ export default function LessonDetail() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+
+          {/* サイドバー（目次） - Zenn風 */}
+          <div className="lg:col-span-4 hidden lg:block">
+            <div className="sticky top-24">
+              <div className="relative">
+                <h3 className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
+                  目次
+                </h3>
+                {sections.length > 0 ? (
+                  <nav className="space-y-1.5">
+                    {sections.map((section) => {
+                      const isActive = activeSection === section.id;
+                      return (
+                        <button
+                          key={section.id}
+                          onClick={() => scrollToSection(section.id)}
+                          className={`block w-full text-left text-sm transition-colors relative ${
+                            section.level === 3 ? "pl-6 text-xs" : "pl-0"
+                          } ${
+                            isActive
+                              ? "text-foreground font-medium"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {isActive && (
+                            <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary -ml-4" />
+                          )}
+                          <span className="truncate block">{section.title}</span>
+                        </button>
+                      );
+                    })}
+                  </nav>
+                ) : (
+                  <p className="text-sm text-muted-foreground">目次はありません</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -148,18 +148,12 @@ function ErrorFallback({
 
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
-              onClick={onReset}
+              onClick={() => {
+                onReset();
+                window.location.reload();
+              }}
               className="flex items-center gap-2"
-              aria-label="エラーをリセットして再試行"
-            >
-              <RotateCcw size={16} aria-hidden="true" />
-              再試行
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => window.location.reload()}
-              className="flex items-center gap-2"
-              aria-label="ページを再読み込み"
+              aria-label="ページを再読み込みして再試行"
             >
               <RotateCcw size={16} aria-hidden="true" />
               ページを再読み込み

@@ -187,7 +187,7 @@ export default function CaseReportGuide() {
                 <div className="mb-2">
                   <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-600 transition-all duration-300"
+                      className="h-full bg-purple-600 transition-all duration-300"
                       style={{ width: `${progressPercentage}%` }}
                     />
                   </div>
@@ -209,7 +209,7 @@ export default function CaseReportGuide() {
                     }}
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                       currentStepId === 'intro'
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
+                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -220,7 +220,7 @@ export default function CaseReportGuide() {
                 {caseReportGuideData.phases.map((phase, phaseIndex) => (
                   <div key={phase.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-sm font-bold">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-600 text-white text-sm font-bold">
                         {phaseIndex + 1}
                       </div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -251,7 +251,7 @@ export default function CaseReportGuide() {
                               }}
                               className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
                                 isCurrent
-                                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
+                                  ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
                                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                               }`}
                             >
@@ -293,9 +293,16 @@ export default function CaseReportGuide() {
                       />
                     );
                   },
-                  h3: ({ node, ...props }) => (
-                    <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                  ),
+                  h3: ({ node, ...props }) => {
+                    const isReferences = typeof props.children === 'string' && props.children === '参考文献';
+                    const isIntroStep = currentStepId === 'intro';
+                    return (
+                      <h3 
+                        className={`${isReferences && isIntroStep ? 'text-3xl md:text-4xl font-bold text-center mb-4 mt-16 text-foreground' : 'text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight'}`}
+                        {...props} 
+                      />
+                    );
+                  },
                   h4: ({ node, ...props }) => (
                     <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
                   ),
@@ -305,17 +312,88 @@ export default function CaseReportGuide() {
                   ul: ({ node, ...props }) => (
                     <ul className="list-disc pl-8 mb-6 space-y-3" {...props} />
                   ),
-                  ol: ({ node, ...props }) => (
-                    <ol className="list-decimal pl-8 mb-6 space-y-3" {...props} />
-                  ),
-                  li: ({ node, ...props }) => (
-                    <li className="text-lg md:text-xl text-foreground leading-[1.85] pl-2" {...props} />
-                  ),
+                  ol: ({ node, ...props }) => {
+                    // 親要素を確認して、参考文献セクション内のolかどうかを判定
+                    const parent = (node as any).parent;
+                    const isReferencesList = parent && 
+                      parent.children && 
+                      parent.children.some((child: any) => 
+                        child.type === 'heading' && 
+                        child.children && 
+                        child.children.some((c: any) => c.value === '参考文献')
+                      );
+                    
+                    return (
+                      <ol 
+                        className={`list-decimal pl-8 mb-6 ${isReferencesList ? 'mt-6 space-y-4' : 'space-y-3'}`}
+                        {...props} 
+                      />
+                    );
+                  },
+                  li: ({ node, children, ...props }) => {
+                    // 参考文献セクション内のliかどうかを判定
+                    const isIntroStep = currentStepId === 'intro';
+                    const parent = (node as any).parent;
+                    const isReferencesList = isIntroStep && parent && 
+                      parent.type === 'list' &&
+                      parent.parent &&
+                      parent.parent.children &&
+                      parent.parent.children.some((child: any) => 
+                        child.type === 'heading' && 
+                        child.children && 
+                        child.children.some((c: any) => c.value === '参考文献')
+                      );
+                    
+                    // 参考文献リストの場合は「具体的な研究情報は要確認。」を追加
+                    if (isReferencesList) {
+                      return (
+                        <li 
+                          className="text-lg md:text-xl text-foreground leading-[1.85] pl-2 mb-2"
+                          {...props}
+                        >
+                          {children}
+                          <span className="text-gray-600 dark:text-gray-400"> 具体的な研究情報は要確認。</span>
+                        </li>
+                      );
+                    }
+                    
+                    return (
+                      <li 
+                        className="text-lg md:text-xl text-foreground leading-[1.85] pl-2"
+                        {...props} 
+                      >
+                        {children}
+                      </li>
+                    );
+                  },
+                  hr: ({ node, ...props }) => {
+                    // 参考文献見出しの直後のhrかどうかを確認
+                    const parent = (node as any).parent;
+                    const isAfterReferences = parent && 
+                      parent.children && 
+                      parent.children.some((child: any, index: number) => {
+                        if (child === node && index > 0) {
+                          const prevChild = parent.children[index - 1];
+                          return prevChild && 
+                            prevChild.type === 'heading' && 
+                            prevChild.children && 
+                            prevChild.children.some((c: any) => c.value === '参考文献');
+                        }
+                        return false;
+                      });
+                    
+                    return (
+                      <hr 
+                        className={`${isAfterReferences ? 'my-4 border-t border-gray-300 dark:border-gray-600' : 'my-6 border-gray-300 dark:border-gray-600'}`}
+                        {...props} 
+                      />
+                    );
+                  },
                   strong: ({ node, ...props }) => (
                     <strong className="font-semibold text-foreground" {...props} />
                   ),
                   code({ node, className, children, ...props }: any) {
-                    const inline = !className;
+                    const inline = (props as any).inline;
                     if (inline) {
                       return <code className="bg-muted/80 px-2 py-1 rounded-md text-base font-mono border border-border/50" {...props}>{children}</code>;
                     }
@@ -349,27 +427,6 @@ export default function CaseReportGuide() {
                 <ChevronLeft className="h-5 w-5 mr-2" />
                 前へ
               </Button>
-
-              {/* Completion Button - Only for steps, not intro */}
-              {currentStepId !== 'intro' && (
-                <Button
-                  onClick={() => toggleComplete(currentStepId)}
-                  variant={completedSteps.has(currentStepId) ? 'outline' : 'default'}
-                  size="lg"
-                >
-                  {completedSteps.has(currentStepId) ? (
-                    <>
-                      <CheckCircle2 className="h-5 w-5 mr-2" />
-                      完了！
-                    </>
-                  ) : (
-                    <>
-                      <Circle className="h-5 w-5 mr-2" />
-                      完了にする
-                    </>
-                  )}
-                </Button>
-              )}
 
               {/* Next Button */}
               <Button

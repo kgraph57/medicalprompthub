@@ -105,7 +105,7 @@ export default function PaperReadingGuide() {
     if (hasPrevious) {
       const prevStepId = allSteps[currentIndex - 1];
       setCurrentStepId(prevStepId);
-      navigate(`/guides/paper-reading-efficiency/${prevStepId}`);
+      navigate(`/guides/paper-reading-efficiency/${prevStepId === 'intro' ? '' : prevStepId}`);
     }
   };
 
@@ -174,7 +174,6 @@ export default function PaperReadingGuide() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsSidebarOpen(false)}
-                  className="h-7 w-7"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -187,7 +186,7 @@ export default function PaperReadingGuide() {
                 <div className="mb-2">
                   <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-orange-600 transition-all duration-300"
+                      className="h-full bg-purple-600 transition-all duration-300"
                       style={{ width: `${progressPercentage}%` }}
                     />
                   </div>
@@ -209,7 +208,7 @@ export default function PaperReadingGuide() {
                     }}
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                       currentStepId === 'intro'
-                        ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 font-medium'
+                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -220,7 +219,7 @@ export default function PaperReadingGuide() {
                 {paperReadingGuideData.phases.map((phase, phaseIndex) => (
                   <div key={phase.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-orange-600 text-white text-sm font-bold">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-600 text-white text-sm font-bold">
                         {phaseIndex + 1}
                       </div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -251,7 +250,7 @@ export default function PaperReadingGuide() {
                               }}
                               className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
                                 isCurrent
-                                  ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 font-medium'
+                                  ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
                                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                               }`}
                             >
@@ -349,27 +348,6 @@ export default function PaperReadingGuide() {
                 <ChevronLeft className="h-5 w-5 mr-2" />
                 前へ
               </Button>
-
-              {/* Completion Button - Only for steps, not intro */}
-              {currentStepId !== 'intro' && (
-                <Button
-                  onClick={() => toggleComplete(currentStepId)}
-                  variant={completedSteps.has(currentStepId) ? 'outline' : 'default'}
-                  size="lg"
-                >
-                  {completedSteps.has(currentStepId) ? (
-                    <>
-                      <CheckCircle2 className="h-5 w-5 mr-2" />
-                      完了！
-                    </>
-                  ) : (
-                    <>
-                      <Circle className="h-5 w-5 mr-2" />
-                      完了にする
-                    </>
-                  )}
-                </Button>
-              )}
 
               {/* Next Button */}
               <Button

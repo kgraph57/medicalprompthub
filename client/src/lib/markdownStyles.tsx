@@ -13,10 +13,6 @@ prose-h1:mb-6
 prose-h2:text-2xl 
 prose-h2:mt-10 
 prose-h2:mb-4 
-prose-h2:pb-2 
-prose-h2:border-b 
-prose-h2:border-slate-200 
-dark:prose-h2:border-slate-700 
 prose-h3:text-xl 
 prose-h3:mt-8 
 prose-h3:mb-3 
@@ -145,7 +141,7 @@ export const UNIFIED_MARKDOWN_COMPONENTS = {
     </h1>
   ),
   h2: ({node, children, ...props}: any) => (
-    <h2 className="text-2xl font-bold mt-10 mb-4 pb-2 border-b border-slate-200 dark:border-slate-700 tracking-tight" {...props}>
+    <h2 className="text-2xl font-bold mt-10 mb-4 tracking-tight" {...props}>
       {children}
     </h2>
   ),

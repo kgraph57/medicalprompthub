@@ -55,8 +55,10 @@
 
 ### 参考文献
 
-[1] Anthropic. "Introducing Claude 3.5 Sonnet." 2024. https://www.anthropic.com/news/claude-3-5-sonnet
-[2] Elicit. "Elicit: The AI Research Assistant." https://elicit.com/
-[3] Google. "NotebookLM: A research and writing partner that can help you make connections and uncover insights." https://notebooklm.google.com/
-[4] OpenAI. "Introducing o1." 2024. https://openai.com/index/o1/
-[5] Pinto D S, Noronha S M, Saigal G, et al. "Comparison of an AI-Generated Case Report With a Human-Written Case Report: Practical Considerations for AI-Assisted Medical Writing." Cureus 16(5): e60461. 2024. https://www.cureus.com/articles/242946-comparison-of-an-ai-generated-case-report-with-a-human-written-case-report-practical-considerations-for-ai-assisted-medical-writing
+---
+
+1. Anthropic. "Introducing Claude 3.5 Sonnet." 2024. https://www.anthropic.com/news/claude-3-5-sonnet
+2. Elicit. "Elicit: The AI Research Assistant." https://elicit.com/
+3. Google. "NotebookLM: A research and writing partner that can help you make connections and uncover insights." https://notebooklm.google.com/
+4. OpenAI. "Introducing o1." 2024. https://openai.com/index/o1/
+5. Pinto D S, Noronha S M, Saigal G, et al. "Comparison of an AI-Generated Case Report With a Human-Written Case Report: Practical Considerations for AI-Assisted Medical Writing." Cureus 16(5): e60461. 2024. https://www.cureus.com/articles/242946-comparison-of-an-ai-generated-case-report-with-a-human-written-case-report-practical-considerations-for-ai-assisted-medical-writing

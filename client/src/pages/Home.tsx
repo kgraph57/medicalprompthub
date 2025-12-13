@@ -113,10 +113,7 @@ export default function Home() {
 
       <div className="min-h-screen">
         {/* ヒーローセクション */}
-        <HeroSection 
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-        />
+        <HeroSection />
 
         {/* 統計情報バナーセクション */}
         {!isLoadingPrompts && prompts.length > 0 && (

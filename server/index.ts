@@ -7,6 +7,7 @@ import { logger } from "./_core/logger";
 import { correlationIdMiddleware } from "./_core/correlationId";
 import { metricsMiddleware, metrics } from "./_core/metrics";
 import { requestLoggerMiddleware } from "./_core/requestLogger";
+import { fastJsonMiddleware } from "./_core/fastJsonMiddleware";
 import { ENV } from "./_core/env";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +29,9 @@ async function startServer() {
     });
   });
 
+  // fast-json-stringifyミドルウェア（レスポンス高速化）
+  app.use(fastJsonMiddleware);
+
   // メトリクス収集ミドルウェア
   app.use(metricsMiddleware);
 
@@ -47,12 +51,23 @@ async function startServer() {
 
   // ヘルスチェックエンドポイント
   app.get("/health", (_req: Request, res: Response) => {
-    res.json({
-      status: "ok",
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      environment: ENV.NODE_ENV,
-    });
+    // fast-json-stringifyを使用して高速レスポンス
+    if (res.fastJson) {
+      res.fastJson.health({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: ENV.NODE_ENV,
+      });
+    } else {
+      // フォールバック（通常は発生しない）
+      res.json({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: ENV.NODE_ENV,
+      });
+    }
   });
 
   // メトリクスエンドポイント（管理者用、本番環境では認証を追加推奨）
@@ -62,7 +77,14 @@ async function startServer() {
       // 簡単な認証チェック（環境変数で設定）
       const authToken = req.headers.authorization?.replace("Bearer ", "");
       if (authToken !== process.env.METRICS_AUTH_TOKEN) {
-        return res.status(401).json({ error: "Unauthorized" });
+        res.status(401);
+        // fast-json-stringifyを使用して高速レスポンス
+        if (res.fastJson) {
+          res.fastJson.error({ error: "Unauthorized" });
+        } else {
+          res.json({ error: "Unauthorized" });
+        }
+        return;
       }
     }
 
@@ -70,7 +92,7 @@ async function startServer() {
     const httpStats = metrics.getHistogramStats("http_request_duration_ms");
     const errorCount = metrics.getCounter("http_errors_total");
 
-    res.json({
+    const metricsData = {
       timestamp: new Date().toISOString(),
       metrics: {
         http: {
@@ -88,7 +110,15 @@ async function startServer() {
           ])
         ),
       },
-    });
+    };
+
+    // fast-json-stringifyを使用して高速レスポンス
+    if (res.fastJson) {
+      res.fastJson.metrics(metricsData);
+    } else {
+      // フォールバック（通常は発生しない）
+      res.json(metricsData);
+    }
   });
 
   // Handle client-side routing - serve index.html for all routes
@@ -114,29 +144,55 @@ async function startServer() {
     });
 
     if (!res.headersSent) {
-      res.status(500).json({
-        error: "Internal Server Error",
-        message: process.env.NODE_ENV === "production" 
-          ? "An error occurred while processing your request."
-          : err.message,
-        correlationId,
-      });
+      res.status(500);
+      // fast-json-stringifyを使用して高速レスポンス
+      if (res.fastJson) {
+        res.fastJson.error({
+          error: "Internal Server Error",
+          message: process.env.NODE_ENV === "production" 
+            ? "An error occurred while processing your request."
+            : err.message,
+          correlationId,
+        });
+      } else {
+        // フォールバック（通常は発生しない）
+        res.json({
+          error: "Internal Server Error",
+          message: process.env.NODE_ENV === "production" 
+            ? "An error occurred while processing your request."
+            : err.message,
+          correlationId,
+        });
+      }
     }
   });
 
   // 404ハンドラー（すべてのルートの最後に配置）
   app.use((req: Request, res: Response) => {
+    const correlationId = (req as Request & { correlationId?: string }).correlationId;
+    
     logger.warn("Route not found", {
       method: req.method,
       path: req.path,
-      correlationId: (req as Request & { correlationId?: string }).correlationId,
+      correlationId,
     });
 
-    res.status(404).json({
-      error: "Not Found",
-      message: `Route ${req.method} ${req.path} not found`,
-      correlationId: (req as Request & { correlationId?: string }).correlationId,
-    });
+    res.status(404);
+    // fast-json-stringifyを使用して高速レスポンス
+    if (res.fastJson) {
+      res.fastJson.error({
+        error: "Not Found",
+        message: `Route ${req.method} ${req.path} not found`,
+        correlationId,
+      });
+    } else {
+      // フォールバック（通常は発生しない）
+      res.json({
+        error: "Not Found",
+        message: `Route ${req.method} ${req.path} not found`,
+        correlationId,
+      });
+    }
   });
 
   const port = ENV.PORT;

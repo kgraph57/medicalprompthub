@@ -188,11 +188,19 @@ pnpm build:client
 ## 🤝 Contributing
 プロンプトの追加や改善の提案を歓迎します！
 
+詳細な貢献方法については、[CONTRIBUTING.md](./CONTRIBUTING.md) をご覧ください。
+
 1. このリポジトリをフォーク
 2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-prompt`)
 3. 変更をコミット (`git commit -m 'Add amazing prompt'`)
 4. ブランチにプッシュ (`git push origin feature/amazing-prompt`)
 5. プルリクエストを作成
+
+### 行動規範
+このプロジェクトは [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md) に従います。
+
+### セキュリティ
+セキュリティ上の問題を発見した場合は、[SECURITY.md](./SECURITY.md) に従って報告してください。
 
 ## 📄 License
 MIT License

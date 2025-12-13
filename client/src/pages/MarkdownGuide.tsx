@@ -1,13 +1,13 @@
-import { useRoute, Link } from "wouter";
+import { useRoute, useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ArrowLeft, BookOpen, Clock, Loader2, ChevronRight, ChevronLeft } from "lucide-react";
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { ArrowLeft, Clock, Loader2, ChevronRight, ChevronLeft, Menu, X, Circle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Layout } from "@/components/Layout";
 import { updateSEO } from "@/lib/seo";
-import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles.tsx";
+import { CodeBlock } from '@/components/CodeBlock';
 
 // ガイドのメタデータ定義
 const guideMetadata: Record<string, {
@@ -428,15 +428,38 @@ const guideMetadata: Record<string, {
 
 export default function MarkdownGuide() {
   const [, params] = useRoute("/guides/:guideId");
+  const [, setLocation] = useLocation();
+  const navigate = (path: string) => setLocation(path);
   const guideId = params?.guideId || "";
   
   const [currentStep, setCurrentStep] = useState(0);
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const metadata = guideMetadata[guideId];
 
+  // LocalStorageから進捗を読み込み
+  useEffect(() => {
+    const saved = localStorage.getItem(`markdown-guide-progress-${guideId}`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setCompletedSteps(new Set(parsed));
+      } catch (e) {
+        console.error('Failed to parse progress:', e);
+      }
+    }
+  }, [guideId]);
+
+  // 進捗をLocalStorageに保存
+  useEffect(() => {
+    localStorage.setItem(`markdown-guide-progress-${guideId}`, JSON.stringify(Array.from(completedSteps)));
+  }, [completedSteps, guideId]);
+
+  // SEO設定
   useEffect(() => {
     if (metadata) {
       updateSEO({
@@ -482,134 +505,325 @@ export default function MarkdownGuide() {
     loadContent();
   }, [guideId, currentStep, metadata]);
 
+  const toggleComplete = (stepIndex: number) => {
+    setCompletedSteps(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(stepIndex)) {
+        newSet.delete(stepIndex);
+      } else {
+        newSet.add(stepIndex);
+      }
+      return newSet;
+    });
+  };
+
   if (!metadata) {
     return (
-      <Layout>
-        <div className="max-w-4xl mx-auto py-8 px-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <p className="text-center text-muted-foreground">ガイドが見つかりません</p>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   const totalSteps = metadata.steps.length;
-  const currentStepData = metadata.steps[currentStep];
+  const completedCount = completedSteps.size;
+  const progressPercentage = (completedCount / totalSteps) * 100;
+  const hasPrevious = currentStep > 0;
+  const hasNext = currentStep < totalSteps - 1;
+
+  const goToPrevious = () => {
+    if (hasPrevious) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const goToNext = () => {
+    if (hasNext) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
 
   return (
-    <Layout>
-      <div className="max-w-7xl mx-auto py-8 px-4">
-        <div className="mb-6">
-          <Link href="/guides">
-            <Button variant="ghost" size="sm" className="mb-4">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              ガイド一覧に戻る
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Header */}
+      <header className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 lg:py-2.5">
+          <div className="flex items-center gap-2">
+            {/* Hamburger Menu Button - Mobile Only */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsSidebarOpen(true)}
+              className="lg:hidden flex-shrink-0 h-7 w-7"
+            >
+              <Menu className="h-4 w-4" />
             </Button>
-          </Link>
-          
-          <div className="flex items-center gap-4 mb-2">
-            <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-              {metadata.category}
-            </span>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Clock className="w-4 h-4 mr-1" />
-              {metadata.readTime}
-            </div>
+            
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/guides')}
+              className="flex items-center flex-shrink-0"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">ガイド一覧に戻る</span>
+            </Button>
+            <h1 className="text-sm sm:text-base lg:text-xl font-bold text-gray-900 dark:text-white truncate">
+              {metadata.title}
+            </h1>
           </div>
-          
-          <h1 className="text-3xl font-bold mb-2">{metadata.title}</h1>
-          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
+      </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* サイドバー（ステップナビゲーション） */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-4">
-              <CardContent className="p-4">
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  目次
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Sidebar - Fixed Navigation */}
+          <aside className={`
+            fixed lg:static inset-y-0 left-0 z-50 lg:z-0
+            w-80 lg:w-80 flex-shrink-0
+            transform transition-transform duration-300 ease-in-out
+            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            bg-gray-50 dark:bg-gray-900 lg:bg-transparent
+          `}>
+            <div className="h-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto p-4 lg:p-0">
+              {/* Close Button - Mobile Only */}
+              <div className="lg:hidden flex justify-end mb-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="h-7 w-7"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              {/* Progress Card */}
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                  進捗状況
                 </h3>
-                <div className="mb-4">
-                  <div className="text-sm text-muted-foreground mb-1">進捗状況</div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm font-medium">完了</div>
-                    <div className="text-sm text-muted-foreground">{currentStep + 1}/{totalSteps}</div>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+                <div className="mb-2">
+                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-purple-600 transition-all duration-300"
+                      style={{ width: `${progressPercentage}%` }}
                     />
                   </div>
                 </div>
-                <nav className="space-y-1">
-                  {metadata.steps.map((step, index) => (
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {completedCount} / {totalSteps} 完了
+                </p>
+              </div>
+
+              {/* Navigation */}
+              <nav className="space-y-6">
+                {/* Introduction Link */}
+                {metadata.steps[0]?.id === '00-introduction' && (
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                     <button
-                      key={step.id}
-                      onClick={() => setCurrentStep(index)}
+                      onClick={() => {
+                        setCurrentStep(0);
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                        currentStep === index
-                          ? "bg-primary text-primary-foreground"
-                          : "hover:bg-muted"
+                        currentStep === 0
+                          ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                       }`}
                     >
-                      {step.title}
+                      <div className="font-medium">イントロダクション</div>
                     </button>
-                  ))}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* メインコンテンツ */}
-          <div className="lg:col-span-3 min-w-0">
-            <Card>
-              <CardContent className="p-6 overflow-hidden">
-                {loading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                  </div>
-                ) : error ? (
-                  <div className="text-center py-12">
-                    <p className="text-destructive mb-4">{error}</p>
-                    <Button onClick={() => window.location.reload()}>
-                      再読み込み
-                    </Button>
-                  </div>
-) : (
-                  <div className={UNIFIED_PROSE_CLASSES}>
-                    <ReactMarkdown 
-                      remarkPlugins={[remarkGfm]}
-                      components={UNIFIED_MARKDOWN_COMPONENTS}
-                    >
-                      {content}
-                    </ReactMarkdown>
                   </div>
                 )}
 
-                {/* ナビゲーションボタン */}
-                <div className="flex justify-between mt-8 pt-6 border-t">
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                    disabled={currentStep === 0}
-                  >
-                    <ChevronLeft className="w-4 h-4 mr-2" />
-                    前のステップ
-                  </Button>
-                  <Button
-                    onClick={() => setCurrentStep(Math.min(totalSteps - 1, currentStep + 1))}
-                    disabled={currentStep === totalSteps - 1}
-                  >
-                    次のステップ
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                {/* Group steps by phase (基本編, 実践編, 応用編) */}
+                {(() => {
+                  // ステップをフェーズごとにグループ化
+                  const otherSteps = metadata.steps.filter((step, index) => step.id !== '00-introduction' || index !== 0);
+                  const phases: Array<{ title: string; steps: Array<{ step: typeof metadata.steps[0]; index: number }> }> = [];
+                  
+                  otherSteps.forEach((step, filteredIndex) => {
+                    const originalIndex = metadata.steps.findIndex(s => s.id === step.id);
+                    // タイトルからフェーズ名を抽出（例: "基本編 - ステップ1" -> "基本編"）
+                    const phaseMatch = step.title.match(/^(基本編|実践編|応用編)/);
+                    const phaseTitle = phaseMatch ? phaseMatch[1] : 'その他';
+                    
+                    let phase = phases.find(p => p.title === phaseTitle);
+                    if (!phase) {
+                      phase = { title: phaseTitle, steps: [] };
+                      phases.push(phase);
+                    }
+                    phase.steps.push({ step, index: originalIndex });
+                  });
+
+                  return phases.map((phase, phaseIndex) => (
+                    <div key={phase.title} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-600 text-white text-sm font-bold">
+                          {phaseIndex + 1}
+                        </div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                          {phase.title}
+                        </h3>
+                      </div>
+                      <div className="space-y-1">
+                        {phase.steps.map(({ step, index: originalIndex }) => {
+                          const isCompleted = completedSteps.has(originalIndex);
+                          const isCurrent = currentStep === originalIndex;
+                          return (
+                            <div key={step.id} className="flex items-center gap-2">
+                              <button
+                                onClick={() => toggleComplete(originalIndex)}
+                                className="flex-shrink-0"
+                              >
+                                {isCompleted ? (
+                                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                                ) : (
+                                  <Circle className="h-5 w-5 text-gray-400" />
+                                )}
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setCurrentStep(originalIndex);
+                                  setIsSidebarOpen(false);
+                                }}
+                                className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
+                                  isCurrent
+                                    ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                }`}
+                              >
+                                <div className="font-medium">
+                                  {step.title.replace(/^(基本編|実践編|応用編) - /, '')}
+                                </div>
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ));
+                })()}
+              </nav>
+            </div>
+          </aside>
+
+          {/* Right Content - Scrollable Article */}
+          <main className="flex-1 min-w-0">
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <p className="text-destructive mb-4">{error}</p>
+                <Button onClick={() => window.location.reload()}>
+                  再読み込み
+                </Button>
+              </div>
+            ) : (
+              <article className="zenn-article">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                  components={{
+                    h1: ({ node, ...props }) => (
+                      <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props} />
+                    ),
+                    h2: ({ node, ...props }) => {
+                      const id = typeof props.children === 'string' 
+                        ? props.children.toLowerCase().replace(/\s+/g, '-')
+                        : undefined;
+                      return (
+                        <h2
+                          id={id}
+                          className="text-2xl md:text-3xl font-bold mt-16 mb-8 text-foreground scroll-mt-20 tracking-tight"
+                          {...props}
+                        />
+                      );
+                    },
+                    h3: ({ node, ...props }) => (
+                      <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
+                    ),
+                    h4: ({ node, ...props }) => (
+                      <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
+                    ),
+                    p: ({ node, ...props }) => (
+                      <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
+                    ),
+                    ul: ({ node, ...props }) => (
+                      <ul className="list-disc pl-8 mb-6 space-y-3" {...props} />
+                    ),
+                    ol: ({ node, ...props }) => (
+                      <ol className="list-decimal pl-8 mb-6 space-y-3" {...props} />
+                    ),
+                    li: ({ node, ...props }) => (
+                      <li className="text-lg md:text-xl text-foreground leading-[1.85] pl-2" {...props} />
+                    ),
+                    strong: ({ node, ...props }) => (
+                      <strong className="font-semibold text-foreground" {...props} />
+                    ),
+                    code({ node, className, children, ...props }: any) {
+                      const inline = (props as any).inline;
+                      if (inline) {
+                        return <code className="bg-muted/80 px-2 py-1 rounded-md text-base font-mono border border-border/50" {...props}>{children}</code>;
+                      }
+                      return (
+                        <CodeBlock className={className}>
+                          {String(children).replace(/\n$/, '')}
+                        </CodeBlock>
+                      );
+                    },
+                    pre: ({ node, ...props }) => (
+                      <pre className="bg-muted/80 p-6 rounded-xl overflow-x-auto my-8 border border-border/50 shadow-sm" {...props} />
+                    ),
+                    blockquote: ({ node, ...props }) => (
+                      <blockquote className="border-l-4 border-primary pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
+                    ),
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              </article>
+            )}
+
+            {/* Navigation and Completion Buttons */}
+            <div className="mt-8 flex items-center justify-between gap-4">
+              {/* Previous Button */}
+              <Button
+                onClick={goToPrevious}
+                disabled={!hasPrevious}
+                variant="outline"
+                size="lg"
+              >
+                <ChevronLeft className="h-5 w-5 mr-2" />
+                前へ
+              </Button>
+
+              {/* Next Button */}
+              <Button
+                onClick={goToNext}
+                disabled={!hasNext}
+                variant="default"
+                size="lg"
+              >
+                次へ
+                <ChevronRight className="h-5 w-5 ml-2" />
+              </Button>
+            </div>
+          </main>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }

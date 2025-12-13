@@ -191,7 +191,7 @@ export default function EnglishProofreadingGuide() {
                 <div className="mb-2">
                   <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-600 transition-all duration-300"
+                      className="h-full bg-purple-600 transition-all duration-300"
                       style={{ width: `${progressPercentage}%` }}
                     />
                   </div>
@@ -213,7 +213,7 @@ export default function EnglishProofreadingGuide() {
                     }}
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                       currentStepId === 'intro'
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
+                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -224,7 +224,7 @@ export default function EnglishProofreadingGuide() {
                 {englishProofreadingGuideData.phases.map((phase, phaseIndex) => (
                   <div key={phase.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-sm font-bold">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-600 text-white text-sm font-bold">
                         {phaseIndex + 1}
                       </div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -255,7 +255,7 @@ export default function EnglishProofreadingGuide() {
                               }}
                               className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
                                 isCurrent
-                                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
+                                  ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
                                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                               }`}
                             >
@@ -353,27 +353,6 @@ export default function EnglishProofreadingGuide() {
                 <ChevronLeft className="h-5 w-5 mr-2" />
                 前へ
               </Button>
-
-              {/* Completion Button - Only for steps, not intro */}
-              {currentStepId !== 'intro' && (
-                <Button
-                  onClick={() => toggleComplete(currentStepId)}
-                  variant={completedSteps.has(currentStepId) ? 'outline' : 'default'}
-                  size="lg"
-                >
-                  {completedSteps.has(currentStepId) ? (
-                    <>
-                      <CheckCircle2 className="h-5 w-5 mr-2" />
-                      完了！
-                    </>
-                  ) : (
-                    <>
-                      <Circle className="h-5 w-5 mr-2" />
-                      完了にする
-                    </>
-                  )}
-                </Button>
-              )}
 
               {/* Next Button */}
               <Button

@@ -1,20 +1,14 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { fastStorage } from '../lib/fastJsonStorage';
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>(() => {
-    const saved = localStorage.getItem('favorites');
-    if (!saved) return [];
-    try {
-      return JSON.parse(saved);
-    } catch (e) {
-      console.error("Failed to parse favorites from localStorage", e);
-      return [];
-    }
+    return fastStorage.getFavorites();
   });
 
   useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
+    fastStorage.setFavorites(favorites);
   }, [favorites]);
 
   const toggleFavorite = (id: string) => {

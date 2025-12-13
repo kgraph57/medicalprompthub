@@ -363,27 +363,6 @@ export default function MARWGuide() {
                 前へ
               </Button>
 
-              {/* Completion Button - Only for steps, not intro */}
-              {currentStepId !== 'intro' && (
-                <Button
-                  onClick={() => toggleComplete(currentStepId)}
-                  variant={completedSteps.has(currentStepId) ? 'outline' : 'default'}
-                  size="lg"
-                >
-                  {completedSteps.has(currentStepId) ? (
-                    <>
-                      <CheckCircle2 className="h-5 w-5 mr-2" />
-                      完了！
-                    </>
-                  ) : (
-                    <>
-                      <Circle className="h-5 w-5 mr-2" />
-                      完了にする
-                    </>
-                  )}
-                </Button>
-              )}
-
               {/* Next Button */}
               <Button
                 onClick={goToNext}

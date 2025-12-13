@@ -26,18 +26,12 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
         variant="ghost"
         size="sm"
         onClick={handleCopy}
-        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 h-6 px-2 text-xs opacity-70 hover:opacity-100 transition-opacity"
       >
         {copied ? (
-          <>
-            <Check className="h-4 w-4 mr-1" />
-            コピー完了
-          </>
+          <Check className="h-3 w-3" />
         ) : (
-          <>
-            <Copy className="h-4 w-4 mr-1" />
-            コピー
-          </>
+          <Copy className="h-3 w-3" />
         )}
       </Button>
     </div>

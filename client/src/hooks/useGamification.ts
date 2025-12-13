@@ -3,6 +3,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { fastStorage } from "../lib/fastJsonStorage";
 // import { trpc } from "@/lib/trpc";
 
 /**
@@ -25,7 +26,7 @@ export function useGamification() {
         console.error("Failed to load stats from localStorage", e);
       }
     }
-    return {
+    const defaultStats = {
       totalXP: 0,
       currentLevel: 1,
       currentStreak: 0,
@@ -33,6 +34,7 @@ export function useGamification() {
       totalLessonsCompleted: 0,
       totalQuizzesPassed: 0,
     };
+    return defaultStats;
   });
 
   // レベル計算関数
@@ -58,8 +60,8 @@ export function useGamification() {
     
     setStats(updatedStats);
     
-    // ローカルストレージに保存
-    localStorage.setItem("gamification-stats", JSON.stringify(updatedStats));
+    // fast-json-stringifyを使用してローカルストレージに保存
+    fastStorage.setGamificationStats(updatedStats);
     
     console.log("Add XP:", xp, reason, "Total:", newXP);
     

@@ -4,6 +4,7 @@
  */
 
 import { maskLogContext } from "./logMasking";
+import { logEntrySchema } from "./fastJsonSchemas";
 
 export enum LogLevel {
   DEBUG = "DEBUG",
@@ -89,9 +90,10 @@ class Logger {
   private log(level: LogLevel, message: string, context?: LogContext, error?: Error): void {
     const logEntry = this.formatLog(level, message, context, error);
 
-    // 本番環境ではJSON形式で出力、開発環境では読みやすい形式で出力
+    // 本番環境ではfast-json-stringifyを使用してJSON形式で出力、開発環境では読みやすい形式で出力
     if (this.environment === "production") {
-      console.log(JSON.stringify(logEntry));
+      // fast-json-stringifyを使用して高速シリアライゼーション
+      console.log(logEntrySchema(logEntry));
     } else {
       // 開発環境では色付きで出力
       const colorMap: Record<LogLevel, string> = {
