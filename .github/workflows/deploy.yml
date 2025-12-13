@@ -53,40 +53,47 @@ jobs:
 
       - name: Verify build output
         run: |
-          echo "Build output verification:"
+          echo "=== Build output verification ==="
+          echo "Current directory: $(pwd)"
           echo "Checking dist directory..."
           if [ ! -d dist ]; then
-            echo "✗ dist directory does not exist"
+            echo "✗ ERROR: dist directory does not exist"
+            echo "Contents of current directory:"
+            ls -la
             exit 1
           fi
+          echo "✓ dist directory exists"
+          echo ""
           echo "Contents of dist/:"
           ls -la dist/ | head -30
           echo ""
+          echo "All files in dist/:"
+          find dist -type f | head -30
+          echo ""
           echo "Checking for required files..."
           if [ ! -f dist/index.html ]; then
-            echo "✗ index.html missing"
+            echo "✗ ERROR: index.html missing"
             echo "Files in dist/:"
-            find dist -type f | head -20
+            find dist -type f | head -30
             exit 1
           fi
-          echo "✓ index.html exists"
+          echo "✓ index.html exists ($(wc -c < dist/index.html) bytes)"
           
           if [ ! -f dist/404.html ]; then
-            echo "✗ 404.html missing"
+            echo "✗ ERROR: 404.html missing"
             echo "Files in dist/:"
-            find dist -type f | head -20
+            find dist -type f | head -30
             exit 1
           fi
-          echo "✓ 404.html exists"
+          echo "✓ 404.html exists ($(wc -c < dist/404.html) bytes)"
           
           if [ ! -f dist/.nojekyll ]; then
-            echo "✗ .nojekyll missing"
-            echo "Files in dist/:"
-            find dist -type f | head -20
-            exit 1
+            echo "⚠ WARNING: .nojekyll missing, creating it..."
+            touch dist/.nojekyll
           fi
           echo "✓ .nojekyll exists"
-          echo "✓ All required files verified"
+          echo ""
+          echo "✓ All required files verified successfully"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
