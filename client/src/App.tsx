@@ -124,8 +124,8 @@ const ErrorFallbackLoader = ({ error, retry }: { error: Error; retry: () => void
 );
 
 function Router() {
-  // 開発環境では base を空に、本番環境では /medicalprompthub を使用
-  const basePath = import.meta.env.PROD ? "/medicalprompthub" : "";
+  // 開発環境では base を空に、本番環境では /Helix を使用
+  const basePath = import.meta.env.PROD ? "/Helix" : "";
   
   return (
     <WouterRouter base={basePath}>
