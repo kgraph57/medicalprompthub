@@ -73,8 +73,8 @@ const plugins = [
     }),
   ] : []),
 
-  // PWA設定（本番環境でも有効化、ただし慎重に）
-  ...(process.env.NODE_ENV === 'production' ? [VitePWA({
+  // PWA設定（一時的に無効化してキャッシュ問題を解決）
+  ...(false && process.env.NODE_ENV === 'production' ? [VitePWA({
     registerType: "autoUpdate",
     base: process.env.VITE_BASE_PATH || "/Helix/",
     scope: process.env.VITE_BASE_PATH || "/Helix/",
@@ -183,14 +183,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name]-[hash]-v17.js`,
-        chunkFileNames: `assets/[name]-[hash]-v17.js`,
+        entryFileNames: `assets/[name]-[hash]-v18.js`,
+        chunkFileNames: `assets/[name]-[hash]-v18.js`,
         assetFileNames: (assetInfo) => {
           // 画像の最適化（WebP形式への変換はビルド時に実施）
           if (assetInfo.name && /\.(png|jpg|jpeg)$/.test(assetInfo.name)) {
-            return `assets/images/[name]-[hash]-v17.[ext]`;
+            return `assets/images/[name]-[hash]-v18.[ext]`;
           }
-          return `assets/[name]-[hash]-v17.[ext]`;
+          return `assets/[name]-[hash]-v18.[ext]`;
         },
         manualChunks: (id) => {
           // React core
