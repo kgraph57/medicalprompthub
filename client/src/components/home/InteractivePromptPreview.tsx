@@ -243,7 +243,12 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               </div>
 
               {/* フッター */}
-              <div className="flex items-center justify-between pt-3 border-t border-neutral-800/50">
+              <motion.div 
+                className="flex items-center justify-between pt-3 border-t border-neutral-800/50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
                 <div className="flex gap-1.5">
                   {prompts.map((_, index) => (
                     <motion.div
@@ -257,11 +262,15 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
                     />
                   ))}
                 </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium tracking-[-0.01em] group-hover:text-neutral-400 transition-colors">
+                <motion.div 
+                  className="flex items-center gap-2 text-xs text-neutral-500 font-medium tracking-[-0.01em] group-hover:text-neutral-400 transition-colors"
+                  whileHover={{ x: 2 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <span>詳細を見る</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </div>
           </motion.div>
 

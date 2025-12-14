@@ -353,7 +353,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ 
                       duration: 0.7, 
-                      delay: 0.6,
+                      delay: 0.65,
                       ease: [0.16, 1, 0.3, 1] as [number, number, number, number] 
                     }}
                   >
