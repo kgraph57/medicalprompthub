@@ -1,5 +1,5 @@
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { ArrowRight, Copy, Check } from "lucide-react";
 import type { Prompt } from "@/lib/prompts";
 
@@ -12,21 +12,13 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
   const [currentIndex, setCurrentIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
 
-  // マウス追従エフェクト
+  // マウス追従エフェクト（軽量化）
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springConfig = { damping: 30, stiffness: 180 };
+  const springConfig = { damping: 40, stiffness: 200 }; // より軽量な設定
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
-
-  // スクロール連動のパララックス
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   // 自動ローテーション（4秒ごと）
   useEffect(() => {
@@ -37,14 +29,24 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
     return () => clearInterval(interval);
   }, [prompts.length]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    mouseX.set((e.clientX - centerX) / 10);
-    mouseY.set((e.clientY - centerY) / 10);
-  };
+  // マウス追従エフェクト（throttleで最適化）
+  const handleMouseMove = useMemo(() => {
+    let rafId: number | null = null;
+    return (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!containerRef.current) return;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        const rect = containerRef.current?.getBoundingClientRect();
+        if (rect) {
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          mouseX.set((e.clientX - centerX) / 10);
+          mouseY.set((e.clientY - centerY) / 10);
+        }
+        rafId = null;
+      });
+    };
+  }, [mouseX, mouseY]);
 
   const handleMouseLeave = () => {
     mouseX.set(0);
@@ -75,32 +77,17 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
       onMouseLeave={handleMouseLeave}
       style={{ willChange: "transform" }}
     >
-      {/* 背景グラデーション（強化版） - デスクトップのみ */}
+      {/* 背景グラデーション（軽量化） - デスクトップのみ */}
       <motion.div
-        className="hidden lg:block absolute inset-0 rounded-3xl opacity-40 blur-3xl -z-10"
+        className="hidden lg:block absolute inset-0 rounded-3xl opacity-30 blur-2xl -z-10"
         style={{
-          background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.2), transparent 70%)",
-          x: useTransform(x, (v) => v * 0.5),
-          y: useTransform(y, (v) => v * 0.5),
-        }}
-      />
-      {/* 追加の光の効果 - デスクトップのみ */}
-      <motion.div
-        className="hidden lg:block absolute inset-0 rounded-3xl opacity-20 blur-2xl -z-10"
-        style={{
-          background: "radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.3), transparent 60%)",
-          x: useTransform(x, (v) => v * -0.3),
-          y: useTransform(y, (v) => v * -0.3),
+          background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.3), transparent 70%)",
         }}
       />
 
       {/* メインカード */}
       <motion.div
         className="relative"
-        style={{
-          y: yParallax,
-          opacity,
-        }}
       >
         <motion.div
           className="relative group"
@@ -111,20 +98,20 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
             willChange: "transform",
           }}
           animate={{
-            y: [0, -8, 0],
+            y: [0, -4, 0],
           }}
           transition={{
-            duration: 3,
+            duration: 4,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
-          {/* グラスモーフィズムカード */}
+          {/* グラスモーフィズムカード（軽量化） */}
           <motion.div
-            className="relative rounded-2xl border border-neutral-800/50 bg-neutral-900/80 dark:bg-neutral-900/80 backdrop-blur-xl shadow-2xl overflow-hidden"
+            className="relative rounded-2xl border border-neutral-800/50 bg-neutral-900/90 dark:bg-neutral-900/90 shadow-2xl overflow-hidden"
             style={{
               transformStyle: "preserve-3d",
-              willChange: "transform, box-shadow",
+              willChange: "transform",
             }}
             whileHover={{
               scale: 1.02,
@@ -195,7 +182,7 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               </p>
 
               {/* プロンプトプレビュー */}
-              <div className="relative mt-4 p-4 rounded-lg bg-neutral-950/50 border border-neutral-800/50 backdrop-blur-sm">
+              <div className="relative mt-4 p-4 rounded-lg bg-neutral-950/60 border border-neutral-800/50">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-neutral-500">プロンプトプレビュー</span>
                   <span className="text-xs text-neutral-600">
@@ -231,41 +218,21 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
             </div>
           </motion.div>
 
-          {/* 背景カード（奥行き感 - 3Dスタック効果） */}
+          {/* 背景カード（奥行き感 - 軽量化） */}
           <motion.div
-            className="absolute inset-0 rounded-2xl border border-neutral-800/30 bg-neutral-900/40 backdrop-blur-xl -z-10"
+            className="absolute inset-0 rounded-2xl border border-neutral-800/30 bg-neutral-900/50 -z-10"
             style={{
               y: 8,
               scale: 0.96,
               opacity: 0.6,
-              filter: "blur(2px)",
-            }}
-            animate={{
-              y: [8, 6, 8],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 0.5,
             }}
           />
           <motion.div
-            className="absolute inset-0 rounded-2xl border border-neutral-800/20 bg-neutral-900/20 backdrop-blur-xl -z-20"
+            className="absolute inset-0 rounded-2xl border border-neutral-800/20 bg-neutral-900/30 -z-20"
             style={{
               y: 16,
               scale: 0.92,
               opacity: 0.4,
-              filter: "blur(4px)",
-            }}
-            animate={{
-              y: [16, 14, 16],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
             }}
           />
         </motion.div>

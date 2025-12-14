@@ -1,10 +1,7 @@
 import { ArrowRight, Search, Sparkles } from "lucide-react";
 import { useLocation } from "wouter";
-import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { loadPrompts } from "@/lib/prompts-loader";
-import { getRecommendedPrompts } from "@/lib/recommendedPrompts";
-import type { Prompt } from "@/lib/prompts";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 interface HeroSectionProps {
   searchQuery?: string;
@@ -92,21 +89,10 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   
-  // スクロール連動アニメーション
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  });
-
-  // パララックス効果
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
-  
-  // マウス追従エフェクト
+  // マウス追従エフェクト（軽量化）
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springConfig = { damping: 30, stiffness: 180 };
+  const springConfig = { damping: 40, stiffness: 200 }; // より軽量な設定
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
 
@@ -131,13 +117,21 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onSearchChange]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
+  // マウス追従エフェクト（throttleで最適化）
+  const handleMouseMove = useMemo(() => {
+    let rafId: number | null = null;
+    return (e: React.MouseEvent<HTMLElement>) => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        mouseX.set(x);
+        mouseY.set(y);
+        rafId = null;
+      });
+    };
+  }, [mouseX, mouseY]);
 
   return (
     <section 
@@ -147,16 +141,15 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
     >
       {/* Linear風: 控えめな背景装飾（グラデーション + アニメーション） */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* メイングラデーション */}
+        {/* メイングラデーション（軽量化） */}
         <motion.div 
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-gradient-to-br from-blue-500/4 via-cyan-500/3 to-blue-500/2 rounded-full blur-3xl"
-          style={{ y: backgroundY }}
           animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.3, 0.5, 0.3],
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.4, 0.3],
           }}
           transition={{
-            duration: 12,
+            duration: 15,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -183,10 +176,6 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         initial="hidden"
         animate="visible"
         viewport={{ once: true }}
-        style={{
-          y: contentY,
-          opacity,
-        }}
       >
         {/* Linear.app風：左寄せレイアウト */}
         <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -211,90 +200,25 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                   }}
                   variants={titleVariants}
                 >
-                  {(() => {
-                    // Linear.app風：適切な改行位置で分割（2行、"tool"の後で改行）
-                    const line1 = "Helix is a purpose-built tool";
-                    const line2 = "for medical AI excellence";
-                    
-                    const renderText = (text: string, baseDelay: number) => {
-                      const chars = text.split("");
-                      let charIndex = 0;
-                      return (
-                        <span className="block">
-                          {chars.map((char, index) => {
-                            const isSpace = char === " ";
-                            const currentCharIndex = charIndex;
-                            if (!isSpace) charIndex++;
-                            
-                            return (
-                              <motion.span
-                                key={index}
-                                className={isSpace ? "inline" : "inline-block relative whitespace-nowrap"}
-                                initial={{ 
-                                  opacity: isSpace ? 1 : 0,
-                                  filter: isSpace ? "blur(0px)" : "blur(8px)",
-                                  y: isSpace ? 0 : 10
-                                }}
-                                animate={{ 
-                                  opacity: 1,
-                                  filter: "blur(0px)",
-                                  y: 0
-                                }}
-                                transition={{
-                                  duration: 0.6,
-                                  delay: baseDelay + currentCharIndex * 0.015,
-                                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number] as [number, number, number, number]
-                                }}
-                              >
-                                {isSpace ? (
-                                  <span className="text-neutral-900 dark:text-neutral-50">&nbsp;</span>
-                                ) : (
-                                  <>
-                                    {/* 通常のテキスト */}
-                                    <span className="relative z-10 text-neutral-900 dark:text-neutral-50">
-                                      {char}
-                                    </span>
-                                    
-                                    {/* グラデーションアニメーション（各文字に適用） */}
-                                    <motion.span
-                                      className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent"
-                                      style={{
-                                        WebkitBackgroundClip: "text",
-                                        WebkitTextFillColor: "transparent",
-                                        backgroundSize: "200% 100%",
-                                      }}
-                                      initial={{ 
-                                        backgroundPosition: "-100% 0%",
-                                        opacity: 0,
-                                      }}
-                                      animate={{ 
-                                        backgroundPosition: "100% 0%",
-                                        opacity: 1,
-                                      }}
-                                      transition={{ 
-                                        duration: 0.6,
-                                        delay: baseDelay + currentCharIndex * 0.02,
-                                        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] as [number, number, number, number]
-                                      }}
-                                    >
-                                      {char}
-                                    </motion.span>
-                                  </>
-                                )}
-                              </motion.span>
-                            );
-                          })}
-                        </span>
-                      );
-                    };
-                    
-                    return (
-                      <span className="block">
-                        <span className="block leading-none">{renderText(line1, 0.2)}</span>
-                        <span className="block leading-none">{renderText(line2, 0.2 + line1.split(" ").length * 0.08 + 0.15)}</span>
-                      </span>
-                    );
-                  })()}
+                  {/* Linear.app風：シンプルなタイトルアニメーション（パフォーマンス最適化） */}
+                  <span className="block">
+                    <motion.span 
+                      className="block leading-none"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      Helix is a purpose-built tool
+                    </motion.span>
+                    <motion.span 
+                      className="block leading-none"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      for medical AI excellence
+                    </motion.span>
+                  </span>
                 </motion.h1>
                 
                 {/* 説明文（Linear.app風：2つの文章を別々の行に） */}
@@ -386,7 +310,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
               />
               
               <motion.div 
-                className="relative bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden"
+                className="relative bg-white/95 dark:bg-neutral-900/95 rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden"
                 whileHover={{ 
                   boxShadow: "0_8px_24px_rgba(0,0,0,0.12),0_12px_48px_rgba(0,0,0,0.08)",
                   borderColor: "rgba(59, 130, 246, 0.4)",

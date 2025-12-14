@@ -137,7 +137,7 @@ export function ContentShowcaseSection() {
             return (
               <motion.div
                 key={content.title}
-                className="group relative rounded-2xl p-6 border border-neutral-200/50 dark:border-neutral-700/50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm hover:border-neutral-300/70 dark:hover:border-neutral-600/70 transition-all duration-300 cursor-pointer overflow-hidden"
+                className="group relative rounded-2xl p-6 border border-neutral-200/50 dark:border-neutral-700/50 bg-white/95 dark:bg-neutral-900/95 hover:border-neutral-300/70 dark:hover:border-neutral-600/70 transition-all duration-300 cursor-pointer overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
