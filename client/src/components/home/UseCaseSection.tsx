@@ -1,5 +1,6 @@
-import { Activity, FileText, BarChart3, GraduationCap } from "lucide-react";
+import { Activity, FileText, BarChart3, GraduationCap, ArrowRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { motion } from "framer-motion";
 
 const useCases = [
   {
@@ -35,8 +36,8 @@ const useCases = [
     scene: "AIの基礎から実践まで、体系的に学習",
     feature: "Courses（AI基礎コース）",
     effect: "2週間で実務レベルに到達",
-    iconColor: "text-purple-600",
-    bgColor: "bg-purple-50",
+    iconColor: "text-blue-600",
+    bgColor: "bg-blue-50",
   },
 ];
 
@@ -44,84 +45,81 @@ export function UseCaseSection() {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-12 md:py-16 bg-gradient-to-b from-neutral-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        {/* セクションヘッダー */}
+    <section ref={ref} className="py-8 md:py-12 lg:py-16 bg-white dark:bg-neutral-950">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        {/* Linear.app風：カテゴリ + パンチライン + 説明文 */}
         <div
-          className={`text-center mb-12 transition-all duration-700 ${
+          className={`mb-8 transition-all duration-700 ${
             isVisible
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-neutral-900">
-            実際の医療現場での活用シーン
+          {/* カテゴリ/ラベル */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
+              Use Cases
+            </span>
+            <ArrowRight className="w-4 h-4 text-neutral-400" />
+          </div>
+          
+          {/* パンチライン */}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
+            Real-world medical applications
           </h2>
-          <p className="text-sm md:text-base text-neutral-600 max-w-3xl mx-auto">
-            日々の診療、研究、学習において、AIがどのように医療従事者をサポートするかをご紹介します
+          
+          {/* 説明文 */}
+          <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed tracking-[-0.01em]">
+            See how healthcare professionals use AI to streamline diagnosis, research, and patient care in daily practice.
           </p>
         </div>
 
-        {/* ユースケースカードグリッド */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {useCases.map((useCase, index) => {
+        {/* ユースケースカードグリッド（2x2レイアウト） */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {useCases.slice(0, 4).map((useCase, index) => {
             const Icon = useCase.icon;
             return (
-              <div
+              <motion.div
                 key={useCase.title}
-                className={`bg-white rounded-xl p-6 border border-neutral-200 hover:border-neutral-300 hover:shadow-lg transition-all duration-300 ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{
-                  transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
+                className="bg-white dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200/50 dark:border-neutral-700/50 hover:border-neutral-300/70 dark:hover:border-neutral-600/70 transition-all duration-300 flex flex-col"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1] 
                 }}
               >
-                {/* アイコン */}
-                <div className={`w-12 h-12 rounded-lg ${useCase.bgColor} ${useCase.iconColor} flex items-center justify-center mb-4`}>
-                  <Icon className="w-6 h-6" />
-                </div>
-
-                {/* タイトル */}
-                <h3 className="text-base font-semibold mb-3 text-neutral-900">
-                  {useCase.title}
-                </h3>
-
-                {/* シーン */}
-                <p className="text-sm text-neutral-600 mb-3 leading-relaxed">
-                  {useCase.scene}
-                </p>
-
-                {/* 使用機能 */}
-                <div className="mb-3">
-                  <span className="inline-block px-3 py-1 bg-neutral-100 text-neutral-700 text-xs rounded-full">
-                    {useCase.feature}
+                {/* カテゴリ/ラベル */}
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon className={`w-4 h-4 ${useCase.iconColor}`} strokeWidth={2} />
+                  <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
+                    {useCase.feature.split('（')[0]}
                   </span>
                 </div>
 
-                {/* 効果 */}
-                <div className="pt-3 border-t border-neutral-200">
-                  <p className="text-sm font-medium text-primary-600">
-                    ✓ {useCase.effect}
-                  </p>
-                </div>
-              </div>
+                {/* パンチライン */}
+                <h3 className="text-xl md:text-2xl font-black mb-3 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
+                  {useCase.title}
+                </h3>
+
+                {/* 説明文 */}
+                <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed tracking-[-0.01em] flex-grow">
+                  {useCase.scene}
+                </p>
+
+                {/* CTA */}
+                <a
+                  href="#prompts"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors duration-200 group"
+                >
+                  Learn more
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              </motion.div>
             );
           })}
-        </div>
-
-        {/* 補足メッセージ */}
-        <div
-          className={`mt-12 text-center transition-all duration-700 delay-500 ${
-            isVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
-        >
-          <p className="text-sm text-neutral-500">
-            ※ 効果は実際の使用状況により異なります。AIは診断・治療の補助ツールであり、最終判断は必ず医療従事者が行ってください。
-          </p>
         </div>
       </div>
     </section>

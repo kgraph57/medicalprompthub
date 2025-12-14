@@ -9,6 +9,7 @@ import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Footer } from "./Footer";
 
 // プロンプトカテゴリ定義
 const categories = [
@@ -308,6 +309,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="py-3 sm:py-4 lg:py-6">
           {children}
         </div>
+        
+        {/* フッター */}
+        <Footer />
       </main>
     </div>
   );

@@ -14,9 +14,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
-      duration: 0.4,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 };
@@ -24,13 +23,13 @@ const containerVariants = {
 const itemVariants = {
   hidden: { 
     opacity: 0, 
-    y: 24,
+    y: 20,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.7,
       ease: [0.16, 1, 0.3, 1],
     },
   },
@@ -39,13 +38,13 @@ const itemVariants = {
 const titleVariants = {
   hidden: { 
     opacity: 0, 
-    y: 32,
+    y: 30,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 0.9,
       ease: [0.16, 1, 0.3, 1],
     },
   },
@@ -54,26 +53,26 @@ const titleVariants = {
 const searchVariants = {
   hidden: { 
     opacity: 0, 
-    y: 28,
-    scale: 0.97,
+    y: 25,
+    scale: 0.98,
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.7,
+      duration: 0.8,
       ease: [0.16, 1, 0.3, 1],
     },
   },
 };
 
-// マウス追従エフェクト（Linear風）
+// マウス追従エフェクト（Linear風：より控えめに）
 function MouseFollowEffect({ x, y }: { x: any; y: any }) {
   const background = useTransform(
     [x, y],
     ([latestX, latestY]) => 
-      `radial-gradient(1000px circle at ${latestX}px ${latestY}px, rgba(120, 119, 198, 0.04), transparent 50%)`
+      `radial-gradient(800px circle at ${latestX}px ${latestY}px, rgba(59, 130, 246, 0.02), transparent 50%)`
   );
   
   return (
@@ -125,19 +124,26 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
 
   return (
     <section 
-      className="relative py-8 md:py-16 lg:py-20 xl:py-24 overflow-hidden min-h-[88vh] flex items-center"
+      className="relative py-8 md:py-12 lg:py-16 overflow-hidden min-h-[60vh] flex items-center bg-white dark:bg-neutral-950"
       onMouseMove={handleMouseMove}
     >
-      {/* Linear風: 完璧に洗練された背景 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#fafafa] to-white"></div>
-      
-      {/* 微細な装飾（Linear風の控えめなアクセント） */}
-      <div className="absolute inset-0 opacity-[0.012]">
-        <div className="absolute top-[20%] left-[10%] w-[800px] h-[800px] bg-blue-500 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-[20%] right-[10%] w-[800px] h-[800px] bg-cyan-400 rounded-full blur-3xl"></div>
+      {/* Linear風: 非常に控えめな背景装飾 */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-blue-500/3 via-blue-600/3 to-cyan-500/3 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.4, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
       </div>
       
-      {/* マウス追従エフェクト */}
+      {/* マウス追従エフェクト（Linear風：より控えめに） */}
       <MouseFollowEffect x={x} y={y} />
       
       <motion.div 
@@ -145,52 +151,180 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        viewport={{ once: true }}
       >
-        {/* バッジ（Linear風の控えめなアクセント） */}
-        <motion.div
-          className="flex justify-center mb-6 md:mb-8"
-          variants={itemVariants}
-        >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white/75 backdrop-blur-md border border-neutral-200/60 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-            <Sparkles className="w-3 h-3 text-primary-500" strokeWidth={2} />
-            <span className="text-[10px] font-medium text-neutral-700 tracking-[-0.008em]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-              The New Era of Medical AI in 2025
-            </span>
-          </div>
-        </motion.div>
+        {/* Linear.app風：左寄せレイアウト */}
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div>
+            {/* テキストコンテンツ */}
+            <div className="lg:pt-8">
+              {/* パンチライン + 説明文（Linear.app風：左寄せ） */}
+              <motion.div 
+                className="mb-8 md:mb-10"
+                variants={titleVariants}
+              >
+                {/* パンチライン（Linear.app風：大きなタイトル - 左寄せ、適度に改行） */}
+                <motion.h1 
+                  className="text-[36px] sm:text-[44px] md:text-[52px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] font-black mb-6 md:mb-8 leading-none tracking-[-0.02em] relative"
+                  style={{ 
+                    fontFamily: 'Inter Display, Inter, system-ui, sans-serif',
+                    wordBreak: 'normal',
+                    overflowWrap: 'normal',
+                    hyphens: 'none',
+                    whiteSpace: 'normal'
+                  }}
+                  variants={titleVariants}
+                >
+                  {(() => {
+                    // Linear.app風：適切な改行位置で分割（2行、"for"の前で改行）
+                    const line1 = "AMPL is a purpose-built tool";
+                    const line2 = "for medical AI excellence";
+                    
+                    const renderText = (text: string, baseDelay: number) => {
+                      const chars = text.split("");
+                      let charIndex = 0;
+                      return (
+                        <span className="block">
+                          {chars.map((char, index) => {
+                            const isSpace = char === " ";
+                            const currentCharIndex = charIndex;
+                            if (!isSpace) charIndex++;
+                            
+                            return (
+                              <motion.span
+                                key={index}
+                                className={isSpace ? "inline" : "inline-block relative whitespace-nowrap"}
+                                initial={{ 
+                                  opacity: isSpace ? 1 : 0,
+                                  filter: isSpace ? "blur(0px)" : "blur(8px)",
+                                  y: isSpace ? 0 : 10
+                                }}
+                                animate={{ 
+                                  opacity: 1,
+                                  filter: "blur(0px)",
+                                  y: 0
+                                }}
+                                transition={{
+                                  duration: 0.5,
+                                  delay: baseDelay + currentCharIndex * 0.02,
+                                  ease: [0.16, 1, 0.3, 1]
+                                }}
+                              >
+                                {isSpace ? (
+                                  <span className="text-neutral-900 dark:text-neutral-50">&nbsp;</span>
+                                ) : (
+                                  <>
+                                    {/* 通常のテキスト */}
+                                    <span className="relative z-10 text-neutral-900 dark:text-neutral-50">
+                                      {char}
+                                    </span>
+                                    
+                                    {/* グラデーションアニメーション（各文字に適用） */}
+                                    <motion.span
+                                      className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent"
+                                      style={{
+                                        WebkitBackgroundClip: "text",
+                                        WebkitTextFillColor: "transparent",
+                                        backgroundSize: "200% 100%",
+                                      }}
+                                      initial={{ 
+                                        backgroundPosition: "-100% 0%",
+                                        opacity: 0,
+                                      }}
+                                      animate={{ 
+                                        backgroundPosition: "100% 0%",
+                                        opacity: 1,
+                                      }}
+                                      transition={{ 
+                                        duration: 0.6,
+                                        delay: baseDelay + currentCharIndex * 0.02,
+                                        ease: [0.25, 0.46, 0.45, 0.94]
+                                      }}
+                                    >
+                                      {char}
+                                    </motion.span>
+                                  </>
+                                )}
+                              </motion.span>
+                            );
+                          })}
+                        </span>
+                      );
+                    };
+                    
+                    return (
+                      <span className="block">
+                        <span className="block leading-none">{renderText(line1, 0.2)}</span>
+                        <span className="block leading-none">{renderText(line2, 0.2 + line1.split(" ").length * 0.08 + 0.15)}</span>
+                      </span>
+                    );
+                  })()}
+                </motion.h1>
+                
+                {/* 説明文（Linear.app風：2つの文章を別々の行に） */}
+                <motion.div 
+                  className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] text-neutral-600 dark:text-neutral-400 mb-8 font-normal leading-[1.5] tracking-[-0.01em]"
+                  variants={itemVariants}
+                  style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                >
+                  <motion.p
+                    className="mb-0"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.7, 
+                      delay: 0.5,
+                      ease: [0.16, 1, 0.3, 1] 
+                    }}
+                  >
+                    Meet the system for modern medical practice.
+                  </motion.p>
+                  <motion.p
+                    className="mt-0"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.7, 
+                      delay: 0.6,
+                      ease: [0.16, 1, 0.3, 1] 
+                    }}
+                  >
+                    Streamline diagnosis, research, and patient care with expert AI prompts.
+                  </motion.p>
+                </motion.div>
 
-        {/* Linear風: 完璧なタイトル（中央配置） */}
-        <motion.div 
-          className="text-center mb-8 md:mb-10"
-          variants={titleVariants}
-        >
-          <h1 
-            className="text-[48px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[120px] font-black mb-5 md:mb-6 leading-[0.94] tracking-[-0.048em] text-neutral-900"
-            style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}
-          >
-            <span className="block">Medical AI,</span>
-            <motion.span 
-              className="block mt-2 md:mt-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400 bg-clip-text text-transparent"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.85, 
-                delay: 0.45,
-                ease: [0.16, 1, 0.3, 1] 
-              }}
-            >
-              Redefined
-            </motion.span>
-          </h1>
-          
-          <motion.p 
-            className="text-[16px] sm:text-[19px] md:text-[24px] lg:text-[28px] text-neutral-600 mb-3 max-w-3xl mx-auto font-normal leading-[1.4] tracking-[-0.02em] px-2"
-            variants={itemVariants}
-            style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-          >
-            100+ expert prompts. Infinite impact.
-          </motion.p>
-        </motion.div>
+                {/* CTAボタン（Linear.app風） */}
+                <motion.div 
+                  className="flex flex-col sm:flex-row items-start gap-4 mt-6"
+                  variants={itemVariants}
+                >
+                  <motion.button
+                    onClick={() => setLocation('/guides')}
+                    className="inline-flex items-center justify-center px-6 py-3 text-[15px] font-medium text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 rounded-lg transition-colors duration-200"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                  >
+                    Get Started
+                  </motion.button>
+                  
+                  <motion.a
+                    href="/changelog"
+                    className="group inline-flex items-center gap-1.5 px-0 py-3 text-[15px] font-medium text-neutral-900 dark:text-neutral-50 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors duration-200"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                  >
+                    <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-400 bg-clip-text text-transparent">
+                      New: Medical AI 2025
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-neutral-900 dark:text-neutral-50 transition-transform group-hover:translate-x-1" />
+                  </motion.a>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
         
         {/* Algolia風: プロフェッショナルな検索バー（中央、非常に目立つ） */}
         {onSearchChange && (
@@ -211,15 +345,15 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                 className="relative bg-white rounded-3xl shadow-[0_10px_32px_rgba(0,0,0,0.12),0_20px_64px_rgba(0,0,0,0.1)] border-2 border-neutral-200/70 overflow-hidden backdrop-blur-sm"
                 whileHover={{ 
                   boxShadow: "0_16px_40px_rgba(0,0,0,0.18),0_24px_80px_rgba(0,0,0,0.15)",
-                  borderColor: "rgba(120, 119, 198, 0.5)",
+                  borderColor: "rgba(59, 130, 246, 0.5)",
                   scale: 1.002,
                 }}
                 animate={{
                   borderColor: isSearchFocused 
-                    ? "rgba(120, 119, 198, 0.8)" 
+                    ? "rgba(59, 130, 246, 0.8)" 
                     : "rgba(0, 0, 0, 0.14)",
                   boxShadow: isSearchFocused
-                    ? "0_16px_40px_rgba(120,119,198,0.25),0_24px_80px_rgba(120,119,198,0.3)"
+                    ? "0_16px_40px_rgba(59,130,246,0.25),0_24px_80px_rgba(59,130,246,0.3)"
                     : "0_10px_32px_rgba(0,0,0,0.12),0_20px_64px_rgba(0,0,0,0.1)",
                 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -254,82 +388,6 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
             </div>
           </motion.div>
         )}
-        
-        {/* Linear風: 統計情報（検索バーの下、横並び） */}
-        <motion.div 
-          className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 max-w-4xl mx-auto mb-8 md:mb-10 px-1"
-          variants={itemVariants}
-        >
-          {[
-            { value: "100+", label: "Prompts", color: "text-blue-600" },
-            { value: "24/7", label: "Support", color: "text-cyan-500" },
-            { value: "AI", label: "Powered", color: "text-blue-400" },
-          ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              className="text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.6, 
-                delay: 0.7 + index * 0.12,
-                ease: [0.16, 1, 0.3, 1] 
-              }}
-            >
-              <div className={`text-[36px] sm:text-[52px] md:text-[64px] lg:text-[72px] font-black mb-2.5 tracking-[-0.045em] leading-[0.94] ${stat.color}`} style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-                {stat.value}
-              </div>
-              <div className="text-[11px] sm:text-[13px] md:text-[14px] text-neutral-600 font-medium tracking-[-0.006em]">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-        
-        {/* Linear風: 完璧に洗練されたCTA（中央配置） */}
-        <motion.div 
-          className="flex flex-col sm:flex-row justify-center items-center gap-4 px-2"
-          variants={itemVariants}
-        >
-          <motion.button
-            onClick={() => setLocation('/guides')}
-            className="group relative inline-flex items-center gap-2 px-6 sm:px-14 py-3 sm:py-7 text-[13px] sm:text-[16px] font-medium text-white bg-neutral-900 rounded-lg sm:rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.2),0_16px_48px_rgba(0,0,0,0.14)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.25),0_20px_64px_rgba(0,0,0,0.18)] transition-all duration-200 w-full sm:w-auto justify-center"
-            whileHover={{ 
-              scale: 1.02,
-              y: -1.5,
-            }}
-            whileTap={{ scale: 0.98 }}
-            style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-          >
-            Get Started
-            <motion.div
-              animate={{ x: [0, 4, 0] }}
-              transition={{ 
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <ArrowRight className="w-4 h-4" />
-            </motion.div>
-          </motion.button>
-          
-          <motion.button
-            onClick={() => {
-              const element = document.getElementById('prompts');
-              element?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="inline-flex items-center px-6 sm:px-14 py-3 sm:py-7 text-[13px] sm:text-[16px] font-medium text-neutral-700 bg-white border border-neutral-300/70 rounded-lg sm:rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 w-full sm:w-auto justify-center"
-            whileHover={{ 
-              scale: 1.02,
-              y: -1.5,
-            }}
-            whileTap={{ scale: 0.98 }}
-            style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-          >
-            Explore Prompts
-          </motion.button>
-        </motion.div>
       </motion.div>
     </section>
   );

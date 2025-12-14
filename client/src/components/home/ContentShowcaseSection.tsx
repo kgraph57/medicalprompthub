@@ -1,6 +1,7 @@
 import { ArrowRight, BookOpen, Lightbulb, GitBranch, FileText } from "lucide-react";
 import { useLocation } from "wouter";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { motion } from "framer-motion";
 
 const contentTypes = [
   {
@@ -54,9 +55,9 @@ const contentTypes = [
     description: "診断、研究、文書作成など、あらゆる場面で使えるプロンプトライブラリ。コピー&ペーストですぐに使えます。",
     cta: "プロンプトを探す",
     link: "#prompts",
-    bgColor: "bg-purple-50/50",
-    iconColor: "text-purple-600",
-    borderColor: "border-purple-100",
+    bgColor: "bg-blue-50/50",
+    iconColor: "text-blue-600",
+    borderColor: "border-blue-100",
     examples: [
       "鑑別診断",
       "統計解析",
@@ -81,80 +82,79 @@ export function ContentShowcaseSection() {
   };
 
   return (
-    <section ref={ref} className="py-12 md:py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        {/* セクションヘッダー */}
+    <section ref={ref} className="py-8 md:py-12 lg:py-16 bg-white dark:bg-neutral-950">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        {/* Linear.app風：カテゴリ + パンチライン + 説明文 */}
         <div
-          className={`text-center mb-12 transition-all duration-700 ${
+          className={`mb-8 transition-all duration-700 ${
             isVisible
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-neutral-900">
-            あなたに最適なコンテンツを見つけよう
+          {/* カテゴリ/ラベル */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
+              Resources
+            </span>
+            <ArrowRight className="w-4 h-4 text-neutral-400" />
+          </div>
+          
+          {/* パンチライン */}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
+            Comprehensive learning resources
           </h2>
-          <p className="text-sm md:text-base text-neutral-600 max-w-3xl mx-auto">
-            学習スタイルや目的に応じて、4つのコンテンツタイプから選べます
+          
+          {/* 説明文 */}
+          <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed tracking-[-0.01em]">
+            Choose from courses, guides, tips, and prompts to accelerate your medical AI journey.
           </p>
         </div>
 
         {/* コンテンツカードグリッド */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {contentTypes.map((content, index) => {
             const Icon = content.icon;
             return (
-              <div
+              <motion.div
                 key={content.title}
-                className={`group rounded-xl p-6 border ${content.borderColor} ${content.bgColor} hover:shadow-lg transition-all duration-300 cursor-pointer ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{
-                  transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
+                className="group rounded-2xl p-6 border border-neutral-200/50 dark:border-neutral-700/50 bg-white dark:bg-neutral-900 hover:border-neutral-300/70 dark:hover:border-neutral-600/70 transition-all duration-300 cursor-pointer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1] 
                 }}
                 onClick={() => handleNavigation(content.link)}
               >
-                {/* アイコンとタイトル */}
-                <div className="flex items-start gap-4 mb-4">
-                  <div className={`p-3 rounded-lg ${content.bgColor} ${content.iconColor}`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-neutral-900 mb-2">
-                      {content.title}
-                    </h3>
-                    <p className="text-sm text-neutral-600 leading-relaxed">
-                      {content.description}
-                    </p>
-                  </div>
+                {/* カテゴリ/ラベル */}
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon className={`w-4 h-4 ${content.iconColor}`} strokeWidth={2} />
+                  <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
+                    {content.title.split(' ')[0]}
+                  </span>
                 </div>
-
-                {/* 例 */}
-                <div className="mb-4 ml-16">
-                  <div className="flex flex-wrap gap-2">
-                    {content.examples.map((example) => (
-                      <span
-                        key={example}
-                        className="px-3 py-1 bg-white/80 border border-neutral-200 text-neutral-700 text-xs rounded-full"
-                      >
-                        {example}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                
+                {/* パンチライン */}
+                <h3 className="text-xl md:text-2xl font-black mb-3 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
+                  {content.title}
+                </h3>
+                
+                {/* 説明文 */}
+                <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-[-0.01em] mb-4">
+                  {content.description}
+                </p>
 
                 {/* CTA */}
-                <div className="ml-16">
-                  <button
-                    className={`inline-flex items-center gap-2 ${content.iconColor} font-medium text-sm transition-colors group-hover:gap-3`}
-                  >
-                    {content.cta}
-                    <ArrowRight className="w-4 h-4 transition-transform" />
-                  </button>
-                </div>
-              </div>
+                <a
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors duration-200 group"
+                >
+                  Learn more
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              </motion.div>
             );
           })}
         </div>
