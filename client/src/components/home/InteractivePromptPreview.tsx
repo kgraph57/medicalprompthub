@@ -156,18 +156,11 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               ease: [0.16, 1, 0.3, 1],
             }}
           >
-            {/* 光の反射効果（強化版） */}
+            {/* 光の反射効果（控えめに） */}
             <motion.div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               style={{
-                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(59, 130, 246, 0.1) 30%, transparent 60%)",
-              }}
-            />
-            {/* 追加のグロー効果 */}
-            <motion.div
-              className="absolute -inset-1 opacity-0 group-hover:opacity-50 blur-xl transition-opacity duration-500"
-              style={{
-                background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.4), transparent 70%)",
+                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(59, 130, 246, 0.05) 30%, transparent 60%)",
               }}
             />
 
