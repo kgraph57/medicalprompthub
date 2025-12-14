@@ -126,16 +126,16 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
         <motion.div
           className="relative group"
           style={{
-            rotateX: useTransform(y, [-20, 20], [3, -3]),
-            rotateY: useTransform(x, [-20, 20], [-3, 3]),
+            rotateX: useTransform(y, [-20, 20], [2, -2]),
+            rotateY: useTransform(x, [-20, 20], [-2, 2]),
             transformStyle: "preserve-3d",
             willChange: "transform",
           }}
           animate={{
-            y: [0, -6, 0],
+            y: [0, -4, 0],
           }}
           transition={{
-            duration: 4,
+            duration: 5,
             repeat: Infinity,
             ease: "easeInOut",
           }}

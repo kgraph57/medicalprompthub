@@ -191,15 +191,15 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
             ease: "easeInOut",
           }}
         />
-        {/* 微細なグリッドパターン */}
-        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.025]">
+        {/* 微細なグリッドパターン（より控えめに） */}
+        <div className="absolute inset-0 opacity-[0.008] dark:opacity-[0.015]">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <pattern id="heroGrid" width="40" height="40" patternUnits="userSpaceOnUse">
                 <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" className="text-neutral-900 dark:text-neutral-100" />
+            <rect width="100%" height="100%" fill="url(#heroGrid)" className="text-neutral-900 dark:text-neutral-100" />
           </svg>
         </div>
       </div>
