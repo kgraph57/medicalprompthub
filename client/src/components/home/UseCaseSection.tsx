@@ -142,13 +142,15 @@ export function UseCaseSection() {
                 </p>
 
                 {/* CTA */}
-                <a
+                <motion.a
                   href="#prompts"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors duration-200 group/cta"
+                  whileHover={{ x: 2 }}
+                  transition={{ duration: 0.2 }}
                 >
                   Learn more
                   <ArrowRight className="w-4 h-4 transition-transform group-hover/cta:translate-x-1" />
-                </a>
+                </motion.a>
                 </div>
               </motion.div>
             );
