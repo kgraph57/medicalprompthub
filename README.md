@@ -1,4 +1,4 @@
-# Medical Prompt Hub
+# Helix
 
 医療従事者のためのAIプロンプトライブラリ - AI Prompt Library for Healthcare Professionals
 
@@ -6,7 +6,28 @@
 **[https://kgraph57.github.io/medicalprompthub/](https://kgraph57.github.io/medicalprompthub/)**
 
 ## 📖 About
-Medical Prompt Hubは、医師や研究者がAI（ChatGPT, Claude, Geminiなど）を臨床、研究、教育に効果的に活用するための**実践的なプロンプト集**です。
+
+**Helix** is an AI-powered platform designed to augment healthcare professionals by supporting their daily workflows and enabling them to focus on what matters most: meaningful patient interactions and clinical decision-making.
+
+Named after the double helix structure of DNA, Helix represents the fundamental building block of life and medicine. Just as the double helix contains the instructions for life itself, Helix contains the intelligence and support to help physicians deliver exceptional care.
+
+### Mission
+
+To empower physicians to reclaim their time and expertise by intelligently handling routine and administrative burdens, allowing them to dedicate more attention to patient dialogue, diagnosis, and treatment.
+
+### Vision
+
+A healthcare ecosystem where AI serves as a physician's intelligent partner—supporting documentation, research, and administrative work—while physicians focus on the irreplaceable human elements of medicine: empathy, clinical judgment, and patient care.
+
+### The Helix Philosophy
+
+**Physicians are not replaced; they are augmented.**
+
+Helix recognizes that physicians possess irreplaceable clinical judgment, empathy, and decision-making capabilities. Our platform is built to support and enhance these strengths by handling routine, time-consuming tasks.
+
+---
+
+Helixは、医師や研究者がAI（ChatGPT, Claude, Geminiなど）を臨床、研究、教育に効果的に活用するための**実践的なプロンプト集**です。
 
 ### 主な特徴
 - **100以上の専門プロンプト**: 診断支援、治療計画、論文執筆、学会発表など、医療現場で実際に使えるプロンプトを網羅
@@ -212,4 +233,6 @@ MIT License
 
 ---
 
-**Made with ❤️ for Healthcare Professionals**
+**Helix: Augmenting Medicine, One Physician at a Time.**
+
+#MedicalAI #HealthcareAI #PromptEngineering #DigitalHealth #AIforDoctors

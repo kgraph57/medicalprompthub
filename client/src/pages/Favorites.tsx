@@ -15,7 +15,7 @@ export default function Favorites() {
 
   useEffect(() => {
     updateSEO({
-      title: "お気に入りプロンプト | Medical Prompt Hub",
+      title: "お気に入りプロンプト | Helix",
       description: "保存したプロンプトの一覧。よく使うプロンプトに素早くアクセスできます。",
       path: "/favorites",
       keywords: "お気に入り,ブックマーク,保存,プロンプト"

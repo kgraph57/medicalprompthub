@@ -370,7 +370,7 @@ export default function GuideDetail() {
   useEffect(() => {
     if (guide) {
       updateSEO({
-        title: `${guide.title} | Medical Prompt Hub`,
+        title: `${guide.title} | Helix`,
         description: guide.description || `${guide.title}のワークフローガイド。医療従事者がAIを活用して効率的に作業を進める方法を学べます。`,
         path: `/guides/${guideId}`,
         keywords: `${guide.title},ワークフローガイド,${guide.category},医療研究,AI活用`

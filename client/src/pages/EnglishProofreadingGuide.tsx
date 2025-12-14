@@ -43,7 +43,7 @@ export default function EnglishProofreadingGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "英文校正ガイド | Medical Prompt Hub",
+      title: "英文校正ガイド | Helix",
       description: "医学論文の英文校正をAIで効率的に行う方法を段階的にサポート。AIを活用して高品質な英文を作成できます。",
       path: `/guides/english-proofreading-guide${stepId ? `/${stepId}` : ''}`,
       keywords: "英文校正,英語校正,医学論文,AI活用,英語ライティング"

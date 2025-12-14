@@ -16,7 +16,7 @@ export default function JournalDetail() {
   useEffect(() => {
     if (journal) {
       updateSEO({
-        title: `${journal.title} | ジャーナル情報 | Medical Prompt Hub`,
+        title: `${journal.title} | ジャーナル情報 | Helix`,
         description: `${journal.title}の詳細情報。インパクトファクター、レビュー速度、投稿要件などを確認できます。`,
         path: `/journal/${journalId}`,
         keywords: `${journal.title},ジャーナル,インパクトファクター,医学雑誌,${journal.publisher}`

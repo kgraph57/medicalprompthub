@@ -10,8 +10,8 @@ import { Separator } from "@/components/ui/separator";
 export default function Legal() {
   useEffect(() => {
     updateSEO({
-      title: "利用規約・プライバシーポリシー | Medical Prompt Hub",
-      description: "Medical Prompt Hubの利用規約、プライバシーポリシー、免責事項。医療情報の取り扱い、個人情報保護、GDPR準拠について詳しく説明しています。",
+      title: "利用規約・プライバシーポリシー | Helix",
+      description: "Helixの利用規約、プライバシーポリシー、免責事項。医療情報の取り扱い、個人情報保護、GDPR準拠について詳しく説明しています。",
       path: "/legal",
       keywords: "利用規約,プライバシーポリシー,免責事項,GDPR,個人情報保護,医療情報"
     });
@@ -45,7 +45,7 @@ export default function Legal() {
             </h2>
             <div className="space-y-4 text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
               <p className="font-semibold">
-                本サービス「Medical Prompt Hub」は、医療従事者の業務効率化を支援するためのAIプロンプト集を提供するものであり、医療アドバイスを提供するものではありません。
+                本サービス「Helix」は、医療従事者の業務効率化を支援するためのAIプロンプト集を提供するものであり、医療アドバイスを提供するものではありません。
               </p>
               <ul className="list-disc pl-5 space-y-2">
                 <li>

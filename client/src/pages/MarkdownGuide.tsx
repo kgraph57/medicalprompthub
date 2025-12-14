@@ -463,7 +463,7 @@ export default function MarkdownGuide() {
   useEffect(() => {
     if (metadata) {
       updateSEO({
-        title: `${metadata.title} | Medical Prompt Hub`,
+        title: `${metadata.title} | Helix`,
         description: metadata.description,
         path: `/guides/${guideId}`,
         keywords: `${metadata.title},医療AI,プロンプト,ワークフロー`

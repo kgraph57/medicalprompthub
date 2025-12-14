@@ -39,7 +39,7 @@ export default function PaperReadingGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "論文読解ガイド | Medical Prompt Hub",
+      title: "論文読解ガイド | Helix",
       description: "医学論文を効率的に読む方法を段階的にサポート。AIを活用して論文を理解し、批判的に評価するスキルを学べます。",
       path: `/guides/paper-reading-efficiency${stepId ? `/${stepId}` : ''}`,
       keywords: "論文読解,医学論文,批判的読解,文献レビュー,AI活用"

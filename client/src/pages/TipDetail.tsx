@@ -86,7 +86,7 @@ export default function TipDetail() {
   useEffect(() => {
     if (tip) {
       updateSEO({
-        title: `${tip.title} | AI活用Tips | Medical Prompt Hub`,
+        title: `${tip.title} | AI活用Tips | Helix`,
         description: tip.content.substring(0, 150) || `${tip.title}のAI活用Tips。プロンプトエンジニアリングのテクニックを学べます。`,
         path: `/tips/${tipId}`,
         keywords: `${tip.title},AI活用Tips,プロンプトエンジニアリング,${tip.category},${tip.level}`
@@ -100,11 +100,11 @@ export default function TipDetail() {
         "description": tip.content.substring(0, 200) || `${tip.title}のAI活用Tips`,
         "author": {
           "@type": "Organization",
-          "name": "Medical Prompt Hub"
+          "name": "Helix"
         },
         "publisher": {
           "@type": "Organization",
-          "name": "Medical Prompt Hub",
+          "name": "Helix",
           "logo": {
             "@type": "ImageObject",
             "url": `${BASE_URL}/og-image-new.png`

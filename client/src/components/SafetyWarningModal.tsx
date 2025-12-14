@@ -41,7 +41,7 @@ export function SafetyWarningModal() {
             医療安全に関する重要なお知らせ
           </DialogTitle>
           <DialogDescription className="text-base pt-2">
-            Medical Prompt Hubをご利用いただく前に、以下の重要事項を必ずお読みください。
+            Helixをご利用いただく前に、以下の重要事項を必ずお読みください。
           </DialogDescription>
         </DialogHeader>
 

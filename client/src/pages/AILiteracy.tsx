@@ -73,7 +73,7 @@ export default function AILiteracy() {
 
   useEffect(() => {
     updateSEO({
-      title: "AIリテラシーガイド | Medical Prompt Hub",
+      title: "AIリテラシーガイド | Helix",
       description: "医療現場でAIを安全に活用するために知っておくべきこと。AIの限界、ハルシネーション、ファクトチェックの重要性を解説します。",
       path: "/ai-literacy",
       keywords: "AIリテラシー,ハルシネーション,ファクトチェック,医療AI,安全なAI活用"

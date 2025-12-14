@@ -4,159 +4,157 @@
  */
 
 import { Layout } from "@/components/Layout";
-import { PageHeader } from "@/components/PageHeader";
-import { Heart, Code, Users, BookOpen, Github, Mail, ArrowRight, Sparkles } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Heart, Code, Users, BookOpen, Sparkles, Github, Mail } from "lucide-react";
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
 
 export default function About() {
   useEffect(() => {
     updateSEO({
-      title: "About - Medical Prompt Hubについて",
-      description: "Medical Prompt Hubの開発背景、開発者情報、クレジット、ライセンス情報を掲載しています。",
+      title: "About - Helixについて",
+      description: "Helixの開発背景、開発者情報、クレジット、ライセンス情報を掲載しています。",
       path: "/about",
-      keywords: "About,開発者,クレジット,ライセンス,Medical Prompt Hub"
+      keywords: "About,開発者,クレジット,ライセンス,Helix"
     });
   }, []);
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto space-y-16 pb-20">
+      <div className="max-w-4xl mx-auto space-y-4 pb-12">
         {/* Hero Section */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 text-muted-foreground text-xs font-medium tracking-wide">
+        <div className="text-center space-y-2 py-2 lg:py-2.5">
+          <div className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>About Medical Prompt Hub</span>
+            <span>About Helix</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-            Medical Prompt Hubについて
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            Helixについて
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             医療従事者のためのAIプロンプトライブラリ
           </p>
         </div>
 
         {/* Mission Section */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-2 mb-6">
-            <Heart className="w-4 h-4 text-primary" strokeWidth={2} />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
-              Mission
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground tracking-tight leading-[1.1]">
-            このツールで生まれた時間を、患者さんとの対話のために。
-          </h2>
-          <div className="space-y-5 text-base text-muted-foreground leading-relaxed">
-            <p className="text-lg font-medium text-foreground">
+        <Card>
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Heart className="w-4 h-4 text-primary" />
+              ミッション：「このツールで生まれた時間を、患者さんとの対話のために。」
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
+            <p className="text-sm font-medium text-primary-700 italic">
               AIは医療を効率化するだけではなく、医師が患者と向き合う時間を増やすためのツールです。
             </p>
             <p>
-              AMPLは、医療従事者がAI（ChatGPT, Claude, Geminiなど）を臨床業務、研究、教育に効果的に活用できるよう、実践的で高品質なプロンプトを提供することを目的としています。
+              Helixは、医療従事者がAI（ChatGPT, Claude, Geminiなど）を臨床業務、研究、教育に効果的に活用できるよう、実践的で高品質なプロンプトを提供することを目的としています。
             </p>
             <p>
               私たちは、AI技術が医療現場の効率化と質の向上に貢献できると信じており、医療従事者の皆様が安全かつ効果的にAIを活用できるよう、専門的なプロンプト集とガイドを提供しています。
             </p>
-            <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border/60">
-              <h4 className="text-base font-semibold text-foreground mb-2">
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900/50">
+              <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-400 mb-2">
                 🛡️ 医療安全へのコミットメント
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-blue-800 dark:text-blue-300">
                 本サービスは、デジタルヘルス、医療安全、EBM、AI技術の専門家の視点からレビューされ、医療安全機能（リスクレベル表示、チェックリスト、AIリテラシーガイド）を実装しています。
               </p>
             </div>
-          </div>
-        </motion.section>
+          </CardContent>
+        </Card>
 
         {/* Features Section */}
-        <motion.section
-          className="mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <BookOpen className="w-4 h-4 text-blue-600" strokeWidth={2} />
-            <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
-              Features
-            </span>
-          </div>
-          <h2 className="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-            Main features
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <h3 className="font-semibold text-base flex items-center gap-2 text-neutral-900 dark:text-neutral-50">
-                <BookOpen className="w-4 h-4 text-blue-600" />
-                100+ expert prompts
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                診断支援、治療計画、論文執筆、学会発表など、医療現場で実際に使えるプロンプトを網羅
-              </p>
+        <Card>
+          <CardHeader className="p-4">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Sparkles className="w-4 h-4 text-primary" />
+              主な特徴
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-primary" />
+                  100以上の専門プロンプト
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  診断支援、治療計画、論文執筆、学会発表など、医療現場で実際に使えるプロンプトを網羅
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Code className="w-3.5 h-3.5 text-primary" />
+                  実践的なワークフローガイド
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  症例報告の書き方、統計解析の方法など、ステップバイステップのガイドを提供
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5 text-primary" />
+                  医療従事者向けに最適化
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  医療現場の実際のニーズに基づいて設計された、実用的なプロンプト集
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Heart className="w-3.5 h-3.5 text-primary" />
+                  無料で利用可能
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  すべてのプロンプトとガイドは無料で利用でき、オープンソースとして公開されています
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Heart className="w-3.5 h-3.5 text-red-600" />
+                  医療安全機能
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  リスクレベル表示、チェックリスト、AIリテラシーガイドで安全な利用をサポート
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5 text-primary" />
+                  Shared Decision Making
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  患者の価値観を尊重した共同意思決定を支援するプロンプトを提供
+                </p>
+              </div>
             </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-base flex items-center gap-2 text-neutral-900 dark:text-neutral-50">
-                <Code className="w-4 h-4 text-blue-600" />
-                Practical workflow guides
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                症例報告の書き方、統計解析の方法など、ステップバイステップのガイドを提供
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-base flex items-center gap-2 text-neutral-900 dark:text-neutral-50">
-                <Users className="w-4 h-4 text-blue-600" />
-                Optimized for healthcare
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                医療現場の実際のニーズに基づいて設計された、実用的なプロンプト集
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-base flex items-center gap-2 text-neutral-900 dark:text-neutral-50">
-                <Heart className="w-4 h-4 text-blue-600" />
-                Free and open source
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                すべてのプロンプトとガイドは無料で利用でき、オープンソースとして公開されています
-              </p>
-            </div>
-          </div>
-        </motion.section>
+          </CardContent>
+        </Card>
+
+        <Separator />
 
         {/* Developer Section */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-2 mb-6">
-            <Code className="w-4 h-4 text-primary" strokeWidth={2} />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
-              Developer
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-foreground tracking-tight leading-[1.1]">
-            Development and operations
-          </h2>
-          <div className="space-y-8 text-base text-muted-foreground">
+        <Card>
+          <CardHeader className="p-4">
+            <CardTitle className="text-base">開発者情報</CardTitle>
+            <CardDescription className="text-xs">
+              Helixの開発・運営について
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
             <div>
-              <h3 className="font-semibold mb-3 text-lg text-foreground">開発・運営</h3>
-              <p className="leading-relaxed">
-                AMPLは、医療従事者とAI技術の専門家によって開発・運営されています。
+              <h3 className="font-semibold mb-1 text-sm">開発・運営</h3>
+              <p className="text-muted-foreground">
+                Helixは、医療従事者とAI技術の専門家によって開発・運営されています。
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-3 text-lg text-foreground">技術スタック</h3>
-              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
+              <h3 className="font-semibold mb-1 text-sm">技術スタック</h3>
+              <ul className="list-disc pl-4 space-y-0.5 text-muted-foreground">
                 <li>Frontend: React 19, TypeScript, Vite, Tailwind CSS</li>
                 <li>UI Components: shadcn/ui, Radix UI, Framer Motion</li>
                 <li>Hosting: GitHub Pages</li>
@@ -165,41 +163,29 @@ export default function About() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-3 text-lg text-foreground">お問い合わせ</h3>
-              <p className="mb-4 leading-relaxed">
+              <h3 className="font-semibold mb-1 text-sm">お問い合わせ</h3>
+              <p className="text-muted-foreground mb-1.5">
                 ご質問、ご意見、バグ報告などは、お問い合わせフォームからお願いいたします。
               </p>
               <Link href="/contact">
-                <span className="text-primary hover:text-primary/80 inline-flex items-center gap-2 transition-colors font-medium">
+                <span className="text-primary hover:underline flex items-center gap-1">
                   <Mail className="w-4 h-4" />
                   お問い合わせフォームへ
-                  <ArrowRight className="w-4 h-4" />
                 </span>
               </Link>
             </div>
-          </div>
-        </motion.section>
+          </CardContent>
+        </Card>
 
         {/* Credits Section */}
-        <motion.section
-          className="mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Users className="w-4 h-4 text-blue-600" strokeWidth={2} />
-            <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
-              Credits
-            </span>
-          </div>
-          <h2 className="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-            Credits and acknowledgments
-          </h2>
-          <div className="space-y-6 text-base text-neutral-600 dark:text-neutral-400">
+        <Card>
+          <CardHeader className="p-4">
+            <CardTitle className="text-base">クレジット・謝辞</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
             <div>
-              <h3 className="font-semibold mb-2 text-lg text-neutral-900 dark:text-neutral-50">謝辞</h3>
-              <ul className="list-disc pl-6 space-y-1">
+              <h3 className="font-semibold mb-1 text-sm">謝辞</h3>
+              <ul className="list-disc pl-4 space-y-0.5 text-muted-foreground">
                 <li>すべての医療従事者の皆様</li>
                 <li>AIコミュニティの貢献者</li>
                 <li>オープンソースプロジェクトの開発者</li>
@@ -207,61 +193,56 @@ export default function About() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-2 text-lg text-neutral-900 dark:text-neutral-50">GitHub</h3>
-              <p className="mb-3">
+              <h3 className="font-semibold mb-1 text-sm">オープンソースライセンス</h3>
+              <p className="text-muted-foreground">
+                本プロジェクトはMIT Licenseの下で公開されています。
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-1 text-sm">GitHub</h3>
+              <p className="text-muted-foreground mb-1.5">
                 ソースコードはGitHubで公開されています。貢献を歓迎します。
               </p>
               <a
                 href="https://github.com/kgraph57/medicalprompthub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 inline-flex items-center gap-1.5 transition-colors"
+                className="text-primary hover:underline flex items-center gap-1"
               >
                 <Github className="w-4 h-4" />
                 GitHubリポジトリ
-                <ArrowRight className="w-4 h-4" />
               </a>
             </div>
-          </div>
-        </motion.section>
+          </CardContent>
+        </Card>
 
         {/* License Section */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="w-4 h-4 text-primary" strokeWidth={2} />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
-              License
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-foreground tracking-tight leading-[1.1]">
-            License and disclaimer
-          </h2>
-          <div className="space-y-8 text-base text-muted-foreground">
+        <Card>
+          <CardHeader className="p-4">
+            <CardTitle className="text-base">ライセンス</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
             <div>
-              <h3 className="font-semibold mb-3 text-lg text-foreground">MIT License</h3>
-              <p className="mb-4 leading-relaxed">
+              <h3 className="font-semibold mb-1 text-sm">MIT License</h3>
+              <p className="text-muted-foreground mb-1.5">
                 本プロジェクトのソースコードはMIT Licenseの下で公開されています。
               </p>
-              <p className="leading-relaxed">
+              <p className="text-muted-foreground">
                 プロンプトの内容については、医療従事者の皆様が自由に使用・改変・共有していただけます。
                 ただし、医療行為に関する最終的な判断は、必ず医師や専門家の判断を優先してください。
               </p>
             </div>
-            <div className="pt-8 border-t border-border/60">
-              <h3 className="font-semibold mb-3 text-lg text-foreground">免責事項</h3>
-              <p className="leading-relaxed">
+            <Separator />
+            <div>
+              <h3 className="font-semibold mb-1 text-sm">免責事項</h3>
+              <p className="text-muted-foreground">
                 本サービスで提供されるプロンプトやガイドは、医療アドバイスを提供するものではありません。
                 実際の医療行為に関する判断は、必ず医師や専門家の判断を優先し、所属する医療機関のガイドラインに従ってください。
-                詳細は<Link href="/legal" className="text-primary hover:text-primary/80 underline">利用規約・免責事項</Link>をご確認ください。
+                詳細は<Link href="/legal" className="text-primary hover:underline">利用規約・免責事項</Link>をご確認ください。
               </p>
             </div>
-          </div>
-        </motion.section>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );

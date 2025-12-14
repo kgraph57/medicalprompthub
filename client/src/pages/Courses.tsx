@@ -541,7 +541,7 @@ export default function Courses() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "AI学習コース | Medical Prompt Hub",
+      title: "AI学習コース | Helix",
       description: "医療従事者向けのAI学習コース。AI基礎から上級テクニックまで、段階的にAI活用スキルを向上させます。各コースには実践的なレッスンとバッジ・XP報酬が用意されています。",
       path: "/courses",
       keywords: "AI学習,コース,医療従事者,教育,レッスン,バッジ,XP,ゲーミフィケーション"

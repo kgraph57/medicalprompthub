@@ -28,7 +28,7 @@ export default function Category() {
   useEffect(() => {
     if (category) {
       updateSEO({
-        title: `${category.name} | Medical Prompt Hub`,
+        title: `${category.name} | Helix`,
         description: `${category.name}カテゴリのプロンプト一覧。医療従事者がAIを効果的に活用するための実践的なプロンプトを提供しています。`,
         path: `/category/${categoryId}`,
         keywords: `${category.name},医療,AI,プロンプト,${category.description || ''}`

@@ -39,7 +39,7 @@ const templates: Template[] = [
   {
     id: "generic-hospital",
     title: "包括的同意書（一般病院用テンプレート）",
-    organization: "Medical Prompt Hub Original",
+    organization: "Helix Original",
     description: "特定の学会様式がない場合に使える、汎用的な症例報告用同意書のテンプレート。",
     format: "Word",
     url: "#"

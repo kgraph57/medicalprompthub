@@ -404,7 +404,7 @@ export default function CourseDetail() {
   useEffect(() => {
     if (course) {
       updateSEO({
-        title: `${course.title} | Medical Prompt Hub`,
+        title: `${course.title} | Helix`,
         description: course.description || `${course.title}の学習コース。医療従事者がAIを効果的に活用するための実践的なコースです。`,
         path: `/courses/${courseId}`,
         keywords: `${course.title},AI学習,コース,医療従事者,教育,レッスン,${course.category}`
@@ -418,7 +418,7 @@ export default function CourseDetail() {
         "description": course.description || `${course.title}の学習コース`,
         "provider": {
           "@type": "Organization",
-          "name": "Medical Prompt Hub",
+          "name": "Helix",
           "url": BASE_URL
         },
         "courseCode": course.id,

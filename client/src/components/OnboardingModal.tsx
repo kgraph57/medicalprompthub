@@ -24,7 +24,7 @@ interface OnboardingStep {
 const onboardingSteps: OnboardingStep[] = [
   {
     id: "welcome",
-    title: "Medical Prompt Hubへようこそ",
+    title: "Helixへようこそ",
     description: "医療従事者のためのAIプロンプトライブラリです。100以上の専門プロンプトで、臨床業務、研究、教育を効率化できます。",
     icon: <Stethoscope className="w-8 h-8 text-primary" />,
   },

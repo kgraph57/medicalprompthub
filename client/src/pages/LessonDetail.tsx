@@ -429,7 +429,7 @@ export default function LessonDetail() {
   useEffect(() => {
     if (currentLesson && courseId) {
       updateSEO({
-        title: `${currentLesson.title} | Medical Prompt Hub`,
+        title: `${currentLesson.title} | Helix`,
         description: currentLesson.description || `${currentLesson.title}のレッスン。医療従事者がAIを効果的に活用するための実践的なレッスンです。`,
         path: `/courses/${courseId}/lessons/${lessonId}`,
         keywords: `${currentLesson.title},AI学習,レッスン,医療従事者,教育`

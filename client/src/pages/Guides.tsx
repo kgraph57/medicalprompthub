@@ -55,7 +55,7 @@ export default function Guides() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "ワークフローガイド | Medical Prompt Hub",
+      title: "ワークフローガイド | Helix",
       description: "症例報告、論文執筆、統計解析など、医療従事者が直面する複雑なタスクを段階的にサポートするワークフローガイド。AIを活用して効率的に作業を進める方法を学べます。",
       path: "/guides",
       keywords: "ワークフローガイド,症例報告,論文執筆,統計解析,医療研究,AI活用"

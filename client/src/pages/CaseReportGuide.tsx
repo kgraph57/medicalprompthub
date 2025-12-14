@@ -39,7 +39,7 @@ export default function CaseReportGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "症例報告執筆ガイド | Medical Prompt Hub",
+      title: "症例報告執筆ガイド | Helix",
       description: "症例報告の書き方を段階的にサポート。構想から投稿まで、AIを活用して効率的に症例報告を作成できます。",
       path: `/guides/case-report-complete${stepId ? `/${stepId}` : ''}`,
       keywords: "症例報告,Case Report,論文執筆,医療研究,AI活用"

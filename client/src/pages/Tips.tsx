@@ -35,7 +35,7 @@ export default function Tips() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "AI活用Tips | Medical Prompt Hub",
+      title: "AI活用Tips | Helix",
       description: "プロンプトエンジニアリングの基礎から応用まで、医療従事者向けに解説したAI活用Tips。初心者から上級者まで、レベルに応じたテクニックを学べます。",
       path: "/tips",
       keywords: "AI活用Tips,プロンプトエンジニアリング,医療AI,テクニック,ベストプラクティス"

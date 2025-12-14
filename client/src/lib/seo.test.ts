@@ -26,7 +26,7 @@ describe("seo", () => {
         path: "/test",
       });
 
-      expect(document.title).toBe("テストタイトル | Medical Prompt Hub");
+      expect(document.title).toBe("テストタイトル | Helix");
     });
 
     it("メタタグを追加・更新する", () => {

@@ -79,7 +79,7 @@ export default function PromptDetail() {
     if (prompt) {
       // SEO最適化
       updateSEO({
-        title: `${prompt.title} | Medical Prompt Hub`,
+        title: `${prompt.title} | Helix`,
         description: prompt.description || `${prompt.title}のプロンプト。医療従事者がAIを効果的に活用するための実践的なプロンプトです。`,
         path: `/prompts/${prompt.id}`,
         keywords: `${prompt.title},${prompt.category},医療,AI,プロンプト,${prompt.tags?.join(',') || ''}`,
@@ -94,11 +94,11 @@ export default function PromptDetail() {
         "description": prompt.description || `${prompt.title}のプロンプト`,
         "author": {
           "@type": "Organization",
-          "name": "Medical Prompt Hub"
+          "name": "Helix"
         },
         "publisher": {
           "@type": "Organization",
-          "name": "Medical Prompt Hub",
+          "name": "Helix",
           "logo": {
             "@type": "ImageObject",
             "url": `${BASE_URL}/og-image-new.png`

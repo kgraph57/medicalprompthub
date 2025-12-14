@@ -30,7 +30,7 @@ interface SEOData {
  * ページのSEO情報を更新
  */
 export function updateSEO(data: SEOData): void {
-  const fullTitle = `${data.title} | Medical Prompt Hub`;
+  const fullTitle = `${data.title} | Helix`;
   const url = `${BASE_URL}${data.path}`;
   const ogImage = data.ogImage || DEFAULT_OG_IMAGE;
 
@@ -58,7 +58,7 @@ export function updateSEO(data: SEOData): void {
   updateMetaTag("property", "og:image", ogImage);
   updateMetaTag("property", "og:type", "website");
   updateMetaTag("property", "og:locale", "ja_JP");
-  updateMetaTag("property", "og:site_name", "Medical Prompt Hub");
+  updateMetaTag("property", "og:site_name", "Helix");
 
   // Twitter Card
   updateMetaTag("property", "twitter:card", "summary_large_image");
@@ -129,7 +129,7 @@ export function addHomeStructuredData(): void {
   addStructuredData({
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Medical Prompt Hub",
+    "name": "Helix",
     "description": "医療従事者のためのAIプロンプトライブラリ",
     "url": BASE_URL,
     "potentialAction": {
@@ -145,7 +145,7 @@ export function addHomeStructuredData(): void {
   addStructuredData({
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Medical Prompt Hub",
+    "name": "Helix",
     "url": BASE_URL,
     "logo": DEFAULT_OG_IMAGE,
     "description": "医療従事者のためのAIプロンプトライブラリ"
@@ -188,11 +188,11 @@ export function addArticleStructuredData(data: {
     "description": data.description,
     "author": {
       "@type": "Person",
-      "name": data.author || "Medical Prompt Hub"
+      "name": data.author || "Helix"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Medical Prompt Hub",
+      "name": "Helix",
       "logo": {
         "@type": "ImageObject",
         "url": DEFAULT_OG_IMAGE

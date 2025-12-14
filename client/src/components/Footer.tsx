@@ -85,12 +85,12 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-neutral-600 dark:text-neutral-400">
               <p className="font-semibold text-neutral-900 dark:text-neutral-50 mb-1">
-                Medical Prompt Hub
+                Helix
               </p>
               <p>Extend your medical expertise. Transform patient care.</p>
             </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-500">
-              © {new Date().getFullYear()} Medical Prompt Hub. All rights reserved.
+              © {new Date().getFullYear()} Helix. All rights reserved.
             </div>
           </div>
         </motion.div>

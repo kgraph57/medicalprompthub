@@ -43,7 +43,7 @@ export default function MARWGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "AI論文執筆ワークフロー | Medical Prompt Hub",
+      title: "AI論文執筆ワークフロー | Helix",
       description: "世界標準に準拠したAI駆動型論文執筆の7段階ワークフロー。ハーバード大学、JAMA、ICMJEのガイドラインに基づき、24個の実践的プロンプト例を提供。",
       path: `/guides/marw-complete${stepId ? `/${stepId}` : ''}`,
       keywords: "AI論文執筆,MARW,医学論文,研究ワークフロー,AI活用,プロンプト"

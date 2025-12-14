@@ -25,7 +25,7 @@ export default function Contact() {
   useEffect(() => {
     updateSEO({
       title: "お問い合わせ",
-      description: "Medical Prompt Hubへのお問い合わせ、機能提案、バグ報告などを受け付けています。",
+      description: "Helixへのお問い合わせ、機能提案、バグ報告などを受け付けています。",
       path: "/contact",
     });
   }, []);

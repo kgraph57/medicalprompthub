@@ -11,7 +11,7 @@ export default function NotFound() {
 
   useEffect(() => {
     updateSEO({
-      title: "404 - ページが見つかりません | Medical Prompt Hub",
+      title: "404 - ページが見つかりません | Helix",
       description: "お探しのページは見つかりませんでした。ホームページに戻るか、検索機能をご利用ください。",
       path: "/404",
       noindex: true, // 404ページはインデックスしない
