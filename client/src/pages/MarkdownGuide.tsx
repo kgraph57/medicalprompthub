@@ -1,5 +1,6 @@
 import { useRoute, useLocation } from "wouter";
 import { useState, useEffect } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from 'rehype-raw';
@@ -8,6 +9,11 @@ import { ArrowLeft, Clock, Loader2, ChevronRight, ChevronLeft, Menu, X, Circle, 
 import { Button } from "@/components/ui/button";
 import { updateSEO } from "@/lib/seo";
 import { CodeBlock } from '@/components/CodeBlock';
+
+// 絵文字を削除する関数
+function removeEmojis(text: string): string {
+  return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+}
 
 // ガイドのメタデータ定義
 const guideMetadata: Record<string, {
@@ -493,7 +499,37 @@ export default function MarkdownGuide() {
         }
         
         const text = await response.text();
-        setContent(text);
+        
+        // 読み込んだマークダウンファイルにHTMLコードが含まれている場合はフィルタリング
+        // HTMLコードブロックを検出して削除
+        const htmlCodeBlockPattern = /```[\s\S]*?```/g;
+        let filteredText = text;
+        const matches = text.match(htmlCodeBlockPattern);
+        
+        if (matches) {
+          matches.forEach((match) => {
+            // HTMLコードが含まれているかチェック
+            const hasViteClient = /vite\/client|@vite\/client|spa-github-pages|window\.history\.replaceState|rafgraph|MIT License|Start Single Page Apps|Cache-Control|Pragma|Expires|no-cache|no-store|must-revalidate/i.test(match);
+            const hasHTMLStructure = /(&lt;|<)(!DOCTYPE|html|head|body|script.*type.*module|meta.*charset|Single Page Apps for GitHub Pages)/i.test(match);
+            const htmlTagCount = (match.match(/(&lt;|<)\/?[a-z]+/gi) || []).length;
+            
+            // 医療関連のキーワードをチェック
+            const medicalKeywords = [
+              'プロンプト', '指示', '例', '実践', 'AI', 'ChatGPT', 'Claude', '患者', '症例', 
+              'メール', 'コンサルト', '専門医', '医療', '診断', '治療', '臨床', '医師', '病院', 
+              '診療', '疾患', '症状', '検査', '薬剤', '手術', '入院', '退院', '診察', '診断書',
+              '紹介状', 'カルテ', 'SOAP', 'バイタル', '所見', '経過', '既往歴', '現病歴'
+            ];
+            const hasMedicalContent = medicalKeywords.some(keyword => match.includes(keyword));
+            
+            // 本のサンプルコード（HTMLコードのみ）の場合は削除
+            if ((hasViteClient || hasHTMLStructure || htmlTagCount >= 3) && !hasMedicalContent && match.length > 200) {
+              filteredText = filteredText.replace(match, '');
+            }
+          });
+        }
+        
+        setContent(filteredText);
       } catch (err) {
         console.error("Error loading markdown:", err);
         setError("コンテンツの読み込みに失敗しました");
@@ -646,7 +682,7 @@ export default function MarkdownGuide() {
                   </div>
                 )}
 
-                {/* Group steps by phase (基本編, 実践編, 応用編) */}
+                {/* Group steps by phase (基本編, 実践編, 応用編) - 1つのカードにまとめる */}
                 {(() => {
                   // ステップをフェーズごとにグループ化
                   const otherSteps = metadata.steps.filter((step, index) => step.id !== '00-introduction' || index !== 0);
@@ -666,53 +702,58 @@ export default function MarkdownGuide() {
                     phase.steps.push({ step, index: originalIndex });
                   });
 
-                  return phases.map((phase, phaseIndex) => (
-                    <div key={phase.title} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-600 text-white text-sm font-bold">
-                          {phaseIndex + 1}
-                        </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                          {phase.title}
-                        </h3>
-                      </div>
-                      <div className="space-y-1">
-                        {phase.steps.map(({ step, index: originalIndex }) => {
-                          const isCompleted = completedSteps.has(originalIndex);
-                          const isCurrent = currentStep === originalIndex;
-                          return (
-                            <div key={step.id} className="flex items-center gap-2">
-                              <button
-                                onClick={() => toggleComplete(originalIndex)}
-                                className="flex-shrink-0"
-                              >
-                                {isCompleted ? (
-                                  <CheckCircle2 className="h-5 w-5 text-green-600" />
-                                ) : (
-                                  <Circle className="h-5 w-5 text-gray-400" />
-                                )}
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setCurrentStep(originalIndex);
-                                  setIsSidebarOpen(false);
-                                }}
-                                className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
-                                  isCurrent
-                                    ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                                }`}
-                              >
-                                <div className="font-medium">
-                                  {step.title.replace(/^(基本編|実践編|応用編) - /, '')}
-                                </div>
-                              </button>
+                  // すべてのフェーズを1つのカードにまとめる
+                  return (
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+                      {phases.map((phase, phaseIndex) => (
+                        <div key={phase.title} className={phaseIndex > 0 ? "mt-6 pt-6 border-t border-gray-200 dark:border-gray-700" : ""}>
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-600 text-white text-sm font-bold">
+                              {phaseIndex + 1}
                             </div>
-                          );
-                        })}
-                      </div>
+                            <h3 className="font-semibold text-gray-900 dark:text-white">
+                              {phase.title}
+                            </h3>
+                          </div>
+                          <div className="space-y-1">
+                            {phase.steps.map(({ step, index: originalIndex }) => {
+                              const isCompleted = completedSteps.has(originalIndex);
+                              const isCurrent = currentStep === originalIndex;
+                              return (
+                                <div key={step.id} className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => toggleComplete(originalIndex)}
+                                    className="flex-shrink-0"
+                                  >
+                                    {isCompleted ? (
+                                      <CheckCircle2 className="h-5 w-5 text-green-600" />
+                                    ) : (
+                                      <Circle className="h-5 w-5 text-gray-400" />
+                                    )}
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setCurrentStep(originalIndex);
+                                      setIsSidebarOpen(false);
+                                    }}
+                                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
+                                      isCurrent
+                                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                    }`}
+                                  >
+                                    <div className="font-medium">
+                                      {step.title.replace(/^(基本編|実践編|応用編) - /, '')}
+                                    </div>
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ));
+                  );
                 })()}
               </nav>
             </div>
@@ -737,27 +778,66 @@ export default function MarkdownGuide() {
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeRaw, rehypeSanitize]}
                   components={{
-                    h1: ({ node, ...props }) => (
-                      <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                    ),
-                    h2: ({ node, ...props }) => {
-                      const id = typeof props.children === 'string' 
-                        ? props.children.toLowerCase().replace(/\s+/g, '-')
+                    h1: ({ node, ...props }: any) => {
+                      const children = React.Children.map(props.children, (child) => {
+                        if (typeof child === 'string') {
+                          return removeEmojis(child);
+                        }
+                        return child;
+                      });
+                      return (
+                        <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props}>
+                          {children}
+                        </h1>
+                      );
+                    },
+                    h2: ({ node, ...props }: any) => {
+                      const title = typeof props.children === 'string' ? removeEmojis(props.children) : props.children?.toString() || '';
+                      const id = typeof title === 'string' 
+                        ? title.toLowerCase().replace(/\s+/g, '-')
                         : undefined;
+                      const children = React.Children.map(props.children, (child) => {
+                        if (typeof child === 'string') {
+                          return removeEmojis(child);
+                        }
+                        return child;
+                      });
                       return (
                         <h2
                           id={id}
                           className="text-2xl md:text-3xl font-bold mt-16 mb-8 text-foreground scroll-mt-20 tracking-tight"
                           {...props}
-                        />
+                        >
+                          {children}
+                        </h2>
                       );
                     },
-                    h3: ({ node, ...props }) => (
-                      <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                    ),
-                    h4: ({ node, ...props }) => (
-                      <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
-                    ),
+                    h3: ({ node, ...props }: any) => {
+                      const children = React.Children.map(props.children, (child) => {
+                        if (typeof child === 'string') {
+                          return removeEmojis(child);
+                        }
+                        return child;
+                      });
+                      return (
+                        <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props}>
+                          {children}
+                        </h3>
+                      );
+                    },
+                    h4: ({ node, ...props }: any) => {
+                      const children = React.Children.map(props.children, (child) => {
+                        if (typeof child === 'string') {
+                          return removeEmojis(child);
+                        }
+                        return child;
+                      });
+                      return (
+                        <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props}>
+                          {children}
+                        </h4>
+                      );
+                    },
                     p: ({ node, ...props }) => (
                       <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
                     ),
@@ -778,15 +858,109 @@ export default function MarkdownGuide() {
                       if (inline) {
                         return <code className="bg-muted/80 px-2 py-1 rounded-md text-base font-mono border border-border/50" {...props}>{children}</code>;
                       }
+                      // 本のコード（サンプルコード）のみのコードブロックをフィルタリング
+                      const codeContent = String(children).replace(/\n$/, '');
+                      
+                      // HTMLコードの検出パターン
+                      const htmlPattern = /(&lt;|<)(!DOCTYPE|html|head|body|script.*type.*module|meta.*charset|Single Page Apps for GitHub Pages)/i;
+                      const hasViteClient = /vite\/client|@vite\/client|spa-github-pages|window\.history\.replaceState|rafgraph|MIT License|Start Single Page Apps|Cache-Control|Pragma|Expires|no-cache|no-store|must-revalidate/i.test(codeContent);
+                      
+                      // HTMLタグの数をカウント
+                      const htmlTagCount = (codeContent.match(/(&lt;|<)\/?[a-z]+/gi) || []).length;
+                      
+                      // 医療関連のキーワードをチェック
+                      const medicalKeywords = [
+                        'プロンプト', '指示', '例', '実践', 'AI', 'ChatGPT', 'Claude', '患者', '症例', 
+                        'メール', 'コンサルト', '専門医', '医療', '診断', '治療', '臨床', '医師', '病院', 
+                        '診療', '疾患', '症状', '検査', '薬剤', '手術', '入院', '退院', '診察', '診断書',
+                        '紹介状', 'カルテ', 'SOAP', 'バイタル', '所見', '経過', '既往歴', '現病歴'
+                      ];
+                      const hasMedicalContent = medicalKeywords.some(keyword => codeContent.includes(keyword));
+                      
+                      // 本のサンプルコードの特徴を検出（より積極的に）
+                      const isBookSampleCode = (
+                        htmlPattern.test(codeContent) || 
+                        hasViteClient || 
+                        (htmlTagCount >= 3 && !hasMedicalContent && codeContent.length >= 200)
+                      ) && 
+                        codeContent.length < 100000 && 
+                        !hasMedicalContent;
+                      
+                      if (isBookSampleCode) {
+                        // 本のサンプルコードの場合は表示しない
+                        return null;
+                      }
+                      
                       return (
                         <CodeBlock className={className}>
-                          {String(children).replace(/\n$/, '')}
+                          {codeContent}
                         </CodeBlock>
                       );
                     },
-                    pre: ({ node, ...props }) => (
-                      <pre className="bg-muted/80 p-6 rounded-xl overflow-x-auto my-8 border border-border/50 shadow-sm" {...props} />
-                    ),
+                    pre: ({ node, children, ...props }: any) => {
+                      // preタグ内のコードをチェック
+                      let codeContent = '';
+                      
+                      // childrenからテキストを抽出する関数
+                      const extractText = (element: any): string => {
+                        if (typeof element === 'string') {
+                          return element;
+                        }
+                        if (React.isValidElement(element)) {
+                          if (element.props?.children) {
+                            return React.Children.toArray(element.props.children)
+                              .map(extractText)
+                              .join('');
+                          }
+                          return '';
+                        }
+                        if (Array.isArray(element)) {
+                          return element.map(extractText).join('');
+                        }
+                        return String(element || '');
+                      };
+                      
+                      codeContent = extractText(children);
+                      
+                      // 本のコード（サンプルコード）のみのコードブロックを検出
+                      // HTMLの基本構造（エスケープ済み・未エスケープ両方に対応）
+                      const htmlPattern = /(&lt;|<)(!DOCTYPE|html|head|body|script.*type.*module|meta.*charset|Single Page Apps for GitHub Pages)/i;
+                      const hasViteClient = /vite\/client|@vite\/client|spa-github-pages|window\.history\.replaceState|rafgraph|MIT License|Start Single Page Apps|Cache-Control|Pragma|Expires|no-cache|no-store|must-revalidate/i.test(codeContent);
+                      
+                      // HTMLタグの数をカウント
+                      const htmlTagCount = (codeContent.match(/(&lt;|<)\/?[a-z]+/gi) || []).length;
+                      
+                      // 医療関連のキーワードをチェック（より包括的に）
+                      const medicalKeywords = [
+                        'プロンプト', '指示', '例', '実践', 'AI', 'ChatGPT', 'Claude', '患者', '症例', 
+                        'メール', 'コンサルト', '専門医', '医療', '診断', '治療', '臨床', '医師', '病院', 
+                        '診療', '疾患', '症状', '検査', '薬剤', '手術', '入院', '退院', '診察', '診断書',
+                        '紹介状', 'カルテ', 'SOAP', 'バイタル', '所見', '経過', '既往歴', '現病歴'
+                      ];
+                      const hasMedicalContent = medicalKeywords.some(keyword => codeContent.includes(keyword));
+                      
+                      // 本のサンプルコードの特徴を検出（より積極的に）
+                      // HTMLコードが多く、医療関連のキーワードが少ない場合は本のサンプルコード
+                      // より厳格な条件: HTMLタグが2個以上あり、医療コンテンツがなく、長さが100文字以上
+                      const isBookSampleCode = (
+                        htmlPattern.test(codeContent) || 
+                        hasViteClient || 
+                        (htmlTagCount >= 2 && !hasMedicalContent && codeContent.length >= 100)
+                      ) && 
+                        codeContent.length < 200000 && 
+                        !hasMedicalContent;
+                      
+                      if (isBookSampleCode) {
+                        // 本のサンプルコードの場合は表示しない
+                        return null;
+                      }
+                      
+                      return (
+                        <pre className="bg-muted/80 p-6 rounded-xl overflow-x-auto my-8 border border-border/50 shadow-sm" {...props}>
+                          {children}
+                        </pre>
+                      );
+                    },
                     blockquote: ({ node, ...props }) => (
                       <blockquote className="border-l-4 border-primary pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
                     ),

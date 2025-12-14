@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Cookie, X, Settings, Check } from "lucide-react";
+import { X, Settings, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { needsConsent, saveConsentStatus, getConsentStatus, type ConsentPreferences } from "@/lib/cookieConsent";
 import { initGA4 } from "@/lib/analytics";
@@ -83,9 +83,6 @@ export function CookieConsentBanner() {
               <>
                 <CardHeader className="pb-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-10 lg:h-11 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Cookie className="w-6 h-6 text-primary" />
-                    </div>
                     <div className="flex-1">
                       <CardTitle className="text-lg mb-2">Cookieの使用について</CardTitle>
                       <CardDescription className="text-sm leading-relaxed">

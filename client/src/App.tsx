@@ -6,7 +6,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { PageViewTracker } from "./components/PageViewTracker";
 import { CookieConsentBanner } from "./components/CookieConsentBanner";
-import { OnboardingModal } from "./components/OnboardingModal";
 import { hasAnalyticsConsent } from "./lib/cookieConsent";
 import { initGA4 } from "./lib/analytics";
 
@@ -205,7 +204,6 @@ function App() {
           <Toaster position="top-center" />
           <Router />
           <CookieConsentBanner />
-          <OnboardingModal />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

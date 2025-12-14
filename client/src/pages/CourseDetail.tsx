@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, BookOpen, CheckCircle2, Lock, Star, Award, Clock, FileText, GraduationCap } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, Construction, Star, Award, Clock, FileText, GraduationCap } from "lucide-react";
 import { Certificate } from "@/components/Certificate";
 import { useRoute, useLocation } from "wouter";
 import { motion } from "framer-motion";
@@ -588,7 +588,6 @@ export default function CourseDetail() {
           <div className="space-y-2">
             {lessons.map((lesson, index) => {
               const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
-              const isLocked = index > 0 && !courseProgress.completedLessons?.includes(lessons[index - 1].id);
               const isContentAvailable = hasLessonContent(lesson.id);
 
               return (
@@ -600,11 +599,13 @@ export default function CourseDetail() {
                 >
                   <Card 
                     className={cn(
-                      isLocked ? "opacity-60" : "hover:shadow-sm hover:border-primary/30 transition-all duration-200 cursor-pointer",
+                      !isContentAvailable 
+                        ? "opacity-60 cursor-not-allowed" 
+                        : "hover:shadow-sm hover:border-primary/30 transition-all duration-200 cursor-pointer",
                       "border-2 bg-gradient-to-r from-background to-accent/5"
                     )}
                     onClick={() => {
-                      if (!isLocked) {
+                      if (isContentAvailable) {
                         setLocation(`/courses/${courseId}/lessons/${lesson.id}`);
                       }
                     }}
@@ -612,28 +613,41 @@ export default function CourseDetail() {
                     <CardHeader className="p-4">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3 flex-1">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-base">
+                          <div className={cn(
+                            "flex items-center justify-center w-8 h-8 rounded-full font-bold text-base",
+                            !isContentAvailable 
+                              ? "bg-muted text-muted-foreground" 
+                              : "bg-primary/10 text-primary"
+                          )}>
                             {index + 1}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <CardTitle className="text-base font-semibold">{lesson.title}</CardTitle>
+                              <CardTitle className={cn(
+                                "text-base font-semibold",
+                                !isContentAvailable && "text-muted-foreground"
+                              )}>
+                                {lesson.title}
+                              </CardTitle>
                               {isCompleted && (
                                 <CheckCircle2 className="w-3 h-3 text-green-600" />
                               )}
-                              {isLocked && (
-                                <Lock className="w-3 h-3 text-muted-foreground" />
-                              )}
                               {!isContentAvailable && (
-                                <Badge variant="secondary" className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
-                                  準備中
-                                </Badge>
+                                <Construction className="w-4 h-4 text-muted-foreground" />
                               )}
                             </div>
-                            <CardDescription className="text-sm line-clamp-2">{lesson.description}</CardDescription>
+                            <CardDescription className={cn(
+                              "text-sm line-clamp-2",
+                              !isContentAvailable && "text-muted-foreground/70"
+                            )}>
+                              {lesson.description}
+                            </CardDescription>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className={cn(
+                          "flex items-center gap-4 text-sm",
+                          !isContentAvailable ? "text-muted-foreground/60" : "text-muted-foreground"
+                        )}>
                           <div className="flex items-center gap-1.5">
                             <Clock className="w-3.5 h-3.5" />
                             <span className="font-medium">{lesson.duration}分</span>

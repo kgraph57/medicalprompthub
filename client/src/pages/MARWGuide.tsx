@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'wouter';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -9,6 +10,11 @@ import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X, ChevronLeft, ChevronRi
 import { marwGuideData } from '@/lib/marw-guide-data';
 import { CodeBlock } from '@/components/CodeBlock';
 import { updateSEO } from '@/lib/seo';
+
+// 絵文字を削除する関数
+function removeEmojis(text: string): string {
+  return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+}
 
 // Markdownファイルを直接インポート
 import introMd from '@/assets/guides/ai-paper-writing/00-introduction.md?raw';
@@ -291,27 +297,66 @@ export default function MARWGuide() {
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
                 components={{
-                  h1: ({ node, ...props }) => (
-                    <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                  ),
-                  h2: ({ node, ...props }) => {
-                    const id = typeof props.children === 'string' 
-                      ? props.children.toLowerCase().replace(/\s+/g, '-')
+                  h1: ({ node, ...props }: any) => {
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
+                    return (
+                      <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props}>
+                        {children}
+                      </h1>
+                    );
+                  },
+                  h2: ({ node, ...props }: any) => {
+                    const title = typeof props.children === 'string' ? removeEmojis(props.children) : props.children?.toString() || '';
+                    const id = typeof title === 'string' 
+                      ? title.toLowerCase().replace(/\s+/g, '-')
                       : undefined;
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
                     return (
                       <h2
                         id={id}
                         className="text-2xl md:text-3xl font-bold mt-16 mb-8 text-foreground scroll-mt-20 tracking-tight"
                         {...props}
-                      />
+                      >
+                        {children}
+                      </h2>
                     );
                   },
-                  h3: ({ node, ...props }) => (
-                    <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                  ),
-                  h4: ({ node, ...props }) => (
-                    <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props} />
-                  ),
+                  h3: ({ node, ...props }: any) => {
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
+                    return (
+                      <h3 className="text-xl md:text-2xl font-semibold mt-12 mb-6 text-foreground scroll-mt-20 tracking-tight" {...props}>
+                        {children}
+                      </h3>
+                    );
+                  },
+                  h4: ({ node, ...props }: any) => {
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
+                    return (
+                      <h4 className="text-lg md:text-xl font-semibold mt-10 mb-4 text-foreground scroll-mt-20" {...props}>
+                        {children}
+                      </h4>
+                    );
+                  },
                   p: ({ node, ...props }) => (
                     <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
                   ),

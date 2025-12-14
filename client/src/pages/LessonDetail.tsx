@@ -4,13 +4,12 @@
  */
 
 import { Layout } from "@/components/Layout";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles.tsx";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle2, ArrowRight, Clock, FileText, BookOpen } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -325,23 +324,37 @@ const tipsData: Record<string, typeof lesson1Tips> = {
   "ai-basics-8": [],
 };
 
+// 絵文字を削除する関数
+function removeEmojis(text: string): string {
+  return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+}
+
 // セクションを抽出（## で区切る）
+// タイトルからidを生成する関数（Zenn風のスラッグ化）
+function generateIdFromTitle(title: string): string {
+  // 日本語や特殊文字も含めて処理
+  return title
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '') // Unicode文字（日本語含む）と数字、スペース、ハイフンのみ残す
+    .replace(/\s+/g, '-') // スペースをハイフンに
+    .replace(/-+/g, '-') // 連続するハイフンを1つに
+    .replace(/^-|-$/g, '') // 先頭と末尾のハイフンを削除
+    .trim();
+}
+
 function extractSections(content: string): Array<{ id: string; title: string; level: number }> {
   const sections: Array<{ id: string; title: string; level: number }> = [];
   const lines = content.split("\n");
-  let sectionIndex = 0;
   
   lines.forEach((line) => {
     if (line.startsWith("## ")) {
-      const title = line.replace(/^##\s+/, "").trim();
-      const id = `section-${sectionIndex}`;
+      const title = removeEmojis(line.replace(/^##\s+/, "").trim());
+      const id = generateIdFromTitle(title);
       sections.push({ id, title, level: 2 });
-      sectionIndex++;
     } else if (line.startsWith("### ")) {
-      const title = line.replace(/^###\s+/, "").trim();
-      const id = `section-${sectionIndex}`;
+      const title = removeEmojis(line.replace(/^###\s+/, "").trim());
+      const id = generateIdFromTitle(title);
       sections.push({ id, title, level: 3 });
-      sectionIndex++;
     }
   });
   
@@ -530,6 +543,30 @@ export default function LessonDetail() {
     }
   }, [lessonId]);
 
+  // ページ読み込み時にURLのハッシュがある場合、そのセクションにスクロール（Zenn風）
+  useEffect(() => {
+    if (content && sections.length > 0) {
+      const hash = window.location.hash.slice(1); // #を削除
+      if (hash) {
+        // DOMが完全にレンダリングされた後にスクロール
+        const timer = setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            // scrollIntoViewを使用（Zennと同じ方法）
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            
+            setActiveSection(hash);
+          }
+        }, 300);
+        
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [content, sections]);
+
   // スクロール位置に応じて進捗を更新（Zenn風 - ページ全体のスクロールを検出）
   useEffect(() => {
     const handleScroll = () => {
@@ -551,38 +588,74 @@ export default function LessonDetail() {
       }
 
       // アクティブなセクションを検出（Zenn風）
+      // スクロール位置に応じて、最も上に近い見出しをアクティブにする
       const sectionElements = document.querySelectorAll("h2[id], h3[id]");
       let currentSection = "";
+      const scrollOffset = 100; // scroll-mt-20 (80px) + 少しの余白
       
-      sectionElements.forEach((section) => {
+      // 逆順にチェックして、最初に見つかった（最も上に近い）セクションを選択
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i] as HTMLElement;
         const rect = section.getBoundingClientRect();
-        if (rect.top <= 200) {
+        // 見出しが画面の上部（オフセット分）を超えたらアクティブ
+        if (rect.top <= scrollOffset) {
           currentSection = section.id;
+          break;
         }
-      });
+      }
       
-      if (currentSection) {
+      // 最初のセクションがまだ表示されていない場合は、最初のセクションをアクティブに
+      if (!currentSection && sectionElements.length > 0) {
+        const firstSection = sectionElements[0] as HTMLElement;
+        const firstRect = firstSection.getBoundingClientRect();
+        if (firstRect.top > scrollOffset) {
+          currentSection = firstSection.id;
+        }
+      }
+      
+      if (currentSection && currentSection !== activeSection) {
         setActiveSection(currentSection);
+        // URLのハッシュも更新（スクロールに応じて自動更新）
+        // ただし、ユーザーが手動でスクロールしている場合のみ
+        if (window.location.hash !== `#${currentSection}`) {
+          // デバウンスして、頻繁な更新を防ぐ
+          clearTimeout((window as any).hashUpdateTimeout);
+          (window as any).hashUpdateTimeout = setTimeout(() => {
+            window.history.replaceState(null, '', `#${currentSection}`);
+          }, 150);
+        }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // 初期化
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout((window as any).hashUpdateTimeout);
+    };
   }, [content, lastScrollY]);
 
-  // セクションへのジャンプ（Zenn風）
-  const scrollToSection = (sectionId: string) => {
+  // セクションへのジャンプ（Zenn風 - ブラウザのデフォルト動作を活用）
+  const scrollToSection = (sectionId: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e) {
+      e.preventDefault();
+    }
+    
     const element = document.getElementById(sectionId);
+    
     if (element) {
-      const offset = 100; // ヘッダーの高さ分
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = window.scrollY + elementPosition - offset;
-      
-      window.scrollTo({
-        top: offsetPosition,
+      // CSSのscroll-mt-20が適用されているので、ブラウザのデフォルトのアンカーリンク動作を使用
+      // ただし、スムーズスクロールを確実にするため、明示的にスクロール
+      element.scrollIntoView({
         behavior: "smooth",
+        block: "start",
       });
+      
+      // URLのハッシュを更新
+      window.history.replaceState(null, '', `#${sectionId}`);
+      
+      // アクティブセクションを更新
+      setActiveSection(sectionId);
     }
   };
 
@@ -595,8 +668,6 @@ export default function LessonDetail() {
     const elements: React.ReactNode[] = [];
     let quizIndex = 0;
     let tipIndex = 0;
-    // extractSectionsと同じ順序でidを生成するため、sectionsのインデックスを使用
-    let sectionIndex = 0;
 
     parts.forEach((part, index) => {
       if (part === "[QUIZ]" && quizzes.length > 0) {
@@ -701,36 +772,110 @@ export default function LessonDetail() {
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  h1: ({ node, ...props }) => (
-                    <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-0 first:mt-0 text-foreground scroll-mt-20 tracking-tight" {...props} />
-                  ),
-                  h2: ({ node, ...props }) => {
-                    const title = props.children?.toString() || "";
-                    const id = `section-${sectionIndex}`;
-                    sectionIndex++;
+                  h1: ({ node, ...props }: any) => {
+                    // 絵文字を削除
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
+                    return (
+                      <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-0 first:mt-0 text-foreground scroll-mt-20 tracking-tight" {...props}>
+                        {children}
+                      </h1>
+                    );
+                  },
+                  h2: ({ node, ...props }: any) => {
+                    // 絵文字を削除したタイトルを取得
+                    // ReactMarkdownのchildrenからテキストを抽出
+                    const extractText = (children: any): string => {
+                      if (typeof children === 'string') {
+                        return children;
+                      }
+                      if (Array.isArray(children)) {
+                        return children.map(extractText).join('');
+                      }
+                      if (children && typeof children === 'object' && 'props' in children) {
+                        return extractText(children.props.children);
+                      }
+                      return '';
+                    };
+                    
+                    const rawTitle = extractText(props.children);
+                    const title = removeEmojis(rawTitle.trim());
+                    // タイトルからidを生成（extractSectionsと同じロジック）
+                    const id = generateIdFromTitle(title);
+                    
+                    // 絵文字を削除
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
                     return (
                       <h2
                         id={id}
                         className="text-2xl md:text-3xl font-bold mt-8 mb-6 first:mt-0 text-foreground scroll-mt-20 tracking-tight"
                         {...props}
-                      />
+                      >
+                        {children}
+                      </h2>
                     );
                   },
-                  h3: ({ node, ...props }) => {
-                    const title = props.children?.toString() || "";
-                    const id = `section-${sectionIndex}`;
-                    sectionIndex++;
+                  h3: ({ node, ...props }: any) => {
+                    // 絵文字を削除したタイトルを取得
+                    // ReactMarkdownのchildrenからテキストを抽出
+                    const extractText = (children: any): string => {
+                      if (typeof children === 'string') {
+                        return children;
+                      }
+                      if (Array.isArray(children)) {
+                        return children.map(extractText).join('');
+                      }
+                      if (children && typeof children === 'object' && 'props' in children) {
+                        return extractText(children.props.children);
+                      }
+                      return '';
+                    };
+                    
+                    const rawTitle = extractText(props.children);
+                    const title = removeEmojis(rawTitle.trim());
+                    // タイトルからidを生成（extractSectionsと同じロジック）
+                    const id = generateIdFromTitle(title);
+                    
+                    // 絵文字を削除
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
                     return (
                       <h3
                         id={id}
                         className="text-xl md:text-2xl font-semibold mt-8 mb-6 first:mt-0 text-foreground scroll-mt-20 tracking-tight"
                         {...props}
-                      />
+                      >
+                        {children}
+                      </h3>
                     );
                   },
-                  h4: ({ node, ...props }) => (
-                    <h4 className="text-lg md:text-xl font-semibold mt-6 mb-4 first:mt-0 text-foreground scroll-mt-20" {...props} />
-                  ),
+                  h4: ({ node, ...props }: any) => {
+                    // 絵文字を削除
+                    const children = React.Children.map(props.children, (child) => {
+                      if (typeof child === 'string') {
+                        return removeEmojis(child);
+                      }
+                      return child;
+                    });
+                    return (
+                      <h4 className="text-lg md:text-xl font-semibold mt-6 mb-4 first:mt-0 text-foreground scroll-mt-20" {...props}>
+                        {children}
+                      </h4>
+                    );
+                  },
                   p: ({ node, ...props }) => (
                     <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
                   ),
@@ -886,64 +1031,38 @@ export default function LessonDetail() {
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto pt-4 pb-8 px-4">
-        <div className="mb-6 space-y-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setLocation(`/courses/${courseId}`)}
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            コースに戻る
-          </Button>
-          
-          {/* レッスンナビゲーション */}
-          {allLessons.length > 0 && (
-            <div className="flex items-center gap-2 overflow-x-auto pb-2">
-              <span className="text-sm text-muted-foreground whitespace-nowrap">レッスン:</span>
-              <div className="flex gap-2">
-                {allLessons.map((lesson) => {
-                  const isCompleted = courseProgress.completedLessons?.includes(lesson.id);
-                  const isCurrent = lesson.id === lessonId;
-                  return (
-                    <button
-                      key={lesson.id}
-                      onClick={() => setLocation(`/courses/${courseId}/lessons/${lesson.id}`)}
-                      className={`px-3 py-1.5 rounded-md text-sm whitespace-nowrap transition-colors ${
-                        isCurrent
-                          ? "bg-primary text-primary-foreground"
-                          : isCompleted
-                          ? "bg-muted text-foreground hover:bg-muted/80"
-                          : "bg-background border border-border hover:bg-muted"
-                      }`}
-                    >
-                      <div className="flex items-center gap-1.5">
-                        {isCompleted && <CheckCircle2 className="w-3 h-3 flex-shrink-0" />}
-                        <span>{lesson.title}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* メインコンテンツ */}
-          <div className="lg:col-span-8 min-w-0">
-            <Card>
-              <CardContent className="pt-2 pb-6 px-6">
-                <div className="max-w-none">
+      {/* Zenn風のレイアウト */}
+      <div className="min-h-screen bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* メインコンテンツ - Zenn風 */}
+            <main className="flex-1 min-w-0">
+              <article className="zenn-article">
+                {/* 戻るボタン */}
+                <div className="mb-6">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setLocation(`/courses/${courseId}`)}
+                    className="mb-4"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    コースに戻る
+                  </Button>
+                  
                   {/* レッスンタイトル */}
                   {currentLesson && (
-                    <div className="mb-6">
-                      <h1 className="text-3xl font-bold mb-2">{currentLesson.title}</h1>
+                    <div className="mb-8">
+                      <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
+                        {currentLesson.title}
+                      </h1>
                       {currentLesson.description && (
-                        <p className="text-lg text-muted-foreground">{currentLesson.description}</p>
+                        <p className="text-lg text-muted-foreground mb-4">
+                          {currentLesson.description}
+                        </p>
                       )}
                       {(currentLesson.duration || currentLesson.slides) && (
-                        <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           {currentLesson.duration && (
                             <div className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
@@ -960,171 +1079,145 @@ export default function LessonDetail() {
                       )}
                     </div>
                   )}
-                  
-                  {/* コンテンツ */}
-                  <div className={`${UNIFIED_PROSE_CLASSES} [&>h1:first-child]:mt-0 [&>h2:first-child]:mt-0 [&>h3:first-child]:mt-0`}>
-                    {renderContent()}
-                  </div>
-                  
-                  {/* ナビゲーションボタン */}
-                  <div className="flex justify-between mt-8 pt-6">
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        if (previousLesson) {
-                          setLocation(`/courses/${courseId}/lessons/${previousLesson.id}`);
-                        }
-                      }}
-                      disabled={!previousLesson}
-                    >
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      前のステップ
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        // レッスン完了を記録
-                        addXP(10, "レッスン完了");
-                        // fast-json-stringifyを使用してローカルストレージに進捗を保存
-                        fastStorage.setLessonProgress(lessonId || "", {
-                          completed: true,
-                          completedAt: new Date().toISOString(),
-                        });
-                        
-                        // コースの進捗も更新
-                        if (courseId) {
-                          const courseProgress = fastStorage.getCourseProgress(courseId) || { completedLessons: [] };
-                          const completedLessons = courseProgress.completedLessons || [];
-                          if (lessonId && !completedLessons.includes(lessonId)) {
-                            completedLessons.push(lessonId);
-                            const updatedProgress = {
-                              completedLessons,
-                              lastUpdated: new Date().toISOString(),
-                            };
-                            fastStorage.setCourseProgress(courseId, updatedProgress);
+                </div>
+                
+                {/* コンテンツ */}
+                <div className="prose prose-slate dark:prose-invert max-w-none">
+                  {renderContent()}
+                </div>
+                
+                {/* ナビゲーションボタン - Zenn風 */}
+                <div className="flex justify-between items-center mt-12 pt-8 border-t border-border">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      if (previousLesson) {
+                        setLocation(`/courses/${courseId}/lessons/${previousLesson.id}`);
+                      }
+                    }}
+                    disabled={!previousLesson}
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    前のステップ
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      // レッスン完了を記録
+                      addXP(10, "レッスン完了");
+                      fastStorage.setLessonProgress(lessonId || "", {
+                        completed: true,
+                        completedAt: new Date().toISOString(),
+                      });
+                      
+                      // コースの進捗も更新
+                      if (courseId) {
+                        const courseProgress = fastStorage.getCourseProgress(courseId) || { completedLessons: [] };
+                        const completedLessons = courseProgress.completedLessons || [];
+                        if (lessonId && !completedLessons.includes(lessonId)) {
+                          completedLessons.push(lessonId);
+                          const updatedProgress = {
+                            completedLessons,
+                            lastUpdated: new Date().toISOString(),
+                          };
+                          fastStorage.setCourseProgress(courseId, updatedProgress);
 
-                            // コース完了チェック
-                            const allLessons = getLessonsForCourse(courseId);
-                            if (completedLessons.length === allLessons.length && allLessons.length > 0) {
-                              const completionDate = new Date().toLocaleDateString("ja-JP");
-                              fastStorage.setCourseCompleted(courseId, {
-                                completed: true,
-                                completedDate: completionDate,
-                                completedAt: new Date().toISOString(),
-                              });
-                              addXP(20, "コース完了ボーナス");
-                            }
+                          // コース完了チェック
+                          const allLessons = getLessonsForCourse(courseId);
+                          if (completedLessons.length === allLessons.length && allLessons.length > 0) {
+                            const completionDate = new Date().toLocaleDateString("ja-JP");
+                            fastStorage.setCourseCompleted(courseId, {
+                              completed: true,
+                              completedDate: completionDate,
+                              completedAt: new Date().toISOString(),
+                            });
+                            addXP(20, "コース完了ボーナス");
                           }
                         }
-                        
-                        // 次のレッスンがあれば遷移（遷移後、確実にトップにスクロール）
-                        if (nextLesson) {
-                          // ページ遷移
-                          setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
-                          
-                          // 遷移後に確実にトップにスクロールする関数（繰り返し実行）
-                          let attempts = 0;
-                          const maxAttempts = 30;
-                          
-                          const ensureScrollToTop = () => {
-                            // すべての方法でスクロール位置を0に設定
-                            window.scrollTo(0, 0);
-                            document.documentElement.scrollTop = 0;
-                            document.body.scrollTop = 0;
-                            
-                            // 現在のスクロール位置を確認
-                            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-                            
-                            // まだ0でない場合、再試行
-                            if (currentScroll > 0 && attempts < maxAttempts) {
-                              attempts++;
-                              setTimeout(ensureScrollToTop, 50);
-                            }
-                          };
-                          
-                          // 複数のタイミングで確実に実行
-                          setTimeout(ensureScrollToTop, 0);
-                          setTimeout(ensureScrollToTop, 100);
-                          setTimeout(ensureScrollToTop, 300);
-                        } else {
-                          // コース一覧ページへの遷移
-                          setLocation(`/courses/${courseId}`);
-                          
-                          let attempts = 0;
-                          const maxAttempts = 20;
-                          
-                          const ensureScrollToTop = () => {
-                            window.scrollTo(0, 0);
-                            document.documentElement.scrollTop = 0;
-                            document.body.scrollTop = 0;
-                            
-                            const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-                            
-                            if (currentScroll > 0 && attempts < maxAttempts) {
-                              attempts++;
-                              setTimeout(ensureScrollToTop, 50);
-                            }
-                          };
-                          
-                          setTimeout(ensureScrollToTop, 100);
-                          setTimeout(ensureScrollToTop, 300);
-                        }
-                      }}
-                      disabled={!nextLesson && currentLessonIndex === totalLessons - 1}
-                    >
-                      {nextLesson ? (
-                        <>
-                          次のステップ
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </>
-                      ) : (
-                        <>
-                          終了
-                          <CheckCircle2 className="w-4 h-4 ml-2" />
-                        </>
-                      )}
-                    </Button>
-                  </div>
+                      }
+                      
+                      // 次のレッスンがあれば遷移
+                      if (nextLesson) {
+                        setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
+                      } else {
+                        setLocation(`/courses/${courseId}`);
+                      }
+                    }}
+                    disabled={!nextLesson && currentLessonIndex === totalLessons - 1}
+                    className="flex items-center gap-2"
+                  >
+                    {nextLesson ? (
+                      <>
+                        次のステップ
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        終了
+                        <CheckCircle2 className="w-4 h-4" />
+                      </>
+                    )}
+                  </Button>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </article>
+            </main>
 
-          {/* サイドバー（目次） - Zenn風 */}
-          <div className="lg:col-span-4 hidden lg:block">
-            <div className="sticky top-24">
-              <div className="relative">
-                <h3 className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
-                  目次
-                </h3>
-                {sections.length > 0 ? (
-                  <nav className="space-y-1.5">
-                    {sections.map((section) => {
-                      const isActive = activeSection === section.id;
-                      return (
-                        <button
-                          key={section.id}
-                          onClick={() => scrollToSection(section.id)}
-                          className={`block w-full text-left text-sm transition-colors relative ${
-                            section.level === 3 ? "pl-6 text-xs" : "pl-0"
-                          } ${
-                            isActive
-                              ? "text-foreground font-medium"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                        >
-                          {isActive && (
-                            <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary -ml-4" />
-                          )}
-                          <span className="truncate block">{section.title}</span>
-                        </button>
-                      );
-                    })}
-                  </nav>
-                ) : (
-                  <p className="text-sm text-muted-foreground">目次はありません</p>
-                )}
+            {/* サイドバー（目次） - Zenn風 */}
+            <aside className="fixed lg:static inset-y-0 left-0 z-50 lg:z-0
+            w-80 lg:w-80 flex-shrink-0
+            transform transition-transform duration-300 ease-in-out
+            -translate-x-full lg:translate-x-0
+            bg-gray-50 dark:bg-gray-900 lg:bg-transparent">
+              <div className="h-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto p-4 lg:p-0">
+                <nav className="space-y-6">
+                  {sections.length > 0 ? (
+                    <div>
+                      <h3 className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
+                        目次
+                      </h3>
+                      <div className="space-y-0.5">
+                        {sections.map((section) => {
+                          const isActive = activeSection === section.id;
+                          return (
+                            <a
+                              key={section.id}
+                              href={`#${section.id}`}
+                              onClick={(e) => scrollToSection(section.id, e)}
+                              className={`block text-sm transition-colors relative py-1.5 px-0 ${
+                                section.level === 3 ? "pl-4 text-xs" : "pl-0"
+                              } ${
+                                isActive
+                                  ? "text-foreground font-medium"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                              style={{
+                                lineHeight: '1.5',
+                              }}
+                            >
+                            {isActive && (
+                              <span 
+                                className="absolute left-0 top-1 bottom-1 w-0.5 bg-border rounded-full" 
+                              />
+                            )}
+                              <span className="block truncate" style={{ lineHeight: '1.5' }}>
+                                {section.title}
+                              </span>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <h3 className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
+                        目次
+                      </h3>
+                      <p className="text-sm text-muted-foreground">目次はありません</p>
+                    </div>
+                  )}
+                </nav>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       </div>
