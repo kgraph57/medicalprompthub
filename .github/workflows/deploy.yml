@@ -45,7 +45,7 @@ jobs:
       - name: Build
         run: |
           echo "Starting build..."
-          pnpm build || (echo "Build failed!" && exit 1)
+          pnpm build:client || (echo "Build failed!" && exit 1)
           echo "Build completed successfully"
         env:
           NODE_ENV: production
