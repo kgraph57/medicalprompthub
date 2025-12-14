@@ -151,9 +151,15 @@ export function StatsBannerSection({ prompts }: StatsBannerSectionProps) {
                 </div>
                 
                 {/* ラベル（Linear風：フェードイン） */}
-                <p className={`text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-normal tracking-[-0.01em] ${isLongLabel ? 'break-words max-w-[120px] mx-auto' : ''}`}>
+                <motion.p 
+                  className={`text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-normal tracking-[-0.01em] ${isLongLabel ? 'break-words max-w-[120px] mx-auto' : ''}`}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 + 0.8 }}
+                >
                   {item.label}
-                </p>
+                </motion.p>
               </motion.div>
             );
           })}
