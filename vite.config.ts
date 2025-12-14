@@ -183,14 +183,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name]-[hash]-v15.js`,
-        chunkFileNames: `assets/[name]-[hash]-v15.js`,
+        entryFileNames: `assets/[name]-[hash]-v16.js`,
+        chunkFileNames: `assets/[name]-[hash]-v16.js`,
         assetFileNames: (assetInfo) => {
           // 画像の最適化（WebP形式への変換はビルド時に実施）
           if (assetInfo.name && /\.(png|jpg|jpeg)$/.test(assetInfo.name)) {
-            return `assets/images/[name]-[hash]-v15.[ext]`;
+            return `assets/images/[name]-[hash]-v16.[ext]`;
           }
-          return `assets/[name]-[hash]-v15.[ext]`;
+          return `assets/[name]-[hash]-v16.[ext]`;
         },
         manualChunks: (id) => {
           // React core
