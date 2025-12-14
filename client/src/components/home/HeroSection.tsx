@@ -76,16 +76,13 @@ function MouseFollowEffect({ x, y }: { x: any; y: any }) {
   const background = useTransform(
     [x, y],
     ([latestX, latestY]) => 
-      `radial-gradient(800px circle at ${latestX}px ${latestY}px, rgba(59, 130, 246, 0.015), transparent 50%)`
+      `radial-gradient(800px circle at ${latestX}px ${latestY}px, rgba(59, 130, 246, 0.02), transparent 50%)`
   );
   
   return (
     <motion.div
       className="absolute inset-0 pointer-events-none"
-      style={{ 
-        background,
-        willChange: "background"
-      }}
+      style={{ background }}
     />
   );
 }
@@ -103,36 +100,24 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
     offset: ["start start", "end start"]
   });
 
-  // パララックス効果（より控えめに）
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 40]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
+  // パララックス効果
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
   
-  // マウス追従エフェクト（パフォーマンス最適化）
+  // マウス追従エフェクト
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springConfig = { damping: 30, stiffness: 180 };
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
-  
-  // マウス移動のスロットリング（パフォーマンス最適化）
-  const handleMouseMoveThrottled = useRef<NodeJS.Timeout | null>(null);
 
-  // プロンプトデータの読み込み（パフォーマンス最適化：遅延ロード）
+  // プロンプトデータの読み込み
   useEffect(() => {
-    // requestIdleCallbackでアイドル時に読み込む
-    const loadData = () => {
-      loadPrompts().then((prompts) => {
-        const recommended = getRecommendedPrompts(prompts);
-        setRecommendedPrompts(recommended.slice(0, 6)); // 最大6個
-      });
-    };
-    
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadData, { timeout: 2000 });
-    } else {
-      setTimeout(loadData, 100);
-    }
+    loadPrompts().then((prompts) => {
+      const recommended = getRecommendedPrompts(prompts);
+      setRecommendedPrompts(recommended.slice(0, 6)); // 最大6個
+    });
   }, []);
 
   
@@ -156,12 +141,6 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
   }, [onSearchChange]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    // スロットリングでパフォーマンス最適化
-    if (handleMouseMoveThrottled.current) return;
-    handleMouseMoveThrottled.current = setTimeout(() => {
-      handleMouseMoveThrottled.current = null;
-    }, 16); // ~60fps
-    
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -191,23 +170,21 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
             ease: "easeInOut",
           }}
         />
-        {/* 微細なグリッドパターン（より控えめに） */}
-        <div className="absolute inset-0 opacity-[0.008] dark:opacity-[0.015]">
+        {/* 微細なグリッドパターン */}
+        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.025]">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="heroGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
                 <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#heroGrid)" className="text-neutral-900 dark:text-neutral-100" />
+            <rect width="100%" height="100%" fill="url(#grid)" className="text-neutral-900 dark:text-neutral-100" />
           </svg>
         </div>
       </div>
       
-      {/* マウス追従エフェクト（Linear風：より控えめに）- デスクトップのみ */}
-      <div className="hidden lg:block">
-        <MouseFollowEffect x={x} y={y} />
-      </div>
+      {/* マウス追従エフェクト（Linear風：より控えめに） */}
+      <MouseFollowEffect x={x} y={y} />
       
       <motion.div 
         className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10 w-full"
@@ -353,7 +330,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ 
                       duration: 0.7, 
-                      delay: 0.65,
+                      delay: 0.6,
                       ease: [0.16, 1, 0.3, 1] as [number, number, number, number] 
                     }}
                   >
@@ -368,11 +345,10 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                 >
                   <motion.button
                     onClick={() => setLocation('/guides')}
-                    className="group relative inline-flex items-center justify-center px-7 py-3.5 text-[15px] font-medium text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 rounded-xl transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600 focus:ring-offset-2"
+                    className="group relative inline-flex items-center justify-center px-7 py-3.5 text-[15px] font-medium text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 rounded-xl transition-all duration-300 overflow-hidden"
                     whileHover={{ scale: 1.02, y: -1 }}
                     whileTap={{ scale: 0.98 }}
                     style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500 }}
-                    aria-label="Get Started - ガイドページへ移動"
                   >
                     {/* ホバー時のグロー効果 */}
                     <motion.div

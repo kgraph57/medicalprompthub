@@ -24,35 +24,17 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
 
-  // スクロール連動のパララックス（より控えめに）
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -30]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  // スクロール連動のパララックス
+  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
-  // 自動ローテーション（4秒ごと）- パフォーマンス最適化
+  // 自動ローテーション（4秒ごと）
   useEffect(() => {
     if (prompts.length === 0) return;
-    // ページが非表示の時はローテーションを停止
-    let interval: NodeJS.Timeout;
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        if (interval) clearInterval(interval);
-      } else {
-        interval = setInterval(() => {
-          setCurrentIndex((prev) => (prev + 1) % prompts.length);
-        }, 4000);
-      }
-    };
-    
-    interval = setInterval(() => {
+    const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % prompts.length);
     }, 4000);
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
-    return () => {
-      if (interval) clearInterval(interval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
+    return () => clearInterval(interval);
   }, [prompts.length]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -91,10 +73,7 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
       className={`relative ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ 
-        willChange: "transform",
-        contain: "layout style paint"
-      }}
+      style={{ willChange: "transform" }}
     >
       {/* 背景グラデーション（強化版） - デスクトップのみ */}
       <motion.div
@@ -126,16 +105,16 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
         <motion.div
           className="relative group"
           style={{
-            rotateX: useTransform(y, [-20, 20], [2, -2]),
-            rotateY: useTransform(x, [-20, 20], [-2, 2]),
+            rotateX: useTransform(y, [-20, 20], [5, -5]),
+            rotateY: useTransform(x, [-20, 20], [-5, 5]),
             transformStyle: "preserve-3d",
             willChange: "transform",
           }}
           animate={{
-            y: [0, -4, 0],
+            y: [0, -8, 0],
           }}
           transition={{
-            duration: 5,
+            duration: 3,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -148,19 +127,26 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               willChange: "transform, box-shadow",
             }}
             whileHover={{
-              scale: 1.01,
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(59, 130, 246, 0.15)",
+              scale: 1.02,
+              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(59, 130, 246, 0.2)",
             }}
             transition={{
               duration: 0.3,
               ease: [0.16, 1, 0.3, 1],
             }}
           >
-            {/* 光の反射効果（控えめに） */}
+            {/* 光の反射効果（強化版） */}
             <motion.div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               style={{
-                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(59, 130, 246, 0.05) 30%, transparent 60%)",
+                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(59, 130, 246, 0.1) 30%, transparent 60%)",
+              }}
+            />
+            {/* 追加のグロー効果 */}
+            <motion.div
+              className="absolute -inset-1 opacity-0 group-hover:opacity-50 blur-xl transition-opacity duration-500"
+              style={{
+                background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.4), transparent 70%)",
               }}
             />
 
@@ -188,8 +174,7 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="p-2 rounded-lg bg-neutral-800/50 hover:bg-neutral-700/50 border border-neutral-700/50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-neutral-900"
-                  aria-label={copied ? "コピー完了" : "プロンプトをコピー"}
+                  className="p-2 rounded-lg bg-neutral-800/50 hover:bg-neutral-700/50 border border-neutral-700/50 transition-colors"
                 >
                   {copied ? (
                     <Check className="w-4 h-4 text-emerald-400" />
@@ -200,48 +185,31 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               </div>
 
               {/* タイトル */}
-              <motion.h3 
-                key={`title-${currentIndex}`}
-                className="text-xl font-semibold text-neutral-100 leading-tight tracking-[-0.01em]"
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              >
+              <h3 className="text-xl font-semibold text-neutral-100 leading-tight tracking-[-0.01em]">
                 {currentPrompt.title}
-              </motion.h3>
+              </h3>
 
               {/* 説明 */}
-              <motion.p 
-                key={`description-${currentIndex}`}
-                className="text-sm text-neutral-400 leading-relaxed line-clamp-2 tracking-[-0.005em]"
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              >
+              <p className="text-sm text-neutral-400 leading-relaxed line-clamp-2 tracking-[-0.005em]">
                 {currentPrompt.description}
-              </motion.p>
+              </p>
 
               {/* プロンプトプレビュー */}
-              <div className="relative mt-4 p-4 rounded-lg bg-neutral-950/50 border border-neutral-800/50 backdrop-blur-sm" role="region" aria-label="プロンプトプレビュー">
+              <div className="relative mt-4 p-4 rounded-lg bg-neutral-950/50 border border-neutral-800/50 backdrop-blur-sm">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-neutral-500">プロンプトプレビュー</span>
-                  <span className="text-xs text-neutral-600" aria-live="polite" aria-atomic="true">
+                  <span className="text-xs text-neutral-600">
                     {currentIndex + 1} / {prompts.length}
                   </span>
                 </div>
-                <pre className="text-xs text-neutral-300 font-mono whitespace-pre-wrap line-clamp-4 overflow-hidden" aria-label={`プロンプト: ${currentPrompt.title}`}>
+                <pre className="text-xs text-neutral-300 font-mono whitespace-pre-wrap line-clamp-4 overflow-hidden">
                   {currentPrompt.template.substring(0, 200)}
                   {currentPrompt.template.length > 200 && "..."}
                 </pre>
               </div>
 
               {/* フッター */}
-              <motion.div 
-                className="flex items-center justify-between pt-3 border-t border-neutral-800/50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.1 }}
-              >
+              <div className="flex items-center justify-between pt-3 border-t border-neutral-800/50">
                 <div className="flex gap-1.5">
                   {prompts.map((_, index) => (
                     <motion.div
@@ -255,15 +223,11 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
                     />
                   ))}
                 </div>
-                <motion.div 
-                  className="flex items-center gap-2 text-xs text-neutral-500 font-medium tracking-[-0.01em] group-hover:text-neutral-400 transition-colors"
-                  whileHover={{ x: 2 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium tracking-[-0.01em] group-hover:text-neutral-400 transition-colors">
                   <span>詳細を見る</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </div>
           </motion.div>
 
@@ -280,10 +244,10 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               y: [8, 6, 8],
             }}
             transition={{
-              duration: 5,
+              duration: 4,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: 0.8,
+              delay: 0.5,
             }}
           />
           <motion.div
@@ -298,10 +262,10 @@ export function InteractivePromptPreview({ prompts, className = "" }: Interactiv
               y: [16, 14, 16],
             }}
             transition={{
-              duration: 6,
+              duration: 5,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: 1.5,
+              delay: 1,
             }}
           />
         </motion.div>

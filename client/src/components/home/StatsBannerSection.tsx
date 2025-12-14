@@ -130,11 +130,9 @@ export function StatsBannerSection({ prompts }: StatsBannerSectionProps) {
             return (
               <motion.div
                 key={item.label}
-                className="text-center flex flex-col items-center justify-center min-w-0 group"
+                className="text-center flex flex-col items-center justify-center min-w-0"
                 variants={itemVariants}
                 custom={index}
-                whileHover={{ scale: 1.05, y: -2 }}
-                transition={{ duration: 0.2 }}
               >
                 {/* 数値（Linear風：カウントアップアニメーション） */}
                 <div className="mb-3">
@@ -151,15 +149,9 @@ export function StatsBannerSection({ prompts }: StatsBannerSectionProps) {
                 </div>
                 
                 {/* ラベル（Linear風：フェードイン） */}
-                <motion.p 
-                  className={`text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-normal tracking-[-0.01em] ${isLongLabel ? 'break-words max-w-[120px] mx-auto' : ''}`}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 + 0.8 }}
-                >
+                <p className={`text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-normal tracking-[-0.01em] ${isLongLabel ? 'break-words max-w-[120px] mx-auto' : ''}`}>
                   {item.label}
-                </motion.p>
+                </p>
               </motion.div>
             );
           })}

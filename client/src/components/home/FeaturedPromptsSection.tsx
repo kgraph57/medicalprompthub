@@ -119,7 +119,7 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
                 <Link
                   href={`/prompts/${prompt.id}`}
                   className="group block p-6 rounded-xl border transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-neutral-800/50 hover:scale-[1.02] hover:-translate-y-1 active:translate-y-0 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm border-neutral-200/70 dark:border-neutral-700/70"
-                >
+              >
                 {/* カテゴリバッジ */}
                 <div className="mb-3">
                   <span

@@ -1,7 +1,6 @@
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { useLocation } from "wouter";
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { HighlightedText } from "@/components/HighlightedText";
 
 interface Prompt {
@@ -38,28 +37,20 @@ export const PromptCard = memo(function PromptCard({ prompt, searchQuery = '' }:
   const riskConfig = getRiskConfig();
 
   return (
-    <motion.button
+    <button
       onClick={() => setLocation(`/prompts/${prompt.id}`)}
       className="
         group relative w-full p-5
-        bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm
+        bg-white dark:bg-neutral-900
         rounded-xl
-        border border-neutral-200/60 dark:border-neutral-800/60
-        hover:border-neutral-300/70 dark:hover:border-neutral-700/70
+        border border-neutral-200 dark:border-neutral-800
+        hover:border-neutral-300 dark:hover:border-neutral-700
         transition-all duration-300
         text-left
         hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-neutral-800/50
+        hover:-translate-y-1
+        active:translate-y-0
       "
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ 
-        y: -2,
-        scale: 1.01,
-        boxShadow: "0 12px 24px rgba(0, 0, 0, 0.1)"
-      }}
-      whileTap={{ scale: 0.98 }}
     >
       {/* ヘッダー: カテゴリとリスクレベル */}
       <div className="flex items-center justify-between mb-3">
@@ -86,6 +77,6 @@ export const PromptCard = memo(function PromptCard({ prompt, searchQuery = '' }:
       <p className="text-sm leading-relaxed line-clamp-2 text-neutral-600 dark:text-neutral-400">
         <HighlightedText text={prompt.description} query={searchQuery} />
       </p>
-    </motion.button>
+    </button>
   );
 });
