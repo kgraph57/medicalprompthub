@@ -14,21 +14,21 @@ import { initGA4 } from "./lib/analytics";
 const Home = lazy(() => import("@/pages/Home"));
 const Category = lazy(() => import("@/pages/Category"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
-const PromptDetail = lazy(() => import("./pages/PromptDetail"));
-const Guides = lazy(() => import("./pages/Guides"));
-const GuideDetail = lazy(() => import("./pages/GuideDetail"));
-const Tips = lazy(() => import("./pages/Tips"));
-const TipDetail = lazy(() => import("./pages/TipDetail"));
-const Legal = lazy(() => import("./pages/Legal"));
-const FAQ = lazy(() => import("./pages/FAQ"));
-const Contact = lazy(() => import("./pages/Contact"));
-const About = lazy(() => import("./pages/About"));
-const Changelog = lazy(() => import("./pages/Changelog"));
-const Favorites = lazy(() => import("./pages/Favorites"));
-const Courses = lazy(() => import("./pages/Courses"));
-const CategoryCourses = lazy(() => import("./pages/CategoryCourses"));
-const CourseDetail = lazy(() => import("./pages/CourseDetail"));
-const LessonDetail = lazy(() => import("./pages/LessonDetail"));
+const PromptDetail = lazy(() => import("@/pages/PromptDetail"));
+const Guides = lazy(() => import("@/pages/Guides"));
+const GuideDetail = lazy(() => import("@/pages/GuideDetail"));
+const Tips = lazy(() => import("@/pages/Tips"));
+const TipDetail = lazy(() => import("@/pages/TipDetail"));
+const Legal = lazy(() => import("@/pages/Legal"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const About = lazy(() => import("@/pages/About"));
+const Changelog = lazy(() => import("@/pages/Changelog"));
+const Favorites = lazy(() => import("@/pages/Favorites"));
+const Courses = lazy(() => import("@/pages/Courses"));
+const CategoryCourses = lazy(() => import("@/pages/CategoryCourses"));
+const CourseDetail = lazy(() => import("@/pages/CourseDetail"));
+const LessonDetail = lazy(() => import("@/pages/LessonDetail"));
 const JournalFinderPage = lazy(() => import("@/pages/JournalFinderPage"));
 const JournalDetail = lazy(() => import("@/pages/JournalDetail"));
 const JournalCompare = lazy(() => import("@/pages/JournalCompare"));
@@ -56,8 +56,11 @@ const PageLoader = () => (
 );
 
 function Router() {
+  // 開発環境では base を空に、本番環境では /medicalprompthub を使用
+  const basePath = import.meta.env.PROD ? "/medicalprompthub" : "";
+  
   return (
-    <WouterRouter base="/medicalprompthub">
+    <WouterRouter base={basePath}>
       <PageViewTracker />
       <Suspense fallback={<PageLoader />}>
         <Switch>

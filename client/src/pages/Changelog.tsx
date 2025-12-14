@@ -6,10 +6,11 @@
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Sparkles, Bug, Settings, FileText, ArrowRight } from "lucide-react";
+import { Sparkles, Bug, Settings, FileText } from "lucide-react";
 import { useEffect } from "react";
 import { updateSEO, addStructuredData, BASE_URL } from "@/lib/seo";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 interface ChangelogEntry {
   version: string;
@@ -108,7 +109,7 @@ export default function Changelog() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         {/* Linear.app風：ページヘッダー */}
         <PageHeader
           category="Changelog"
@@ -117,7 +118,7 @@ export default function Changelog() {
         />
 
         {/* Changelog Entries */}
-        <div className="space-y-8">
+        <div className="space-y-4 mt-8">
           {changelogEntries.map((entry, index) => {
             const Icon = typeIcons[entry.type];
             const label = typeLabels[entry.type];
@@ -125,36 +126,29 @@ export default function Changelog() {
             return (
               <motion.div
                 key={entry.version}
-                className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/50 dark:border-neutral-700/50 p-6 md:p-8 relative"
-                initial={{ opacity: 0, y: 20 }}
+                className="border-b border-neutral-200 dark:border-neutral-800 pb-4 last:border-b-0"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
               >
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 rounded-l-lg" />
-                <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-50 dark:bg-blue-950/20 rounded-lg flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-black text-neutral-900 dark:text-neutral-50 tracking-[-0.02em]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-                        v{entry.version}
-                      </h3>
-                      <div className="flex items-center gap-1.5 mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                        <Calendar className="w-4 h-4" />
-                        {entry.date}
-                      </div>
-                    </div>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">
+                      v{entry.version}
+                    </h3>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                      {entry.date}
+                    </span>
                   </div>
-                  <Badge className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 border-blue-200 dark:border-blue-800">
+                  <Badge variant="outline" className="text-xs h-5 px-1.5">
                     {label}
                   </Badge>
                 </div>
-                <ul className="space-y-2">
+                <ul className="space-y-1 ml-5">
                   {entry.changes.map((change, changeIndex) => (
-                    <li key={changeIndex} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                      <span className="text-blue-600 mt-1">•</span>
-                      <span>{change}</span>
+                    <li key={changeIndex} className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      {change}
                     </li>
                   ))}
                 </ul>
@@ -165,33 +159,27 @@ export default function Changelog() {
 
         {/* Future Updates */}
         <motion.section
-          className="mt-12"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.4, delay: 0.2 }}
         >
-          <div className="flex items-center gap-2 mb-6">
-            <Sparkles className="w-4 h-4 text-blue-600" strokeWidth={2} />
-            <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
-              Roadmap
-            </span>
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" strokeWidth={2} />
+            <h2 className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">
+              Upcoming features
+            </h2>
           </div>
-          <h2 className="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-            Upcoming features
-          </h2>
-          <div className="space-y-4 text-base text-neutral-600 dark:text-neutral-400">
-            <p>以下の機能を順次実装予定です：</p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>プロンプトの評価・フィードバック機能</li>
-              <li>ユーザー投稿機能（コミュニティプロンプト）</li>
-              <li>プロンプトのバージョン管理</li>
-              <li>多言語対応（英語版）</li>
-              <li>API提供</li>
-            </ul>
-            <p className="mt-6">
-              ご要望やフィードバックは<Link href="/contact" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline">お問い合わせフォーム</Link>からお願いいたします。
-            </p>
-          </div>
+          <ul className="space-y-1 ml-5">
+            <li className="text-xs text-neutral-600 dark:text-neutral-400">プロンプトの評価・フィードバック機能</li>
+            <li className="text-xs text-neutral-600 dark:text-neutral-400">ユーザー投稿機能（コミュニティプロンプト）</li>
+            <li className="text-xs text-neutral-600 dark:text-neutral-400">プロンプトのバージョン管理</li>
+            <li className="text-xs text-neutral-600 dark:text-neutral-400">多言語対応（英語版）</li>
+            <li className="text-xs text-neutral-600 dark:text-neutral-400">API提供</li>
+          </ul>
+          <p className="mt-4 text-xs text-neutral-600 dark:text-neutral-400">
+            ご要望やフィードバックは<Link href="/contact" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline">お問い合わせフォーム</Link>からお願いいたします。
+          </p>
         </motion.section>
       </div>
     </Layout>

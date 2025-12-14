@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HelpCircle, AlertCircle, BookOpen, Settings, Shield, MessageSquare, ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { updateSEO, addFAQStructuredData } from "@/lib/seo";
@@ -324,8 +325,15 @@ export default function FAQ() {
                 Troubleshooting
               </span>
             </div>
-            <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/50 dark:border-neutral-700/50 p-6">
-              <Accordion type="single" collapsible className="w-full">
+            <Card>
+              <CardHeader className="p-4">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Settings className="w-4 h-4" />
+                  トラブルシューティング
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="prompt-not-working">
                   <AccordionTrigger className="text-base">プロンプトがうまく動作しません</AccordionTrigger>
                   <AccordionContent>
@@ -649,7 +657,8 @@ export default function FAQ() {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-            </div>
+            </CardContent>
+          </Card>
           </motion.section>
 
           {/* その他 */}
@@ -664,8 +673,15 @@ export default function FAQ() {
                 Other
               </span>
             </div>
-            <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/50 dark:border-neutral-700/50 p-6">
-              <Accordion type="single" collapsible className="w-full">
+            <Card>
+              <CardHeader className="p-4">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <MessageSquare className="w-4 h-4" />
+                  その他
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="suggest-feature">
                   <AccordionTrigger className="text-base">機能の提案や改善要望はできますか？</AccordionTrigger>
                   <AccordionContent>
@@ -774,7 +790,7 @@ export default function FAQ() {
           </Card>
 
           {/* 重要な注意事項 */}
-          <Card className="border-destructive/50">
+          <Card className="border-destructive/50 my-6">
             <CardHeader className="p-4">
               <CardTitle className="flex items-center gap-2 text-destructive text-base">
                 <AlertCircle className="w-4 h-4" />
@@ -806,7 +822,8 @@ export default function FAQ() {
                   詳細は<a href="/legal" className="underline">利用規約・免責事項</a>をご確認ください。
                 </p>
               </div>
-            </div>
+            </CardContent>
+          </Card>
           </motion.section>
         </div>
       </div>

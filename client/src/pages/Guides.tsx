@@ -591,7 +591,7 @@ export default function Guides() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-sm font-medium text-muted-foreground"
+              className="text-sm font-medium text-muted-foreground my-6"
             >
               {filteredAndSortedGuides.length}件のガイドが見つかりました
             </motion.div>

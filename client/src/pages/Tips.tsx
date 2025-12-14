@@ -94,7 +94,7 @@ export default function Tips() {
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto">
         {/* Linear.app風：ページヘッダー */}
         <PageHeader
           category="Tips"
@@ -103,28 +103,28 @@ export default function Tips() {
         />
 
         {/* 基礎コンテンツカード（固定配置） */}
-        <div className="max-w-5xl mx-auto">
-          <Card className="border border-border">
-            <CardHeader className="p-4">
-              <CardTitle className="flex items-center gap-1.5 text-sm">
+        <div className="max-w-5xl mx-auto mb-12">
+          <Card className="border border-border/60">
+            <CardHeader className="p-6">
+              <CardTitle className="flex items-center gap-2 text-base font-semibold">
                 プロンプトエンジニアリングとは？
               </CardTitle>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-sm text-muted-foreground">
                 AIを最大限に活用するための基礎知識
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 text-xs leading-snug p-4">
+            <CardContent className="space-y-4 text-sm leading-relaxed p-6">
               <p>
                 <strong>プロンプトエンジニアリング</strong>とは、AI（ChatGPT、Claudeなど）に対して、期待する出力を得るための「問いかけ方」を設計・最適化する技術です。医療現場では、曖昧な指示ではAIが不正確な情報を生成するリスクがあります。
               </p>
-              <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                <h4 className="font-semibold">良いプロンプトの5つの原則</h4>
-                <ol className="list-decimal pl-5 space-y-2">
-                  <li><strong>明確性：</strong>指示は具体的かつ明確に</li>
-                  <li><strong>文脈：</strong>必要な背景情報を提供する</li>
-                  <li><strong>形式：</strong>出力形式を指定する（例：箇条書き、表形式）</li>
-                  <li><strong>制約：</strong>制約条件を明示する（例：文字数、トーン）</li>
-                  <li><strong>検証：</strong>AIの出力を必ず検証する</li>
+              <div className="bg-muted/30 rounded-lg p-5 space-y-3 border border-border/60">
+                <h4 className="font-semibold text-foreground">良いプロンプトの5つの原則</h4>
+                <ol className="list-decimal pl-5 space-y-2.5 text-muted-foreground">
+                  <li><strong className="text-foreground">明確性：</strong>指示は具体的かつ明確に</li>
+                  <li><strong className="text-foreground">文脈：</strong>必要な背景情報を提供する</li>
+                  <li><strong className="text-foreground">形式：</strong>出力形式を指定する（例：箇条書き、表形式）</li>
+                  <li><strong className="text-foreground">制約：</strong>制約条件を明示する（例：文字数、トーン）</li>
+                  <li><strong className="text-foreground">検証：</strong>AIの出力を必ず検証する</li>
                 </ol>
               </div>
             </CardContent>
@@ -138,7 +138,7 @@ export default function Tips() {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="mb-3 space-y-2">
+          <div className="my-6 md:my-8 space-y-4">
             <div className="relative max-w-2xl mx-auto">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
               <Input
@@ -148,11 +148,11 @@ export default function Tips() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex flex-wrap gap-3 justify-center" role="tablist" aria-label="カテゴリフィルタ">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <div className="flex flex-wrap gap-2 justify-center" role="tablist" aria-label="カテゴリフィルタ">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Badge 
                   variant={selectedCategory === null ? "default" : "outline"}
-                  className="cursor-pointer px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="cursor-pointer px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-200 border-border/60"
                   onClick={() => {
                     setSelectedCategory(null);
                   }}
@@ -176,12 +176,12 @@ export default function Tips() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.7 + index * 0.05 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <Badge
                     variant={selectedCategory === cat ? "default" : "outline"}
-                    className="cursor-pointer capitalize px-5 py-2 text-sm font-medium rounded-full hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="cursor-pointer capitalize px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-200 border-border/60"
                     onClick={() => {
                       setSelectedCategory(cat);
                     }}
@@ -205,7 +205,7 @@ export default function Tips() {
 
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
             style={{gridAutoRows: '1fr'}}
           >
             <AnimatePresence mode="popLayout">
@@ -228,21 +228,21 @@ export default function Tips() {
                     }}
                     className="relative z-10 h-full"
                   >
-                    <Card className="h-full flex flex-col cursor-pointer border hover:border-primary/30 bg-card group overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 rounded-lg">
-                      <CardHeader className="p-4 space-y-2 flex-1">
+                    <Card className="h-full flex flex-col cursor-pointer border border-border/60 hover:border-primary/40 bg-card group overflow-hidden transition-all duration-200 rounded-lg">
+                      <CardHeader className="p-5 space-y-3 flex-1">
                         <div className="flex justify-between items-start gap-2">
                           <div className="flex gap-1.5 flex-wrap">
-                            <Badge variant="secondary" className="capitalize text-[10px] font-medium px-2 py-0.5 rounded-md">
+                            <Badge variant="secondary" className="capitalize text-[10px] font-medium px-2 py-0.5 rounded-md border-0">
                               {categoryLabels[tip.category]}
                             </Badge>
                             <Badge 
                               variant="outline" 
-                              className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-md border-2 ${
+                              className={`text-[10px] font-medium px-2 py-0.5 rounded-md border ${
                                 tip.level === 'beginner' 
-                                  ? 'bg-green-50 dark:bg-green-950/30 border-green-500/50 text-green-700 dark:text-green-400' 
+                                  ? 'bg-green-50/50 dark:bg-green-950/20 border-green-500/30 text-green-700 dark:text-green-400' 
                                   : tip.level === 'intermediate'
-                                  ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-500/50 text-blue-700 dark:text-blue-400'
-                                  : 'bg-orange-50 dark:bg-orange-950/30 border-orange-500/50 text-orange-700 dark:text-orange-400'
+                                  ? 'bg-blue-50/50 dark:bg-blue-950/20 border-blue-500/30 text-blue-700 dark:text-blue-400'
+                                  : 'bg-orange-50/50 dark:bg-orange-950/20 border-orange-500/30 text-orange-700 dark:text-orange-400'
                               }`}
                             >
                               {levelLabels[tip.level]}
@@ -253,7 +253,7 @@ export default function Tips() {
                         <CardTitle className="text-base font-semibold group-hover:text-primary transition-colors duration-200 leading-tight line-clamp-2">
                           {tip.title}
                         </CardTitle>
-                        <CardDescription className="text-xs leading-relaxed line-clamp-2">
+                        <CardDescription className="text-sm leading-relaxed line-clamp-2 text-muted-foreground">
                           {tip.description}
                         </CardDescription>
                       </CardHeader>
@@ -284,9 +284,9 @@ export default function Tips() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="text-center mt-12 text-muted-foreground"
+            className="text-center mt-16 text-muted-foreground"
           >
-            <p className="text-lg font-medium">
+            <p className="text-base font-medium">
               全 {filteredTips.length} 個のTips
               {selectedCategory && ` (${categoryLabels[selectedCategory]})`}
             </p>

@@ -303,7 +303,7 @@ export const fullPrompts: Prompt[] = [
   },
   {
     id: "aacr-data-structuring",
-    title: "[AACR] 症例情報の構造化",
+    title: "[AACR] Case Information Structuring",
     description: "NotebookLM用：症例情報をCARE guidelinesに沿って構造化します（AACR Method Step 1）",
     category: "case-analysis",
     template: `# 指示
@@ -348,7 +348,7 @@ export const fullPrompts: Prompt[] = [
   },
   {
     id: "aacr-novelty-analysis",
-    title: "[AACR] 症例の新規性分析",
+    title: "[AACR] Case Novelty Analysis",
     description: "Claude 3.5 Sonnet用：症例の新規性と臨床的意義を多角的に分析します（AACR Method Step 1）",
     category: "case-analysis",
     template: `# 指示
@@ -372,7 +372,7 @@ export const fullPrompts: Prompt[] = [
   },
   {
     id: "aacr-literature-analysis",
-    title: "[AACR] 文献の統合分析",
+    title: "[AACR] Literature Integration Analysis",
     description: "NotebookLM用：複数論文から横断的な知見を抽出します（AACR Method Step 2）",
     category: "literature",
     template: `# 指示
@@ -393,7 +393,7 @@ export const fullPrompts: Prompt[] = [
   },
   {
     id: "aacr-master-prompt",
-    title: "[AACR] マスタープロンプト（執筆エージェント）",
+    title: "[AACR] Master Prompt (Writing Agent)",
     description: "Claude 3.5 Sonnet用：論文の各セクションを執筆させる包括的プロンプト（AACR Method Step 4）",
     category: "research",
     template: `# マスタープロンプト: 症例報告執筆エージェント
@@ -804,7 +804,7 @@ export const fullPrompts: Prompt[] = [
   // Research - Paper Writing Guide Prompts
   {
     id: "research-finer-check",
-    title: "FINER基準による研究テーマ評価",
+    title: "Research Theme Evaluation by FINER Criteria",
     description: "研究テーマをFINER基準（Feasible, Interesting, Novel, Ethical, Relevant）に基づいて多角的に評価し、改善点を提案します。",
     category: "research",
     template: `あなたは経験豊富な臨床研究者です。以下の研究テーマ案をFINER基準に基づいて厳密に評価し、各項目について具体的なフィードバックと改善案を提示してください。
@@ -834,7 +834,7 @@ export const fullPrompts: Prompt[] = [
   },
   {
     id: "research-data-collection-list",
-    title: "データ収集項目リスト作成",
+    title: "Data Collection Item List Creation",
     description: "研究テーマに基づいて、データ収集シート（CRF）に含めるべき必須項目をリストアップし、入力形式のアドバイスを提供します。",
     category: "research",
     template: `以下の研究テーマについて、データ収集シート（Case Report Form）に含めるべき項目をリストアップしてください。

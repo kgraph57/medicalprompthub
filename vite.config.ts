@@ -141,7 +141,10 @@ const plugins = [
 
 export default defineConfig({
   // GitHub Pages用のベースパス（環境変数から取得、デフォルトは/medicalprompthub/）
-  base: process.env.VITE_BASE_PATH || '/medicalprompthub/',
+  // 開発環境では base を / に設定して動的インポートの問題を回避
+  base: process.env.NODE_ENV === 'production' 
+    ? (process.env.VITE_BASE_PATH || '/medicalprompthub/')
+    : '/',
   plugins,
   resolve: {
     alias: {
@@ -243,5 +246,7 @@ export default defineConfig({
       strict: true,
       deny: ["**/.*"],
     },
+    // エラーオーバーレイを無効化
+    overlay: false,
   },
 });

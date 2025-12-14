@@ -5,6 +5,7 @@ import { FileText, Shield, AlertCircle, ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import { motion } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
 
 export default function Legal() {
   useEffect(() => {
@@ -136,15 +137,24 @@ export default function Legal() {
                   </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </motion.section>
 
           {/* 利用規約 */}
-          <Card>
-            <CardHeader>
-              <CardTitle>利用規約 (Terms of Service)</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm leading-relaxed">
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <FileText className="w-4 h-4 text-blue-600" strokeWidth={2} />
+              <span className="text-sm font-medium text-blue-600 tracking-[-0.01em]">
+                Terms of Service
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
+              利用規約
+            </h2>
+            <div className="space-y-4 text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
               <div>
                 <h3 className="font-semibold mb-3 text-lg text-neutral-900 dark:text-neutral-50">1. サービスの利用について</h3>
                 <p>
@@ -325,16 +335,17 @@ export default function Legal() {
                 <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400">
                   お問い合わせへの返信は、通常24時間以内に行います。重要な問題については、できるだけ早く対応いたします。
                 </p>
-              </div>
-              <div className="pt-6 border-t border-neutral-200 dark:border-neutral-700">
-                <h3 className="font-semibold mb-3 text-lg text-neutral-900 dark:text-neutral-50">9. プライバシーポリシーの変更</h3>
+              </section>
+              <Separator />
+              <section>
+                <h3 className="font-semibold mb-2">9. プライバシーポリシーの変更</h3>
                 <p className="mb-3">
                   本プライバシーポリシーは、法令の変更やサービスの改善に伴い、予告なく変更される場合があります。重要な変更については、本ページで通知いたします。
                 </p>
                 <p className="text-sm text-neutral-500 dark:text-neutral-400">
                   最終更新日: 2025年1月
                 </p>
-              </div>
+              </section>
             </div>
           </motion.section>
         </div>

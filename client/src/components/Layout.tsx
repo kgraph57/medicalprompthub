@@ -65,10 +65,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             className={cn(
-              "flex items-center gap-2 w-full px-2 py-1.5 rounded-md transition-colors",
+              "flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg transition-all duration-200",
               active
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                ? "bg-accent/60 text-foreground font-medium"
+                : "text-muted-foreground hover:bg-accent/40 hover:text-foreground"
             )}
             aria-label={label}
           >
@@ -86,34 +86,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
-    <nav className="flex flex-col h-full bg-muted/30 border-r border-border/30" aria-label="メインナビゲーション">
+    <nav className="flex flex-col h-full bg-background border-r border-border/50" aria-label="メインナビゲーション">
       {/* トグルボタン */}
-      <div className="flex-shrink-0 flex items-center justify-start px-2 py-1.5 border-b border-border/30">
+      <div className="flex-shrink-0 flex flex-col gap-0.5 px-2.5 py-2 border-b border-border/30">
         {isMobile ? (
           <button
             onClick={() => setIsMobileOpen(false)}
-            className="p-0.5 rounded-md hover:bg-accent transition-colors"
+            className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
             aria-label="サイドバーを閉じる"
           >
-            <X className="w-3.5 h-3.5 text-muted-foreground" />
+            <div className="flex-shrink-0">
+              <X className="w-3.5 h-3.5" />
+            </div>
           </button>
         ) : (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-0.5 rounded-md hover:bg-accent transition-colors"
+            className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
             aria-label={isExpanded ? "サイドバーを折りたたむ" : "サイドバーを展開"}
           >
-            {isExpanded ? (
-              <PanelLeftClose className="w-3.5 h-3.5 text-muted-foreground" />
-            ) : (
-              <PanelLeft className="w-3.5 h-3.5 text-muted-foreground" />
-            )}
+            <div className="flex-shrink-0">
+              {isExpanded ? (
+                <PanelLeftClose className="w-3.5 h-3.5" />
+              ) : (
+                <PanelLeft className="w-3.5 h-3.5" />
+              )}
+            </div>
           </button>
         )}
       </div>
 
       {/* 上部ナビゲーション */}
-      <div className="flex-shrink-0 flex flex-col gap-0.5 p-1.5 border-b border-border/30">
+      <div className="flex-shrink-0 flex flex-col gap-0.5 px-2.5 py-2 border-b border-border/50">
         <NavIcon
           icon={<Home className="w-3.5 h-3.5" />}
           label="Home"
@@ -213,7 +217,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex-1"></div>
 
       {/* 下部ナビゲーション */}
-      <div className="flex-shrink-0 flex flex-col gap-0.5 p-1.5 border-t border-border/30">
+      <div className="flex-shrink-0 flex flex-col gap-0.5 px-2.5 py-2 border-t border-border/50">
         <NavIcon
           icon={<HelpCircle className="w-3.5 h-3.5" />}
           label="FAQ"
@@ -260,7 +264,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* デスクトップサイドバー */}
       <aside 
         className={cn(
-          "hidden lg:block flex-shrink-0 transition-all duration-300",
+          "hidden lg:block flex-shrink-0 transition-all duration-300 border-r border-border/50",
           isExpanded ? "w-56" : "w-14"
         )}
         aria-label="サイドバーナビゲーション"
@@ -271,7 +275,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* モバイルサイドバー */}
       <aside 
         className={cn(
-          "fixed left-0 top-0 bottom-0 w-56 bg-background z-50 lg:hidden transition-transform duration-300 ease-out border-r border-border/30",
+          "fixed left-0 top-0 bottom-0 w-56 bg-background z-50 lg:hidden transition-transform duration-300 ease-out border-r border-border/50 shadow-xl",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
         aria-label="モバイルナビゲーションメニュー"
@@ -281,11 +285,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* メインコンテンツ */}
-      <main id="main-content" className="flex-1 overflow-y-auto px-2 sm:px-4 lg:px-6 xl:px-8" role="main" aria-label="メインコンテンツ">
+      <main id="main-content" className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 xl:px-12" role="main" aria-label="メインコンテンツ">
         {/* モバイルヘッダー */}
         <header
           className={cn(
-            "lg:hidden sticky top-0 z-30 bg-background/80 backdrop-blur-xl transition-transform duration-300",
+            "lg:hidden sticky top-0 z-30 bg-background/95 backdrop-blur-xl border-b border-border/40 transition-transform duration-300",
             scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
           )}
         >
@@ -300,13 +304,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Menu className="h-4 w-4" />
             </Button>
             <Link href="/">
-              <h1 className="text-lg font-bold text-primary">Medical Prompt Hub</h1>
+              <h1 className="text-lg font-semibold text-foreground tracking-tight">Medical Prompt Hub</h1>
             </Link>
             <div className="w-10" />
           </div>
         </header>
 
-        <div className="py-3 sm:py-4 lg:py-6">
+        <div className="py-8 sm:py-12 lg:py-16 xl:py-20">
           {children}
         </div>
         
