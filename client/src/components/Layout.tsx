@@ -10,6 +10,7 @@ import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Footer } from "./Footer";
+import { ScrollProgressBar } from "./ScrollProgressBar";
 
 // プロンプトカテゴリ定義
 const categories = [
@@ -250,6 +251,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
+      {/* スクロール進捗バー */}
+      <ScrollProgressBar />
       {/* スキップリンク（アクセシビリティ） */}
       <a href="#main-content" className="skip-link">
         メインコンテンツにスキップ

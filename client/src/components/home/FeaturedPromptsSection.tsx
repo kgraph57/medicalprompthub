@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Star, ArrowRight } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import type { Prompt } from "@/lib/prompts";
 import { categories } from "@/lib/prompts";
 
@@ -37,7 +38,15 @@ const getCategoryStyle = (categoryId: string) => {
 };
 
 export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps) {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // パララックス効果
+  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   // フィーチャードプロンプトを取得
   const featuredPrompts = prompts
@@ -49,15 +58,26 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
   }
 
   return (
-    <section ref={ref} className="py-8 md:py-12 bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+    <section 
+      ref={sectionRef} 
+      className="relative py-8 md:py-12 bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900 overflow-hidden"
+    >
+      {/* 背景装飾 */}
+      <motion.div
+        className="absolute inset-0 opacity-30 dark:opacity-20"
+        style={{ y, opacity }}
+      >
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-3xl"></div>
+      </motion.div>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
         {/* セクションヘッダー */}
-        <div
-          className={`mb-10 transition-all duration-700 ${
-            isVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
+        <motion.div
+          className="mb-10"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -77,33 +97,29 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
           <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl">
             Carefully selected practical and effective prompts used by many healthcare professionals
           </p>
-        </div>
+        </motion.div>
 
         {/* フィーチャードプロンプトグリッド */}
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 transition-all duration-700 ${
-            isVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
-          style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {featuredPrompts.map((prompt, index) => {
             const categoryStyle = getCategoryStyle(prompt.category);
             
             return (
-              <Link
+              <motion.div
                 key={prompt.id}
-                href={`/prompts/${prompt.id}`}
-                className={`group block p-6 rounded-xl border transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-neutral-800/50 hover:scale-[1.02] hover:-translate-y-1 active:translate-y-0 bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{
-                  transitionDelay: isVisible ? `${(index + 1) * 100}ms` : "0ms",
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1] 
                 }}
               >
+                <Link
+                  href={`/prompts/${prompt.id}`}
+                  className="group block p-6 rounded-xl border transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-neutral-800/50 hover:scale-[1.02] hover:-translate-y-1 active:translate-y-0 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm border-neutral-200/70 dark:border-neutral-700/70"
+                >
                 {/* カテゴリバッジ */}
                 <div className="mb-3">
                   <span
@@ -145,6 +161,7 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
                   <ArrowRight className="w-4 h-4 text-neutral-400 dark:text-neutral-500 group-hover:text-primary-600 dark:group-hover:text-primary-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
+              </motion.div>
             );
           })}
         </div>

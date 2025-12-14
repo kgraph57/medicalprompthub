@@ -1,7 +1,11 @@
 import { ArrowRight, Search, Sparkles } from "lucide-react";
 import { useLocation } from "wouter";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { InteractivePromptPreview } from "./InteractivePromptPreview";
+import { loadPrompts } from "@/lib/prompts-loader";
+import { getRecommendedPrompts } from "@/lib/recommendedPrompts";
+import type { Prompt } from "@/lib/prompts";
 
 interface HeroSectionProps {
   searchQuery?: string;
@@ -87,6 +91,19 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
   const [, setLocation] = useLocation();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [recommendedPrompts, setRecommendedPrompts] = useState<Prompt[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  // スクロール連動アニメーション
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // パララックス効果
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
   
   // マウス追従エフェクト
   const mouseX = useMotionValue(0);
@@ -94,6 +111,15 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
   const springConfig = { damping: 30, stiffness: 180 };
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
+
+  // プロンプトデータの読み込み
+  useEffect(() => {
+    loadPrompts().then((prompts) => {
+      const recommended = getRecommendedPrompts(prompts);
+      setRecommendedPrompts(recommended.slice(0, 6)); // 最大6個
+    });
+  }, []);
+
   
   // キーボードショートカット（⌘K）
   useEffect(() => {
@@ -124,23 +150,37 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
 
   return (
     <section 
-      className="relative py-8 md:py-12 lg:py-16 overflow-hidden min-h-[60vh] flex items-center bg-white dark:bg-neutral-950"
+      ref={sectionRef}
+      className="relative py-12 md:py-16 lg:py-20 xl:py-24 overflow-hidden min-h-[85vh] flex items-center bg-white dark:bg-neutral-950"
       onMouseMove={handleMouseMove}
     >
-      {/* Linear風: 非常に控えめな背景装飾 */}
+      {/* Linear風: 控えめな背景装飾（グラデーション + アニメーション） */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* メイングラデーション */}
         <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-blue-500/3 via-blue-600/3 to-cyan-500/3 rounded-full blur-3xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] bg-gradient-to-br from-blue-500/4 via-cyan-500/3 to-blue-500/2 rounded-full blur-3xl"
+          style={{ y: backgroundY }}
           animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.4, 0.3],
+            scale: [1, 1.15, 1],
+            opacity: [0.3, 0.5, 0.3],
           }}
           transition={{
-            duration: 8,
+            duration: 12,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
+        {/* 微細なグリッドパターン */}
+        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.025]">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" className="text-neutral-900 dark:text-neutral-100" />
+          </svg>
+        </div>
       </div>
       
       {/* マウス追従エフェクト（Linear風：より控えめに） */}
@@ -152,11 +192,15 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         initial="hidden"
         animate="visible"
         viewport={{ once: true }}
+        style={{
+          y: contentY,
+          opacity,
+        }}
       >
-        {/* Linear.app風：左寄せレイアウト */}
+        {/* Linear.app風：2カラムレイアウト（テキスト + インタラクティブプレビュー） */}
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div>
-            {/* テキストコンテンツ */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* 左カラム：テキストコンテンツ */}
             <div className="lg:pt-8">
               {/* パンチライン + 説明文（Linear.app風：左寄せ） */}
               <motion.div 
@@ -165,13 +209,14 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
               >
                 {/* パンチライン（Linear.app風：大きなタイトル - 左寄せ、適度に改行） */}
                 <motion.h1 
-                  className="text-[36px] sm:text-[44px] md:text-[52px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] font-black mb-6 md:mb-8 leading-none tracking-[-0.02em] relative"
+                  className="text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-black mb-8 md:mb-10 leading-[0.95] tracking-[-0.03em] relative"
                   style={{ 
                     fontFamily: 'Inter Display, Inter, system-ui, sans-serif',
                     wordBreak: 'normal',
                     overflowWrap: 'normal',
                     hyphens: 'none',
-                    whiteSpace: 'normal'
+                    whiteSpace: 'normal',
+                    fontWeight: 900
                   }}
                   variants={titleVariants}
                 >
@@ -205,8 +250,8 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                                   y: 0
                                 }}
                                 transition={{
-                                  duration: 0.5,
-                                  delay: baseDelay + currentCharIndex * 0.02,
+                                  duration: 0.6,
+                                  delay: baseDelay + currentCharIndex * 0.015,
                                   ease: [0.16, 1, 0.3, 1] as [number, number, number, number] as [number, number, number, number]
                                 }}
                               >
@@ -295,93 +340,117 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
 
                 {/* CTAボタン（Linear.app風） */}
                 <motion.div 
-                  className="flex flex-col sm:flex-row items-start gap-4 mt-6"
+                  className="flex flex-col sm:flex-row items-start gap-5 mt-8"
                   variants={itemVariants}
                 >
                   <motion.button
                     onClick={() => setLocation('/guides')}
-                    className="inline-flex items-center justify-center px-6 py-3 text-[15px] font-medium text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 rounded-lg transition-colors duration-200"
-                    whileHover={{ scale: 1.02 }}
+                    className="group relative inline-flex items-center justify-center px-7 py-3.5 text-[15px] font-medium text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 rounded-xl transition-all duration-300 overflow-hidden"
+                    whileHover={{ scale: 1.02, y: -1 }}
                     whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                    style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500 }}
                   >
-                    Get Started
+                    {/* ホバー時のグロー効果 */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background: "radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 70%)",
+                      }}
+                    />
+                    <span className="relative z-10">Get Started</span>
                   </motion.button>
                   
                   <motion.a
                     href="/changelog"
-                    className="group inline-flex items-center gap-1.5 px-0 py-3 text-[15px] font-medium text-neutral-900 dark:text-neutral-50 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors duration-200"
-                    whileHover={{ scale: 1.02 }}
+                    className="group inline-flex items-center gap-2 px-0 py-3.5 text-[15px] font-medium text-neutral-900 dark:text-neutral-50 hover:text-neutral-700 dark:hover:text-neutral-300 transition-all duration-300"
+                    whileHover={{ scale: 1.02, x: 2 }}
                     whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                    style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500 }}
                   >
                     <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-400 bg-clip-text text-transparent">
                       New: Medical AI 2025
                     </span>
-                    <ArrowRight className="w-4 h-4 text-neutral-900 dark:text-neutral-50 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 text-neutral-900 dark:text-neutral-50 transition-transform group-hover:translate-x-1.5" />
                   </motion.a>
                 </motion.div>
               </motion.div>
             </div>
+
+            {/* 右カラム：インタラクティブなプロンプトプレビュー */}
+            <div className="hidden lg:block relative h-full min-h-[500px]">
+              {recommendedPrompts.length > 0 ? (
+                <InteractivePromptPreview 
+                  prompts={recommendedPrompts}
+                  className="w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center rounded-2xl border border-neutral-800/50 bg-neutral-900/70 backdrop-blur-xl">
+                  <div className="text-center text-neutral-500">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <p className="text-sm">読み込み中...</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         
-        {/* Algolia風: プロフェッショナルな検索バー（中央、非常に目立つ） */}
+        {/* Linear/Vercel風: 洗練された検索バー */}
         {onSearchChange && (
           <motion.div 
-            className="max-w-5xl mx-auto mb-8 md:mb-10 px-2"
+            className="max-w-4xl mx-auto mt-12 lg:mt-16 mb-8 md:mb-10 px-2"
             variants={searchVariants}
           >
             <div className="relative group">
-              {/* Algolia風: 洗練された3Dシャドウ効果 */}
+              {/* ホバー時のグロー効果 */}
               <motion.div 
-                className="absolute -inset-4 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                  background: "linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(6, 182, 212, 0.3), rgba(96, 165, 250, 0.3), transparent 70%)",
+                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2), transparent 70%)",
                 }}
               />
               
               <motion.div 
-                className="relative bg-white rounded-3xl shadow-[0_10px_32px_rgba(0,0,0,0.12),0_20px_64px_rgba(0,0,0,0.1)] border-2 border-neutral-200/70 overflow-hidden backdrop-blur-sm"
+                className="relative bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden"
                 whileHover={{ 
-                  boxShadow: "0_16px_40px_rgba(0,0,0,0.18),0_24px_80px_rgba(0,0,0,0.15)",
-                  borderColor: "rgba(59, 130, 246, 0.5)",
-                  scale: 1.002,
+                  boxShadow: "0_8px_24px_rgba(0,0,0,0.12),0_12px_48px_rgba(0,0,0,0.08)",
+                  borderColor: "rgba(59, 130, 246, 0.4)",
+                  scale: 1.005,
                 }}
                 animate={{
                   borderColor: isSearchFocused 
-                    ? "rgba(59, 130, 246, 0.8)" 
-                    : "rgba(0, 0, 0, 0.14)",
+                    ? "rgba(59, 130, 246, 0.6)" 
+                    : "rgba(0, 0, 0, 0.1)",
                   boxShadow: isSearchFocused
-                    ? "0_16px_40px_rgba(59,130,246,0.25),0_24px_80px_rgba(59,130,246,0.3)"
-                    : "0_10px_32px_rgba(0,0,0,0.12),0_20px_64px_rgba(0,0,0,0.1)",
+                    ? "0_8px_24px_rgba(59,130,246,0.15),0_12px_48px_rgba(59,130,246,0.2)"
+                    : "0_4px_16px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)",
                 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
               >
-                <div className="flex items-center h-[72px] sm:h-[88px] md:h-[104px] lg:h-[120px]">
-                  <div className="pl-6 sm:pl-9 md:pl-11 pr-4 sm:pr-5 md:pr-7 flex-shrink-0">
+                <div className="flex items-center h-[56px] sm:h-[64px] md:h-[72px]">
+                  <div className="pl-5 sm:pl-6 md:pl-7 pr-3 sm:pr-4 flex-shrink-0">
                     <motion.div
-                      whileHover={{ scale: 1.15, rotate: 8 }}
-                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                     >
-                      <Search className="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary-500" strokeWidth={2.5} />
+                      <Search className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 dark:text-neutral-500" strokeWidth={2} />
                     </motion.div>
                   </div>
                   <input
                     ref={searchInputRef}
                     type="text"
-                    placeholder="Search for prompts (e.g., differential diagnosis, case report, statistical analysis)"
-                    className="flex-1 h-full pr-6 sm:pr-9 md:pr-11 text-[16px] sm:text-[21px] md:text-[24px] lg:text-[26px] bg-transparent border-0 focus:outline-none focus:ring-0 placeholder:text-neutral-400 text-neutral-900 font-semibold tracking-[-0.022em]"
+                    placeholder="Search for prompts..."
+                    className="flex-1 h-full pr-5 sm:pr-6 md:pr-7 text-[15px] sm:text-[16px] md:text-[17px] bg-transparent border-0 focus:outline-none focus:ring-0 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-neutral-900 dark:text-neutral-100 font-normal tracking-[-0.01em]"
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
                     onFocus={() => setIsSearchFocused(true)}
                     onBlur={() => setIsSearchFocused(false)}
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                    style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 400 }}
                   />
                   {/* キーボードショートカット表示（Linear風） */}
-                  <div className="pr-9 md:pr-11 hidden sm:flex items-center gap-2">
-                    <kbd className="px-3.5 py-2 text-[11px] font-bold text-neutral-600 bg-neutral-100/95 border border-neutral-300/90 rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">⌘</kbd>
-                    <kbd className="px-3.5 py-2 text-[11px] font-bold text-neutral-600 bg-neutral-100/95 border border-neutral-300/90 rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">K</kbd>
+                  <div className="pr-5 sm:pr-6 md:pr-7 hidden sm:flex items-center gap-1.5">
+                    <kbd className="px-2.5 py-1.5 text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 rounded-md shadow-sm">⌘</kbd>
+                    <kbd className="px-2.5 py-1.5 text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 rounded-md shadow-sm">K</kbd>
                   </div>
                 </div>
               </motion.div>
