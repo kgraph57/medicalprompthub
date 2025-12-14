@@ -292,20 +292,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
             scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
           )}
         >
-          <div className="flex items-center justify-between px-4 h-14">
+          <div className="flex items-center px-4 h-14 relative">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileOpen(true)}
               aria-label="メニューを開く"
-              className="h-7 w-7"
+              className="h-7 w-7 absolute left-4"
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <Link href="/">
+            <Link href="/" className="absolute left-1/2 -translate-x-1/2">
               <h1 className="text-lg font-bold text-primary">Helix</h1>
             </Link>
-            <div className="w-10" />
+            <div className="w-10 absolute right-4" />
           </div>
         </header>
 

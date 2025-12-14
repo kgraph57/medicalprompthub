@@ -134,35 +134,6 @@ export default function MARWGuide() {
   return (
     <Layout>
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-        <header className="sticky top-0 z-10 bg-background shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 lg:py-2.5">
-          <div className="flex items-center gap-2">
-            {/* Hamburger Menu Button - Mobile Only */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden flex-shrink-0 h-7 w-7"
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/guides')}
-              className="flex items-center flex-shrink-0"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">ガイド一覧に戻る</span>
-            </Button>
-            <h1 className="text-sm sm:text-base lg:text-xl font-bold text-gray-900 dark:text-white truncate">
-              {marwGuideData.title}
-            </h1>
-          </div>
-        </div>
-      </header>
-
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 

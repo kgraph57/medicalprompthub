@@ -199,7 +199,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                   {/* Linear.app風：シンプルなタイトルアニメーション（パフォーマンス最適化、モバイルでは簡略化） */}
                         <span className="block">
                               <motion.span
-                      className="block leading-none"
+                      className="block leading-none whitespace-nowrap sm:whitespace-normal"
                       initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={prefersReducedMotion ? {} : { duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -207,7 +207,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                       Helix is a purpose-built tool
                     </motion.span>
                                     <motion.span
-                      className="block leading-none"
+                      className="block leading-none whitespace-nowrap sm:whitespace-normal"
                       initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={prefersReducedMotion ? {} : { duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] }}
