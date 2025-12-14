@@ -146,17 +146,39 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         initial="hidden"
         animate="visible"
       >
-        {/* バッジ（Linear風の控えめなアクセント） */}
+        {/* バッジ（Vercel風の洗練されたデザイン） */}
         <motion.div
           className="flex justify-center mb-6 md:mb-8"
           variants={itemVariants}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white/75 backdrop-blur-md border border-neutral-200/60 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-            <Sparkles className="w-3 h-3 text-primary-500" strokeWidth={2} />
-            <span className="text-[10px] font-medium text-neutral-700 tracking-[-0.008em]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-              The New Era of Medical AI in 2025
-            </span>
-          </div>
+          <motion.div 
+            className="group relative inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full overflow-hidden"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* グラデーションボーダー背景（Vercel風） */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
+            
+            {/* グラスモーフィズム効果 */}
+            <div className="relative bg-white/80 backdrop-blur-xl border border-white/50 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.02),inset_0_1px_0_rgba(255,255,255,0.8)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.06),0_12px_32px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300">
+              <div className="flex items-center gap-2.5 px-4 py-1.5">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatDelay: 2,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-primary-600" strokeWidth={2.5} />
+                </motion.div>
+                <span className="text-[11px] font-semibold text-neutral-800 tracking-[-0.01em] bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-800 bg-clip-text text-transparent group-hover:from-primary-600 group-hover:via-purple-600 group-hover:to-pink-600 transition-all duration-300" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                  The New Era of Medical AI in 2025
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Linear風: 完璧なタイトル（中央配置） */}
@@ -188,7 +210,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
             variants={itemVariants}
             style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
           >
-            100+ expert prompts. Infinite impact.
+            Extend your medical expertise. Transform patient care.
           </motion.p>
         </motion.div>
         
