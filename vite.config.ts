@@ -172,6 +172,8 @@ export default defineConfig({
     publicDir: path.resolve(import.meta.dirname, "client", "public"),
     // Source maps disabled in production for performance
     sourcemap: false,
+    // Disable module preload to avoid CSP nonce issues
+    modulePreload: false,
     // Minify with terser for better compression
     minify: 'terser',
     terserOptions: {
@@ -183,14 +185,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name]-[hash]-v18.js`,
-        chunkFileNames: `assets/[name]-[hash]-v18.js`,
+        entryFileNames: `assets/[name]-[hash]-v19.js`,
+        chunkFileNames: `assets/[name]-[hash]-v19.js`,
         assetFileNames: (assetInfo) => {
           // 画像の最適化（WebP形式への変換はビルド時に実施）
           if (assetInfo.name && /\.(png|jpg|jpeg)$/.test(assetInfo.name)) {
-            return `assets/images/[name]-[hash]-v18.[ext]`;
+            return `assets/images/[name]-[hash]-v19.[ext]`;
           }
-          return `assets/[name]-[hash]-v18.[ext]`;
+          return `assets/[name]-[hash]-v19.[ext]`;
         },
         manualChunks: (id) => {
           // React core
