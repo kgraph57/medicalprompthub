@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Route, Switch, Router as WouterRouter } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -10,34 +10,84 @@ import { OnboardingModal } from "./components/OnboardingModal";
 import { hasAnalyticsConsent } from "./lib/cookieConsent";
 import { initGA4 } from "./lib/analytics";
 
+// 動的インポート用のヘルパー関数（エラーハンドリング付き）
+function createLazyImport<T extends React.ComponentType<any>>(
+  importFn: () => Promise<{ default: T }>,
+  retryCount = 3
+): React.LazyExoticComponent<T> {
+  return lazy(() => {
+    const attemptImport = (attempt: number = 1): Promise<{ default: T }> => {
+      return importFn().catch((error) => {
+        const errorMessage = error?.message || String(error);
+        const errorName = error?.name || "";
+        
+        console.error(`Dynamic import failed (attempt ${attempt}/${retryCount}):`, {
+          error: errorMessage,
+          name: errorName,
+          stack: error?.stack
+        });
+        
+        // リトライ可能なエラーの場合
+        const isRetryableError = 
+          errorMessage.includes("Failed to fetch dynamically imported module") ||
+          errorMessage.includes("Loading chunk") ||
+          errorMessage.includes("Loading CSS chunk") ||
+          errorName === "ChunkLoadError" ||
+          errorName === "TypeError" ||
+          (errorMessage.includes("network") && attempt < retryCount);
+        
+        if (attempt < retryCount && isRetryableError) {
+          // 指数バックオフで再試行（1秒、2秒、3秒...）
+          const delay = 1000 * attempt;
+          console.log(`Retrying dynamic import in ${delay}ms...`);
+          
+          return new Promise<{ default: T }>((resolve, reject) => {
+            setTimeout(() => {
+              attemptImport(attempt + 1)
+                .then(resolve)
+                .catch(reject);
+            }, delay);
+          });
+        }
+        
+        // リトライ不可能な場合はエラーを再スロー
+        console.error("Dynamic import failed after all retries:", error);
+        throw error;
+      });
+    };
+    
+    return attemptImport();
+  });
+}
+
 // Lazy load pages for better performance
-const Home = lazy(() => import("@/pages/Home"));
-const Category = lazy(() => import("@/pages/Category"));
-const NotFound = lazy(() => import("@/pages/NotFound"));
-const PromptDetail = lazy(() => import("@/pages/PromptDetail"));
-const Guides = lazy(() => import("@/pages/Guides"));
-const GuideDetail = lazy(() => import("@/pages/GuideDetail"));
-const Tips = lazy(() => import("@/pages/Tips"));
-const TipDetail = lazy(() => import("@/pages/TipDetail"));
-const Legal = lazy(() => import("@/pages/Legal"));
-const FAQ = lazy(() => import("@/pages/FAQ"));
-const Contact = lazy(() => import("@/pages/Contact"));
-const About = lazy(() => import("@/pages/About"));
-const Changelog = lazy(() => import("@/pages/Changelog"));
-const Favorites = lazy(() => import("@/pages/Favorites"));
-const Courses = lazy(() => import("@/pages/Courses"));
-const CategoryCourses = lazy(() => import("@/pages/CategoryCourses"));
-const CourseDetail = lazy(() => import("@/pages/CourseDetail"));
-const LessonDetail = lazy(() => import("@/pages/LessonDetail"));
-const JournalFinderPage = lazy(() => import("@/pages/JournalFinderPage"));
-const JournalDetail = lazy(() => import("@/pages/JournalDetail"));
-const JournalCompare = lazy(() => import("@/pages/JournalCompare"));
-const CaseReportGuide = lazy(() => import("@/pages/CaseReportGuide"));
-const PaperReadingGuide = lazy(() => import("@/pages/PaperReadingGuide"));
-const EnglishProofreadingGuide = lazy(() => import("@/pages/EnglishProofreadingGuide"));
-const MARWGuide = lazy(() => import("@/pages/MARWGuide"));
-const MarkdownGuide = lazy(() => import("@/pages/MarkdownGuide"));
-const AILiteracy = lazy(() => import("@/pages/AILiteracy"));
+const Home = createLazyImport(() => import("@/pages/Home"));
+const Category = createLazyImport(() => import("@/pages/Category"));
+const NotFound = createLazyImport(() => import("@/pages/NotFound"));
+const PromptDetail = createLazyImport(() => import("@/pages/PromptDetail"));
+const Guides = createLazyImport(() => import("@/pages/Guides"));
+const GuideDetail = createLazyImport(() => import("@/pages/GuideDetail"));
+const Tips = createLazyImport(() => import("@/pages/Tips"));
+const TipDetail = createLazyImport(() => import("@/pages/TipDetail"));
+const Legal = createLazyImport(() => import("@/pages/Legal"));
+const FAQ = createLazyImport(() => import("@/pages/FAQ"));
+const Contact = createLazyImport(() => import("@/pages/Contact"));
+const About = createLazyImport(() => import("@/pages/About"));
+const Changelog = createLazyImport(() => import("@/pages/Changelog"));
+const Favorites = createLazyImport(() => import("@/pages/Favorites"));
+const Courses = createLazyImport(() => import("@/pages/Courses"));
+const CategoryCourses = createLazyImport(() => import("@/pages/CategoryCourses"));
+const CourseDetail = createLazyImport(() => import("@/pages/CourseDetail"));
+const LessonDetail = createLazyImport(() => import("@/pages/LessonDetail"));
+const JournalFinderPage = createLazyImport(() => import("@/pages/JournalFinderPage"));
+const JournalDetail = createLazyImport(() => import("@/pages/JournalDetail"));
+const JournalCompare = createLazyImport(() => import("@/pages/JournalCompare"));
+const CaseReportGuide = createLazyImport(() => import("@/pages/CaseReportGuide"));
+const PaperReadingGuide = createLazyImport(() => import("@/pages/PaperReadingGuide"));
+const EnglishProofreadingGuide = createLazyImport(() => import("@/pages/EnglishProofreadingGuide"));
+const MARWGuide = createLazyImport(() => import("@/pages/MARWGuide"));
+const MarkdownGuide = createLazyImport(() => import("@/pages/MarkdownGuide"));
+const AILiteracy = createLazyImport(() => import("@/pages/AILiteracy"));
 
 // Loading component（アクセシビリティ改善）
 const PageLoader = () => (
@@ -51,6 +101,24 @@ const PageLoader = () => (
         <span className="sr-only">読み込み中</span>
         <span aria-hidden="true">読み込み中...</span>
       </p>
+    </div>
+  </div>
+);
+
+// エラーフォールバックコンポーネント（Suspense用）
+const ErrorFallbackLoader = ({ error, retry }: { error: Error; retry: () => void }) => (
+  <div className="flex items-center justify-center min-h-screen p-8">
+    <div className="text-center max-w-md">
+      <h2 className="text-xl font-semibold mb-4 text-destructive">ページの読み込みに失敗しました</h2>
+      <p className="text-muted-foreground mb-4 text-sm">
+        {error.message || "不明なエラーが発生しました"}
+      </p>
+      <button
+        onClick={retry}
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+      >
+        再試行
+      </button>
     </div>
   </div>
 );

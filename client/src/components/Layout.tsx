@@ -88,11 +88,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
     <nav className="flex flex-col h-full bg-muted/30 border-r border-border/30" aria-label="メインナビゲーション">
       {/* トグルボタン */}
-      <div className="flex-shrink-0 flex items-center justify-start px-2 py-1.5 border-b border-border/30">
+      <div className="flex-shrink-0 flex items-center justify-start px-1.5 pt-1.5 pb-0 border-b border-border/30">
         {isMobile ? (
           <button
             onClick={() => setIsMobileOpen(false)}
-            className="p-0.5 rounded-md hover:bg-accent transition-colors"
+            className="px-2 py-1.5 rounded-md hover:bg-accent transition-colors"
             aria-label="サイドバーを閉じる"
           >
             <X className="w-3.5 h-3.5 text-muted-foreground" />
@@ -100,7 +100,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         ) : (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-0.5 rounded-md hover:bg-accent transition-colors"
+            className="px-2 py-1.5 rounded-md hover:bg-accent transition-colors"
             aria-label={isExpanded ? "サイドバーを折りたたむ" : "サイドバーを展開"}
           >
             {isExpanded ? (
@@ -113,7 +113,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* 上部ナビゲーション */}
-      <div className="flex-shrink-0 flex flex-col gap-0.5 p-1.5 border-b border-border/30">
+      <div className="flex-shrink-0 flex flex-col gap-0.5 px-1.5 pt-2 pb-1.5 border-b border-border/30">
         <NavIcon
           icon={<Home className="w-3.5 h-3.5" />}
           label="Home"

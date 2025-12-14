@@ -63,19 +63,19 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
             <div className="flex items-center gap-3">
               <Star className="w-6 h-6 text-amber-500 fill-amber-500" />
               <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                注目のプロンプト
+                Featured Prompts
               </h2>
             </div>
             <Link
               href="/category/all"
               className="hidden sm:flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
             >
-              すべて見る
+              View All
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl">
-            多くの医療従事者に使われている、実践的で効果的なプロンプトを厳選しました
+            Carefully selected practical and effective prompts used by many healthcare professionals
           </p>
         </div>
 
@@ -140,7 +140,7 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
                 {/* フッター */}
                 <div className="flex items-center justify-between pt-4 border-t border-neutral-200 dark:border-neutral-700">
                   <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                    詳細を見る
+                    View Details
                   </span>
                   <ArrowRight className="w-4 h-4 text-neutral-400 dark:text-neutral-500 group-hover:text-primary-600 dark:group-hover:text-primary-400 group-hover:translate-x-1 transition-all" />
                 </div>
@@ -155,7 +155,7 @@ export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps)
             href="/category/all"
             className="inline-flex items-center gap-2 px-6 py-3 text-base font-medium text-white bg-neutral-900 dark:bg-neutral-100 hover:bg-neutral-800 dark:hover:bg-neutral-200 dark:text-neutral-900 rounded-lg transition-colors"
           >
-            すべてのプロンプトを見る
+            View All Prompts
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

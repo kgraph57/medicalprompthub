@@ -177,7 +177,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                 >
                   {(() => {
                     // Linear.app風：適切な改行位置で分割（2行、"for"の前で改行）
-                    const line1 = "AMPL is a purpose-built tool";
+                    const line1 = "Helix is a purpose-built tool";
                     const line2 = "for medical AI excellence";
                     
                     const renderText = (text: string, baseDelay: number) => {
