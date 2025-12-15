@@ -1,313 +1,72 @@
-# Git/GitHub クイックスタートガイド（初心者向け）
+# Git/GitHubクイックスタートガイド：冒険地図で学ぶ開発フロー
 
-## 🎯 このガイドの目的
+### 📋 このガイドの目的
 
-コーディング初心者の方が、GitHubブランチを使った開発をすぐに始められるように、**実際のコマンド**を中心に説明します。
+プログラミング初心者の方が、GitHubを使ったチーム開発の「お作法」を、楽しく、そして迷わずに始められるように、具体的なコマンドと流れを一枚の冒険地図にしました。
 
----
+![Git/GitHub冒険地図](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/lBfdxgpjdnCsgWSD.png)
 
-## 📦 前提条件
+### 🚀 冒険の始め方：7つのステップ
 
-- Gitがインストールされていること
-- GitHubアカウントがあること
-- リポジトリにアクセス権限があること
+#### 1. クローン (Clone): 冒険の地図を手に入れる
 
----
-
-## 🚀 5分で始める開発フロー
-
-### Step 1: リポジトリをクローン（初回のみ）
+まずは冒険の舞台であるリポジトリ（プロジェクト）を、自分のPCにコピーしてくるところから始まります。
 
 ```bash
-cd ~/Downloads  # または任意の場所
-git clone https://github.com/kgraph57/medicalprompthub.git
-cd medicalprompthub
+# 好きな場所に移動して、リポジトリをコピー
+git clone [リポジトリのURL]
+cd [リポジトリ名]
 ```
 
-### Step 2: 新しいブランチを作成
+#### 2. ブランチ (Branch): 自分だけの作業道を作る
+
+いきなりメインストリート（mainブランチ）で作業するのはとても危険！まず、自分専用の脇道（featureブランチ）を作って、そこで作業します。
 
 ```bash
-# mainブランチを最新にする
+# メインストリートを最新の状態にしてから…
 git checkout main
 git pull origin main
 
-# 新しいブランチを作成（例: ゲーミフィケーション機能）
-git checkout -b feature/gamification
+# 自分専用の道を作る
+git checkout -b feature/新しい機能の名前
 ```
 
-### Step 3: コードを編集
+#### 3. 編集 (Edit): アイデアを形にする
 
-エディタでファイルを編集します。
+自分だけの道で、心ゆくまでコードを書いたり、文章を修正したり、新しい機能を作ったりします。
 
-### Step 4: 変更を保存（コミット）
+#### 4. コミット (Commit): 作業をこまめに記録する
+
+キリの良いところまで作業が進んだら、「セーブポイント」を設けます。これがコミットです。「何を変更したか」が分かるように、短いメッセージを添えるのがポイント。
 
 ```bash
-# 変更を確認
-git status
-
-# すべての変更をステージング
+# 変更内容を全部セーブの準備
 git add .
 
-# コミット（変更を記録）
-git commit -m "feat: ゲーミフィケーション機能を追加"
-
-# GitHubにプッシュ
-git push origin feature/gamification
+# 「〇〇機能を追加」のようにメッセージを添えてセーブ
+git commit -m "feat: ユーザーアイコンを追加"
 ```
 
-### Step 5: ローカルでテスト
+#### 5. プッシュ (Push): 自分の作業をGitHubに送る
+
+ローカル（自分のPC）での作業記録を、GitHub（みんなが見れる場所）に送信します。これで、他の人からもあなたの作業が見えるようになります。
 
 ```bash
-# 開発サーバーを起動
-pnpm dev
-
-# ブラウザで http://localhost:3000 を開く
-# 新機能を試してみる
+git push origin feature/新しい機能の名前
 ```
 
-### Step 6: 良ければ本番に統合
+#### 6. プルリクエスト (Pull Request): みんなにレビューをお願いする
 
-**GitHub上で**:
-1. リポジトリページを開く
-2. "Pull requests" タブをクリック
-3. "New pull request" をクリック
-4. base: `main` ← compare: `feature/gamification` を選択
-5. "Create pull request" をクリック
-6. 説明を書いて "Create pull request"
-7. レビュー後、"Merge pull request" をクリック
+「私の作業、どうでしょう？問題なければ、メインストリートに合流させてください！」とお願いするのがプルリクエストです。GitHub上で、他のメンバーがあなたのコードをチェックしてくれます。
 
----
+#### 7. マージ (Merge): 本流に合流！おつかれさま！
 
-## 📝 よく使うコマンド一覧
+レビューでOKが出たら、あなたの作った脇道が、ついにメインストリートに合流します。これにて、あなたの変更が本番環境に反映されます。おめでとうございます！
 
-### 基本操作
+### ⚠️ 冒険の掟：これだけは守ろう
 
-```bash
-# 現在の状態を確認
-git status
+- **掟その1**: `main`ブランチで直接作業しない。必ず自分専用の`feature`ブランチを作る。
+- **掟その2**: コミットメッセージは分かりやすく。「修正」だけでは、何をしたか分かりません。
+- **掟その3**: テストせずにマージしない。必ず自分のPCで動作確認してからプルリクエストを出しましょう。
 
-# 変更内容を確認
-git diff
-
-# ブランチ一覧
-git branch
-
-# 現在のブランチを確認
-git branch --show-current
-```
-
-### ブランチ操作
-
-```bash
-# ブランチを作成して切り替え
-git checkout -b feature/新機能名
-
-# ブランチを切り替え
-git checkout main
-git checkout feature/新機能名
-
-# ブランチを削除（ローカル）
-git branch -d feature/新機能名
-
-# ブランチを削除（GitHub）
-git push origin --delete feature/新機能名
-```
-
-### コミット操作
-
-```bash
-# 変更をステージング
-git add .                    # すべて
-git add ファイル名            # 特定のファイル
-
-# コミット
-git commit -m "説明"
-
-# 最後のコミットメッセージを修正
-git commit --amend -m "新しいメッセージ"
-```
-
-### 同期操作
-
-```bash
-# mainブランチの最新を取得
-git checkout main
-git pull origin main
-
-# featureブランチにmainの変更を取り込む
-git checkout feature/新機能名
-git merge main
-```
-
----
-
-## 🎯 実践例：ゲーミフィケーション機能を実装する
-
-### 1. 準備
-
-```bash
-cd /Users/kenokamoto/Downloads/medical-prompt-hub
-git checkout main
-git pull origin main
-```
-
-### 2. ブランチ作成
-
-```bash
-git checkout -b feature/gamification
-```
-
-### 3. 開発
-
-ファイルを編集します（例: `server/db.ts`に新しい関数を追加）
-
-### 4. テスト
-
-```bash
-pnpm dev
-# ブラウザで動作確認
-```
-
-### 5. コミット
-
-```bash
-git add .
-git commit -m "feat: ユーザー統計テーブルとAPIを追加"
-git push origin feature/gamification
-```
-
-### 6. さらに開発を続ける
-
-```bash
-# またファイルを編集...
-git add .
-git commit -m "feat: XPシステムの実装"
-git push origin feature/gamification
-```
-
-### 7. 完成したらプルリクエスト
-
-GitHub上でプルリクエストを作成してマージ
-
----
-
-## ⚠️ 注意事項
-
-### やってはいけないこと
-
-1. **mainブランチで直接開発しない**
-   ```bash
-   # ❌ 悪い例
-   git checkout main
-   # ここで編集してはいけない
-   
-   # ✅ 良い例
-   git checkout -b feature/新機能
-   # ここで編集する
-   ```
-
-2. **コミットメッセージを適当に書かない**
-   ```bash
-   # ❌ 悪い例
-   git commit -m "修正"
-   
-   # ✅ 良い例
-   git commit -m "feat: ゲーミフィケーションのXP計算ロジックを修正"
-   ```
-
-3. **テストせずにマージしない**
-   - 必ずローカルで動作確認してから
-
----
-
-## 🔄 よくある質問
-
-### Q: 間違えてmainブランチで作業してしまった
-
-```bash
-# 変更を一時保存
-git stash
-
-# featureブランチを作成
-git checkout -b feature/新機能
-
-# 変更を復元
-git stash pop
-```
-
-### Q: 変更を元に戻したい
-
-```bash
-# 特定のファイルだけ
-git checkout -- ファイル名
-
-# すべて（注意！）
-git reset --hard HEAD
-```
-
-### Q: コミットメッセージを間違えた
-
-```bash
-git commit --amend -m "正しいメッセージ"
-git push --force-with-lease origin feature/新機能名
-```
-
-### Q: mainブランチが更新された、取り込みたい
-
-```bash
-git checkout feature/新機能名
-git merge main
-# コンフリクトがあれば解決
-```
-
----
-
-## 📊 開発フローの可視化
-
-```
-1. mainブランチ（安定版）
-   │
-   ├─ 2. feature/gamification ブランチ作成
-   │   │
-   │   ├─ 3. コード編集
-   │   ├─ 4. テスト
-   │   ├─ 5. コミット
-   │   └─ 6. プッシュ
-   │
-   └─ 7. プルリクエスト作成
-       │
-       └─ 8. マージ（本番に反映）
-```
-
----
-
-## ✅ チェックリスト
-
-### ブランチ作成前
-- [ ] mainブランチにいる
-- [ ] `git pull origin main` で最新に更新
-
-### 開発中
-- [ ] 小さな変更ごとにコミット
-- [ ] 動作確認してからコミット
-- [ ] 意味のあるコミットメッセージ
-
-### プルリクエスト前
-- [ ] ローカルで動作確認
-- [ ] エラーがない
-- [ ] 既存機能が壊れていない
-
----
-
-## 🎉 まとめ
-
-1. **mainブランチは触らない**
-2. **featureブランチで作業**
-3. **小さくコミット**
-4. **テストしてからマージ**
-
-この流れで、安全に開発できます！
-
----
-
-**最終更新日**: 2025-01-XX
+この流れさえ守れば、あなたも立派な冒険者の一員です！
