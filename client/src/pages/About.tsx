@@ -167,37 +167,37 @@ export default function About() {
               >
                 {/* English paragraphs */}
                 <p>
-                  In the beginning, there were two strands. Life itself, encoded in the double helix. This fundamental structure has guided every living thing since the dawn of time. It is the blueprint of existence, the code that writes itself into every cell, every organism, every heartbeat.
+                  Life began with two strands, twisted into the double helix. Medicine began with two hands, reaching toward each other.
                 </p>
                 <p>
-                  Medicine began with two hands. The healer and the patient. Human touch, human care. For millennia, this has been the foundation of healing—one person reaching out to another, sharing knowledge, offering comfort, making decisions together. The art of medicine is as ancient as humanity itself, built on trust, empathy, and the irreplaceable bond between caregiver and patient.
+                  We don't want technology that replaces. We want technology that amplifies.
                 </p>
                 <p>
-                  Now, we stand at a threshold. Technology has given us tools that previous generations could only imagine. Artificial intelligence can process vast amounts of information, recognize patterns, and assist in ways that augment human capabilities. Yet we face a choice: do we let technology replace the human element, or do we weave it into the fabric of care in a way that amplifies what makes us human?
+                  Others have built the brain for AI to think. Helix is building the hands for AI to do—specifically for medicine.
                 </p>
                 <p>
-                  We choose amplification. We add a third strand to the helix—not to replace the two that came before, but to strengthen them. The helix evolves into something new. Human expertise meets AI intelligence. They weave together, creating a new blueprint for care. The physician's clinical judgment, honed through years of experience and countless patient interactions, combines with AI's ability to process and analyze. The nurse's compassionate touch is supported by intelligent systems that handle routine tasks, freeing time for the moments that matter most.
+                  By adding a third strand to the helix, we create something new. Human expertise and AI intelligence, woven together. Not replacing the human in healthcare, but extending human reach.
                 </p>
                 <p>
-                  This is not the end of human medicine. This is its next evolution. Just as the double helix enabled life to adapt and thrive, this new structure enables medicine to reach further, to care deeper, to heal better. We are not replacing the human in healthcare. We are extending human reach, amplifying human care, and preserving what has always been at the heart of medicine: the connection between one human being and another.
+                  The connection between one human and another remains at the heart of everything we do.
                 </p>
 
                 {/* Japanese paragraphs */}
                 <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-neutral-200 dark:border-neutral-700 space-y-4 md:space-y-5">
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
-                    はじめに、二本の鎖がありました。生命そのものが、二重らせんに刻まれていました。この根源的な構造は、時のはじまりから、あらゆる生命を導いてきました。それは存在の設計図であり、すべての細胞に、すべての生命に、すべての鼓動に書き込まれた、永遠のコードです。
+                    生命は二本の鎖から始まった。絡み合い、二重らせんとなった。医学は二つの手から始まった。互いに手を差し伸べ合うことから。
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
-                    医学は二つの手から始まりました。治療する者と、治療を受ける者との間で。人間の触れ合いがあり、人間のケアがありました。何千年もの間、これが癒しの礎となってきました。一人の人間がもう一人に手を差し伸べ、知識を分かち合い、慰めを与え、共に決断を下してきました。医学という営みは、人類の歴史と同じだけ古く、信頼と共感、そして治療者と患者の間に築かれる、かけがえのない絆の上に成り立ってきました。
+                    私たちは置き換えるテクノロジーを求めているのではない。拡張するテクノロジーを求めている。
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
-                    そして今、私たちは新たな岐路に立っています。テクノロジーは、かつての世代が夢にも見なかった力を私たちに与えてくれました。人工知能は膨大な情報を瞬時に処理し、複雑なパターンを読み取り、人間の能力を補完します。しかし、私たちには選択が迫られています。テクノロジーに人間の本質を置き換えさせるのか、それとも、人間をより人間らしくするために、テクノロジーをケアという織物に織り込むのか。
+                    他の人々はAIが考えるための「脳」を構築してきた。HelixはAIが「手」を動かすためのものを構築している。特に医学のために。
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
-                    私たちは拡張を選びます。らせんに第三の鎖を加えます。それは、先にある二本を置き換えるためではなく、それらをより強く、より美しくするためです。らせんは新たな姿へと進化します。人間の専門性とAIの知性が出会い、織り合わされ、ケアのための新しい設計図が生まれます。医師の臨床判断は、長年の経験と数えきれない患者との対話によって磨かれたものです。それが、AIの処理能力と分析力と結びつきます。看護師の温かな触れ合いは、日常的な業務を担うインテリジェントなシステムに支えられ、最も大切な瞬間に集中できる時間を生み出します。
+                    らせんに第三の鎖を加えることで、新しいものが生まれる。人間の専門性とAIの知性が織り合わされる。医療における人間を置き換えるのではなく、人間の可能性を広げる。
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
-                    これは人間の医学の終わりではありません。これは、その次の進化です。二重らせんが生命に適応と繁栄をもたらしたように、この新しい構造は医学をより遠くへ、より深くへ、より良く癒す方向へと導きます。私たちは医療における人間を置き換えようとしているのではありません。人間の可能性を広げ、人間のケアを拡張し、医学の中心に常にあったもの、すなわち一人の人間ともう一人の人間の間の、かけがえのないつながりを守り続けています。
+                    一人の人間ともう一人の人間のつながりが、すべての中心にあり続ける。
                   </p>
                 </div>
                 

@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 import { SafetyWarningModal } from "./SafetyWarningModal";
 import { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Footer } from "./Footer";
@@ -80,20 +79,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-
-  // スワイプジェスチャーでサイドバーを開く（モバイルのみ）
-  useSwipeGesture({
-    onSwipeRight: () => {
-      if (window.innerWidth < 1024) {
-        setIsMobileOpen(true);
-      }
-    },
-    onSwipeLeft: () => {
-      if (window.innerWidth < 1024 && isMobileOpen) {
-        setIsMobileOpen(false);
-      }
-    },
-  });
 
   interface NavIconProps {
     icon: React.ReactNode;
