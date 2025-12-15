@@ -145,7 +145,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
   return (
     <section 
       ref={sectionRef}
-      className="relative py-12 md:py-16 lg:py-20 xl:py-24 overflow-hidden min-h-[85vh] flex items-center bg-background"
+      className="relative py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 overflow-hidden min-h-[85vh] flex items-center bg-background"
       onMouseMove={!isMobile ? handleMouseMove : undefined}
     >
       {/* Linear風: 控えめな背景装飾（グリッドパターンのみ） */}
@@ -180,17 +180,17 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
             <div className="lg:pt-8">
               {/* パンチライン + 説明文（Linear.app風：左寄せ） */}
               <motion.div 
-                className="mb-8 md:mb-10"
+                className="mb-6 sm:mb-8 md:mb-10"
                 variants={titleVariants}
               >
                 {/* パンチライン（Linear.app風：大きなタイトル - 左寄せ、適度に改行） */}
                 <motion.h1 
-                  className="text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-black mb-8 md:mb-10 leading-[0.95] tracking-[-0.03em] relative"
+                  className="text-[32px] sm:text-[40px] md:text-[56px] lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-black mb-6 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-[0.95] tracking-[-0.03em] relative"
                   style={{ 
                     fontFamily: 'Inter Display, Inter, system-ui, sans-serif',
-                    wordBreak: 'normal',
-                    overflowWrap: 'normal',
-                    hyphens: 'none',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word',
+                    hyphens: 'auto',
                     whiteSpace: 'normal',
                     fontWeight: 900
                   }}
@@ -199,7 +199,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                   {/* Linear.app風：シンプルなタイトルアニメーション（パフォーマンス最適化、モバイルでは簡略化） */}
                         <span className="block">
                               <motion.span
-                      className="block leading-none whitespace-nowrap sm:whitespace-normal"
+                      className="block leading-[1.1] sm:leading-none"
                       initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={prefersReducedMotion ? {} : { duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -207,7 +207,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                       Helix is a purpose-built tool
                     </motion.span>
                                     <motion.span
-                      className="block leading-none whitespace-nowrap sm:whitespace-normal"
+                      className="block leading-[1.1] sm:leading-none mt-1 sm:mt-0"
                       initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={prefersReducedMotion ? {} : { duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -219,12 +219,12 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
                 
                 {/* 説明文（Linear.app風：2つの文章を別々の行に） */}
                 <motion.div 
-                  className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] text-neutral-600 dark:text-neutral-400 mb-8 font-normal leading-[1.5] tracking-[-0.01em]"
+                  className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] xl:text-[24px] text-neutral-600 dark:text-neutral-400 mb-6 sm:mb-8 font-normal leading-[1.6] sm:leading-[1.5] tracking-[-0.01em]"
                   variants={itemVariants}
                   style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
                 >
                   <motion.p
-                    className="mb-0"
+                    className="mb-2 sm:mb-0"
                     initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={prefersReducedMotion ? {} : { 
@@ -251,7 +251,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
 
                 {/* CTAボタン（Linear.app風） */}
                 <motion.div 
-                  className="flex flex-col sm:flex-row items-start gap-5 mt-8"
+                  className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5 mt-6 sm:mt-8"
                   variants={itemVariants}
                 >
                   <motion.button
@@ -294,7 +294,7 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         {/* Linear/Vercel風: 洗練された検索バー */}
         {onSearchChange && (
           <motion.div 
-            className="max-w-4xl mx-auto mt-12 lg:mt-16 mb-8 md:mb-10 px-2"
+            className="max-w-4xl mx-auto mt-8 sm:mt-12 lg:mt-16 mb-6 sm:mb-8 md:mb-10 px-2"
             variants={searchVariants}
           >
             <div className="relative group">
@@ -363,16 +363,8 @@ export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionPro
         transition={{ delay: 1.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
         <motion.button
-          onClick={() => {
-            const nextSection = document.getElementById('prompts') || document.querySelector('section:nth-of-type(2)');
-            if (nextSection) {
-              nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-              window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
-            }
-          }}
           className="flex flex-col items-center gap-2 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors group"
-          aria-label="下にスクロール"
+          aria-label="スクロールインジケーター"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >

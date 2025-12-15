@@ -651,7 +651,7 @@ export default function Courses() {
           className="max-w-6xl mx-auto px-3 space-y-1"
         >
           {/* ジャンル一覧のみ表示（階層構造） */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2">
             {categoryOrder.map((category) => {
               // このジャンルの全コース数（全レベル）
               const allCategoryCourses = courses.filter(c => c.category === category);

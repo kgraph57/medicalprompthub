@@ -1,248 +1,223 @@
 /**
  * Aboutページ
- * サービスについて、開発者情報、クレジット
+ * Manus風のデザインでHelixについて紹介
  */
 
 import { Layout } from "@/components/Layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Heart, Code, Users, BookOpen, Sparkles, Github, Mail } from "lucide-react";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
-import { Link } from "wouter";
 
 export default function About() {
   useEffect(() => {
     updateSEO({
-      title: "About - Helixについて",
-      description: "Helixの開発背景、開発者情報、クレジット、ライセンス情報を掲載しています。",
+      title: "About Us - Helix",
+      description: "Helixのミッション、製品、ストーリーについて。医療従事者のためのAIプロンプトライブラリ。",
       path: "/about",
-      keywords: "About,開発者,クレジット,ライセンス,Helix"
+      keywords: "About,Helix,ミッション,医療AI,プロンプト"
     });
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto space-y-4 pb-12">
+      <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <div className="text-center space-y-2 py-2 lg:py-2.5">
-          <div className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>About Helix</span>
-          </div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-            Helixについて
-          </h1>
-          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-            医療従事者のためのAIプロンプトライブラリ
-          </p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16"
+        >
+          {/* Title - Centered */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-neutral-900 dark:text-neutral-50 mb-8 md:mb-12 text-center tracking-tight"
+            style={{
+              fontFamily: '"Crimson Pro", "Lora", serif',
+              fontWeight: 600,
+            }}
+          >
+            About Us
+          </motion.h1>
 
-        {/* Mission Section */}
-        <Card>
-          <CardHeader className="p-4">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Heart className="w-4 h-4 text-primary" />
-              ミッション：「このツールで生まれた時間を、患者さんとの対話のために。」
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
-            <p className="text-sm font-medium text-primary-700 italic">
-              AIは医療を効率化するだけではなく、医師が患者と向き合う時間を増やすためのツールです。
-            </p>
-            <p>
-              Helixは、医療従事者がAI（ChatGPT, Claude, Geminiなど）を臨床業務、研究、教育に効果的に活用できるよう、実践的で高品質なプロンプトを提供することを目的としています。
-            </p>
-            <p>
-              私たちは、AI技術が医療現場の効率化と質の向上に貢献できると信じており、医療従事者の皆様が安全かつ効果的にAIを活用できるよう、専門的なプロンプト集とガイドを提供しています。
-            </p>
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900/50">
-              <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-400 mb-2">
-                🛡️ 医療安全へのコミットメント
-              </h4>
-              <p className="text-xs text-blue-800 dark:text-blue-300">
-                本サービスは、デジタルヘルス、医療安全、EBM、AI技術の専門家の視点からレビューされ、医療安全機能（リスクレベル表示、チェックリスト、AIリテラシーガイド）を実装しています。
+          {/* Hero Image Placeholder */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="w-full rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-neutral-800 dark:via-neutral-800 dark:to-neutral-900 aspect-[16/9] md:aspect-[16/8] mb-16 md:mb-20 flex items-center justify-center"
+          >
+            <div className="text-center px-8">
+              <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 italic">
+                AIと医療従事者の協働を象徴するイメージ
+              </p>
+              <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-2">
+                (画像プレースホルダー)
               </p>
             </div>
-          </CardContent>
-        </Card>
+          </motion.div>
+        </motion.div>
 
-        {/* Features Section */}
-        <Card>
-          <CardHeader className="p-4">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Sparkles className="w-4 h-4 text-primary" />
-              主な特徴
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-4 pt-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-primary" />
-                  100以上の専門プロンプト
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  診断支援、治療計画、論文執筆、学会発表など、医療現場で実際に使えるプロンプトを網羅
-                </p>
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                  <Code className="w-3.5 h-3.5 text-primary" />
-                  実践的なワークフローガイド
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  症例報告の書き方、統計解析の方法など、ステップバイステップのガイドを提供
-                </p>
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-primary" />
-                  医療従事者向けに最適化
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  医療現場の実際のニーズに基づいて設計された、実用的なプロンプト集
-                </p>
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                  <Heart className="w-3.5 h-3.5 text-primary" />
-                  無料で利用可能
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  すべてのプロンプトとガイドは無料で利用でき、オープンソースとして公開されています
-                </p>
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                  <Heart className="w-3.5 h-3.5 text-red-600" />
-                  医療安全機能
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  リスクレベル表示、チェックリスト、AIリテラシーガイドで安全な利用をサポート
-                </p>
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-primary" />
-                  Shared Decision Making
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  患者の価値観を尊重した共同意思決定を支援するプロンプトを提供
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Separator />
-
-        {/* Developer Section */}
-        <Card>
-          <CardHeader className="p-4">
-            <CardTitle className="text-base">開発者情報</CardTitle>
-            <CardDescription className="text-xs">
-              Helixの開発・運営について
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">開発・運営</h3>
-              <p className="text-muted-foreground">
-                Helixは、医療従事者とAI技術の専門家によって開発・運営されています。
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">技術スタック</h3>
-              <ul className="list-disc pl-4 space-y-0.5 text-muted-foreground">
-                <li>Frontend: React 19, TypeScript, Vite, Tailwind CSS</li>
-                <li>UI Components: shadcn/ui, Radix UI, Framer Motion</li>
-                <li>Hosting: GitHub Pages</li>
-                <li>Analytics: Google Analytics 4, Umami</li>
-                <li>Error Tracking: Sentry</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">お問い合わせ</h3>
-              <p className="text-muted-foreground mb-1.5">
-                ご質問、ご意見、バグ報告などは、お問い合わせフォームからお願いいたします。
-              </p>
-              <Link href="/contact">
-                <span className="text-primary hover:underline flex items-center gap-1">
-                  <Mail className="w-4 h-4" />
-                  お問い合わせフォームへ
-                </span>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Credits Section */}
-        <Card>
-          <CardHeader className="p-4">
-            <CardTitle className="text-base">クレジット・謝辞</CardTitle>
-          </CardHeader>
-          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">謝辞</h3>
-              <ul className="list-disc pl-4 space-y-0.5 text-muted-foreground">
-                <li>すべての医療従事者の皆様</li>
-                <li>AIコミュニティの貢献者</li>
-                <li>オープンソースプロジェクトの開発者</li>
-                <li>プロンプトの改善にご協力いただいた皆様</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">オープンソースライセンス</h3>
-              <p className="text-muted-foreground">
-                本プロジェクトはMIT Licenseの下で公開されています。
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">GitHub</h3>
-              <p className="text-muted-foreground mb-1.5">
-                ソースコードはGitHubで公開されています。貢献を歓迎します。
-              </p>
-              <a
-                href="https://github.com/kgraph57/medicalprompthub"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline flex items-center gap-1"
+        {/* Content Sections */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 lg:pb-24"
+        >
+          {/* Our Mission */}
+          <motion.section variants={itemVariants} className="mb-12 md:mb-16 lg:mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-[150px_1fr] gap-4 md:gap-6 lg:gap-8">
+              <h2 
+                className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight"
+                style={{ fontFamily: '"Crimson Pro", "Lora", serif' }}
               >
-                <Github className="w-4 h-4" />
-                GitHubリポジトリ
-              </a>
+                Our Mission
+              </h2>
+              <div 
+                className="text-base md:text-lg lg:text-xl text-neutral-900 dark:text-neutral-50 leading-relaxed space-y-3"
+                style={{ fontFamily: '"Crimson Pro", "Lora", serif', lineHeight: '1.75' }}
+              >
+                <p>
+                  To empower physicians to reclaim their time and expertise by intelligently handling routine and administrative burdens, allowing them to dedicate more attention to patient dialogue, diagnosis, and treatment.
+                </p>
+                <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                  医療従事者が日常業務や管理業務を効率的に処理し、患者との対話、診断、治療により多くの時間を割けるよう支援すること。これが私たちのミッションです。
+                </p>
+              </div>
             </div>
-          </CardContent>
-        </Card>
+          </motion.section>
 
-        {/* License Section */}
-        <Card>
-          <CardHeader className="p-4">
-            <CardTitle className="text-base">ライセンス</CardTitle>
-          </CardHeader>
-          <CardContent className="p-4 pt-0 space-y-3 text-xs leading-relaxed">
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">MIT License</h3>
-              <p className="text-muted-foreground mb-1.5">
-                本プロジェクトのソースコードはMIT Licenseの下で公開されています。
-              </p>
-              <p className="text-muted-foreground">
-                プロンプトの内容については、医療従事者の皆様が自由に使用・改変・共有していただけます。
-                ただし、医療行為に関する最終的な判断は、必ず医師や専門家の判断を優先してください。
-              </p>
+          {/* Our Product */}
+          <motion.section variants={itemVariants} className="mb-12 md:mb-16 lg:mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-[150px_1fr] gap-4 md:gap-6 lg:gap-8">
+              <h2 
+                className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight"
+                style={{ fontFamily: '"Crimson Pro", "Lora", serif' }}
+              >
+                Our Product
+              </h2>
+              <div 
+                className="text-base md:text-lg lg:text-xl text-neutral-900 dark:text-neutral-50 leading-relaxed space-y-3"
+                style={{ fontFamily: '"Crimson Pro", "Lora", serif', lineHeight: '1.75' }}
+              >
+                <p>
+                  We build AI prompt libraries and intelligent workflows as the Action Engine for healthcare professionals.
+                </p>
+                <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                  医療従事者のためのAIプロンプトライブラリとインテリジェントなワークフローを構築しています。100以上の実践的なプロンプト、ステップバイステップのガイド、そして医療安全機能を備えたプラットフォームを提供します。
+                </p>
+              </div>
             </div>
-            <Separator />
-            <div>
-              <h3 className="font-semibold mb-1 text-sm">免責事項</h3>
-              <p className="text-muted-foreground">
-                本サービスで提供されるプロンプトやガイドは、医療アドバイスを提供するものではありません。
-                実際の医療行為に関する判断は、必ず医師や専門家の判断を優先し、所属する医療機関のガイドラインに従ってください。
-                詳細は<Link href="/legal" className="text-primary hover:underline">利用規約・免責事項</Link>をご確認ください。
-              </p>
+          </motion.section>
+
+          {/* Our Story */}
+          <motion.section variants={itemVariants} className="mb-12 md:mb-16 lg:mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-[150px_1fr] gap-4 md:gap-6 lg:gap-8">
+              <h2 
+                className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight"
+                style={{ fontFamily: '"Crimson Pro", "Lora", serif' }}
+              >
+                Our Story
+              </h2>
+              <div 
+                className="space-y-4 md:space-y-5 text-base md:text-lg lg:text-xl text-neutral-900 dark:text-neutral-50 leading-relaxed"
+                style={{ fontFamily: '"Crimson Pro", "Lora", serif', lineHeight: '1.75' }}
+              >
+                <div className="space-y-2">
+                  <p>
+                    We don't want overachieving AI, we want overachieving healthcare professionals.
+                  </p>
+                  <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                    私たちは、優秀すぎるAIではなく、優秀な医療従事者を求めています。
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p>
+                    We need to put the full power of AI to work by unlocking the code, not just for engineers but for everyone in healthcare.
+                  </p>
+                  <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                    AIの力を最大限に活用するため、エンジニアだけでなく、医療に携わるすべての人にコードを解き放つ必要があります。
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p>
+                    Others have built the brain for AI to think, Helix is building the hands for AI to do—specifically for medical practice.
+                  </p>
+                  <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                    他の人々がAIの「脳」を構築してきましたが、HelixはAIの「手」を構築しています—特に医療実践のために。
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p>
+                    By using AI to give every healthcare professional the tools to leverage their expertise, Helix is extending human reach in medicine.
+                  </p>
+                  <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                    AIを使ってすべての医療従事者に専門知識を活用するツールを提供することで、Helixは医学における人間の可能性を拡張しています。
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p>
+                    Named after the double helix structure of DNA, Helix represents the fundamental building block of life and medicine. By adding AI as a third strand to the double helix, Helix evolves into a new DNA structure. The expertise of healthcare professionals and the intelligence of AI intertwine, creating a new blueprint for life that enables more powerful and refined medical care.
+                  </p>
+                  <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                    DNAの二重らせん構造から名付けられたHelixは、生命と医学の基本構造を表しています。二重らせんにAIという第三の線を加えることで、Helixは新たなDNA構造へと進化します。医療従事者の専門性とAIの知性が絡み合い、より強力で洗練された医療ケアを実現するための新しい生命の設計図を描いています。
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p>
+                    We believe that AI technology should not replace healthcare professionals, but complement them. Clinical judgment, empathy, and decision-making abilities are essential to healthcare professionals, and Helix supports and enhances these strengths by handling routine, time-consuming tasks.
+                  </p>
+                  <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
+                    私たちは、AI技術が医療従事者を置き換えるのではなく、補完するべきだと信じています。臨床判断、共感、意思決定能力は医療従事者に不可欠であり、Helixは日常的な時間のかかるタスクを処理することで、これらの強みをサポートし強化します。
+                  </p>
+                </div>
+                
+                {/* Punchline - Inside Our Story section */}
+                <div className="mt-8 md:mt-10 pt-6 md:pt-8">
+                  <h3 
+                    className="text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight mb-1"
+                    style={{ fontFamily: '"Crimson Pro", "Lora", serif', fontWeight: 600 }}
+                  >
+                    Helix
+                  </h3>
+                  <p 
+                    className="text-xl md:text-2xl lg:text-3xl font-medium text-neutral-900 dark:text-neutral-50 tracking-tight"
+                    style={{ fontFamily: '"Crimson Pro", "Lora", serif' }}
+                  >
+                    Augmenting Medicine.
+                  </p>
+                </div>
+              </div>
             </div>
-          </CardContent>
-        </Card>
+          </motion.section>
+        </motion.div>
+
       </div>
     </Layout>
   );

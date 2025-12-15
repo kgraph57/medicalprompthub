@@ -6,11 +6,11 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X, ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import { marwGuideData } from '@/lib/marw-guide-data';
 import { CodeBlock } from '@/components/CodeBlock';
 import { updateSEO } from '@/lib/seo';
-import { Layout } from '@/components/Layout';
+import { Layout, useSidebar, useToc } from '@/components/Layout';
 
 // 絵文字を削除する関数
 function removeEmojis(text: string): string {
@@ -45,7 +45,8 @@ export default function MARWGuide() {
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
   const [currentStepId, setCurrentStepId] = useState<string>(stepId || 'intro');
   const [markdown, setMarkdown] = useState<string>('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const { isSidebarOpen, setIsSidebarOpen } = useSidebar(); // Layoutコンポーネントから状態を取得
+  const { setTocItems } = useToc(); // 目次データを設定
 
   // SEO設定
   useEffect(() => {
@@ -82,6 +83,8 @@ export default function MARWGuide() {
     } else {
       setCurrentStepId('intro');
     }
+    // スクロール位置をトップにリセット
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [stepId]);
 
   // Markdownコンテンツを読み込み
@@ -89,6 +92,49 @@ export default function MARWGuide() {
     const content = markdownContent[currentStepId] || '';
     setMarkdown(content);
   }, [currentStepId]);
+
+  // currentStepIdが変更されたらスクロール位置をトップにリセット
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStepId]);
+
+  // 目次データを設定
+  useEffect(() => {
+    const tocItems = [];
+    
+    // イントロダクション
+    tocItems.push({
+      id: 'intro',
+      title: 'イントロダクション',
+      level: 2,
+      onClick: () => {
+        setCurrentStepId('intro');
+        navigate('/guides/marw-complete');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+      isActive: currentStepId === 'intro',
+    });
+
+    // 各フェーズとステップ
+    marwGuideData.phases.forEach((phase) => {
+      phase.steps.forEach((step) => {
+        tocItems.push({
+          id: step.id,
+          title: step.title,
+          level: 2,
+          onClick: () => {
+            setCurrentStepId(step.id);
+            navigate(`/guides/marw-complete/${step.id}`);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          },
+          isActive: currentStepId === step.id,
+        });
+      });
+    });
+
+    setTocItems(tocItems);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStepId, setTocItems]);
 
   const toggleComplete = (stepId: string) => {
     setCompletedSteps(prev => {
@@ -111,6 +157,17 @@ export default function MARWGuide() {
   const hasPrevious = currentIndex > 0;
   const hasNext = currentIndex < allStepsInOrder.length - 1;
 
+  // Get current step duration
+  const getCurrentStepDuration = () => {
+    if (currentStepId === 'intro') return null;
+    for (const phase of marwGuideData.phases) {
+      const step = phase.steps.find(s => s.id === currentStepId);
+      if (step) return step.duration;
+    }
+    return null;
+  };
+  const currentStepDuration = getCurrentStepDuration();
+
   const completedCount = completedSteps.size;
   const totalSteps = stepsWithoutIntro.length;
   const progressPercentage = (completedCount / totalSteps) * 100;
@@ -120,10 +177,15 @@ export default function MARWGuide() {
       const prevStepId = allStepsInOrder[currentIndex - 1];
       setCurrentStepId(prevStepId);
       navigate(`/guides/marw-complete/${prevStepId === 'intro' ? '' : prevStepId}`);
+      // 同時にスクロール位置をトップにリセット
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const goToNext = () => {
+    // 同時にスクロール位置をトップにリセット
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (hasNext) {
       const nextStepId = allStepsInOrder[currentIndex + 1];
       setCurrentStepId(nextStepId);
@@ -134,17 +196,76 @@ export default function MARWGuide() {
   return (
     <Layout>
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile Table of Contents Dropdown */}
       {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
+        <>
+          <div 
+            className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+          {/* TOC Dropdown Container - positioned near the header button */}
+          <div 
+            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="overflow-y-auto max-h-[calc(100vh-5rem)] p-4">
+              {/* Page Top Button */}
+              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setIsSidebarOpen(false);
+                  }}
+                  className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                >
+                  <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
+                  <span>ページトップへ</span>
+                </button>
+              </div>
+              
+              {/* Table of Contents */}
+              <nav className="space-y-0">
+                {marwGuideData.phases.flatMap((phase, phaseIndex) => {
+                  return phase.steps.map((step) => {
+                    const isCurrent = currentStepId === step.id;
+                    return (
+                      <button
+                        key={step.id}
+                        onClick={() => {
+                          setCurrentStepId(step.id);
+                          navigate(step.id === 'intro'
+                            ? '/guides/marw-complete'
+                            : `/guides/marw-complete/${step.id}`
+                          );
+                          setIsSidebarOpen(false);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
+                          isCurrent
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                        }`}
+                      >
+                        {isCurrent && (
+                          <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
+                        )}
+                        {!isCurrent && (
+                          <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5"></span>
+                        )}
+                        <span className="leading-relaxed">{step.title}</span>
+                      </button>
+                    );
+                  });
+                })}
+              </nav>
+            </div>
+          </div>
+        </>
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="w-full max-w-full lg:max-w-[1800px] xl:max-w-[1920px] mx-auto px-2 sm:px-3 lg:px-10 py-4 sm:py-6 lg:py-8 overflow-x-hidden">
+        <div className="flex flex-col lg:flex-row gap-4 relative">
           {/* Right Content - Scrollable Article */}
           <main className="flex-1 min-w-0 order-2 lg:order-1">
             <article className="zenn-article">
@@ -160,9 +281,17 @@ export default function MARWGuide() {
                       return child;
                     });
                     return (
-                      <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-16 text-foreground scroll-mt-20 tracking-tight" {...props}>
-                        {children}
-                      </h1>
+                      <div className="mt-4 mb-8">
+                        {currentStepDuration && (
+                          <div className="flex items-center gap-1.5 mb-3 text-sm text-gray-600 dark:text-gray-400">
+                            <Clock className="h-4 w-4" />
+                            <span>{currentStepDuration}</span>
+                          </div>
+                        )}
+                        <h1 className="text-3xl md:text-4xl font-bold text-foreground scroll-mt-20 tracking-tight" {...props}>
+                          {children}
+                        </h1>
+                      </div>
                     );
                   },
                   h2: ({ node, ...props }: any) => {
@@ -213,7 +342,7 @@ export default function MARWGuide() {
                     );
                   },
                   p: ({ node, ...props }) => (
-                    <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85] max-w-[65ch]" {...props} />
+                    <p className="mb-6 text-lg md:text-xl text-foreground leading-[1.85]" {...props} />
                   ),
                   ul: ({ node, ...props }) => (
                     <ul className="list-disc pl-8 mb-6 space-y-3" {...props} />
@@ -257,9 +386,9 @@ export default function MARWGuide() {
                 onClick={goToPrevious}
                 disabled={!hasPrevious}
                 variant="outline"
-                size="lg"
+                className="h-9"
               >
-                <ChevronLeft className="h-5 w-5 mr-2" />
+                <ChevronLeft className="h-4 w-4 mr-2" />
                 前へ
               </Button>
 
@@ -268,128 +397,66 @@ export default function MARWGuide() {
                 onClick={goToNext}
                 disabled={!hasNext}
                 variant="outline"
-                size="lg"
+                className="h-9"
               >
                 次へ
-                <ChevronRight className="h-5 w-5 ml-2" />
+                <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
           </main>
 
-          {/* Right Sidebar - Fixed Navigation */}
-          <aside className={`
-            fixed lg:static inset-y-0 right-0 z-50 lg:z-0
-            w-80 lg:w-80 flex-shrink-0
-            transform transition-transform duration-300 ease-in-out
-            ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
-            bg-gray-50 dark:bg-gray-900 lg:bg-transparent
-            order-1 lg:order-2
-          `}>
-            <div className="h-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto p-4 lg:p-0">
-              {/* Close Button - Mobile Only */}
-              <div className="lg:hidden flex justify-end mb-4">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="h-7 w-7"
+          {/* Right Sidebar - Desktop Only */}
+          <aside className="hidden lg:block lg:static w-64 flex-shrink-0 order-2">
+            <div className="h-full sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
+              {/* Page Top Button - Zenn style */}
+              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-full flex items-center gap-1.5
+                    text-sm text-gray-600 dark:text-gray-400
+                    hover:text-gray-900 dark:hover:text-gray-200
+                    transition-colors
+                  "
                 >
-                  <X className="h-4 w-4" />
-                </Button>
+                  <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
+                  <span>ページトップへ</span>
+                </button>
               </div>
-              {/* Progress Card */}
-              <div className="bg-background rounded-lg shadow-sm p-6 mb-6">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                  進捗状況
-                </h3>
-                <div className="mb-2">
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-blue-600 transition-all duration-300"
-                      style={{ width: `${progressPercentage}%` }}
-                    />
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {completedCount} / {totalSteps} 完了
-                </p>
-              </div>
-
-              {/* Navigation */}
-              <nav className="space-y-6">
-                {/* Introduction Link */}
-                <div className="bg-background rounded-lg shadow-sm p-4">
-                  <button
-                    onClick={() => {
-                      setCurrentStepId('intro');
-                      navigate('/guides/marw-complete');
-                      setIsSidebarOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                      currentStepId === 'intro'
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    <div className="font-medium">イントロダクション</div>
-                  </button>
-                </div>
-
-                {marwGuideData.phases.map((phase, phaseIndex) => {
-                  // Filter out intro from steps since we handle it separately
-                  const stepsWithoutIntro = phase.steps.filter(step => step.id !== 'intro');
-                  if (stepsWithoutIntro.length === 0) return null;
-                  
-                  return (
-                    <div key={phase.id} className="bg-background rounded-lg shadow-sm p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-sm font-bold">
-                          {phaseIndex + 1}
-                        </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                          {phase.title}
-                        </h3>
-                      </div>
-                      <div className="space-y-1">
-                        {stepsWithoutIntro.map((step) => {
-                          const isCompleted = completedSteps.has(step.id);
-                          const isCurrent = currentStepId === step.id;
-                          return (
-                            <div key={step.id} className="flex items-center gap-2">
-                              <button
-                                onClick={() => toggleComplete(step.id)}
-                                className="flex-shrink-0"
-                              >
-                                {isCompleted ? (
-                                  <CheckCircle2 className="h-5 w-5 text-green-600" />
-                                ) : (
-                                  <Circle className="h-5 w-5 text-gray-400" />
-                                )}
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setCurrentStepId(step.id);
-                                  navigate(`/guides/marw-complete/${step.id}`);
-                                  setIsSidebarOpen(false);
-                                }}
-                                className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors break-words ${
-                                  isCurrent
-                                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                                }`}
-                              >
-                                <div className="font-medium">{step.title}</div>
-                                <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                  <Clock className="h-3 w-3" />
-                                  {step.duration}
-                                </div>
-                              </button>
-                            </div>
+              
+              {/* Table of Contents - Zenn style */}
+              <nav className="space-y-0">
+                {marwGuideData.phases.flatMap((phase, phaseIndex) => {
+                  return phase.steps.map((step) => {
+                    const isCurrent = currentStepId === step.id;
+                    return (
+                      <button
+                        key={step.id}
+                        onClick={() => {
+                          setCurrentStepId(step.id);
+                          navigate(step.id === 'intro'
+                            ? '/guides/marw-complete'
+                            : `/guides/marw-complete/${step.id}`
                           );
-                        })}
-                      </div>
-                    </div>
-                  );
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
+                          isCurrent
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                        }`}
+                      >
+                        {isCurrent && (
+                          <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
+                        )}
+                        {!isCurrent && (
+                          <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5"></span>
+                        )}
+                        <span className="leading-relaxed">{step.title}</span>
+                      </button>
+                    );
+                  });
                 })}
               </nav>
             </div>

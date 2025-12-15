@@ -6,7 +6,7 @@
   
   <!-- ホームページ -->
   <url>
-    <loc>https://kgraph57.github.io/medicalprompthub/</loc>
+    <loc>https://kgraph57.github.io/Helix/</loc>
     <lastmod>2025-01-XX</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
   
   <!-- プロンプト一覧 -->
   <url>
-    <loc>https://kgraph57.github.io/medicalprompthub/prompts</loc>
+    <loc>https://kgraph57.github.io/Helix/prompts</loc>
     <lastmod>2025-01-XX</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -22,7 +22,7 @@
   
   <!-- ガイド -->
   <url>
-    <loc>https://kgraph57.github.io/medicalprompthub/guides</loc>
+    <loc>https://kgraph57.github.io/Helix/guides</loc>
     <lastmod>2025-01-XX</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -30,7 +30,7 @@
   
   <!-- Tips -->
   <url>
-    <loc>https://kgraph57.github.io/medicalprompthub/tips</loc>
+    <loc>https://kgraph57.github.io/Helix/tips</loc>
     <lastmod>2025-01-XX</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -38,7 +38,7 @@
   
   <!-- 法的表記 -->
   <url>
-    <loc>https://kgraph57.github.io/medicalprompthub/legal</loc>
+    <loc>https://kgraph57.github.io/Helix/legal</loc>
     <lastmod>2025-01-XX</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

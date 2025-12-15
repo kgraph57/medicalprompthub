@@ -11,7 +11,7 @@ function getBaseUrl(): string {
   if (basePath) {
     return `https://kgraph57.github.io${basePath.replace(/\/$/, '')}`;
   }
-  return "https://kgraph57.github.io/medicalprompthub";
+  return "https://kgraph57.github.io/Helix";
 }
 
 export const BASE_URL = getBaseUrl();

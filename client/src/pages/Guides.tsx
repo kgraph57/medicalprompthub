@@ -503,7 +503,7 @@ export default function Guides() {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="space-y-1.5"
         >
-          <div className="relative max-w-2xl">
+          <div className="relative max-w-2xl my-6">
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
             <Input
               placeholder="ガイドを検索(タイトル、説明、タグ)..."
@@ -607,7 +607,7 @@ export default function Guides() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
+              className="grid gap-6 md:gap-8 md:grid-cols-2"
               style={{gridAutoRows: '1fr'}}
             >
               {filteredAndSortedGuides.map((guide, index) => {

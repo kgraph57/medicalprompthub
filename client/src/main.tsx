@@ -3,7 +3,7 @@ import App from "./App";
 import "./index.css";
 import { setupGlobalErrorHandlers } from "./lib/errorTracking";
 import { initSentry } from "./lib/sentry";
-import { enhanceFocusStyles, addSkipLink } from "./lib/accessibility";
+import { enhanceFocusStyles } from "./lib/accessibility";
 
 // Sentryを初期化（非同期、エラーが発生しても続行）
 initSentry().catch((error) => {
@@ -15,7 +15,7 @@ setupGlobalErrorHandlers();
 
 // アクセシビリティの改善
 enhanceFocusStyles();
-addSkipLink('main-content');
+// スキップリンクはLayout.tsxで定義されているため、ここでは追加しない
 
 // Google Analytics 4はCookie同意後に初期化される（CookieConsentBannerで処理）
 

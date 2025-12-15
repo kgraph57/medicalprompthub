@@ -5,16 +5,16 @@
 ### ✅ 設定済み項目
 
 1. **Vite設定** (`vite.config.ts`)
-   - `base: '/medicalprompthub/'` - GitHub Pagesのベースパス
+   - `base: '/Helix/'` - GitHub Pagesのベースパス
    - 本番環境と開発環境の両方で同じパスを使用
 
 2. **package.json**
-   - `homepage: "https://kgraph57.github.io/medicalprompthub/"`
+   - `homepage: "https://kgraph57.github.io/Helix/"`
    - `build:client` スクリプトでクライアントのみビルド
 
 3. **GitHub Actions** (`.github/workflows/deploy.yml`)
    - mainブランチへのpushで自動デプロイ
-   - `VITE_BASE_PATH: /medicalprompthub/` 環境変数を設定
+   - `VITE_BASE_PATH: /Helix/` 環境変数を設定
    - GitHub Pagesに自動デプロイ
 
 4. **プレビュー環境** (`.github/workflows/preview.yml`)
@@ -44,7 +44,7 @@ ls -la dist/
 pnpm dev
 
 # ブラウザで確認
-# http://localhost:5173/medicalprompthub/
+# http://localhost:5173/Helix/
 ```
 
 ### 本番ビルドのプレビュー
@@ -56,14 +56,14 @@ pnpm build:client
 pnpm preview
 
 # ブラウザで確認
-# http://localhost:4173/medicalprompthub/
+# http://localhost:4173/Helix/
 ```
 
 ## 重要な設定ポイント
 
 ### 1. ベースパス
-- **開発環境**: `/medicalprompthub/`
-- **本番環境**: `/medicalprompthub/`
+- **開発環境**: `/Helix/`
+- **本番環境**: `/Helix/`
 - 両環境で同じパスを使用することで、開発と本番の動作を一致させます
 
 ### 2. ルーティング
@@ -71,12 +71,12 @@ pnpm preview
 - GitHub PagesではSPAのフォールバックが必要（`404.html`へのリダイレクト）
 
 ### 3. アセットパス
-- すべてのアセット（画像、CSS、JS）は`/medicalprompthub/`配下に配置
+- すべてのアセット（画像、CSS、JS）は`/Helix/`配下に配置
 - Viteが自動的に正しいパスを生成
 
 ### 4. SEO設定
 - 構造化データ（JSON-LD）で正しいURLを使用
-- `BASE_URL`は`https://kgraph57.github.io/medicalprompthub`に設定
+- `BASE_URL`は`https://kgraph57.github.io/Helix`に設定
 
 ## トラブルシューティング
 
@@ -86,7 +86,7 @@ pnpm preview
 
 ### アセットが読み込まれない場合
 - ブラウザの開発者ツールでネットワークタブを確認
-- パスが`/medicalprompthub/`で始まっているか確認
+- パスが`/Helix/`で始まっているか確認
 
 ### ルーティングが動作しない場合
 - `404.html`ファイルが`dist`フォルダに存在するか確認

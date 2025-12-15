@@ -39,7 +39,7 @@ jobs:
         env:
           # プレビュー環境用の設定
           NODE_ENV: production
-          VITE_BASE_PATH: /medicalprompthub/
+          VITE_BASE_PATH: /Helix/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
