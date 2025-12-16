@@ -142,14 +142,6 @@ export default function CategoryCourses() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Button
-            variant="ghost"
-            onClick={() => setLocation("/courses")}
-            className="mb-8 -ml-2 text-neutral-600 hover:text-neutral-900 hover:bg-transparent"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" /> コース一覧に戻る
-          </Button>
-
           <div className="space-y-4">
             <h1 className="text-4xl font-semibold tracking-tight text-neutral-900">
               {categoryLabels[category]}

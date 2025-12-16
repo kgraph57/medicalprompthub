@@ -354,8 +354,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               // ページタイプを判定
               const isLessonPage = /^\/courses\/[^/]+\/lessons\/[^/]+/.test(location);
               const isCourseDetailPage = /^\/courses\/[^/]+$/.test(location);
+              const isCategoryPage = /^\/courses\/category\/[^/]+$/.test(location);
               const isGuidePage = location.startsWith("/guides/");
-              const shouldShowHeader = isLessonPage || isCourseDetailPage || isGuidePage;
+              const shouldShowHeader = isLessonPage || isCourseDetailPage || isCategoryPage || isGuidePage;
               
               if (!shouldShowHeader) return null;
 
@@ -372,6 +373,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 }
               } else if (isCourseDetailPage) {
                 // コース詳細ページの場合、コース一覧に戻る
+                backLink = "/courses";
+                backLabel = "コース一覧に戻る";
+              } else if (isCategoryPage) {
+                // カテゴリページの場合、コース一覧に戻る
                 backLink = "/courses";
                 backLabel = "コース一覧に戻る";
               } else if (isGuidePage) {
