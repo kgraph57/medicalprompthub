@@ -1,4 +1,4 @@
-import { Layout } from "@/components/Layout";
+import { Layout, useToc } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -51,6 +51,7 @@ export default function Guides() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<SortOption>("title-asc");
+  const { setTocItems } = useToc(); // 目次データをクリア
 
   // SEO設定
   useEffect(() => {
@@ -61,6 +62,11 @@ export default function Guides() {
       keywords: "ワークフローガイド,症例報告,論文執筆,統計解析,医療研究,AI活用"
     });
   }, []);
+
+  // 目次がないページなので、tocItemsをクリア
+  useEffect(() => {
+    setTocItems([]);
+  }, [setTocItems]);
 
   const guides = [
     {

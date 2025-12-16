@@ -80,6 +80,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+  // ページが切り替わったときに目次サイドバーを閉じる
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location]);
+
   interface NavIconProps {
     icon: React.ReactNode;
     label: string;

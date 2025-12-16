@@ -606,11 +606,22 @@ export default function MarkdownGuide() {
   };
 
   const goToNext = () => {
-    // 同時にスクロール位置をトップにリセット
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
     if (hasNext) {
       setCurrentStep(currentStep + 1);
+      // ページ遷移後にヘッダーにスクロール
+      setTimeout(() => {
+        const scrollToHeader = () => {
+          const header = document.getElementById('page-header');
+          if (header) {
+            const headerTop = header.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
+          } else {
+            // ヘッダーが見つからない場合は少し待って再試行
+            setTimeout(scrollToHeader, 100);
+          }
+        };
+        scrollToHeader();
+      }, 300);
     }
   };
 
