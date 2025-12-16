@@ -166,6 +166,88 @@ import aiToolsLesson3Md from "@/data/courses/ai-tools-comparison/lesson-3.md?raw
 import aiToolsLesson4Md from "@/data/courses/ai-tools-comparison/lesson-4.md?raw";
 import aiToolsLesson5Md from "@/data/courses/ai-tools-comparison/lesson-5.md?raw";
 
+// ai-history-evolutionコース
+import aiHistoryLesson1Md from "@/data/courses/ai-history-evolution/lesson-1.md?raw";
+import aiHistoryLesson2Md from "@/data/courses/ai-history-evolution/lesson-2.md?raw";
+import aiHistoryLesson3Md from "@/data/courses/ai-history-evolution/lesson-3.md?raw";
+import aiHistoryLesson4Md from "@/data/courses/ai-history-evolution/lesson-4.md?raw";
+import aiHistoryLesson5Md from "@/data/courses/ai-history-evolution/lesson-5.md?raw";
+import aiHistoryLesson6Md from "@/data/courses/ai-history-evolution/lesson-6.md?raw";
+
+// perplexity-practiceコース
+import perplexityLesson1Md from "@/data/courses/perplexity-practice/lesson-1.md?raw";
+import perplexityLesson2Md from "@/data/courses/perplexity-practice/lesson-2.md?raw";
+import perplexityLesson3Md from "@/data/courses/perplexity-practice/lesson-3.md?raw";
+import perplexityLesson4Md from "@/data/courses/perplexity-practice/lesson-4.md?raw";
+import perplexityLesson5Md from "@/data/courses/perplexity-practice/lesson-5.md?raw";
+
+// data-preprocessing-cleaningコース
+import dataPreprocessingLesson1Md from "@/data/courses/data-preprocessing-cleaning/lesson-1.md?raw";
+import dataPreprocessingLesson2Md from "@/data/courses/data-preprocessing-cleaning/lesson-2.md?raw";
+import dataPreprocessingLesson3Md from "@/data/courses/data-preprocessing-cleaning/lesson-3.md?raw";
+import dataPreprocessingLesson4Md from "@/data/courses/data-preprocessing-cleaning/lesson-4.md?raw";
+import dataPreprocessingLesson5Md from "@/data/courses/data-preprocessing-cleaning/lesson-5.md?raw";
+import dataPreprocessingLesson6Md from "@/data/courses/data-preprocessing-cleaning/lesson-6.md?raw";
+
+// medical-imaging-ai-basicsコース
+import medicalImagingLesson1Md from "@/data/courses/medical-imaging-ai-basics/lesson-1.md?raw";
+import medicalImagingLesson2Md from "@/data/courses/medical-imaging-ai-basics/lesson-2.md?raw";
+import medicalImagingLesson3Md from "@/data/courses/medical-imaging-ai-basics/lesson-3.md?raw";
+import medicalImagingLesson4Md from "@/data/courses/medical-imaging-ai-basics/lesson-4.md?raw";
+import medicalImagingLesson5Md from "@/data/courses/medical-imaging-ai-basics/lesson-5.md?raw";
+import medicalImagingLesson6Md from "@/data/courses/medical-imaging-ai-basics/lesson-6.md?raw";
+import medicalImagingLesson7Md from "@/data/courses/medical-imaging-ai-basics/lesson-7.md?raw";
+
+// statistics-basics-medicineコース
+import statisticsLesson1Md from "@/data/courses/statistics-basics-medicine/lesson-1.md?raw";
+import statisticsLesson2Md from "@/data/courses/statistics-basics-medicine/lesson-2.md?raw";
+import statisticsLesson3Md from "@/data/courses/statistics-basics-medicine/lesson-3.md?raw";
+import statisticsLesson4Md from "@/data/courses/statistics-basics-medicine/lesson-4.md?raw";
+import statisticsLesson5Md from "@/data/courses/statistics-basics-medicine/lesson-5.md?raw";
+import statisticsLesson6Md from "@/data/courses/statistics-basics-medicine/lesson-6.md?raw";
+import statisticsLesson7Md from "@/data/courses/statistics-basics-medicine/lesson-7.md?raw";
+import statisticsLesson8Md from "@/data/courses/statistics-basics-medicine/lesson-8.md?raw";
+
+// model-evaluation-validationコース
+import modelEvalLesson1Md from "@/data/courses/model-evaluation-validation/lesson-1.md?raw";
+import modelEvalLesson2Md from "@/data/courses/model-evaluation-validation/lesson-2.md?raw";
+import modelEvalLesson3Md from "@/data/courses/model-evaluation-validation/lesson-3.md?raw";
+import modelEvalLesson4Md from "@/data/courses/model-evaluation-validation/lesson-4.md?raw";
+import modelEvalLesson5Md from "@/data/courses/model-evaluation-validation/lesson-5.md?raw";
+import modelEvalLesson6Md from "@/data/courses/model-evaluation-validation/lesson-6.md?raw";
+import modelEvalLesson7Md from "@/data/courses/model-evaluation-validation/lesson-7.md?raw";
+
+// patient-communication-aiコース
+import patientCommLesson1Md from "@/data/courses/patient-communication-ai/lesson-1.md?raw";
+import patientCommLesson2Md from "@/data/courses/patient-communication-ai/lesson-2.md?raw";
+import patientCommLesson3Md from "@/data/courses/patient-communication-ai/lesson-3.md?raw";
+import patientCommLesson4Md from "@/data/courses/patient-communication-ai/lesson-4.md?raw";
+import patientCommLesson5Md from "@/data/courses/patient-communication-ai/lesson-5.md?raw";
+
+// ai-bias-fairnessコース
+import aiBiasLesson1Md from "@/data/courses/ai-bias-fairness/lesson-1.md?raw";
+import aiBiasLesson2Md from "@/data/courses/ai-bias-fairness/lesson-2.md?raw";
+import aiBiasLesson3Md from "@/data/courses/ai-bias-fairness/lesson-3.md?raw";
+import aiBiasLesson4Md from "@/data/courses/ai-bias-fairness/lesson-4.md?raw";
+import aiBiasLesson5Md from "@/data/courses/ai-bias-fairness/lesson-5.md?raw";
+import aiBiasLesson6Md from "@/data/courses/ai-bias-fairness/lesson-6.md?raw";
+
+// research-protocol-aiコース
+import researchProtocolLesson1Md from "@/data/courses/research-protocol-ai/lesson-1.md?raw";
+import researchProtocolLesson2Md from "@/data/courses/research-protocol-ai/lesson-2.md?raw";
+import researchProtocolLesson3Md from "@/data/courses/research-protocol-ai/lesson-3.md?raw";
+import researchProtocolLesson4Md from "@/data/courses/research-protocol-ai/lesson-4.md?raw";
+import researchProtocolLesson5Md from "@/data/courses/research-protocol-ai/lesson-5.md?raw";
+
+// data-science-fundamentalsコース
+import dataScienceLesson1Md from "@/data/courses/data-science-fundamentals/lesson-1.md?raw";
+import dataScienceLesson2Md from "@/data/courses/data-science-fundamentals/lesson-2.md?raw";
+import dataScienceLesson3Md from "@/data/courses/data-science-fundamentals/lesson-3.md?raw";
+import dataScienceLesson4Md from "@/data/courses/data-science-fundamentals/lesson-4.md?raw";
+import dataScienceLesson5Md from "@/data/courses/data-science-fundamentals/lesson-5.md?raw";
+import dataScienceLesson6Md from "@/data/courses/data-science-fundamentals/lesson-6.md?raw";
+import dataScienceLesson7Md from "@/data/courses/data-science-fundamentals/lesson-7.md?raw";
+
 const lessonContent: Record<string, string> = {
   // ai-basicsコース
   "ai-basics-1": aiBasicsLesson1Md,
@@ -293,11 +375,83 @@ const lessonContent: Record<string, string> = {
   "ai-tools-3": aiToolsLesson3Md,
   "ai-tools-4": aiToolsLesson4Md,
   "ai-tools-5": aiToolsLesson5Md,
+  // ai-history-evolutionコース
+  "ai-history-1": aiHistoryLesson1Md,
+  "ai-history-2": aiHistoryLesson2Md,
+  "ai-history-3": aiHistoryLesson3Md,
+  "ai-history-4": aiHistoryLesson4Md,
+  "ai-history-5": aiHistoryLesson5Md,
+  "ai-history-6": aiHistoryLesson6Md,
+  // perplexity-practiceコース
+  "perplexity-1": perplexityLesson1Md,
+  "perplexity-2": perplexityLesson2Md,
+  "perplexity-3": perplexityLesson3Md,
+  "perplexity-4": perplexityLesson4Md,
+  "perplexity-5": perplexityLesson5Md,
+  // data-preprocessing-cleaningコース
+  "data-preprocessing-1": dataPreprocessingLesson1Md,
+  "data-preprocessing-2": dataPreprocessingLesson2Md,
+  "data-preprocessing-3": dataPreprocessingLesson3Md,
+  "data-preprocessing-4": dataPreprocessingLesson4Md,
+  "data-preprocessing-5": dataPreprocessingLesson5Md,
+  "data-preprocessing-6": dataPreprocessingLesson6Md,
+  // medical-imaging-ai-basicsコース
+  "medical-imaging-1": medicalImagingLesson1Md,
+  "medical-imaging-2": medicalImagingLesson2Md,
+  "medical-imaging-3": medicalImagingLesson3Md,
+  "medical-imaging-4": medicalImagingLesson4Md,
+  "medical-imaging-5": medicalImagingLesson5Md,
+  "medical-imaging-6": medicalImagingLesson6Md,
+  "medical-imaging-7": medicalImagingLesson7Md,
+  // statistics-basics-medicineコース
+  "statistics-basics-1": statisticsLesson1Md,
+  "statistics-basics-2": statisticsLesson2Md,
+  "statistics-basics-3": statisticsLesson3Md,
+  "statistics-basics-4": statisticsLesson4Md,
+  "statistics-basics-5": statisticsLesson5Md,
+  "statistics-basics-6": statisticsLesson6Md,
+  "statistics-basics-7": statisticsLesson7Md,
+  "statistics-basics-8": statisticsLesson8Md,
+  // model-evaluation-validationコース
+  "model-evaluation-1": modelEvalLesson1Md,
+  "model-evaluation-2": modelEvalLesson2Md,
+  "model-evaluation-3": modelEvalLesson3Md,
+  "model-evaluation-4": modelEvalLesson4Md,
+  "model-evaluation-5": modelEvalLesson5Md,
+  "model-evaluation-6": modelEvalLesson6Md,
+  "model-evaluation-7": modelEvalLesson7Md,
+  // patient-communication-aiコース
+  "patient-communication-1": patientCommLesson1Md,
+  "patient-communication-2": patientCommLesson2Md,
+  "patient-communication-3": patientCommLesson3Md,
+  "patient-communication-4": patientCommLesson4Md,
+  "patient-communication-5": patientCommLesson5Md,
+  // ai-bias-fairnessコース
+  "ai-bias-1": aiBiasLesson1Md,
+  "ai-bias-2": aiBiasLesson2Md,
+  "ai-bias-3": aiBiasLesson3Md,
+  "ai-bias-4": aiBiasLesson4Md,
+  "ai-bias-5": aiBiasLesson5Md,
+  "ai-bias-6": aiBiasLesson6Md,
+  // research-protocol-aiコース
+  "research-protocol-1": researchProtocolLesson1Md,
+  "research-protocol-2": researchProtocolLesson2Md,
+  "research-protocol-3": researchProtocolLesson3Md,
+  "research-protocol-4": researchProtocolLesson4Md,
+  "research-protocol-5": researchProtocolLesson5Md,
+  // data-science-fundamentalsコース
+  "data-science-1": dataScienceLesson1Md,
+  "data-science-2": dataScienceLesson2Md,
+  "data-science-3": dataScienceLesson3Md,
+  "data-science-4": dataScienceLesson4Md,
+  "data-science-5": dataScienceLesson5Md,
+  "data-science-6": dataScienceLesson6Md,
+  "data-science-7": dataScienceLesson7Md,
 };
 
 // レッスンコンテンツが存在するかチェックする関数
 export function hasLessonContent(lessonId: string): boolean {
-  return lessonId in lessonContent && lessonContent[lessonId] && lessonContent[lessonId].trim().length > 0;
+  return !!(lessonId in lessonContent && lessonContent[lessonId] && typeof lessonContent[lessonId] === 'string' && lessonContent[lessonId].trim().length > 0);
 }
 
 // クイズデータ
