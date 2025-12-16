@@ -402,19 +402,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         </button>
                       </Link>
                       
-                      {/* 右側: 目次ボタン */}
-                      <button
-                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                        className={cn(
-                          "inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer px-0 py-0",
-                          isSidebarOpen && "text-gray-900 dark:text-gray-100"
-                        )}
-                        aria-label="目次"
-                        type="button"
-                      >
-                        <span>目次</span>
-                        <ChevronDown className={`h-[13px] w-[13px] flex-shrink-0 transition-transform duration-200 ${isSidebarOpen ? 'rotate-180' : ''}`} />
-                      </button>
+                      {/* 右側: 目次ボタン（目次がある場合のみ表示） */}
+                      {tocItems.length > 0 && (
+                        <button
+                          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                          className={cn(
+                            "inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer px-0 py-0",
+                            isSidebarOpen && "text-gray-900 dark:text-gray-100"
+                          )}
+                          aria-label="目次"
+                          type="button"
+                        >
+                          <span>目次</span>
+                          <ChevronDown className={`h-[13px] w-[13px] flex-shrink-0 transition-transform duration-200 ${isSidebarOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                      )}
                     </div>
                   </div>
 
