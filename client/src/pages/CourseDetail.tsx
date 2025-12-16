@@ -602,9 +602,9 @@ export default function CourseDetail() {
                       }
                     }}
                   >
-                    <CardHeader className="p-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 flex-1">
+                    <CardHeader className="p-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 flex-1">
                           <div className={cn(
                             "flex items-center justify-center w-8 h-8 rounded-full font-bold text-base",
                             !isContentAvailable 
@@ -614,7 +614,7 @@ export default function CourseDetail() {
                             {index + 1}
                           </div>
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
+                            <div className="flex items-center gap-2 mb-0.5">
                               <CardTitle className={cn(
                                 "text-base font-semibold",
                                 !isContentAvailable && "text-muted-foreground"
@@ -637,7 +637,7 @@ export default function CourseDetail() {
                           </div>
                         </div>
                         <div className={cn(
-                          "flex items-center gap-4 text-sm",
+                          "flex items-center gap-3 text-sm",
                           !isContentAvailable ? "text-muted-foreground/60" : "text-muted-foreground"
                         )}>
                           <div className="flex items-center gap-1.5">

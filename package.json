@@ -18,7 +18,8 @@
     "format": "prettier --write .",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "deploy": "pnpm build:client && gh-pages -d dist -t true"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
