@@ -499,15 +499,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
                             <div className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
                               目次データを読み込み中...
                             </div>
-                          );
+                          )
                           })()}
                         </div>
                       </div>
                     </>
                   )}
-                </div>
-              </>
-            )}
+                </>
+              )
+            })()}
 
           <div className="relative">
             <div className="py-3 sm:py-4 lg:py-6 px-4 sm:px-6 lg:px-8">
