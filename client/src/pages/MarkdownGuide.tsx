@@ -430,6 +430,82 @@ const guideMetadata: Record<string, {
       { id: "03-reference-step-01", title: "応用編 - ステップ1", file: "03-reference/step-01.md" },
       { id: "03-reference-step-02", title: "応用編 - ステップ2", file: "03-reference/step-02.md" }
     ]
+  },
+  "case-report": {
+    title: "症例報告執筆ガイド",
+    description: "AI活用により、従来の90%の時間を削減する革新的ワークフロー",
+    readTime: "40 min",
+    category: "研究",
+    basePath: "/assets/guides/case-report",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-preparation-step-01", title: "準備編 - ステップ1", file: "01-preparation/step-01.md" },
+      { id: "01-preparation-step-02", title: "準備編 - ステップ2", file: "01-preparation/step-02.md" },
+      { id: "01-preparation-step-03", title: "準備編 - ステップ3", file: "01-preparation/step-03.md" },
+      { id: "01-preparation-step-04", title: "準備編 - ステップ4", file: "01-preparation/step-04.md" },
+      { id: "01-preparation-step-05", title: "準備編 - ステップ5", file: "01-preparation/step-05.md" },
+      { id: "02-writing-step-06", title: "執筆編 - ステップ6", file: "02-writing/step-06.md" },
+      { id: "02-writing-step-07", title: "執筆編 - ステップ7", file: "02-writing/step-07.md" },
+      { id: "02-writing-step-08", title: "執筆編 - ステップ8", file: "02-writing/step-08.md" },
+      { id: "02-writing-step-09", title: "執筆編 - ステップ9", file: "02-writing/step-09.md" },
+      { id: "02-writing-step-10", title: "執筆編 - ステップ10", file: "02-writing/step-10.md" },
+      { id: "02-writing-step-11", title: "執筆編 - ステップ11", file: "02-writing/step-11.md" },
+      { id: "02-writing-step-12", title: "執筆編 - ステップ12", file: "02-writing/step-12.md" },
+      { id: "03-finishing-step-13", title: "仕上げ編 - ステップ13", file: "03-finishing/step-13.md" },
+      { id: "03-finishing-step-14", title: "仕上げ編 - ステップ14", file: "03-finishing/step-14.md" },
+      { id: "03-finishing-step-15", title: "仕上げ編 - ステップ15", file: "03-finishing/step-15.md" },
+      { id: "03-finishing-step-16", title: "仕上げ編 - ステップ16", file: "03-finishing/step-16.md" },
+      { id: "03-finishing-step-17", title: "仕上げ編 - ステップ17", file: "03-finishing/step-17.md" },
+      { id: "04-submission-step-18", title: "投稿編 - ステップ18", file: "04-submission/step-18.md" }
+    ]
+  },
+  "ai-paper-writing": {
+    title: "AI論文執筆ガイド",
+    description: "MARW原則に基づく責任あるAI論文執筆",
+    readTime: "60 min",
+    category: "研究",
+    basePath: "/assets/guides/ai-paper-writing",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "marw_workflow", title: "MARWワークフロー", file: "marw_workflow.md" },
+      { id: "marw_stage1", title: "Stage 1: 研究計画とデータ収集", file: "marw_stage1.md" },
+      { id: "marw_stage2", title: "Stage 2: データ分析と結果の解釈", file: "marw_stage2.md" },
+      { id: "marw_stage3", title: "Stage 3: AIを活用した執筆", file: "marw_stage3.md" },
+      { id: "marw_stage4", title: "Stage 4: ファクトチェックと検証", file: "marw_stage4.md" },
+      { id: "marw_stage5", title: "Stage 5: 共著者レビューと改訂", file: "marw_stage5.md" },
+      { id: "marw_stage6", title: "Stage 6: 最終確認と投稿準備", file: "marw_stage6.md" },
+      { id: "marw_stage7", title: "Stage 7: 投稿後の対応", file: "marw_stage7.md" }
+    ]
+  },
+  "paper-reading": {
+    title: "論文読解ガイド",
+    description: "AIを活用した効率的な論文読解法",
+    readTime: "35 min",
+    category: "研究",
+    basePath: "/assets/guides/paper-reading",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-preparation-step-01", title: "準備編 - ステップ1", file: "01-preparation/step-01.md" },
+      { id: "02-reading-step-02", title: "読解編 - ステップ2", file: "02-reading/step-02.md" },
+      { id: "03-analysis-step-03", title: "分析編 - ステップ3", file: "03-analysis/step-03.md" },
+      { id: "04-critical-appraisal-step-04", title: "批判的吉味編 - ステップ4", file: "04-critical-appraisal/step-04.md" },
+      { id: "05-summary-step-05", title: "まとめ編 - ステップ5", file: "05-summary/step-05.md" }
+    ]
+  },
+  "tone-manner-guidelines": {
+    title: "トーンマナー修正ガイドライン",
+    description: "読みやすく、親しみやすいドキュメントを作成するための指示書",
+    readTime: "60 min",
+    category: "文書作成",
+    basePath: "/assets/guides/tone-manner-guidelines",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "step-01", title: "ステップ1: 目標とする文体を理解する", file: "step-01.md" },
+      { id: "step-02", title: "ステップ2: 修正の具体的ルールを学ぶ", file: "step-02.md" },
+      { id: "step-03", title: "ステップ3: 避けるべき表現を確認する", file: "step-03.md" },
+      { id: "step-04", title: "ステップ4: 修正の手順を実践する", file: "step-04.md" },
+      { id: "step-05", title: "ステップ5: 図解を挿入する", file: "step-05.md" }
+    ]
   }
 };
 
