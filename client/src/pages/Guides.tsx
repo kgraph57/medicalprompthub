@@ -504,10 +504,10 @@ export default function Guides() {
           className="space-y-1.5"
         >
           <div className="relative max-w-2xl my-6">
-            <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-3.5 w-3.5 z-10" />
             <Input
               placeholder="ガイドを検索(タイトル、説明、タグ)..."
-              className="pl-12 pr-10 h-10 lg:h-11 text-base bg-background/50 backdrop-blur-sm border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
+              className="pl-11 pr-9 h-9 lg:h-10 text-sm bg-background/50 backdrop-blur-sm border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
