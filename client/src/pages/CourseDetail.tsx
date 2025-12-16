@@ -582,7 +582,7 @@ export default function CourseDetail() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-6xl mx-auto px-4 space-y-1"
+          className="max-w-6xl mx-auto px-4 space-y-1 mt-6"
         >
           <h2 className="text-lg font-bold mb-4">Lessons</h2>
           <div className="space-y-2">
