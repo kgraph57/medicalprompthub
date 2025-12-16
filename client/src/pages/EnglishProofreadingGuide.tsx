@@ -83,8 +83,8 @@ export default function EnglishProofreadingGuide() {
     } else {
       setCurrentStepId('intro');
     }
-    // スクロール位置をトップにリセット
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // スクロール位置をトップにリセット（ただし、goToNextからの遷移の場合はスキップ）
+    // goToNext関数内でスクロール処理を行うため、ここではスキップ
   }, [stepId]);
 
   // Markdownコンテンツを読み込み
@@ -202,14 +202,18 @@ export default function EnglishProofreadingGuide() {
       navigate(nextGuidePath);
       // 次のページに遷移するので、少し遅延してからスクロール
       setTimeout(() => {
-        const header = document.getElementById('page-header');
-        if (header) {
-          const headerTop = header.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }, 100);
+        const scrollToHeader = () => {
+          const header = document.getElementById('page-header');
+          if (header) {
+            const headerTop = header.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
+          } else {
+            // ヘッダーが見つからない場合は少し待って再試行
+            setTimeout(scrollToHeader, 100);
+          }
+        };
+        scrollToHeader();
+      }, 300);
     } else {
       // 次のステップに遷移
       const nextStepId = allSteps[currentIndex + 1];
@@ -217,14 +221,18 @@ export default function EnglishProofreadingGuide() {
       navigate(`/guides/english-proofreading-guide/${nextStepId}`);
       // ページ遷移後にヘッダーにスクロール
       setTimeout(() => {
-        const header = document.getElementById('page-header');
-        if (header) {
-          const headerTop = header.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }, 100);
+        const scrollToHeader = () => {
+          const header = document.getElementById('page-header');
+          if (header) {
+            const headerTop = header.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
+          } else {
+            // ヘッダーが見つからない場合は少し待って再試行
+            setTimeout(scrollToHeader, 100);
+          }
+        };
+        scrollToHeader();
+      }, 300);
     }
   };
 
