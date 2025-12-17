@@ -137,7 +137,7 @@ Style: Clean, professional, BioRender-like, suitable for medical education
 Color palette: Blues for assessment, red for urgent, green for stable, purple for testing
 ```
 
-![胸痛診断フローチャート](../images/chest_pain_diagnostic_flow.png)
+![胸痛診断フローチャート](/Helix/assets/guides/advanced-medical-illustration-guide/images/chest_pain_diagnostic_flow.png)
 
 この Visual Abstract は以下の原則を実践しています：
 - ✅ 主要メッセージ：胸痛の体系的診断アプローチ

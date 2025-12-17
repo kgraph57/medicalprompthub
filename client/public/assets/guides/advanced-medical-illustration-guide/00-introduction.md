@@ -34,7 +34,7 @@ Create a professional BioRender-style medical illustration showing the pathophys
 ```
 
 **生成例：**
-![心筋梗塞の病態生理](./images/myocardial_infarction_pathophysiology.png)
+![心筋梗塞の病態生理](/Helix/assets/guides/advanced-medical-illustration-guide/images/myocardial_infarction_pathophysiology.png)
 
 ### 例2：細胞シグナル伝達経路
 
@@ -44,7 +44,7 @@ Create a professional BioRender-style illustration of a cell signaling pathway. 
 ```
 
 **生成例：**
-![細胞シグナル伝達経路](./images/cell_signaling_pathway.png)
+![細胞シグナル伝達経路](/Helix/assets/guides/advanced-medical-illustration-guide/images/cell_signaling_pathway.png)
 
 ### 例3：がんの進行ステージ
 
@@ -54,7 +54,7 @@ Create a professional BioRender-style illustration showing cancer progression st
 ```
 
 **生成例：**
-![がんの進行ステージ](./images/cancer_progression_stages.png)
+![がんの進行ステージ](/Helix/assets/guides/advanced-medical-illustration-guide/images/cancer_progression_stages.png)
 
 ---
 
@@ -70,7 +70,7 @@ Create a professional Visual Abstract in BioRender style for a medical research 
 ```
 
 **生成例：**
-![Visual Abstract](./images/visual_abstract_example.png)
+![Visual Abstract](/Helix/assets/guides/advanced-medical-illustration-guide/images/visual_abstract_example.png)
 
 ---
 
@@ -86,7 +86,7 @@ Create a professional BioRender-style medical flowchart for chest pain diagnosis
 ```
 
 **生成例：**
-![胸痛の診断フロー](./images/chest_pain_diagnostic_flow.png)
+![胸痛の診断フロー](/Helix/assets/guides/advanced-medical-illustration-guide/images/chest_pain_diagnostic_flow.png)
 
 ---
 
