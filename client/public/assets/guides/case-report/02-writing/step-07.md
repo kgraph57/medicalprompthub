@@ -4,7 +4,7 @@
 
 「百聞は一見に如かず」。複雑な臨床経過やデータの羅列も、優れた図（Figure）や表（Table）にまとめることで、読者は瞬時に状況を理解できます。このステップでは、論文の説得力を飛躍的に高める、分かりやすく美しい図表を作成する技術を学びます。図表は単なる飾りではなく、論文の「第二の顔」です。
 
-![図表の作成](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/xBbPTeVVfNktxwsD.png)
+![論文の構造](/assets/guides/case-report/images/writing_structure.png)
 
 ### ⏱️ 所要時間
 
@@ -17,8 +17,6 @@
 - すべての図表が、投稿規定で定められたフォーマット（解像度、ファイル形式、番号付け）に準拠している。
 
 ### 📝 詳細手順
-
-![図表の作成](./figure_creation_process.png)
 
 #### 手順1: 図表にする情報の選定
 

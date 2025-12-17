@@ -4,7 +4,7 @@
 
 論文の「ラブレター」とも言える、カバーレターを作成します。これは、あなたが編集長に送る最初の手紙。論文の第一印象を決め、「お、この論文は面白そうだ。読んでみたい」と思わせるための、超重要なマーケティングツールです。
 
-![カバーレターの書き方](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/SspdgZpwxvWxkzDF.png)
+![最終チェックリスト](/assets/guides/case-report/images/finishing_checklist.png)
 
 ### ⏱️ 所要時間
 
@@ -16,8 +16,6 @@
 - 必要な「お約束」（他誌への未投稿、全著者の同意など）がすべて含まれている。
 
 ### 📝 詳細手順
-
-![カバーレターの書き方](./cover_letter_creation.png)
 
 カバーレターは、以下の4つの要素で構成された、短い手紙です。
 

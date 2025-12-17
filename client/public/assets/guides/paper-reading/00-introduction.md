@@ -26,7 +26,7 @@
 山のようなカルテ、鳴り止まないPHS、そして終わらないカンファレンス…。
 論文を読む時間なんて、どこにあるんだ？
 
-![論文読解の全体像](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/FKlRVDwyVLOvIOIc.png)
+![時間革命](/assets/guides/paper-reading/images/time_revolution.png)
 
 このガイドは、そんな先生方のための「処方箋」です。
 AIに面倒な作業を任せ、私たちは「考える」という、人間にしかできない最も重要な仕事に集中します。
@@ -36,6 +36,8 @@ AIに面倒な作業を任せ、私たちは「考える」という、人間に
 
 このガイドでは、論文読解のプロセスを5つのステップに分解します。
 さあ、一緒に見ていきましょう。
+
+![5ステップワークフロー](/assets/guides/paper-reading/images/five_steps_workflow.png)
 
 | ステップ | 内容 | 所要時間（目安） |
 |---|---|---|

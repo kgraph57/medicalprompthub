@@ -18,9 +18,7 @@ AIという超優秀なアシスタントに、面倒な要約と分析を丸投
 
 ### 📝 詳細手順
 
-![AIツールを使った要約と分析](./ai_summary_analysis.png)
-
-![AIツールを使った要約と分析](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/cTkqObfafElvTdMs.png)
+![AIツールの比較](/assets/guides/paper-reading/images/ai_tools_comparison.png)
 
 #### 手順1: 論文PDFをAIに「渡す」
 
