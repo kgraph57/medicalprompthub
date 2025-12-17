@@ -20,7 +20,7 @@
 
 ### 📝 詳細手順
 
-![論文の選定と準備](./paper_selection_prep.png)
+![論文の選定と準備](/Helix/assets/guides/paper-reading/01-preparation/paper_selection_prep.png)
 
 #### 手順1: 「なぜ？」を問う
 

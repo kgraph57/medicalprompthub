@@ -18,7 +18,7 @@
 
 ### 📝 詳細手順
 
-![患者同意取得プロセス](./consent_process.png)
+![患者同意取得プロセス](/Helix/assets/guides/case-report/01-preparation/consent_process.png)
 
 #### 手順1: 検索戦略を立てる
 

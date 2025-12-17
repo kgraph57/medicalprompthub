@@ -19,7 +19,7 @@
 
 ### 📝 詳細手順
 
-![タイトル・抄録作成](./title_abstract_creation.png)
+![タイトル・抄録作成](/Helix/assets/guides/case-report/02-writing/title_abstract_creation.png)
 
 #### 手順1: タイトルの作成
 

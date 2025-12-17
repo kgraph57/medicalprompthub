@@ -17,7 +17,7 @@
 
 ### 📝 詳細手順
 
-![謝辞・利益相反・研究助成の記述](./acknowledgements_coi_funding.png)
+![謝辞・利益相反・研究助成の記述](/Helix/assets/guides/case-report/03-finishing/acknowledgements_coi_funding.png)
 
 #### 手順1: 🤝 謝辞 (Acknowledgments) - 「ありがとう」を伝えよう
 
