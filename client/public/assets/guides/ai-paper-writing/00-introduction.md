@@ -50,7 +50,7 @@
 
 研究プロセス全体を7つの段階に分けて、それぞれでAIをどう活用するかを詳しく解説しています。
 
-![MARW Workflow Overview](./intro_workflow_overview.png)
+![MARW Workflow Overview](/Helix/assets/guides/ai-paper-writing/intro_workflow_overview.png)
 
 | 段階 | 名称 | 主要タスク | 所要時間（目安） |
 |:---:|:---|:---|:---|
@@ -64,7 +64,7 @@
 
 合計所要時間: 約3〜6ヶ月（研究の性質による）
 
-![MARW全体フローと個理・コンプライアンス](./marw_simple_diagram.png)
+![MARW全体フローと個理・コンプライアンス](/Helix/assets/guides/ai-paper-writing/marw_simple_diagram.png)
 
 この図が示すように、個理・コンプライアンスは全段階に横断する重要な要素です。各段階で必ず個理的配慮を確認しながら進めていきましょう。
 

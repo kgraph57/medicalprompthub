@@ -113,7 +113,7 @@ Maintain generous white space and clean, professional styling.
 Style: BioRender-like, flat design, medical illustration, clean and professional
 ```
 
-![心筋梗塞の病態生理](/Helix/Helix/assets/guides/advanced-medical-illustration-guide/images/myocardial_infarction_pathophysiology.png)
+![心筋梗塞の病態生理](/Helix/assets/guides/advanced-medical-illustration-guide/images/myocardial_infarction_pathophysiology.png)
 
 この図解は以下の原則を実践しています：
 - ✅ シンプルな構成（4つの主要ステージのみ）

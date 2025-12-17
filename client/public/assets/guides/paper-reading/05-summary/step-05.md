@@ -21,7 +21,7 @@
 
 ### 📝 詳細手順
 
-![まとめと記録](./summary_and_record.png)
+![まとめと記録](/Helix/assets/guides/paper-reading/05-summary/summary_and_record.png)
 
 ![まとめと記録](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/oBQIMhZVLGMgBfVW.png)
 
