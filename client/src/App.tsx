@@ -168,6 +168,7 @@ function Router() {
           <Route path="/guides/polypharmacy-support" component={MarkdownGuide} />
           <Route path="/guides/palliative-care-planning" component={MarkdownGuide} />
           <Route path="/guides/diagram-creation-guide" component={MarkdownGuide} />
+          <Route path="/guides/advanced-medical-illustration-guide" component={MarkdownGuide} />
           <Route path="/guides/pubmed-search-guide" component={MarkdownGuide} />
           <Route path="/guides/case-report/:stepId?" component={MarkdownGuide} />
           <Route path="/guides/ai-paper-writing/:stepId?" component={MarkdownGuide} />
