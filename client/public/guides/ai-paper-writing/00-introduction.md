@@ -14,6 +14,8 @@ AIを活用した論文執筆の7ステップワークフローを視覚的に�
 
 ![MARW全体フロー](/Helix/assets/guides/ai-paper-writing/images/ai_paper_writing_workflow.png)
 
+![MARWの3つの特徴](/Helix/assets/guides/ai-paper-writing/images/marw_features.png)
+
 ---
 
 ## MARWの特徴
@@ -58,7 +60,7 @@ AIを活用した論文執筆の7ステップワークフローを視覚的に�
 
 研究プロセス全体を7つの段階に分けて、それぞれでAIをどう活用するかを詳しく解説しています。
 
-![MARW Workflow Overview](/Helix/assets/guides/ai-paper-writing/intro_workflow_overview.png)
+![主要AIツールの役割分担](/Helix/assets/guides/ai-paper-writing/images/ai_tools_roles.png)
 
 | 段階 | 名称 | 主要タスク | 所要時間（目安） |
 |:---:|:---|:---|:---|
@@ -72,7 +74,9 @@ AIを活用した論文執筆の7ステップワークフローを視覚的に�
 
 合計所要時間: 約3〜6ヶ月（研究の性質による）
 
-![MARW全体フローと個理・コンプライアンス](/Helix/assets/guides/ai-paper-writing/marw_simple_diagram.png)
+![研究プロセスの時間配分](/Helix/assets/guides/ai-paper-writing/images/time_allocation.png)
+
+![倫理・コンプライアンスの4つの柱](/Helix/assets/guides/ai-paper-writing/images/ethics_compliance.png)
 
 この図が示すように、個理・コンプライアンスは全段階に横断する重要な要素です。各段階で必ず個理的配慮を確認しながら進めていきましょう。
 
