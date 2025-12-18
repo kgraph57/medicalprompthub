@@ -2,7 +2,7 @@
 
 ## はじめに
 
-このステップでは、NotebookLMのNanobananaの基本的な使い方を学びます。
+このステップでは、Nanobananaの基本的な使い方を学びます。
 Nanobananaは、テキストから自動的に図解を生成するAIツールです。
 
 ---
