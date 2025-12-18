@@ -1,5 +1,7 @@
 # Step 1: 症例の選定
 
+![第1章: 準備編の5ステップ](/Helix/assets/guides/case-report/images/preparation_steps.png)
+
 ### 📋 このステップの目的
 
 症例報告の第一歩は、数ある経験の中から「報告する価値のある」一例を見つけ出すことです。
