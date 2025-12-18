@@ -6,7 +6,7 @@
 時系列に沿って臨床経過を整理し、検査データや画像所見を一覧化することで、後の「Case Presentation」セクションの執筆が飛躍的にスムーズになります。
 この地道な作業が、抜け漏れのない正確な症例記述の土台となります。
 
-![症例データの整理方法](/assets/guides/case-report/01-preparation/images/case_data_organization_refined.png)
+![症例データの整理方法](/Helix/assets/guides/case-report/01-preparation/images/case_data_organization_refined.png)
 
 ### ⏱️ 所要時間
 

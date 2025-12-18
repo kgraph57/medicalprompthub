@@ -1,7 +1,7 @@
 
 # ステップ1: 診療ガイドラインを検索・要約する
 
-![Evidence Hierarchy Pyramid](/assets/guides/literature-search/evidence_pyramid.png)
+![Evidence Hierarchy Pyramid](/Helix/assets/guides/literature-search/evidence_pyramid.png)
 
 ## エビデンスの集大成を使いこなす
 

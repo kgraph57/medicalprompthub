@@ -20,7 +20,7 @@
 
 AIを活用した感染対策マニュアル作成のワークフローを視覚的に理解しましょう。
 
-![感染対策マニュアル作成フロー](/assets/guides/infection-control-manual/workflow.png)
+![感染対策マニュアル作成フロー](/Helix/assets/guides/infection-control-manual/workflow.png)
 
 ---
 

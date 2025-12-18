@@ -11,7 +11,7 @@
 
 AIを活用した医療安全マニュアル作成のワークフローを視覚的に理解しましょう。
 
-![医療安全マニュアル作成フロー](/assets/guides/medical-safety-manual/images/medical_safety_manual_workflow.png)
+![医療安全マニュアル作成フロー](/Helix/assets/guides/medical-safety-manual/images/medical_safety_manual_workflow.png)
 
 ---
 

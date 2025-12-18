@@ -7,7 +7,7 @@ MeSH (Medical Subject Headings) は、PubMedで使用される統制語彙で、
 
 ---
 
-![MeSH Terms階層構造](/assets/guides/pubmed-search-guide/mesh_terms.png)
+![MeSH Terms階層構造](/Helix/assets/guides/pubmed-search-guide/mesh_terms.png)
 
 ## MeSHとは？
 

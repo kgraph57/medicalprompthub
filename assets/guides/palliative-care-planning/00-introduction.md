@@ -11,7 +11,7 @@ AIは、この複雑なプロセスにおいて、データ統合、リスク予
 
 AIを活用した緩和ケア計画のワークフローを視覚的に理解しましょう。
 
-![緩和ケア計画フロー](/assets/guides/palliative-care-planning/images/palliative_care_planning_workflow.png)
+![緩和ケア計画フロー](/Helix/assets/guides/palliative-care-planning/images/palliative_care_planning_workflow.png)
 
 ---
 

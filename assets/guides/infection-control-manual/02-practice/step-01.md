@@ -14,7 +14,7 @@ AIに具体的なコンテンツを生成させる際、最も重要なのは「
 2.  読者と状況の指定: プロンプト内で、そのトピックの主な読者（例：新人看護師）と、その状況（例：COVID-19患者のケア後）を明確に指定します。
 3.  形式の指定: 「箇条書き」「ステップ形式」「チェックリスト形式」など、現場での視認性と実行性を高めるための形式を指定します。
 
-![標準予防策](/assets/guides/infection-control-manual/standard_precautions.png)
+![標準予防策](/Helix/assets/guides/infection-control-manual/standard_precautions.png)
 
 ### 2. 実用的なプロンプト例：手順書の生成
 

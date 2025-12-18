@@ -18,7 +18,7 @@
 
 ### 📝 詳細手順
 
-![結論の執筆](/assets/guides/case-report/02-writing/conclusion_writing.png)
+![結論の執筆](/Helix/assets/guides/case-report/02-writing/conclusion_writing.png)
 
 結論セクションは、論文全体の要約であり、凝縮されたエッセンスです。以下の点に注意して執筆します。
 

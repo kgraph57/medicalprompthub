@@ -11,7 +11,7 @@
 
 AIを活用した医療統計相談のワークフローを視覚的に理解しましょう。
 
-![医療統計相談フロー](/assets/guides/medical-statistics-consultation/statistics_workflow.png)
+![医療統計相談フロー](/Helix/assets/guides/medical-statistics-consultation/statistics_workflow.png)
 
 ---
 

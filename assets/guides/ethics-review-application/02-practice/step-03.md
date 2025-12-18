@@ -1,6 +1,6 @@
 # 02-practice/step-03.md: 個人情報保護とデータ管理計画の厳密化
 
-![データ保護とプライバシー](/assets/guides/ethics-review-application/data_protection.png)
+![データ保護とプライバシー](/Helix/assets/guides/ethics-review-application/data_protection.png)
 
 ## 個理審査の最重要項目：個人情報保護とデータ管理
 

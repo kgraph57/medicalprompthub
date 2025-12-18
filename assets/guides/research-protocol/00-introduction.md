@@ -14,7 +14,7 @@ AIは、この複雑なプロセスにおいて、単なる文章作成ツール
 
 AIを活用した研究計画書作成のワークフローを視覚的に理解しましょう。
 
-![研究計画書作成フロー](/assets/guides/research-protocol/protocol_workflow.png)
+![研究計画書作成フロー](/Helix/assets/guides/research-protocol/protocol_workflow.png)
 
 ---
 

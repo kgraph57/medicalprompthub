@@ -21,7 +21,7 @@
 
 多くの医学雑誌は、ScholarOne ManuscriptsやEditorial Managerといったオンライン投稿システムを使っています。初めて使うと戸惑うかもしれませんが、基本的な流れはどのシステムも似ています。
 
-![Online Manuscript Submission Process](/assets/guides/case-report/04-submission/step18_submission_process.png)
+![Online Manuscript Submission Process](/Helix/assets/guides/case-report/04-submission/step18_submission_process.png)
 
 #### 1. アカウント作成
 

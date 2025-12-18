@@ -11,7 +11,7 @@
 | 解析手法 | 交絡因子、欠損値、多重比較などの問題に対する具体的な処理方法の提案。 |
 | サンプルサイズ | 必要なパラメータ（検出力、有意水準、効果量）を入力することで、計算式と結果を提示。 |
 
-![統計手法選択ガイド](/assets/guides/medical-statistics-consultation/test_selection.png)
+![統計手法選択ガイド](/Helix/assets/guides/medical-statistics-consultation/test_selection.png)
 
 ### 2. 実用的なプロンプト例：SAPの構成案と手法の提案
 

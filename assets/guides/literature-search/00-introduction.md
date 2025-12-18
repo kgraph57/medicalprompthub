@@ -11,7 +11,7 @@ EBM（Evidence-Based Medicine）の実践が不可欠な現代医療において
 
 ---
 
-![AI支援文献検索](/assets/guides/literature-search/ai_assistant.png)
+![AI支援文献検索](/Helix/assets/guides/literature-search/ai_assistant.png)
 
 ## なぜAI支援が必要なのか？
 

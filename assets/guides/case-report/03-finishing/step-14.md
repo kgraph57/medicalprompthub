@@ -18,7 +18,7 @@
 
 ### 📝 詳細手順
 
-![参考文献リストの作成](/assets/guides/case-report/03-finishing/bibliography_creation.png)
+![参考文献リストの作成](/Helix/assets/guides/case-report/03-finishing/bibliography_creation.png)
 
 #### 手順1: 「魔法の杖」を手に入れよう（文献管理ツールの導入）
 

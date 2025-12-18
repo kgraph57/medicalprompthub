@@ -16,7 +16,7 @@ AIは、ただの検索ツールじゃありません。膨大なテキストの
 
 AIを活用したガイドライン比較のワークフローを視覚的に理解しましょう。
 
-![ガイドライン比較プロセス](/assets/guides/guideline-comparison/images/guideline_comparison_workflow.png)
+![ガイドライン比較プロセス](/Helix/assets/guides/guideline-comparison/images/guideline_comparison_workflow.png)
 
 ---
 

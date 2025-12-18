@@ -21,7 +21,7 @@ ClinicalTrials.govやUMIN-CTRなどで検索を実行し、関心のある臨床
 4.  主要評価項目（Primary Outcome Measure）: 試験の成功を測る主要な指標は何か？
 5.  フェーズと実施状況: 試験のフェーズ（例：Phase 3）と現在の募集状況（例：Recruiting）
 
-![臨床試験フェーズ](/assets/guides/clinical-trial-search/trial_phases.png)
+![臨床試験フェーズ](/Helix/assets/guides/clinical-trial-search/trial_phases.png)
 6.  一言評価: この試験が臨床的意義を持つ可能性について、簡潔に評価してください。
 ```
 

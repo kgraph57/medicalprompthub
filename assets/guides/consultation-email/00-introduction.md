@@ -12,7 +12,7 @@
 
 AIを活用したコンサルトメール作成のワークフローを視覚的に理解しましょう。
 
-![コンサルトメール作成フロー](/assets/guides/consultation-email/images/consultation_email_workflow.png)
+![コンサルトメール作成フロー](/Helix/assets/guides/consultation-email/images/consultation_email_workflow.png)
 
 ---
 

@@ -11,7 +11,7 @@
 
 AIを活用した学会スライド作成のワークフローを視覚的に理解しましょう。
 
-![学会スライド作成フロー](/assets/guides/conference-presentation-slides/images/conference_presentation_slides_workflow.png)
+![学会スライド作成フロー](/Helix/assets/guides/conference-presentation-slides/images/conference_presentation_slides_workflow.png)
 
 ---
 

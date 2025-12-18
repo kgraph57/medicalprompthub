@@ -21,7 +21,7 @@
 
 ### 📝 詳細手順
 
-![知識の統合と記録方法](/assets/guides/paper-reading/05-summary/images/knowledge_integration_record_refined.png)
+![知識の統合と記録方法](/Helix/assets/guides/paper-reading/05-summary/images/knowledge_integration_record_refined.png)
 
 ![まとめと記録](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/oBQIMhZVLGMgBfVW.png)
 

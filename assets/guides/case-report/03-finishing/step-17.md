@@ -4,7 +4,7 @@
 
 論文の「ラブレター」とも言える、カバーレターを作成します。これは、あなたが編集長に送る最初の手紙。論文の第一印象を決め、「お、この論文は面白そうだ。読んでみたい」と思わせるための、超重要なマーケティングツールです。
 
-![最終チェックリスト](/assets/guides/case-report/images/finishing_checklist.png)
+![最終チェックリスト](/Helix/assets/guides/case-report/images/finishing_checklist.png)
 
 ### ⏱️ 所要時間
 

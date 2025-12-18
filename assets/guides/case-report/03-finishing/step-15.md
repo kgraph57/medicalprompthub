@@ -19,7 +19,7 @@ AI校正: 1〜2時間
 
 ### 📝 詳細手順
 
-![英文校正プロセス](/assets/guides/case-report/03-finishing/proofreading_process.png)
+![英文校正プロセス](/Helix/assets/guides/case-report/03-finishing/proofreading_process.png)
 
 英文校正は、セルフチェック → AIチェック → プロのチェックの３段階で進めるのが最強です。
 

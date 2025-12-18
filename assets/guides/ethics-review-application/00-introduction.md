@@ -12,7 +12,7 @@
 
 AIを活用した倫理審査申請のワークフローを視覚的に理解しましょう。
 
-![個理審査申請プロセス](/assets/guides/ethics-review-application/review_workflow.png)
+![個理審査申請プロセス](/Helix/assets/guides/ethics-review-application/review_workflow.png)
 
 ---
 

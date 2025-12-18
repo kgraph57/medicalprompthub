@@ -4,7 +4,7 @@
 
 「百聞は一見に如かず」。複雑な臨床経過やデータの羅列も、優れた図（Figure）や表（Table）にまとめることで、読者は瞬時に状況を理解できます。このステップでは、論文の説得力を飛躍的に高める、分かりやすく美しい図表を作成する技術を学びます。図表は単なる飾りではなく、論文の「第二の顔」です。
 
-![論文の構造](/assets/guides/case-report/images/writing_structure.png)
+![論文の構造](/Helix/assets/guides/case-report/images/writing_structure.png)
 
 ### ⏱️ 所要時間
 

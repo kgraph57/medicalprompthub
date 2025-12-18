@@ -11,7 +11,7 @@
 
 AIを活用した多言語医療相談のワークフローを視覚的に理解しましょう。
 
-![多言語医療相談フロー](/assets/guides/multilingual-medical-consultation/images/multilingual_medical_consultation_workflow.png)
+![多言語医療相談フロー](/Helix/assets/guides/multilingual-medical-consultation/images/multilingual_medical_consultation_workflow.png)
 
 ---
 

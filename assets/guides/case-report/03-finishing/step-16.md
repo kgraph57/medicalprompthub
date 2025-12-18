@@ -17,7 +17,7 @@
 
 ### 📝 詳細手順
 
-![投稿規定チェックリスト](/assets/guides/case-report/03-finishing/submission_guidelines_checklist.png)
+![投稿規定チェックリスト](/Helix/assets/guides/case-report/03-finishing/submission_guidelines_checklist.png)
 
 投稿ジャーナルの「Instruction for Authors」を片手に、探偵になったつもりで、自分の原稿がすべての項目をクリアしているか、一つ一つ指差し確認していきましょう。
 

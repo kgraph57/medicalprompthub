@@ -19,7 +19,7 @@ Step 2で自験例の「新規性」の仮説を立てた後、このステッ�
 
 ### 📝 詳細手順
 
-![文献レビュープロセス](/assets/guides/case-report/01-preparation/literature_review_process.png)
+![文献レビュープロセス](/Helix/assets/guides/case-report/01-preparation/literature_review_process.png)
 
 効率的なレビューのため、以下の3ステップで文献を収集します。
 

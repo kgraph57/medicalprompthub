@@ -11,7 +11,7 @@ AIを活用することで、従来の検索方法よりもはるかに効率的
 
 AIを活用したPubMed検索のワークフローを視覚的に理解しましょう。
 
-![PubMed検索フロー](/assets/guides/pubmed-search-guide/search_workflow.png)
+![PubMed検索フロー](/Helix/assets/guides/pubmed-search-guide/search_workflow.png)
 
 ---
 

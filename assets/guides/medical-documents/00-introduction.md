@@ -11,7 +11,7 @@
 
 AIを活用した医療文書作成のワークフローを視覚的に理解しましょう。
 
-![医療文書作成フロー](/assets/guides/medical-documents/images/medical_documents_workflow.png)
+![医療文書作成フロー](/Helix/assets/guides/medical-documents/images/medical_documents_workflow.png)
 
 ---
 

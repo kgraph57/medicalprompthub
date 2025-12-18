@@ -11,7 +11,7 @@
 
 AIを活用した患者教育資料作成のワークフローを視覚的に理解しましょう。
 
-![患者教育資料作成フロー](/assets/guides/patient-education-materials/images/patient_education_materials_workflow.png)
+![患者教育資料作成フロー](/Helix/assets/guides/patient-education-materials/images/patient_education_materials_workflow.png)
 
 ---
 

@@ -18,7 +18,7 @@ AIという超優秀なアシスタントに、面倒な要約と分析を丸投
 
 ### 📝 詳細手順
 
-![AIツールの比較](/assets/guides/paper-reading/images/ai_tools_comparison.png)
+![AIツールの比較](/Helix/assets/guides/paper-reading/images/ai_tools_comparison.png)
 
 #### 手順1: 論文PDFをAIに「渡す」
 

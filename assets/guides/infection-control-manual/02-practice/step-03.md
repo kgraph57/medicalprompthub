@@ -23,7 +23,7 @@ AIは、マニュアルの本文から重要なポイントを抽出し、研修
 ```
 あなたは、感染対策研修用の模擬事例と、それに対する職員の対応を評価するためのチェックリストを作成します。
 
-![感染経路別予防策](/assets/guides/infection-control-manual/transmission_precautions.png)
+![感染経路別予防策](/Helix/assets/guides/infection-control-manual/transmission_precautions.png)
 
 [マニュアルのトピック]
 - 経路別予防策（接触予防策、飛沫予防策、空気予防策）

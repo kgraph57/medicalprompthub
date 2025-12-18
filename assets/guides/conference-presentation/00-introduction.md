@@ -10,11 +10,11 @@
 
 AIを活用した学会発表資料作成のワークフローを視覚的に理解しましょう。
 
-![学会発表準備フロー](/assets/guides/conference-presentation/images/conference_presentation_workflow.png)
+![学会発表準備フロー](/Helix/assets/guides/conference-presentation/images/conference_presentation_workflow.png)
 
 ---
 
-![学会発表資料作成プロセス](/assets/guides/conference-presentation/images/conference_presentation_process.png)
+![学会発表資料作成プロセス](/Helix/assets/guides/conference-presentation/images/conference_presentation_process.png)
 
 ## なぜAI支援が必要なのか？
 

@@ -10,7 +10,7 @@
 
 ここでAIをうまく使うと、この「問い」を見つけるプロセスを、めちゃくちゃスピードアップできます。まるで、優秀な研修医が先行研究を全部まとめてきてくれるようなイメージですね。
 
-![研究テーマ探しと文献リサーチ](/assets/guides/ai-paper-writing/images/ai_paper_stage1_research_question.png)
+![研究テーマ探しと文献リサーチ](/Helix/assets/guides/ai-paper-writing/images/ai_paper_stage1_research_question.png)
 
 ## 具体的なタスク
 

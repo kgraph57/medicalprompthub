@@ -1,6 +1,6 @@
 # 03-reference/step-01.md: ClinicalTrials.govの高度な検索フィールドとAIによる検索戦略の最適化
 
-![臨床試験データベース比較](/assets/guides/clinical-trial-search/databases.png)
+![臨床試験データベース比較](/Helix/assets/guides/clinical-trial-search/databases.png)
 
 ## ClinicalTrials.govの高度な検索フィールドの活用
 

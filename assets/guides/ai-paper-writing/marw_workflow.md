@@ -14,7 +14,7 @@
 
 MARWでは、複雑な論文執筆のプロセスを、7つのシンプルなステップに分解しました。まるで、患者さんを診断して治療方針を決め、経過を追って退院サマリーを書くように、一つ一つのステップを順番に進めていけば、誰でも論文を完成させることができます。
 
-![MARW 7つのステップ](/assets/guides/ai-paper-writing/intro_workflow_overview.png)
+![MARW 7つのステップ](/Helix/assets/guides/ai-paper-writing/intro_workflow_overview.png)
 
 | ステップ | やること | ゴール |
 |:---|:---|:---|
@@ -32,7 +32,7 @@ MARWでは、複雑な論文執筆のプロセスを、7つのシンプルなス
 
 MARWは、先生が安心してAIを使うための、5つの基本原則を大切にしています。
 
-![MARW 5つの基本原則](/assets/guides/ai-paper-writing/marw_principles.png)
+![MARW 5つの基本原則](/Helix/assets/guides/ai-paper-writing/marw_principles.png)
 
 1.  全部、正直に話すこと（透明性と開示）
     どんな風にAIを使ったのか、論文の方法（Methods）セクションに正直に書きましょう。MARWでは、各ステップで「AI活用記録」のテンプレートを用意しているので、記録も簡単です。研究の信頼性は、この正直さから生まれます [3]。

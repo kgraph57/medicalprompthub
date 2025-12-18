@@ -11,7 +11,7 @@
 
 AIを活用したポリファーマシー対策のワークフローを視覚的に理解しましょう。
 
-![ポリファーマシー対策フロー](/assets/guides/polypharmacy-support/images/polypharmacy_support_workflow.png)
+![ポリファーマシー対策フロー](/Helix/assets/guides/polypharmacy-support/images/polypharmacy_support_workflow.png)
 
 ---
 

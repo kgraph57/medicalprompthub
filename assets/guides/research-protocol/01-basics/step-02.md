@@ -11,7 +11,7 @@ AIを研究プロトコル作成の共同研究者として活用するために
 
 ### 実用的なプロンプト例
 
-![研究デザイン比較](/assets/guides/research-protocol/study_designs.png)
+![研究デザイン比較](/Helix/assets/guides/research-protocol/study_designs.png)
 
 #### プロンプト：研究デザインセクションのドラフト作成
 

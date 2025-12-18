@@ -12,7 +12,7 @@ AIは、インシデントの概要整理、時系列での出来事の再構築
 
 AIを活用したインシデントレポート作成のワークフローを視覚的に理解しましょう。
 
-![インシデントレポート作成フロー](/assets/guides/incident-report-creation/images/incident_report_workflow.png)
+![インシデントレポート作成フロー](/Helix/assets/guides/incident-report-creation/images/incident_report_workflow.png)
 
 ---
 

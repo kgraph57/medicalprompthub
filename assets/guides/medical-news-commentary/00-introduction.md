@@ -11,7 +11,7 @@
 
 AIを活用した医療ニュース解説のワークフローを視覚的に理解しましょう。
 
-![医療ニュース解説フロー](/assets/guides/medical-news-commentary/images/medical_news_commentary_workflow.png)
+![医療ニュース解説フロー](/Helix/assets/guides/medical-news-commentary/images/medical_news_commentary_workflow.png)
 
 ---
 

@@ -11,7 +11,7 @@
 
 AIを活用した希少疾患情報収集のワークフローを視覚的に理解しましょう。
 
-![希少疾患情報収集フロー](/assets/guides/rare-disease-information/images/rare_disease_information_workflow.png)
+![希少疾患情報収集フロー](/Helix/assets/guides/rare-disease-information/images/rare_disease_information_workflow.png)
 
 ---
 

@@ -11,7 +11,7 @@ AIは、このプロセスにおいて以下の役割を果たします。
 
 AIを活用した退院後フォローアップのワークフローを視覚的に理解しましょう。
 
-![退院後フォローアップフロー](/assets/guides/post-discharge-follow-up/images/post_discharge_follow_up_workflow.png)
+![退院後フォローアップフロー](/Helix/assets/guides/post-discharge-follow-up/images/post_discharge_follow_up_workflow.png)
 
 ---
 

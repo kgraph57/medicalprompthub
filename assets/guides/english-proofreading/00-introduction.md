@@ -10,11 +10,11 @@
 
 AIツールを活用した英文校正のワークフローを視覚的に理解しましょう。
 
-![英文校正フロー](/assets/guides/english-proofreading/images/english_proofreading_workflow.png)
+![英文校正フロー](/Helix/assets/guides/english-proofreading/images/english_proofreading_workflow.png)
 
 ---
 
-![英文校正プロセス](/assets/guides/english-proofreading/images/english_proofreading_process.png)
+![英文校正プロセス](/Helix/assets/guides/english-proofreading/images/english_proofreading_process.png)
 
 ## なぜ今、この変革が必要なのか？
 

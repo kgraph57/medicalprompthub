@@ -11,7 +11,7 @@
 
 AIを活用した画像診断レポート読解のワークフローを視覚的に理解しましょう。
 
-![画像診断レポート読解フロー](/assets/guides/image-diagnosis-report-reading/images/image_diagnosis_report_reading_workflow.png)
+![画像診断レポート読解フロー](/Helix/assets/guides/image-diagnosis-report-reading/images/image_diagnosis_report_reading_workflow.png)
 
 ---
 

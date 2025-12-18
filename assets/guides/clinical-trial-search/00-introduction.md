@@ -23,7 +23,7 @@ AIを活用することで、医療従事者や研究者は、検索時間の短
 
 AIを活用した臨床試験情報検索のワークフローを視覚的に理解しましょう。
 
-![臨床試験情報検索フロー](/assets/guides/clinical-trial-search/search_workflow.png)
+![臨床試験情報検索フロー](/Helix/assets/guides/clinical-trial-search/search_workflow.png)
 
 ---
 

@@ -9,7 +9,7 @@ EBM（Evidence-Based Medicine）の実践は、日々の臨床現場で生まれ
 
 ---
 
-![PICOフレームワーク](/assets/guides/literature-search/pico_framework.png)
+![PICOフレームワーク](/Helix/assets/guides/literature-search/pico_framework.png)
 
 ## PICOとは？
 

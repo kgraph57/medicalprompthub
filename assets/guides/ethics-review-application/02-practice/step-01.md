@@ -1,6 +1,6 @@
 # 02-practice/step-01.md: インフォームド・コンセント（IC）文書のドラフト作成とリスク評価
 
-![インフォームドコンセントプロセス](/assets/guides/ethics-review-application/informed_consent.png)
+![インフォームドコンセントプロセス](/Helix/assets/guides/ethics-review-application/informed_consent.png)
 
 ## IC文書の「分かりやすさ」と「網羅性」をAIで両立する
 

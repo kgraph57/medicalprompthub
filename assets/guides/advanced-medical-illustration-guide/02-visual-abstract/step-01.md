@@ -43,7 +43,7 @@ Visual Abstractは**研究論文の要約を1スライドにまとめたイン�
 - 介入研究
 - 明確な比較対照がある研究
 
-![BMJ Style Visual Abstract](/assets/guides/visual-abstract/bmj_style.png)
+![BMJ Style Visual Abstract](/Helix/assets/guides/visual-abstract/bmj_style.png)
 
 **この例の研究内容（架空）:**
 - **試験名**: CEREBRO-PROTECT試験
@@ -67,7 +67,7 @@ Visual Abstractは**研究論文の要約を1スライドにまとめたイン�
 - 診断精度研究
 - スクリーニング研究
 
-![JAMA Style Visual Abstract](/assets/guides/visual-abstract/jama_style.png)
+![JAMA Style Visual Abstract](/Helix/assets/guides/visual-abstract/jama_style.png)
 
 **この例の研究内容（架空）:**
 - **試験名**: DEEP-LUNG試験
@@ -92,7 +92,7 @@ Visual Abstractは**研究論文の要約を1スライドにまとめたイン�
 - メカニズムが重要な研究
 - 複数のエンドポイントがある研究
 
-![NEJM Style Visual Abstract](/assets/guides/visual-abstract/nejm_style.png)
+![NEJM Style Visual Abstract](/Helix/assets/guides/visual-abstract/nejm_style.png)
 
 **この例の研究内容（架空）:**
 - **試験名**: SAFEGUARD試験
@@ -121,7 +121,7 @@ Visual Abstractは**研究論文の要約を1スライドにまとめたイン�
 - 公衆衛生介入
 - グローバルヘルス研究
 
-![Lancet Style Visual Abstract](/assets/guides/visual-abstract/lancet_style.png)
+![Lancet Style Visual Abstract](/Helix/assets/guides/visual-abstract/lancet_style.png)
 
 **この例の研究内容（架空）:**
 - **研究名**: VARIANT-SHIELD研究
@@ -153,7 +153,7 @@ Visual Abstractは**研究論文の要約を1スライドにまとめたイン�
 - 遺伝子治療
 - 分子メカニズムが重要な研究
 
-![Nature Medicine Style Visual Abstract](/assets/guides/visual-abstract/nature_medicine_style.png)
+![Nature Medicine Style Visual Abstract](/Helix/assets/guides/visual-abstract/nature_medicine_style.png)
 
 **この例の研究内容（架空）:**
 - **試験名**: CRISPR-Cas9遺伝子治療 Phase 1/2試験
