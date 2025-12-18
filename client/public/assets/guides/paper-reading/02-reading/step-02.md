@@ -21,6 +21,9 @@
 
 ![論文の構造理解](/Helix/assets/guides/paper-reading/images/paper_structure.png)
 
+
+![論文の読み方戦略](/Helix/assets/guides/paper-reading/02-reading/images/paper_reading_strategy_refined.png)
+
 #### 手順1: 論文の「間取り」を知る
 
 医学論文は、だいたいこんな「間取り」になっています。

@@ -19,7 +19,7 @@
 
 患者同意の取得は、以下のプロセスで進めます。
 
-![患者同意取得プロセス](/Helix/assets/guides/case-report/01-preparation/consent_process.png)
+![患者同意取得プロセス](/Helix/assets/guides/case-report/01-preparation/images/consent_process_refined.png)
 
 #### 手順1: 所属施設の規定を確認する
 

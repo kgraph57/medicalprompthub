@@ -22,6 +22,9 @@
 
 論文という「事件現場」を調査するポイントは、大きう3つです。
 
+![批判的吟味のチェックポイント](/Helix/assets/guides/paper-reading/04-critical-appraisal/images/critical_appraisal_checklist_refined.png)
+
+
 #### 調査ポイント1: 研究デザインは適切か？
 
 研究の「問い」に対して、選ばれた「研究デザイン」がベストなものか、まず確認します。
