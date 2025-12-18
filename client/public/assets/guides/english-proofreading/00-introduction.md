@@ -14,6 +14,8 @@ AIツールを活用した英文校正のワークフローを視覚的に理解
 
 ---
 
+![英文校正プロセス](/Helix/assets/guides/english-proofreading/images/english_proofreading_process.png)
+
 ## なぜ今、この変革が必要なのか？
 
 ### パラダイムシフト

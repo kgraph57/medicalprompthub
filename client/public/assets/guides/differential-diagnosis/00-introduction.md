@@ -42,6 +42,8 @@ AIを活用した鑑別診断のワークフローを視覚的に理解しまし
 
 ---
 
+![鑑別診断思考プロセス](/Helix/assets/guides/differential-diagnosis/images/differential_diagnosis_thinking.png)
+
 ## このガイドで学べること
 
 1. 主訴別の鑑別診断を網羅的にリストアップする方法

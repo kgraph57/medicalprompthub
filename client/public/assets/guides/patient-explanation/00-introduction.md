@@ -36,6 +36,8 @@ AIを活用することで、これらの課題を解決し、より質の高い
 
 ---
 
+![インフォームド・コンセントプロセス](/Helix/assets/guides/patient-explanation/images/patient_explanation_ic_process.png)
+
 ## このガイドで学べること
 
 1.  患者説明の基本構造（SPIKESモデルなど）を理解する

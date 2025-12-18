@@ -14,6 +14,8 @@ AIを活用した学会発表資料作成のワークフローを視覚的に理
 
 ---
 
+![学会発表資料作成プロセス](/Helix/assets/guides/conference-presentation/images/conference_presentation_process.png)
+
 ## なぜAI支援が必要なのか？
 
 ### 研修医の現状
