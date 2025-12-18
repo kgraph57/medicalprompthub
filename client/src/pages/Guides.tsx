@@ -83,6 +83,7 @@ export default function Guides() {
   const guides = useMemo(() => [
     {
       id: "marw-complete",
+      hasIllustrations: true,
       title: "【最新版】AI論文執筆ワークフロー:MARW完全ガイド",
       description: "世界標準に準拠したAI駆動型論文執筆の7段階ワークフロー。ハーバード大学、JAMA、ICMJEのガイドラインに基づき、24個の実践的プロンプト例を提供。研究のアイデア創出から論文出版まで完全サポート。",
       category: "Research",
@@ -92,6 +93,7 @@ export default function Guides() {
     },
     {
       id: "case-report-complete",
+      hasIllustrations: true,
       title: "【完全版】症例報告執筆ガイド:構想から投稿まで",
       description: "読むだけで症例報告が実際にできるレベルの完全版ガイド。AI加速型の5ステップで、準備から投稿まで完全サポート。各ステップに具体的なプロンプト、AIツール活用法、チェックリストを完備。",
       category: "Research",
@@ -128,6 +130,7 @@ export default function Guides() {
     },
     {
       id: "paper-reading-efficiency",
+      hasIllustrations: true,
       title: "【時短】論文読解効率化ガイド",
       description: "忙しい臨床医が効率的に論文を読んで理解するための実践的なワークフロー。AIツールを活用することで、従来の2-3時間から約1時間に短縮。5ステップで準備から記録まで完全サポート。",
       category: "Research",
@@ -191,6 +194,7 @@ export default function Guides() {
     },
     {
       id: "advanced-medical-illustration-guide",
+      hasIllustrations: true,
       title: "【応用編】高度な医学図解作成ガイド",
       description: "BioRender風の高品質な医学図解やVisual Abstractを作成。世界標準のデザイン原則とプロンプトエンジニアリング技術を解説",
       category: "Presentation",
@@ -209,6 +213,7 @@ export default function Guides() {
     },
     {
       id: "pubmed-search-guide",
+      hasIllustrations: true,
       title: "【完全版】PubMed検索ガイド:効率的な文献検索",
       description: "PICOに基づいた検索式の作成、MeSH termsの活用、検索結果の絞り込みまで。効率的に文献を見つけるための完全ガイド。",
       category: "Research",
@@ -246,6 +251,7 @@ export default function Guides() {
     // 新規追加ガイド
     {
       id: "conference-presentation",
+      hasIllustrations: true,
       title: "カンファレンス発表資料作成支援",
       description: "AIを活用した効果的なカンファレンス発表資料の作成",
       category: "Presentation",
@@ -255,6 +261,7 @@ export default function Guides() {
     },
     {
       id: "differential-diagnosis",
+      hasIllustrations: true,
       title: "鑑別診断リスト生成",
       description: "AIによる包括的な鑑別診断リストの作成",
       category: "Clinical",
@@ -273,6 +280,7 @@ export default function Guides() {
     },
     {
       id: "literature-search",
+      hasIllustrations: true,
       title: "論文検索・読解サポート",
       description: "AIを活用した効率的な文献検索と読解",
       category: "Research",
@@ -291,6 +299,7 @@ export default function Guides() {
     },
     {
       id: "research-protocol",
+      hasIllustrations: true,
       title: "研究計画書作成支援",
       description: "AIを活用した質の高い研究計画書の作成",
       category: "Research",
@@ -309,6 +318,7 @@ export default function Guides() {
     },
     {
       id: "ethics-review-application",
+      hasIllustrations: true,
       title: "倫理審査申請書類作成支援",
       description: "倫理審査申請書類の効率的な作成",
       category: "Research",
@@ -318,6 +328,7 @@ export default function Guides() {
     },
     {
       id: "new-drug-information",
+      hasIllustrations: true,
       title: "新薬情報収集・要約",
       description: "最新の新薬情報を効率的に収集・要約",
       category: "Clinical",
@@ -390,6 +401,7 @@ export default function Guides() {
     },
     {
       id: "clinical-trial-search",
+      hasIllustrations: true,
       title: "臨床試験情報検索",
       description: "関連する臨床試験情報の効率的な検索",
       category: "Research",
@@ -399,6 +411,7 @@ export default function Guides() {
     },
     {
       id: "medical-statistics-consultation",
+      hasIllustrations: true,
       title: "医療統計・データ分析相談",
       description: "AIを活用した医療統計の理解と分析",
       category: "Research",
@@ -435,6 +448,7 @@ export default function Guides() {
     },
     {
       id: "infection-control-manual",
+      hasIllustrations: true,
       title: "感染対策マニュアル作成",
       description: "効果的な感染対策マニュアルの作成",
       category: "Clinical",
@@ -858,6 +872,11 @@ export default function Guides() {
                             <Badge variant="secondary" className={cn("font-medium px-2 py-0.5 rounded-md text-xs", colors.badge)}>
                               {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
                             </Badge>
+                            {guide.hasIllustrations && (
+                              <Badge variant="outline" className="bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 font-medium px-2 py-0.5 rounded-md border-purple-300 dark:border-purple-600 text-xs">
+                                📊 図解あり
+                              </Badge>
+                            )}
                             {!isImplemented && (
                               <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-2 py-0.5 rounded-md border-gray-300 dark:border-gray-600 text-xs">
                                 <Lock className="h-3 w-3 mr-1" />
