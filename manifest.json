@@ -1,0 +1,54 @@
+{
+  "name": "Medical Prompt Hub",
+  "short_name": "Prompt Hub",
+  "description": "医師向けプロンプト共有プラットフォーム",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "productivity", "education"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "新しいプロンプト",
+      "short_name": "新規投稿",
+      "description": "新しいプロンプトを作成",
+      "url": "/prompts/new",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "マイページ",
+      "short_name": "マイページ",
+      "description": "自分のプロンプトを管理",
+      "url": "/mypage",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
