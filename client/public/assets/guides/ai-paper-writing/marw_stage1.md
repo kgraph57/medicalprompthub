@@ -1,4 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
 
 # ステップ1：面白い「問い」を見つけよう（研究テーマ探しと文献リサーチ）
 

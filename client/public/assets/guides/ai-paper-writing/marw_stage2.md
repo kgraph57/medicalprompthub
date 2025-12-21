@@ -1,4 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
 
 # ステップ2：巨人たちの肩に乗る（文献レビュー）
 

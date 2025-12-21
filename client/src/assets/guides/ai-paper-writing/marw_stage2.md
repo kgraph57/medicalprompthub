@@ -1,6 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
-
-![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
 
 # ステップ2：巨人たちの肩に乗る（文献レビュー）
 
@@ -23,6 +20,10 @@
 
 - 先生の役割: AIが見せてくれる「論文の相関図」を眺めながら、「この論文は自分の問いと関係が深そうだ」と、直感と経験で判断する。
 - AIの役割: 論文同士の引用関係を分析して、「この論文を引用している、新しい論文はこれです」「この分野で一番引用されているのは、この論文です」と、論文のつながりを地図のように見せてくれる。
+
+![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
+
+![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
 
 おすすめのAIアシスタント
 
@@ -58,6 +59,10 @@
 - 先生の役割: 論文の内容を吟味し、「この研究のすごい所はどこか」「逆に、ツッコミどころはどこか」「自分の研究にどう活かせるか」を考える。
 - AIの役割: 論文の要約を作ったり、難しい統計手法や専門用語を「これって、つまりこういうことですよね？」と、分かりやすく翻訳してくれる。
 
+![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
+
+![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
+
 おすすめのAIアシスタント
 
 | ツール | 特徴 | こんな時に便利！ |
@@ -89,6 +94,10 @@
 
 - 先生の役割: 論文から得た気づきや、「自分ならこう考えるな」というツッコミを、自分の言葉でメモする。
 - AIの役割: 論文から「検証可能な、たった一つの事実（アトミック・ステートメント）」を抜き出し、引用情報を自動でフォーマットして、文献管理ツールに登録してくれる。
+
+![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
+
+![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
 
 おすすめのAIアシスタント
 

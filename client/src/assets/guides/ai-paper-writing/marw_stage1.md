@@ -1,6 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
-
-![PICOフレームワーク](/Helix/assets/guides/ai-paper-writing/images/step01_research_question_framework.png)
 
 # ステップ1：面白い「問い」を見つけよう（研究テーマ探しと文献リサーチ）
 
@@ -28,6 +25,8 @@
 - AIの役割: そのテーマに関する世界中の論文を読み込み、客観的な状況を整理して報告する。
 
 この二人三脚で、効率よく研究テーマを探していきましょう。
+
+![PICOフレームワーク](/Helix/assets/guides/ai-paper-writing/images/step01_research_question_framework.png)
 
 おすすめのAIアシスタント
 

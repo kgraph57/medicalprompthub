@@ -1,5 +1,4 @@
 # ステップ5: 最終化と投稿準備
-
 ![最終チェックリスト](/Helix/assets/guides/case-report/images/step05_final_checklist.png)
 
 ## このステップの目的

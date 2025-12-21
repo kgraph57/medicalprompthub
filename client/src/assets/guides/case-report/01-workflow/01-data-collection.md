@@ -1,5 +1,4 @@
 # ステップ1: 症例情報の収集と整理
-
 ![第1章: 準備編の5ステップ](/Helix/assets/guides/case-report/images/preparation_steps.png)
 
 ## このステップの目的

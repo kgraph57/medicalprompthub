@@ -1,4 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
 
 # ステップ6：読者の視点で磨き上げる（編集と査読対応）
 

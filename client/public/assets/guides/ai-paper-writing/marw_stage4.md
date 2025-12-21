@@ -1,4 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
 
 # ステップ4：データを集め、分析する（研究の実行）
 

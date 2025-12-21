@@ -1,5 +1,4 @@
 # ステップ4: AIによる執筆とファクトチェック
-
 ![AI執筆の5段階](/Helix/assets/guides/case-report/images/step04_ai_writing_stages.png)
 
 ## このステップの目的

@@ -1,6 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
-
-![データ品質チェックリスト](/Helix/assets/guides/ai-paper-writing/images/step04_data_quality_checklist.png)
 
 # ステップ4：データを集め、分析する（研究の実行）
 

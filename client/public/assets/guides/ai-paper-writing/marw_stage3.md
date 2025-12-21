@@ -1,4 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
 
 # ステップ3：研究の「設計図」を描こう（研究計画とアウトライン作成）
 

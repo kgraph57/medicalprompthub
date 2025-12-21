@@ -1,5 +1,4 @@
 # ステップ2: 文献検索と背景調査
-
 ![文献レビュープロセス](/Helix/assets/guides/case-report/images/step02_literature_review_process.png)
 
 ## このステップの目的

@@ -1,6 +1,3 @@
-> このドキュメントは、[Medical AI Research Workflow (MARW)](./marw_workflow.md)の一部です。
-
-![統計解析フローチャート](/Helix/assets/guides/ai-paper-writing/images/step05_statistical_analysis_flowchart.png)
 
 # ステップ5：物語を紡ぐ（論文執筆）
 
@@ -12,6 +9,10 @@
 AIは、各セクションの構成案を提示したり、定型的な記述を補助したりすることで、先生が論文の核となる「科学的メッセージ」の構築に集中できるようサポートしてくれます。
 
 ## 具体的なタスク
+\n![統計解析フローチャート](/Helix/assets/guides/ai-paper-writing/images/step05_statistical_analysis_flowchart.png)
+
+\n![統計解析フローチャート](/Helix/assets/guides/ai-paper-writing/images/step05_statistical_analysis_flowchart.png)
+
 
 論文執筆は、必ずしもIntroduction（序論）から順番に書く必要はありません。
 むしろ、客観的な事実を記述するMethods（方法）とResults（結果）から書き始め、その後に解釈を加えるDiscussion（考察）とIntroduction（序論）を書くアプローチの方が、論理的な一貫性を保ちやすいです。

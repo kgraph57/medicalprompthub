@@ -1,5 +1,4 @@
 # ステップ3: 執筆戦略の立案とプロンプト設計
-
 ![執筆戦略フレームワーク](/Helix/assets/guides/case-report/images/step03_writing_strategy_framework.png)
 
 ## このステップの目的
