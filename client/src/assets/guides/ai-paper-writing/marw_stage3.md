@@ -16,7 +16,6 @@
 ## 具体的なタスク
 \n![研究デザインの選択](/Helix/assets/guides/ai-paper-writing/images/step03_study_design_selection.png)
 
-\n![研究デザインの選択](/Helix/assets/guides/ai-paper-writing/images/step03_study_design_selection.png)
 
 
 ### 3.1 どんな「実験方法」を選ぶか？（研究デザインの選択）

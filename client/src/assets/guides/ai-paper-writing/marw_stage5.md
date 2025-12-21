@@ -11,7 +11,6 @@ AIは、各セクションの構成案を提示したり、定型的な記述を
 ## 具体的なタスク
 \n![統計解析フローチャート](/Helix/assets/guides/ai-paper-writing/images/step05_statistical_analysis_flowchart.png)
 
-\n![統計解析フローチャート](/Helix/assets/guides/ai-paper-writing/images/step05_statistical_analysis_flowchart.png)
 
 
 論文執筆は、必ずしもIntroduction（序論）から順番に書く必要はありません。

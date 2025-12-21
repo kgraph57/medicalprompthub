@@ -23,8 +23,6 @@
 
 ![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
 
-![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
-
 おすすめのAIアシスタント
 
 | ツール | 特徴 | こんな時に便利！ |
@@ -56,12 +54,8 @@
 他の科の先生からのコンサルト返書を読む時と同じですね。
 「なるほど、そういう考え方か。でも、この検査は本当に必要だったかな？」と、自分なりに考えながら読む、あの感覚です。
 
-- 先生の役割: 論文の内容を吟味し、「この研究のすごい所はどこか」「逆に、ツッコミどころはどこか」「自分の研究にどう活かせるか」を考える。
+- 先生の役割: 論文の内容を吹味し、「この研究のすごい所はどこか」「逆に、ツッコミどころはどこか」「自分の研究にどう活かせるか」を考える。
 - AIの役割: 論文の要約を作ったり、難しい統計手法や専門用語を「これって、つまりこういうことですよね？」と、分かりやすく翻訳してくれる。
-
-![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
-
-![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
 
 おすすめのAIアシスタント
 
@@ -94,10 +88,6 @@
 
 - 先生の役割: 論文から得た気づきや、「自分ならこう考えるな」というツッコミを、自分の言葉でメモする。
 - AIの役割: 論文から「検証可能な、たった一つの事実（アトミック・ステートメント）」を抜き出し、引用情報を自動でフォーマットして、文献管理ツールに登録してくれる。
-
-![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
-
-![系統的文献レビューフロー](/Helix/assets/guides/ai-paper-writing/images/step02_systematic_review_flow.png)
 
 おすすめのAIアシスタント
 
