@@ -18,12 +18,11 @@
 
 ### 📝 詳細手順
 
-![批判的吟味](/Helix/assets/guides/paper-reading/images/critical_appraisal.png)
+![批判的吟味](./critical_appraisal.png)
 
-論文という「事件現場」を調査するポイントは、大きう3つです。
+論文という「事件現場」を調査するポイントは、大きく3つです。
 
-![批判的吟味のチェックポイント](/Helix/assets/guides/paper-reading/04-critical-appraisal/images/critical_appraisal_checklist_refined.png)
-
+![批判的吟味](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/eOqXuIvaERMcHHrg.png)
 
 #### 調査ポイント1: 研究デザインは適切か？
 
@@ -115,3 +114,4 @@
 
 論文の調査が完了したら、最後はその知見を自分の知識として整理・記録します。
 [Step 5: まとめと記録](../05-summary/step-05.md)に進みましょう。
+

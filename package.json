@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite --host",
     "dev:next": "next dev --port 3002",
-    "sync:guides": "node sync_guides.js",
+    "sync:guides": "node scripts/sync_guides.js",
     "build": "npm run sync:guides && vite build",
     "build:next": "next build",
     "build:vite": "rm -rf client/.vite && vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist/server",

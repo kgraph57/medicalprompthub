@@ -21,7 +21,7 @@
 
 ### 📝 詳細手順
 
-![知識の統合と記録方法](/Helix/assets/guides/paper-reading/05-summary/images/knowledge_integration_record_refined.png)
+![まとめと記録](./summary_and_record.png)
 
 ![まとめと記録](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/oBQIMhZVLGMgBfVW.png)
 
@@ -120,3 +120,4 @@ NotionでもEvernoteでも、あなたのお気に入りの場所を一箇所だ
 
 このワークフローを実践すれば、論文読解はもう怖くありません。
 ぜひ、日々の臨床や研究に活かしてください。
+

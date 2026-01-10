@@ -23,7 +23,7 @@ export const courses = [
   {
     id: "ai-basics",
     title: "AIとは何か - 基礎から理解する人工知能",
-    description: "AIの定義、知能の本質、機械学習の基礎、AIの種類と分類を体系的に学びます。松尾研の視点からAIの全体像を把握します",
+    description: "AIとは何か、その本質から学びましょう。このコースでは、AIの定義や知能の本質、機械学習の基礎、AIの種類と分類を体系的に学ぶことができます。松尾研の視点から、AIの全体像をしっかりと把握できるようになります。",
     level: 1,
     lessons: 8,
     xpReward: 80,
@@ -34,7 +34,7 @@ export const courses = [
   {
     id: "generative-ai-basics",
     title: "生成AIの基礎 - LLMとTransformerアーキテクチャ",
-    description: "大規模言語モデル（LLM）の仕組み、Transformerアーキテクチャ、学習プロセス、トークン化、注意機構（Attention）の基礎を理解します",
+    description: "生成AIの基礎を一緒に学びましょう。大規模言語モデル（LLM）の仕組みから、Transformerアーキテクチャ、学習プロセス、トークン化、注意機構（Attention）まで、段階的に理解できるようになります。",
     level: 1,
     lessons: 9,
     xpReward: 90,
@@ -45,7 +45,7 @@ export const courses = [
   {
     id: "ai-usage-basics",
     title: "AIの実践的使い方 - 効果的な対話とプロンプト基礎",
-    description: "AIチャットツールの基本操作、効果的な質問の仕方、コンテキストの管理、段階的な対話設計を実践的に学びます",
+    description: "AIチャットツールを効果的に使えるようになりましょう。基本操作から、効果的な質問の仕方、コンテキストの管理、段階的な対話設計まで、実践的なスキルを身につけることができます。",
     level: 1,
     lessons: 7,
     xpReward: 70,
@@ -57,7 +57,7 @@ export const courses = [
   {
     id: "machine-learning-fundamentals",
     title: "機械学習の基礎 - 教師あり・教師なし・強化学習",
-    description: "機械学習の三大カテゴリ、学習アルゴリズムの基本、過学習と汎化、評価指標を理解し、AIの学習メカニズムを把握します",
+    description: "機械学習の基礎をしっかりと学びましょう。教師あり学習・教師なし学習・強化学習の三大カテゴリから、学習アルゴリズムの基本、過学習と汎化、評価指標まで、AIの学習メカニズムを理解できるようになります。",
     level: 1,
     lessons: 8,
     xpReward: 80,
@@ -68,7 +68,7 @@ export const courses = [
   {
     id: "medical-ai-overview",
     title: "医療AIの全体像 - 応用領域と可能性",
-    description: "医療分野におけるAIの活用領域（診断支援、画像解析、創薬、臨床意思決定支援）、現状の課題、今後の展望を包括的に理解します",
+    description: "医療AIの全体像を一緒に学びましょう。診断支援、画像解析、創薬、臨床意思決定支援など、医療分野におけるAIの活用領域から、現状の課題、今後の展望まで、包括的に理解できるようになります。",
     level: 1,
     lessons: 7,
     xpReward: 70,
@@ -79,7 +79,7 @@ export const courses = [
   {
     id: "ai-tools-comparison",
     title: "主要AIツールの比較と選び方",
-    description: "ChatGPT、Claude、Gemini、医療特化型AIなど主要ツールの特徴、強み・弱み、用途別の選び方を実践的に学びます",
+    description: "自分に合ったAIツールを選べるようになりましょう。ChatGPT、Claude、Gemini、医療特化型AIなど、主要ツールの特徴や強み・弱み、用途別の選び方を実践的に学ぶことができます。",
     level: 1,
     lessons: 5,
     xpReward: 50,
@@ -90,7 +90,7 @@ export const courses = [
   {
     id: "ai-terminology-basics",
     title: "AI・機械学習の専門用語基礎",
-    description: "AI、機械学習、深層学習の基本的な専門用語を体系的に学びます。LLM、Transformer、Attention、Fine-tuningなど、よく使われる用語を理解します",
+    description: "AIの専門用語を基礎から学びましょう。AI、機械学習、深層学習の基本的な専門用語を体系的に学ぶことができます。LLM、Transformer、Attention、Fine-tuningなど、よく使われる用語をしっかりと理解できるようになります。",
     level: 1,
     lessons: 6,
     xpReward: 60,
@@ -101,7 +101,7 @@ export const courses = [
   {
     id: "medical-terminology-ai",
     title: "医療AI関連の専門用語",
-    description: "医療分野でAIを活用する際に必要な専門用語を学びます。診断支援、画像解析、臨床意思決定支援、バイオマーカーなど、医療AI特有の用語を理解します",
+    description: "医療AIの専門用語を一緒に学びましょう。医療分野でAIを活用する際に必要な専門用語を、わかりやすく学ぶことができます。診断支援、画像解析、臨床意思決定支援、バイオマーカーなど、医療AI特有の用語をしっかりと理解できるようになります。",
     level: 1,
     lessons: 5,
     xpReward: 50,
@@ -113,7 +113,7 @@ export const courses = [
   {
     id: "chatgpt-practice",
     title: "ChatGPT実践ガイド - 基本から応用まで",
-    description: "ChatGPTの基本操作、プロンプトの書き方、機能の活用法、医療分野での具体的な使い方をステップバイステップで学びます",
+    description: "ChatGPTを実践的に使えるようになりましょう。基本操作から、プロンプトの書き方、機能の活用法、医療分野での具体的な使い方まで、ステップバイステップで学ぶことができます。",
     level: 1,
     lessons: 8,
     xpReward: 80,
@@ -124,7 +124,7 @@ export const courses = [
   {
     id: "claude-practice",
     title: "Claude実践ガイド - 長文処理と分析に強い",
-    description: "Claudeの特徴、長文コンテキストの活用法、コード分析、医療文献の要約など、Claudeの強みを活かした使い方を学びます",
+    description: "Claudeの強みを活かした使い方を学びましょう。長文コンテキストの活用法、コード分析、医療文献の要約など、Claudeならではの特徴を理解し、効果的に活用できるようになります。",
     level: 1,
     lessons: 7,
     xpReward: 70,
@@ -135,7 +135,7 @@ export const courses = [
   {
     id: "gemini-practice",
     title: "Google Gemini実践ガイド - マルチモーダル活用",
-    description: "Geminiの基本操作、画像解析機能、Googleサービスとの連携、医療画像の分析など、Geminiの特徴を活かした使い方を学びます",
+    description: "Geminiの特徴を活かした使い方を一緒に学びましょう。基本操作から、画像解析機能、Googleサービスとの連携、医療画像の分析まで、Geminiならではの強みを理解し、実践的に活用できるようになります。",
     level: 1,
     lessons: 7,
     xpReward: 70,
@@ -146,7 +146,7 @@ export const courses = [
   {
     id: "medical-ai-tools-practice",
     title: "医療特化型AIツール実践ガイド",
-    description: "医療分野に特化したAIツール（例：UpToDate AI、Med-PaLM、医療文献検索AIなど）の使い方と活用法を実践的に学びます",
+    description: "医療特化型AIツールを効果的に使えるようになりましょう。UpToDate AI、Med-PaLM、医療文献検索AIなど、医療分野に特化したAIツールの使い方と活用法を実践的に学ぶことができます。",
     level: 1,
     lessons: 6,
     xpReward: 60,
@@ -158,7 +158,7 @@ export const courses = [
   {
     id: "api-basics",
     title: "APIとは",
-    description: "APIの基本概念とAI APIの仕組み、実用例を学びます",
+    description: "APIの基礎を一緒に学びましょう。APIの基本概念から、AI APIの仕組み、実用例まで、わかりやすく学ぶことができます。",
     level: 2,
     lessons: 4,
     xpReward: 50,
@@ -169,7 +169,7 @@ export const courses = [
   {
     id: "mcp-basics",
     title: "MCPとは",
-    description: "MCP（Model Context Protocol）の仕組みと活用方法を理解します",
+    description: "MCP（Model Context Protocol）を理解しましょう。MCPの仕組みから、実践的な活用方法まで、段階的に学ぶことができます。",
     level: 2,
     lessons: 4,
     xpReward: 50,
@@ -180,7 +180,7 @@ export const courses = [
   {
     id: "prompt-engineering-basics",
     title: "プロンプトエンジニアリング基礎",
-    description: "効果的なプロンプトを書くためのテクニックと実践例を学びます",
+    description: "効果的なプロンプトを書けるようになりましょう。プロンプトエンジニアリングの基礎から、実践的なテクニックと具体例まで、一緒に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 60,
@@ -191,7 +191,7 @@ export const courses = [
   {
     id: "medical-data-basics",
     title: "医療データの基礎知識",
-    description: "医療データの種類、構造、取り扱いの基本を理解します",
+    description: "医療データの基礎知識を一緒に学びましょう。医療データの種類、構造、取り扱いの基本を、わかりやすく理解できるようになります。",
     level: 2,
     lessons: 4,
     xpReward: 50,
@@ -202,7 +202,7 @@ export const courses = [
   {
     id: "llm-in-medicine",
     title: "医療におけるLLM実践 - 大規模言語モデルの医療応用",
-    description: "LLMの基礎、プロンプトエンジニアリング、RAG、医療文書作成、診断支援、患者コミュニケーション、Fine-tuning、倫理的課題、ケーススタディを実践的に学びます",
+    description: "医療におけるLLMの実践的な活用を学びましょう。LLMの基礎から、プロンプトエンジニアリング、RAG、医療文書作成、診断支援、患者コミュニケーション、Fine-tuning、倫理的課題まで、ケーススタディを通じて実践的に学ぶことができます。",
     level: 2,
     lessons: 10,
     xpReward: 100,
@@ -213,7 +213,7 @@ export const courses = [
   {
     id: "ai-implementation-framework",
     title: "医療AI導入フレームワーク - R.O.A.D.モデル",
-    description: "R.O.A.D. Framework（Readiness, Optimization, Adoption, Deployment）に基づき、医療機関でのAI導入プロセス、組織の準備、変更管理、成功事例を体系的に学びます",
+    description: "医療AI導入のフレームワークを一緒に学びましょう。R.O.A.D. Framework（Readiness, Optimization, Adoption, Deployment）に基づき、医療機関でのAI導入プロセス、組織の準備、変更管理、成功事例を体系的に学ぶことができます。",
     level: 2,
     lessons: 8,
     xpReward: 80,
@@ -224,7 +224,7 @@ export const courses = [
   {
     id: "medical-ai-ethics",
     title: "医療AI倫理とコンプライアンス - 法的・倫理的考慮",
-    description: "医療AIの倫理原則、HIPAA・個人情報保護法・GDPR、バイアスと公平性、説明可能性、臨床試験、規制承認、法的責任、倫理委員会、未来と展望を包括的に学びます",
+    description: "医療AIの倫理とコンプライアンスを一緒に学びましょう。医療AIの倫理原則から、HIPAA・個人情報保護法・GDPR、バイアスと公平性、説明可能性、臨床試験、規制承認、法的責任、倫理委員会、未来と展望まで、包括的に理解できるようになります。",
     level: 2,
     lessons: 10,
     xpReward: 100,
@@ -235,7 +235,7 @@ export const courses = [
   {
     id: "medical-data-legal",
     title: "医療情報の法的取り扱い - 個人情報保護法と医療法",
-    description: "個人情報保護法、医療法、医師法における医療情報の取り扱い、AI利用時の法的要件、現在の法律と規制を詳しく学びます",
+    description: "医療情報の法的取り扱いをしっかりと学びましょう。個人情報保護法、医療法、医師法における医療情報の取り扱い、AI利用時の法的要件、現在の法律と規制を詳しく理解できるようになります。",
     level: 2,
     lessons: 7,
     xpReward: 70,
@@ -246,7 +246,7 @@ export const courses = [
   {
     id: "ai-copyright-ethics",
     title: "AI生成コンテンツの著作権と倫理",
-    description: "画像生成AIの著作権、生成コンテンツの利用規約、医療分野での利用における著作権問題、倫理的な使用法を学びます",
+    description: "AI生成コンテンツの著作権と倫理を一緒に学びましょう。画像生成AIの著作権、生成コンテンツの利用規約、医療分野での利用における著作権問題、倫理的な使用法を理解できるようになります。",
     level: 2,
     lessons: 5,
     xpReward: 50,
@@ -257,7 +257,7 @@ export const courses = [
   {
     id: "advanced-ai-terminology",
     title: "高度なAI専門用語 - 論文を読むために",
-    description: "最新のAI研究論文を読むために必要な高度な専門用語を学びます。RAG、Few-shot Learning、Chain-of-Thought、Prompt Engineering、LoRAなど、最新の技術用語を理解します",
+    description: "高度なAI専門用語を一緒に学びましょう。最新のAI研究論文を読むために必要な高度な専門用語を、わかりやすく学ぶことができます。RAG、Few-shot Learning、Chain-of-Thought、Prompt Engineering、LoRAなど、最新の技術用語をしっかりと理解できるようになります。",
     level: 2,
     lessons: 6,
     xpReward: 60,
@@ -268,7 +268,7 @@ export const courses = [
   {
     id: "statistics-data-science-terms",
     title: "統計学・データサイエンスの専門用語",
-    description: "AIと医療データ分析に必要な統計学・データサイエンスの専門用語を学びます。p値、信頼区間、ROC曲線、AUC、感度・特異度など、医療研究でよく使われる用語を理解します",
+    description: "統計学・データサイエンスの専門用語を基礎から学びましょう。AIと医療データ分析に必要な統計学・データサイエンスの専門用語を、体系的に学ぶことができます。p値、信頼区間、ROC曲線、AUC、感度・特異度など、医療研究でよく使われる用語をしっかりと理解できるようになります。",
     level: 2,
     lessons: 5,
     xpReward: 50,
@@ -279,7 +279,7 @@ export const courses = [
   {
     id: "python-ai-programming",
     title: "PythonとAIプログラミング基礎",
-    description: "AI研究に必要なPythonプログラミングの基礎を学びます。NumPy、Pandas、Matplotlib、基本的なデータ処理、AIライブラリの使い方を実践的に学びます",
+    description: "PythonとAIプログラミングの基礎を一緒に学びましょう。AI研究に必要なPythonプログラミングの基礎から、NumPy、Pandas、Matplotlib、基本的なデータ処理、AIライブラリの使い方まで、実践的に学ぶことができます。",
     level: 2,
     lessons: 7,
     xpReward: 70,
@@ -290,7 +290,7 @@ export const courses = [
   {
     id: "deep-learning-frameworks",
     title: "深層学習フレームワーク - PyTorch/TensorFlow",
-    description: "PyTorchとTensorFlowの基礎、ニューラルネットワークの実装、学習ループの作成、モデルの保存と読み込み、GPU活用などを実践的に学びます",
+    description: "深層学習フレームワークを実践的に学びましょう。PyTorchとTensorFlowの基礎から、ニューラルネットワークの実装、学習ループの作成、モデルの保存と読み込み、GPU活用まで、一緒に学ぶことができます。",
     level: 3,
     lessons: 8,
     xpReward: 80,
@@ -301,7 +301,7 @@ export const courses = [
   {
     id: "research-methodology",
     title: "AI研究の方法論 - 実験設計と再現性",
-    description: "AI研究における実験設計、データ分割、交差検証、ハイパーパラメータ調整、再現性の確保、コード管理、実験ログの記録方法を学びます",
+    description: "AI研究の方法論を一緒に学びましょう。AI研究における実験設計、データ分割、交差検証、ハイパーパラメータ調整、再現性の確保、コード管理、実験ログの記録方法を、実践的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -312,7 +312,7 @@ export const courses = [
   {
     id: "paper-reading-writing",
     title: "AI論文の読み方・書き方 - 批判的読解と執筆",
-    description: "AI研究論文の構造、批判的読解の方法、先行研究の調査、論文執筆の構成、査読への対応、論文投稿のプロセスを体系的に学びます",
+    description: "AI論文の読み方・書き方を一緒に学びましょう。AI研究論文の構造、批判的読解の方法、先行研究の調査、論文執筆の構成、査読への対応、論文投稿のプロセスを体系的に学ぶことができます。",
     level: 3,
     lessons: 7,
     xpReward: 75,
@@ -323,7 +323,7 @@ export const courses = [
   {
     id: "research-ethics-open-science",
     title: "研究倫理とオープンサイエンス",
-    description: "AI研究における研究倫理、データの適切な取り扱い、コード公開、データ共有、再現性の重要性、オープンサイエンスの実践を学びます",
+    description: "研究倫理とオープンサイエンスを一緒に学びましょう。AI研究における研究倫理、データの適切な取り扱い、コード公開、データ共有、再現性の重要性、オープンサイエンスの実践を理解できるようになります。",
     level: 3,
     lessons: 5,
     xpReward: 60,
@@ -335,7 +335,7 @@ export const courses = [
   {
     id: "deep-learning-basics",
     title: "深層学習の基礎 - ニューラルネットワーク入門",
-    description: "ニューラルネットワークの基本構造、順伝播・逆伝播、活性化関数、損失関数、最適化手法の基礎を学びます",
+    description: "深層学習の基礎をしっかりと学びましょう。ニューラルネットワークの基本構造、順伝播・逆伝播、活性化関数、損失関数、最適化手法の基礎を、段階的に理解できるようになります。",
     level: 3,
     lessons: 8,
     xpReward: 80,
@@ -346,7 +346,7 @@ export const courses = [
   {
     id: "medical-ai-practice",
     title: "医療AI活用実践",
-    description: "医療現場でAIを効果的に活用する方法と注意点を学びます",
+    description: "医療AI活用の実践を一緒に学びましょう。医療現場でAIを効果的に活用する方法と注意点を、実践的な事例を通じて学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 60,
@@ -357,7 +357,7 @@ export const courses = [
   {
     id: "paper-writing-support",
     title: "医療論文執筆支援",
-    description: "AIを活用した論文執筆の効率化と品質向上のテクニックを学びます",
+    description: "医療論文執筆をAIで効率化しましょう。AIを活用した論文執筆の効率化と品質向上のテクニックを、実践的に学ぶことができます。",
     level: 3,
     lessons: 5,
     xpReward: 70,
@@ -368,7 +368,7 @@ export const courses = [
   {
     id: "case-report-support",
     title: "ケースレポート作成支援",
-    description: "症例報告書の作成をAIで効率化する方法とベストプラクティスを学びます",
+    description: "ケースレポート作成をAIで効率化しましょう。症例報告書の作成をAIで効率化する方法とベストプラクティスを、一緒に学ぶことができます。",
     level: 3,
     lessons: 4,
     xpReward: 65,
@@ -379,7 +379,7 @@ export const courses = [
   {
     id: "diagnostic-support",
     title: "診断支援と臨床判断",
-    description: "AIを活用した診断支援システムの理解と臨床判断への統合方法を学びます",
+    description: "診断支援と臨床判断を一緒に学びましょう。AIを活用した診断支援システムの理解と臨床判断への統合方法を、実践的に学ぶことができます。",
     level: 3,
     lessons: 4,
     xpReward: 65,
@@ -390,7 +390,7 @@ export const courses = [
   {
     id: "medical-english-proofreading",
     title: "医療英語校正",
-    description: "AIを活用した医療英語の校正と改善テクニックを学びます",
+    description: "医療英語校正をAIで効率化しましょう。AIを活用した医療英語の校正と改善テクニックを、実践的に学ぶことができます。",
     level: 3,
     lessons: 4,
     xpReward: 55,
@@ -401,7 +401,7 @@ export const courses = [
   {
     id: "literature-review-support",
     title: "文献レビュー支援",
-    description: "AIを活用した効率的な文献検索とレビュー作成の方法を学びます",
+    description: "文献レビューをAIで効率化しましょう。AIを活用した効率的な文献検索とレビュー作成の方法を、一緒に学ぶことができます。",
     level: 1,
     lessons: 4,
     xpReward: 60,
@@ -413,7 +413,7 @@ export const courses = [
   {
     id: "advanced-prompt-techniques",
     title: "高度なプロンプトテクニック",
-    description: "チェーン・オブ・思考、Few-shot学習、RAGなど高度なテクニックを学びます",
+    description: "高度なプロンプトテクニックを一緒に学びましょう。チェーン・オブ・思考、Few-shot学習、RAGなど高度なテクニックを、実践的に学ぶことができます。",
     level: 4,
     lessons: 5,
     xpReward: 80,
@@ -424,7 +424,7 @@ export const courses = [
   {
     id: "medical-ai-system-building",
     title: "医療AIシステム構築",
-    description: "医療現場向けのAIシステム設計と実装の基礎を学びます",
+    description: "医療AIシステム構築の基礎を一緒に学びましょう。医療現場向けのAIシステム設計と実装の基礎を、段階的に学ぶことができます。",
     level: 4,
     lessons: 5,
     xpReward: 85,
@@ -435,7 +435,7 @@ export const courses = [
   {
     id: "research-data-analysis",
     title: "研究データ分析支援",
-    description: "AIを活用した研究データの分析と可視化、統計解析の支援方法を学びます",
+    description: "研究データ分析をAIで支援しましょう。AIを活用した研究データの分析と可視化、統計解析の支援方法を、実践的に学ぶことができます。",
     level: 4,
     lessons: 4,
     xpReward: 75,
@@ -446,7 +446,7 @@ export const courses = [
   {
     id: "ai-clinical-decision",
     title: "AI臨床意思決定支援",
-    description: "臨床現場でのAI活用による意思決定支援システムの構築と運用を学びます",
+    description: "AI臨床意思決定支援を一緒に学びましょう。臨床現場でのAI活用による意思決定支援システムの構築と運用を、実践的に学ぶことができます。",
     level: 4,
     lessons: 5,
     xpReward: 85,
@@ -457,7 +457,7 @@ export const courses = [
   {
     id: "advanced-model-architectures",
     title: "高度なモデルアーキテクチャ - Transformer発展形",
-    description: "BERT、GPT、Vision Transformer、マルチモーダルモデルなど、最新のモデルアーキテクチャの理解と実装を学びます",
+    description: "高度なモデルアーキテクチャを一緒に学びましょう。BERT、GPT、Vision Transformer、マルチモーダルモデルなど、最新のモデルアーキテクチャの理解と実装を、段階的に学ぶことができます。",
     level: 4,
     lessons: 6,
     xpReward: 90,
@@ -468,7 +468,7 @@ export const courses = [
   {
     id: "ai-research-project",
     title: "AI研究プロジェクト実践 - ゼロから論文まで",
-    description: "研究テーマの選定、データ収集、実験設計、モデル開発、評価、論文執筆まで、AI研究プロジェクトを一から完成させる実践的なコースです",
+    description: "AI研究プロジェクトを一から完成させましょう。研究テーマの選定、データ収集、実験設計、モデル開発、評価、論文執筆まで、AI研究プロジェクトを一から完成させる実践的なコースです。",
     level: 4,
     lessons: 10,
     xpReward: 100,
@@ -479,7 +479,7 @@ export const courses = [
   {
     id: "ai-onboarding-workflow",
     title: "AIオンボーディング - ワークフローへの統合実践",
-    description: "layerXのアプローチに基づく、実際の医療業務ワークフローにAIを段階的に組み込む方法を学びます。PoCから本番導入まで、組織的なAI活用の実践を学びます",
+    description: "AIオンボーディングを一緒に実践しましょう。layerXのアプローチに基づく、実際の医療業務ワークフローにAIを段階的に組み込む方法を学ぶことができます。PoCから本番導入まで、組織的なAI活用の実践を、段階的に学べます。",
     level: 4,
     lessons: 8,
     xpReward: 90,
@@ -490,7 +490,7 @@ export const courses = [
   {
     id: "knowledge-work-ai",
     title: "ナレッジワークとAI - 知識労働の変革",
-    description: "ナレッジワークの概念、知識労働におけるAI活用、情報の創造・共有・活用、医療現場での知識管理とAIの統合を体系的に学びます",
+    description: "ナレッジワークとAIを一緒に学びましょう。ナレッジワークの概念、知識労働におけるAI活用、情報の創造・共有・活用、医療現場での知識管理とAIの統合を体系的に学ぶことができます。",
     level: 4,
     lessons: 7,
     xpReward: 85,
@@ -501,7 +501,7 @@ export const courses = [
   {
     id: "poc-experimentation",
     title: "PoC実践 - 技術とツールの実験的試行",
-    description: "Proof of Concept（PoC）の設計、新技術の評価、ツールの比較検証、失敗から学ぶ、本番導入への判断基準を実践的に学びます",
+    description: "PoC実践を一緒に学びましょう。Proof of Concept（PoC）の設計、新技術の評価、ツールの比較検証、失敗から学ぶ、本番導入への判断基準を実践的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -512,7 +512,7 @@ export const courses = [
   {
     id: "ai-era-mindset",
     title: "AI時代の働き方とマインドセット - 価値観の転換",
-    description: "産業革命→インターネット→SNS→AI時代の変遷、人間に求められる価値の変化、知識量から創造性・判断力へ、新しい時代に適応する考え方を学びます",
+    description: "AI時代の働き方とマインドセットを一緒に学びましょう。産業革命→インターネット→SNS→AI時代の変遷、人間に求められる価値の変化、知識量から創造性・判断力へ、新しい時代に適応する考え方を理解できるようになります。",
     level: 3,
     lessons: 7,
     xpReward: 75,
@@ -523,7 +523,7 @@ export const courses = [
   {
     id: "future-of-work-medicine",
     title: "医療現場の未来の働き方 - AI時代の医師の価値",
-    description: "AI時代における医師の役割の変化、知識の記憶から判断・創造へ、患者との関係性、AIと協働する新しい医療の形を学びます",
+    description: "医療現場の未来の働き方を一緒に学びましょう。AI時代における医師の役割の変化、知識の記憶から判断・創造へ、患者との関係性、AIと協働する新しい医療の形を理解できるようになります。",
     level: 4,
     lessons: 6,
     xpReward: 80,
@@ -535,7 +535,7 @@ export const courses = [
   {
     id: "ai-history-evolution",
     title: "AIの歴史と発展 - 過去から未来へ",
-    description: "AIの誕生から現在までの歴史、主要なマイルストーン、ブームと冬の時代、現在のAI革命、未来の展望を体系的に学びます",
+    description: "AIの歴史と発展を一緒に学びましょう。AIの誕生から現在までの歴史、主要なマイルストーン、ブームと冬の時代、現在のAI革命、未来の展望を体系的に学ぶことができます。",
     level: 1,
     lessons: 6,
     xpReward: 60,
@@ -546,7 +546,7 @@ export const courses = [
   {
     id: "data-science-fundamentals",
     title: "データサイエンス基礎 - 医療データ分析の準備",
-    description: "データサイエンスの基本概念、データの種類と構造、探索的データ分析（EDA）、データ可視化の基礎、医療データの特性を理解します",
+    description: "データサイエンス基礎を一緒に学びましょう。データサイエンスの基本概念、データの種類と構造、探索的データ分析（EDA）、データ可視化の基礎、医療データの特性を、わかりやすく理解できるようになります。",
     level: 1,
     lessons: 7,
     xpReward: 70,
@@ -557,7 +557,7 @@ export const courses = [
   {
     id: "statistics-basics-medicine",
     title: "統計学基礎 - 医療研究に必要な統計",
-    description: "記述統計、推測統計、仮説検定、p値と信頼区間、相関と回帰、医療研究でよく使われる統計手法の基礎を学びます",
+    description: "統計学基礎を一緒に学びましょう。記述統計、推測統計、仮説検定、p値と信頼区間、相関と回帰、医療研究でよく使われる統計手法の基礎を、段階的に学ぶことができます。",
     level: 1,
     lessons: 8,
     xpReward: 80,
@@ -568,7 +568,7 @@ export const courses = [
   {
     id: "neural-networks-basics",
     title: "ニューラルネットワーク基礎 - 脳の仕組みから学ぶ",
-    description: "ニューロンの仕組み、パーセプトロン、多層パーセプトロン、活性化関数、学習の基本概念を直感的に理解します",
+    description: "ニューラルネットワーク基礎を一緒に学びましょう。ニューロンの仕組み、パーセプトロン、多層パーセプトロン、活性化関数、学習の基本概念を、直感的に理解できるようになります。",
     level: 1,
     lessons: 6,
     xpReward: 60,
@@ -580,7 +580,7 @@ export const courses = [
   {
     id: "perplexity-practice",
     title: "Perplexity実践ガイド - AI検索エンジンの活用",
-    description: "Perplexityの特徴、医療情報検索での活用法、引用付き回答の活用、研究調査での効率的な使い方を実践的に学びます",
+    description: "Perplexityを実践的に使えるようになりましょう。Perplexityの特徴、医療情報検索での活用法、引用付き回答の活用、研究調査での効率的な使い方を、一緒に学ぶことができます。",
     level: 1,
     lessons: 5,
     xpReward: 50,
@@ -591,7 +591,7 @@ export const courses = [
   {
     id: "github-copilot-practice",
     title: "GitHub Copilot実践ガイド - コーディング支援AI",
-    description: "GitHub Copilotの基本操作、コード生成、医療データ分析スクリプトの作成、デバッグ支援、ベストプラクティスを学びます",
+    description: "GitHub Copilotを実践的に使えるようになりましょう。GitHub Copilotの基本操作、コード生成、医療データ分析スクリプトの作成、デバッグ支援、ベストプラクティスを、一緒に学ぶことができます。",
     level: 2,
     lessons: 6,
     xpReward: 60,
@@ -602,7 +602,7 @@ export const courses = [
   {
     id: "cursor-ide-practice",
     title: "Cursor IDE実践ガイド - AI統合開発環境",
-    description: "Cursor IDEの基本操作、AIアシスタント機能、コード編集、リファクタリング、医療アプリケーション開発での活用を学びます",
+    description: "Cursor IDEを実践的に使えるようになりましょう。Cursor IDEの基本操作、AIアシスタント機能、コード編集、リファクタリング、医療アプリケーション開発での活用を、一緒に学ぶことができます。",
     level: 2,
     lessons: 6,
     xpReward: 60,
@@ -613,7 +613,7 @@ export const courses = [
   {
     id: "notion-ai-practice",
     title: "Notion AI実践ガイド - 知識管理とAI",
-    description: "Notion AIの機能、医療知識ベースの構築、文書作成支援、会議議事録の自動生成、情報整理の効率化を学びます",
+    description: "Notion AIを効果的に使えるようになりましょう。Notion AIの機能、医療知識ベースの構築、文書作成支援、会議議事録の自動生成、情報整理の効率化を、実践的に学ぶことができます。",
     level: 1,
     lessons: 5,
     xpReward: 50,
@@ -624,7 +624,7 @@ export const courses = [
   {
     id: "midjourney-dalle-practice",
     title: "画像生成AI実践 - Midjourney・DALL-E活用",
-    description: "MidjourneyとDALL-Eの基本操作、医療教育用画像の生成、プレゼンテーション資料作成、プロンプトテクニックを学びます",
+    description: "画像生成AIを実践的に使えるようになりましょう。MidjourneyとDALL-Eの基本操作、医療教育用画像の生成、プレゼンテーション資料作成、プロンプトテクニックを、一緒に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 55,
@@ -636,7 +636,7 @@ export const courses = [
   {
     id: "data-preprocessing-cleaning",
     title: "データ前処理とクリーニング - 実践的データ準備",
-    description: "欠損値処理、外れ値検出、データ正規化、特徴量エンジニアリング、医療データの前処理のベストプラクティスを学びます",
+    description: "データ前処理とクリーニングを一緒に学びましょう。欠損値処理、外れ値検出、データ正規化、特徴量エンジニアリング、医療データの前処理のベストプラクティスを、実践的に学ぶことができます。",
     level: 2,
     lessons: 6,
     xpReward: 65,
@@ -647,7 +647,7 @@ export const courses = [
   {
     id: "model-evaluation-validation",
     title: "モデル評価と検証 - 信頼性の高いAI評価",
-    description: "交差検証、ROC曲線とAUC、混同行列、感度・特異度、医療AIモデルの評価指標、過学習の検出と対策を学びます",
+    description: "モデル評価と検証を一緒に学びましょう。交差検証、ROC曲線とAUC、混同行列、感度・特異度、医療AIモデルの評価指標、過学習の検出と対策を、段階的に学ぶことができます。",
     level: 2,
     lessons: 7,
     xpReward: 70,
@@ -658,7 +658,7 @@ export const courses = [
   {
     id: "cloud-ai-services",
     title: "クラウドAIサービス活用 - AWS・Azure・GCP",
-    description: "主要クラウドプラットフォームのAIサービス、医療データのクラウド処理、セキュリティ考慮、コスト最適化を学びます",
+    description: "クラウドAIサービスを一緒に学びましょう。主要クラウドプラットフォームのAIサービス、医療データのクラウド処理、セキュリティ考慮、コスト最適化を、実践的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -669,7 +669,7 @@ export const courses = [
   {
     id: "vector-databases-rag",
     title: "ベクトルデータベースとRAG - 知識検索システム",
-    description: "ベクトルデータベースの基礎、RAG（Retrieval-Augmented Generation）の仕組み、医療知識ベースの構築、実装方法を学びます",
+    description: "ベクトルデータベースとRAGを一緒に学びましょう。ベクトルデータベースの基礎、RAG（Retrieval-Augmented Generation）の仕組み、医療知識ベースの構築、実装方法を、段階的に学ぶことができます。",
     level: 3,
     lessons: 7,
     xpReward: 75,
@@ -680,7 +680,7 @@ export const courses = [
   {
     id: "fine-tuning-basics",
     title: "Fine-tuning基礎 - モデルのカスタマイズ",
-    description: "Fine-tuningの基本概念、LoRA、QLoRA、医療ドメイン特化モデルの作成、データ準備、実装の基礎を学びます",
+    description: "Fine-tuning基礎を一緒に学びましょう。Fine-tuningの基本概念、LoRA、QLoRA、医療ドメイン特化モデルの作成、データ準備、実装の基礎を、段階的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -692,7 +692,7 @@ export const courses = [
   {
     id: "medical-imaging-ai-basics",
     title: "医療画像AIの基礎 - X線・CT・MRI解析",
-    description: "医療画像AIの基本、画像前処理、CNN（畳み込みニューラルネットワーク）、転移学習、診断支援システムの理解を学びます",
+    description: "医療画像AIの基礎を一緒に学びましょう。医療画像AIの基本、画像前処理、CNN（畳み込みニューラルネットワーク）、転移学習、診断支援システムの理解を、段階的に学ぶことができます。",
     level: 2,
     lessons: 7,
     xpReward: 75,
@@ -703,7 +703,7 @@ export const courses = [
   {
     id: "drug-discovery-ai-basics",
     title: "創薬AIの基礎 - AIによる新薬開発支援",
-    description: "創薬におけるAI活用、分子設計、タンパク質構造予測、薬物相互作用予測、創薬プロセスの効率化を学びます",
+    description: "創薬AIの基礎を一緒に学びましょう。創薬におけるAI活用、分子設計、タンパク質構造予測、薬物相互作用予測、創薬プロセスの効率化を、実践的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -714,7 +714,7 @@ export const courses = [
   {
     id: "patient-communication-ai",
     title: "患者コミュニケーション支援 - AI活用",
-    description: "AIを活用した患者説明の支援、多言語対応、医療用語の平易な説明、インフォームドコンセント支援、実践的な活用方法を学びます",
+    description: "患者コミュニケーション支援を一緒に学びましょう。AIを活用した患者説明の支援、多言語対応、医療用語の平易な説明、インフォームドコンセント支援、実践的な活用方法を、段階的に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 60,
@@ -725,7 +725,7 @@ export const courses = [
   {
     id: "medical-records-ai",
     title: "医療記録のAI活用 - 診療録の効率化",
-    description: "診療録の自動要約、構造化データ抽出、コーディング支援、医療記録の質向上、AI活用のベストプラクティスを学びます",
+    description: "医療記録のAI活用を一緒に学びましょう。診療録の自動要約、構造化データ抽出、コーディング支援、医療記録の質向上、AI活用のベストプラクティスを、実践的に学ぶことができます。",
     level: 2,
     lessons: 6,
     xpReward: 65,
@@ -736,7 +736,7 @@ export const courses = [
   {
     id: "clinical-pathway-optimization",
     title: "クリニカルパス最適化 - AIによる医療プロセス改善",
-    description: "クリニカルパスの分析、AIによる最適化、リソース配分の改善、患者アウトカム予測、実践的な導入方法を学びます",
+    description: "クリニカルパス最適化を一緒に学びましょう。クリニカルパスの分析、AIによる最適化、リソース配分の改善、患者アウトカム予測、実践的な導入方法を、段階的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -747,7 +747,7 @@ export const courses = [
   {
     id: "telemedicine-ai",
     title: "遠隔医療とAI - テレヘルスでのAI活用",
-    description: "遠隔医療におけるAI活用、リモート診断支援、患者モニタリング、AIチャットボット、実践的な導入事例を学びます",
+    description: "遠隔医療とAIを一緒に学びましょう。遠隔医療におけるAI活用、リモート診断支援、患者モニタリング、AIチャットボット、実践的な導入事例を、実践的に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 60,
@@ -759,7 +759,7 @@ export const courses = [
   {
     id: "ai-bias-fairness",
     title: "AIのバイアスと公平性 - 医療における公正性",
-    description: "AIシステムのバイアス、医療格差への影響、公平性の評価、バイアス軽減手法、多様性を考慮したAI開発を学びます",
+    description: "AIのバイアスと公平性を一緒に学びましょう。AIシステムのバイアス、医療格差への影響、公平性の評価、バイアス軽減手法、多様性を考慮したAI開発を、段階的に学ぶことができます。",
     level: 2,
     lessons: 6,
     xpReward: 65,
@@ -770,7 +770,7 @@ export const courses = [
   {
     id: "ai-explainability-interpretability",
     title: "AIの説明可能性 - ブラックボックスの理解",
-    description: "説明可能なAI（XAI）、SHAP、LIME、医療AIにおける説明責任、患者への説明方法、実装テクニックを学びます",
+    description: "AIの説明可能性を一緒に学びましょう。説明可能なAI（XAI）、SHAP、LIME、医療AIにおける説明責任、患者への説明方法、実装テクニックを、実践的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -781,7 +781,7 @@ export const courses = [
   {
     id: "medical-device-regulation",
     title: "医療機器規制とAI - 薬機法と承認プロセス",
-    description: "日本の薬機法におけるAI医療機器の位置づけ、承認プロセス、臨床評価、品質管理、規制対応の実践を学びます",
+    description: "医療機器規制とAIを一緒に学びましょう。日本の薬機法におけるAI医療機器の位置づけ、承認プロセス、臨床評価、品質管理、規制対応の実践を、段階的に学ぶことができます。",
     level: 3,
     lessons: 7,
     xpReward: 75,
@@ -793,7 +793,7 @@ export const courses = [
   {
     id: "clinical-trial-data-analysis",
     title: "臨床試験データ分析 - AI活用",
-    description: "臨床試験データのAI分析、患者層別化、アウトカム予測、副作用検出、統計解析の効率化を学びます",
+    description: "臨床試験データ分析をAIで効率化しましょう。臨床試験データのAI分析、患者層別化、アウトカム予測、副作用検出、統計解析の効率化を、実践的に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -804,7 +804,7 @@ export const courses = [
   {
     id: "meta-analysis-ai-support",
     title: "メタアナリシス支援 - AIによる文献統合",
-    description: "AIを活用したメタアナリシス、文献検索の効率化、データ抽出支援、統計解析、システマティックレビュー作成を学びます",
+    description: "メタアナリシス支援をAIで効率化しましょう。AIを活用したメタアナリシス、文献検索の効率化、データ抽出支援、統計解析、システマティックレビュー作成を、一緒に学ぶことができます。",
     level: 3,
     lessons: 6,
     xpReward: 70,
@@ -815,7 +815,7 @@ export const courses = [
   {
     id: "research-protocol-ai",
     title: "研究プロトコル作成支援 - AI活用",
-    description: "研究プロトコルのAI支援作成、倫理審査申請書の作成、統計的検定力分析、研究デザインの最適化を学びます",
+    description: "研究プロトコル作成をAIで支援しましょう。研究プロトコルのAI支援作成、倫理審査申請書の作成、統計的検定力分析、研究デザインの最適化を、実践的に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 60,
@@ -826,7 +826,7 @@ export const courses = [
   {
     id: "grant-writing-ai",
     title: "研究費申請書作成支援 - AI活用",
-    description: "研究費申請書のAI支援作成、研究計画書の構成、予算計画、審査員向けの説明、効果的な申請書作成を学びます",
+    description: "研究費申請書作成をAIで支援しましょう。研究費申請書のAI支援作成、研究計画書の構成、予算計画、審査員向けの説明、効果的な申請書作成を、一緒に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 60,
@@ -837,7 +837,7 @@ export const courses = [
   {
     id: "data-visualization-medical",
     title: "医療データ可視化 - 効果的なプレゼンテーション",
-    description: "医療データの可視化テクニック、統計グラフの作成、論文・プレゼン用図表、AIツールを活用した可視化を学びます",
+    description: "医療データ可視化を一緒に学びましょう。医療データの可視化テクニック、統計グラフの作成、論文・プレゼン用図表、AIツールを活用した可視化を、実践的に学ぶことができます。",
     level: 2,
     lessons: 5,
     xpReward: 60,
@@ -849,7 +849,7 @@ export const courses = [
   {
     id: "multimodal-ai-medicine",
     title: "マルチモーダルAI活用 - テキスト・画像・音声統合",
-    description: "マルチモーダルAIの基礎、医療における統合活用、テキストと画像の組み合わせ、音声認識、実践的な応用例を学びます",
+    description: "マルチモーダルAI活用を一緒に学びましょう。マルチモーダルAIの基礎、医療における統合活用、テキストと画像の組み合わせ、音声認識、実践的な応用例を、段階的に学ぶことができます。",
     level: 4,
     lessons: 7,
     xpReward: 85,
@@ -860,7 +860,7 @@ export const courses = [
   {
     id: "edge-ai-medical-devices",
     title: "エッジAIと医療デバイス - リアルタイム処理",
-    description: "エッジAIの基礎、医療デバイスへの実装、リアルタイム診断支援、プライバシー保護、実装のベストプラクティスを学びます",
+    description: "エッジAIと医療デバイスを一緒に学びましょう。エッジAIの基礎、医療デバイスへの実装、リアルタイム診断支援、プライバシー保護、実装のベストプラクティスを、実践的に学ぶことができます。",
     level: 4,
     lessons: 6,
     xpReward: 80,
@@ -871,7 +871,7 @@ export const courses = [
   {
     id: "ai-model-deployment",
     title: "AIモデルのデプロイメント - 本番環境への展開",
-    description: "AIモデルの本番デプロイ、API構築、スケーラビリティ、モニタリング、バージョン管理、運用の実践を学びます",
+    description: "AIモデルのデプロイメントを一緒に学びましょう。AIモデルの本番デプロイ、API構築、スケーラビリティ、モニタリング、バージョン管理、運用の実践を、段階的に学ぶことができます。",
     level: 4,
     lessons: 7,
     xpReward: 85,
@@ -882,7 +882,7 @@ export const courses = [
   {
     id: "federated-learning-medicine",
     title: "連合学習と医療 - プライバシー保護型AI",
-    description: "連合学習（Federated Learning）の基礎、医療データのプライバシー保護、分散学習、実装の基礎を学びます",
+    description: "連合学習と医療を一緒に学びましょう。連合学習（Federated Learning）の基礎、医療データのプライバシー保護、分散学習、実装の基礎を、段階的に学ぶことができます。",
     level: 4,
     lessons: 6,
     xpReward: 80,
@@ -893,7 +893,7 @@ export const courses = [
   {
     id: "ai-robotics-medicine",
     title: "AIロボティクスと医療 - 手術支援ロボット",
-    description: "医療ロボットにおけるAI活用、手術支援システム、リハビリロボット、AI制御、実践的な応用例を学びます",
+    description: "AIロボティクスと医療を一緒に学びましょう。医療ロボットにおけるAI活用、手術支援システム、リハビリロボット、AI制御、実践的な応用例を、段階的に学ぶことができます。",
     level: 4,
     lessons: 6,
     xpReward: 80,
@@ -904,7 +904,7 @@ export const courses = [
   {
     id: "ai-drug-interaction",
     title: "AI薬物相互作用予測 - 臨床薬理学への応用",
-    description: "薬物相互作用のAI予測、臨床薬理学への応用、個別化医療、薬剤選択支援、実践的な活用方法を学びます",
+    description: "AI薬物相互作用予測を一緒に学びましょう。薬物相互作用のAI予測、臨床薬理学への応用、個別化医療、薬剤選択支援、実践的な活用方法を、段階的に学ぶことができます。",
     level: 4,
     lessons: 6,
     xpReward: 80,
@@ -915,7 +915,7 @@ export const courses = [
   {
     id: "ai-precision-medicine",
     title: "AI精密医療 - 個別化治療戦略",
-    description: "精密医療におけるAI活用、ゲノム解析、バイオマーカー発見、個別化治療計画、実践的な応用例を学びます",
+    description: "AI精密医療を一緒に学びましょう。精密医療におけるAI活用、ゲノム解析、バイオマーカー発見、個別化治療計画、実践的な応用例を、段階的に学ぶことができます。",
     level: 4,
     lessons: 7,
     xpReward: 85,
@@ -926,7 +926,7 @@ export const courses = [
   {
     id: "ai-healthcare-analytics",
     title: "ヘルスケアアナリティクス - ビッグデータ分析",
-    description: "ヘルスケアビッグデータの分析、集団健康管理、疾病予測、ヘルスケアシステムの最適化、実践的な分析手法を学びます",
+    description: "ヘルスケアアナリティクスを一緒に学びましょう。ヘルスケアビッグデータの分析、集団健康管理、疾病予測、ヘルスケアシステムの最適化、実践的な分析手法を、段階的に学ぶことができます。",
     level: 4,
     lessons: 7,
     xpReward: 85,

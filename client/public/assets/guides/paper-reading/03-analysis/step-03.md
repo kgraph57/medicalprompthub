@@ -18,7 +18,9 @@ AIという超優秀なアシスタントに、面倒な要約と分析を丸投
 
 ### 📝 詳細手順
 
-![AIツールの比較](/Helix/assets/guides/paper-reading/images/ai_tools_comparison.png)
+![AIツールを使った要約と分析](./ai_summary_analysis.png)
+
+![AIツールを使った要約と分析](https://files.manuscdn.com/user_upload_by_module/session_file/90346460/cTkqObfafElvTdMs.png)
 
 #### 手順1: 論文PDFをAIに「渡す」
 
@@ -129,3 +131,4 @@ AIも間違うことはあります。
 
 AIという武器を手に入れた今、論文はもはや「読む」ものではなく「吟味する」ものに変わります。
 [Step 4: 批判的吟味（Critical Appraisal）](../04-critical-appraisal/step-04.md)に進みましょう。
+
