@@ -193,15 +193,90 @@ export default function Learn() {
   };
 
   const SidebarContent = () => {
-    // セクション内のトピック番号を計算（各セクションごとに1から開始）
-    let globalIndex = 0;
+    // コースが選択されている場合は、そのコースのレッスン一覧のみを表示
+    if (selectedCourseId && lessons.length > 0) {
+      return (
+        <div className="p-4">
+          {isMobile && (
+            <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                レッスン
+              </h2>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-1 rounded hover:bg-gray-100"
+                aria-label="サイドバーを閉じる"
+              >
+                <X className="w-4 h-4 text-gray-500" />
+              </button>
+            </div>
+          )}
+          
+          <div className="mb-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
+              {selectedTopic?.title || "レッスン"}
+            </h3>
+          </div>
+          
+          <ul className="space-y-0">
+            {lessons.map((lesson, index) => {
+              const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
+              const isContentAvailable = hasLessonContent(lesson.id);
+              const isSelected = selectedLessonId === lesson.id;
+              
+              return (
+                <li key={lesson.id}>
+                  <button
+                    onClick={() => {
+                      if (isContentAvailable) {
+                        handleLessonClick(lesson.id);
+                      }
+                    }}
+                    disabled={!isContentAvailable}
+                    className={cn(
+                      "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
+                      isSelected
+                        ? "bg-orange-500 text-white font-medium"
+                        : !isContentAvailable
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-gray-700 hover:bg-gray-100"
+                    )}
+                  >
+                    <span className={cn(
+                      "text-xs min-w-[18px]",
+                      isSelected ? "text-white" : "text-gray-500"
+                    )}>
+                      {index + 1}.
+                    </span>
+                    <span className="flex-1 text-left text-sm leading-tight">{lesson.title}</span>
+                    {isCompleted && (
+                      <CheckCircle2 className={cn(
+                        "w-3 h-3 flex-shrink-0",
+                        isSelected ? "text-white" : "text-green-600"
+                      )} />
+                    )}
+                    {!isContentAvailable && (
+                      <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                    )}
+                    {isSelected && (
+                      <ChevronRight className="w-3 h-3 text-white flex-shrink-0" />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    }
     
+    // コースが選択されていない場合は、コース一覧を表示（シンプルに）
     return (
       <div className="p-4">
         {isMobile && (
           <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
             <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              学習トピック
+              コース
             </h2>
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -213,17 +288,18 @@ export default function Learn() {
           </div>
         )}
         
-        {sections.map((section) => {
-          const sectionStartIndex = globalIndex;
+        {/* 最初の2つのコースのみを表示（シンプルに） */}
+        {sections.slice(0, 1).map((section) => {
+          // AI基礎セクションの最初の2つのコースのみを表示
+          const displayTopics = section.topics.slice(0, 2);
+          
           return (
             <div key={section.id} className="mb-6">
               <h3 className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2">
                 {section.title}
               </h3>
               <ul className="space-y-0">
-                {section.topics.map((topic, index) => {
-                  const topicIndex = sectionStartIndex + index + 1;
-                  globalIndex++;
+                {displayTopics.map((topic, index) => {
                   return (
                     <li key={topic.id}>
                       <button
@@ -242,7 +318,7 @@ export default function Learn() {
                           "text-xs min-w-[18px]",
                           selectedCourseId === topic.id ? "text-white" : "text-gray-500"
                         )}>
-                          {topicIndex}.
+                          {index + 1}.
                         </span>
                         <span className="flex-1 text-left text-sm leading-tight">{topic.title}</span>
                         {topic.comingSoon && (
