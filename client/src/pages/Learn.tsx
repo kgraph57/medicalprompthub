@@ -6,12 +6,12 @@ import { useLocation } from "wouter";
 import { updateSEO } from "@/lib/seo";
 import { motion } from "framer-motion";
 import { ChevronRight, Lock, BookOpen, Menu, X } from "lucide-react";
-import { learnTopics, type Topic, type TopicSection } from "@/data/learn-topics";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import { organizeCoursesIntoSections, type LearnTopic, type LearnSection } from "@/lib/course-mapper";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -41,9 +41,13 @@ const itemVariants = {
 
 export default function Learn() {
   const [location, setLocation] = useLocation();
-  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  
+  // コースデータをCursor Learn形式に変換
+  const sections = organizeCoursesIntoSections();
 
   useEffect(() => {
     updateSEO({
@@ -53,11 +57,15 @@ export default function Learn() {
       keywords: "AI学習,AI基礎,プロンプトエンジニアリング,AIリテラシー"
     });
 
-    // URLパラメータからトピックIDを取得
+    // URLパラメータからコースIDとレッスンIDを取得
     const params = new URLSearchParams(window.location.search);
-    const topicId = params.get("topic");
-    if (topicId) {
-      setSelectedTopicId(topicId);
+    const courseId = params.get("course");
+    const lessonId = params.get("lesson");
+    if (courseId) {
+      setSelectedCourseId(courseId);
+    }
+    if (lessonId) {
+      setSelectedLessonId(lessonId);
     }
 
     // モバイル判定
@@ -69,81 +77,112 @@ export default function Learn() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const selectedTopic = selectedTopicId
-    ? learnTopics
+  // 選択されたコース（トピック）を取得
+  const selectedTopic = selectedCourseId
+    ? sections
         .flatMap((section) => section.topics)
-        .find((topic) => topic.id === selectedTopicId)
+        .find((topic) => topic.id === selectedCourseId)
     : null;
 
-  const handleTopicClick = (topic: Topic) => {
+  const handleCourseClick = (topic: LearnTopic) => {
     if (topic.comingSoon) return;
-    setSelectedTopicId(topic.id);
-    setLocation(`/learn?topic=${topic.id}`);
+    setSelectedCourseId(topic.id);
+    setSelectedLessonId(null);
+    setLocation(`/learn?course=${topic.id}`);
     if (isMobile) {
       setIsSidebarOpen(false);
     }
   };
 
+  const handleLessonClick = (lessonId: string) => {
+    if (!selectedCourseId) return;
+    setSelectedLessonId(lessonId);
+    setLocation(`/learn?course=${selectedCourseId}&lesson=${lessonId}`);
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  const handleBackToCourse = () => {
+    setSelectedLessonId(null);
+    if (selectedCourseId) {
+      setLocation(`/learn?course=${selectedCourseId}`);
+    }
+  };
+
   const handleBackToList = () => {
-    setSelectedTopicId(null);
+    setSelectedCourseId(null);
+    setSelectedLessonId(null);
     setLocation("/learn");
   };
 
-  const SidebarContent = () => (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-          学習トピック
-        </h2>
-        {isMobile && (
-          <button
-            onClick={() => setIsSidebarOpen(false)}
-            className="p-1 rounded-md hover:bg-accent"
-            aria-label="サイドバーを閉じる"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
-      </div>
-      
-      {learnTopics.map((section) => (
-        <div key={section.id} className="mb-6">
-          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-            {section.title}
-          </h3>
-          <ul className="space-y-1">
-            {section.topics.map((topic, index) => (
-              <li key={topic.id}>
-                <button
-                  onClick={() => handleTopicClick(topic)}
-                  disabled={topic.comingSoon}
-                  className={cn(
-                    "w-full text-left px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2 group",
-                    selectedTopicId === topic.id
-                      ? "bg-primary text-primary-foreground"
-                      : topic.comingSoon
-                      ? "text-muted-foreground/50 cursor-not-allowed"
-                      : "text-foreground hover:bg-accent hover:text-accent-foreground"
-                  )}
-                >
-                  <span className="text-xs text-muted-foreground group-hover:text-foreground">
-                    {index + 1}.
-                  </span>
-                  <span className="flex-1">{topic.title}</span>
-                  {topic.comingSoon && (
-                    <Lock className="w-3 h-3 text-muted-foreground" />
-                  )}
-                  {selectedTopicId === topic.id && (
-                    <ChevronRight className="w-3 h-3" />
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
+  const SidebarContent = () => {
+    // セクション内のトピック番号を計算（各セクションごとに1から開始）
+    let globalIndex = 0;
+    
+    return (
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            学習トピック
+          </h2>
+          {isMobile && (
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="p-1 rounded-md hover:bg-accent"
+              aria-label="サイドバーを閉じる"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
-      ))}
-    </div>
-  );
+        
+        {sections.map((section) => {
+          const sectionStartIndex = globalIndex;
+          return (
+            <div key={section.id} className="mb-6">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                {section.title}
+              </h3>
+              <ul className="space-y-1">
+                {section.topics.map((topic, index) => {
+                  const topicIndex = sectionStartIndex + index + 1;
+                  globalIndex++;
+                  return (
+                    <li key={topic.id}>
+                      <button
+                        onClick={() => handleCourseClick(topic)}
+                        disabled={topic.comingSoon}
+                        className={cn(
+                          "w-full text-left px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2 group",
+                          selectedCourseId === topic.id
+                            ? "bg-primary text-primary-foreground"
+                            : topic.comingSoon
+                            ? "text-muted-foreground/50 cursor-not-allowed"
+                            : "text-foreground hover:bg-accent hover:text-accent-foreground"
+                        )}
+                      >
+                        <span className="text-xs text-muted-foreground group-hover:text-foreground">
+                          {topicIndex}.
+                        </span>
+                        <span className="flex-1">{topic.title}</span>
+                        {topic.comingSoon && (
+                          <Lock className="w-3 h-3 text-muted-foreground" />
+                        )}
+                        {selectedCourseId === topic.id && (
+                          <ChevronRight className="w-3 h-3" />
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <Layout>
