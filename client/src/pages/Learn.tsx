@@ -516,13 +516,22 @@ export default function Learn() {
                           </div>
                           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                             <p className="text-gray-900 mb-4">この章を完了しました</p>
-                            <button
-                              onClick={() => handleLessonClick(nextLesson.id)}
-                              className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-2 transition-colors"
-                            >
-                              学習を続ける
-                              <ArrowRight className="w-4 h-4" />
-                            </button>
+                            <div className="flex items-center gap-4">
+                              <button
+                                onClick={() => handleLessonClick(nextLesson.id)}
+                                className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-2 transition-colors"
+                              >
+                                学習を続ける
+                                <ArrowRight className="w-4 h-4" />
+                              </button>
+                              <Button
+                                onClick={() => handleLessonClick(nextLesson.id)}
+                                className="bg-orange-500 hover:bg-orange-600 text-white"
+                              >
+                                次のレッスンに進む
+                                <ArrowRight className="ml-2 w-4 h-4" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       )}
