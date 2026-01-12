@@ -56,7 +56,7 @@ export default function Learn() {
   const [isMobile, setIsMobile] = useState(false);
   const sectionCounterRef = useRef(1);
   
-  // クイズデータ
+  // クイズデータ（ai-basicsコースのみ実装済み）
   const quizzesData: Record<string, typeof lesson1Quizzes> = {
     "ai-basics-1": lesson1Quizzes,
     "ai-basics-2": lesson2Quizzes,
@@ -66,6 +66,8 @@ export default function Learn() {
     "ai-basics-6": lesson6Quizzes,
     "ai-basics-7": lesson7Quizzes,
     "ai-basics-8": lesson8Quizzes,
+    // generative-ai-basicsコースのクイズは今後追加予定
+    // 現時点ではレッスンコンテンツのみ利用可能
   };
   
   // コースデータをHelix Learn形式に変換
