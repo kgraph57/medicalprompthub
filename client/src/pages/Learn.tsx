@@ -18,6 +18,8 @@ import { hasLessonContent, getLessonContent } from "@/lib/lesson-content-loader"
 import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles";
 import { ArrowRight } from "lucide-react";
 import { Quiz } from "@/components/Quiz";
+import { SimpleQuiz } from "@/components/learn/SimpleQuiz";
+import { TokenizerDemo } from "@/components/learn/TokenizerDemo";
 import { lesson1Quizzes, lesson2Quizzes, lesson3Quizzes, lesson4Quizzes, lesson5Quizzes, lesson6Quizzes, lesson7Quizzes, lesson8Quizzes } from "@/data/courses/ai-basics/quizzes";
 
 const containerVariants = {
@@ -360,6 +362,31 @@ export default function Learn() {
                               />
                             </div>
                           );
+                        } else if (part === "[TOKENIZER]") {
+                          return (
+                            <div key={`tokenizer-${index}`} className="my-8">
+                              <TokenizerDemo />
+                            </div>
+                          );
+                        } else if (part === "[SIMPLE_QUIZ]" && quizzes.length > 0 && quizIndex < quizzes.length) {
+                          const currentQuiz = quizzes[quizIndex];
+                          quizIndex++;
+                          // 既存のQuizQuestionをSimpleQuizQuestionに変換
+                          if (currentQuiz.type === "multiple_choice" && currentQuiz.options) {
+                            const simpleQuiz = {
+                              question: currentQuiz.question,
+                              options: currentQuiz.options,
+                              correctAnswer: typeof currentQuiz.correctAnswer === "string" 
+                                ? currentQuiz.correctAnswer.toLowerCase() 
+                                : "a",
+                              explanation: currentQuiz.explanation,
+                            };
+                            return (
+                              <div key={`simple-quiz-${quizIndex}`} className="my-8">
+                                <SimpleQuiz question={simpleQuiz} />
+                              </div>
+                            );
+                          }
                         } else if (part.trim()) {
                           // Markdownコンテンツをレンダリング
                           let markdownContent = part.trim();
