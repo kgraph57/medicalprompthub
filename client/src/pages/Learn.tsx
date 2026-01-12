@@ -802,25 +802,24 @@ export default function Learn() {
                 </motion.div>
 
                 {/* アナロジー - Cursor Learn風 */}
-                <motion.div variants={itemVariants}>
+                <motion.div variants={itemVariants} className="prose prose-lg max-w-none">
                   <h3 className="text-xl font-bold mb-4 text-gray-900">移動手段のアナロジー</h3>
-                  <p className="mb-4 text-gray-600 leading-relaxed">
+                  <p className="mb-4 text-gray-900 leading-relaxed">
                     街を移動する方法には、いくつかの選択肢があります：
                   </p>
-                  <ol className="space-y-3 list-decimal list-inside text-gray-700 mb-4">
-                    <li>
+                  <ol className="space-y-3 list-decimal list-inside text-gray-900 mb-4 pl-0">
+                    <li className="pl-0">
                       <strong className="text-gray-900">徒歩</strong>: 無料ですが、時間がかかります。
                     </li>
-                    <li>
+                    <li className="pl-0">
                       <strong className="text-gray-900">自転車</strong>: 少し費用がかかり、やや速いです。
                     </li>
-                    <li>
+                    <li className="pl-0">
                       <strong className="text-gray-900">自動車</strong>: 最も高額ですが、最も速いです。
                     </li>
                   </ol>
-                  <p className="text-gray-600 leading-relaxed">
-                    AIモデルも同様に、コスト、速度、性能に応じていろいろな選択肢があります。
-                    目的に応じて適切なモデルを選ぶことが重要です。
+                  <p className="text-gray-900 leading-relaxed">
+                    AIモデルも同様に、コスト、速度、性能に応じていろいろな選択肢があります。目的に応じて適切なモデルを選ぶことが重要です。
                   </p>
                 </motion.div>
               </motion.div>
