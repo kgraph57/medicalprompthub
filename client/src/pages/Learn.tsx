@@ -236,7 +236,7 @@ export default function Learn() {
                     className={cn(
                       "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
                       isSelected
-                        ? "bg-orange-500 text-white font-medium"
+                        ? "bg-primary-500 text-white font-medium"
                         : !isContentAvailable
                         ? "text-gray-400 cursor-not-allowed"
                         : "text-gray-700 hover:bg-gray-100"
@@ -308,7 +308,7 @@ export default function Learn() {
                         className={cn(
                           "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
                           selectedCourseId === topic.id
-                            ? "bg-orange-500 text-white font-medium"
+                            ? "bg-primary-500 text-white font-medium"
                             : topic.comingSoon
                             ? "text-gray-400 cursor-not-allowed"
                             : "text-gray-700 hover:bg-gray-100"
@@ -512,7 +512,7 @@ export default function Learn() {
                             return (
                               <div className="my-8 border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50">
                                 <div className="flex items-center gap-3 mb-3">
-                                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white text-sm font-bold flex-shrink-0">
+                                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-500 text-white text-sm font-bold flex-shrink-0">
                                     {currentSectionNumber}
                                   </div>
                                   <h2
@@ -553,7 +553,7 @@ export default function Learn() {
                             if (inline) {
                               return (
                                 <code
-                                  className="px-1.5 py-0.5 rounded bg-orange-50 text-orange-700 font-mono text-sm"
+                                  className="px-1.5 py-0.5 rounded bg-primary-50 text-primary-700 font-mono text-sm"
                                   {...props}
                                 >
                                   {children}
@@ -572,7 +572,7 @@ export default function Learn() {
                             );
                           },
                           blockquote: ({ node, ...props }: any) => (
-                            <blockquote className="border-l-4 border-orange-500 bg-orange-50 pl-4 py-2 my-6 italic text-gray-700" {...props} />
+                            <blockquote className="border-l-4 border-primary-500 bg-primary-50 pl-4 py-2 my-6 italic text-gray-700" {...props} />
                           ),
                         }}
                       >
@@ -591,7 +591,7 @@ export default function Learn() {
                             <div className="flex justify-center">
                               <Button
                                 onClick={() => handleLessonClick(nextLesson.id)}
-                                className="bg-orange-500 hover:bg-orange-600 text-white"
+                                className="bg-primary-500 hover:bg-primary-600 text-white"
                               >
                                 次のレッスンに進む
                                 <ArrowRight className="ml-2 w-4 h-4" />
@@ -624,7 +624,7 @@ export default function Learn() {
                               className={cn(
                                 !isContentAvailable
                                   ? "opacity-60 cursor-not-allowed"
-                                  : "hover:shadow-md hover:border-orange-200 transition-all duration-200 cursor-pointer",
+                                  : "hover:shadow-md hover:border-primary-200 transition-all duration-200 cursor-pointer",
                                 "border border-gray-200 bg-white"
                               )}
                               onClick={() => {
@@ -641,7 +641,7 @@ export default function Learn() {
                                         "flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm",
                                         !isContentAvailable
                                           ? "bg-gray-100 text-gray-400"
-                                          : "bg-orange-100 text-orange-600"
+                                          : "bg-primary-100 text-primary-600"
                                       )}
                                     >
                                       {index + 1}
@@ -730,19 +730,19 @@ export default function Learn() {
                       <h2 className="text-2xl font-bold mb-3 text-gray-900">このコースで学べること</h2>
                       <ul className="space-y-2 text-gray-600 leading-relaxed">
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span><strong className="text-gray-900">AIモデルの基礎理解</strong>: トークン、コンテキスト、ハルシネーション、モデルの種類と特徴を理解します</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span><strong className="text-gray-900">実践的な活用方法</strong>: プロンプトエンジニアリング、ツール呼び出し、エージェントの使い方を実践的に学びます</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span><strong className="text-gray-900">コストとパフォーマンス</strong>: トークンと料金の仕組み、モデルの選択基準、コスト最適化を理解します</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span><strong className="text-gray-900">実践的なツール活用</strong>: ChatGPT、Claude、Geminiなどの主要AIツールの特徴と使い分け方を学びます</span>
                         </li>
                       </ul>
@@ -790,15 +790,15 @@ export default function Learn() {
                       </p>
                       <ul className="space-y-2 text-gray-600 leading-relaxed">
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>基本的なプログラミング経験（任意の言語）</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>ソフトウェア開発の基礎知識</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>AIや機械学習の専門知識は不要です</span>
                         </li>
                       </ul>
@@ -832,23 +832,23 @@ export default function Learn() {
                       </p>
                       <ul className="space-y-2 text-gray-600 leading-relaxed">
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>AIモデルの仕組みと制限事項を理解し、適切なモデルを選択できる</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>効果的なプロンプトを書いて、AIツールを最大限に活用できる</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>トークンと料金の仕組みを理解し、コストを最適化できる</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>ツール呼び出しやエージェントなど、高度な機能を活用できる</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-orange-500 mt-1">•</span>
+                          <span className="text-primary-500 mt-1">•</span>
                           <span>実際のプロジェクトでAIを効果的に統合できる</span>
                         </li>
                       </ul>
