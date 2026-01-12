@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { LearnNavBar } from "@/components/learn/LearnNavBar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
