@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { updateSEO } from "@/lib/seo";
 import { motion } from "framer-motion";
-import { ChevronRight, Lock, BookOpen, Menu, X } from "lucide-react";
+import { ChevronRight, Lock, BookOpen, Menu, X, CheckCircle2, Construction, Clock, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { organizeCoursesIntoSections, type LearnTopic, type LearnSection } from "@/lib/course-mapper";
+import { getLessonsForCourse } from "@/pages/CourseDetail";
+import { hasLessonContent } from "@/lib/lesson-content-loader";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -83,6 +85,23 @@ export default function Learn() {
         .flatMap((section) => section.topics)
         .find((topic) => topic.id === selectedCourseId)
     : null;
+
+  // コースの進捗情報をローカルストレージから読み込む
+  const [courseProgress, setCourseProgress] = useState<{ completedLessons?: string[] }>(() => {
+    if (!selectedCourseId) return { completedLessons: [] };
+    const saved = localStorage.getItem(`course-progress-${selectedCourseId}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return { completedLessons: [] };
+      }
+    }
+    return { completedLessons: [] };
+  });
+
+  // 選択されたコースのレッスン一覧を取得
+  const lessons = selectedCourseId ? getLessonsForCourse(selectedCourseId) : [];
 
   const handleCourseClick = (topic: LearnTopic) => {
     if (topic.comingSoon) return;
@@ -238,10 +257,10 @@ export default function Learn() {
                 <motion.div variants={itemVariants} className="mb-6">
                   <Button
                     variant="ghost"
-                    onClick={handleBackToList}
+                    onClick={selectedLessonId ? handleBackToCourse : handleBackToList}
                     className="mb-4"
                   >
-                    ← 一覧に戻る
+                    ← {selectedLessonId ? "コースに戻る" : "一覧に戻る"}
                   </Button>
                   <h1 className="text-2xl sm:text-3xl font-bold mb-4">{selectedTopic.title}</h1>
                   {selectedTopic.description && (
@@ -251,63 +270,101 @@ export default function Learn() {
                   )}
                 </motion.div>
 
-                {selectedTopic.content && (
-                  <motion.div variants={itemVariants}>
-                    <Card className="border-2">
-                      <CardContent className="pt-6">
-                        <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-2xl prose-h1:mb-6 prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3 prose-p:text-base prose-p:leading-relaxed prose-p:my-4 prose-li:my-2 prose-ul:my-4 prose-ol:my-4 prose-strong:font-semibold prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm break-words">
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                            components={{
-                              h1: ({ node, ...props }: any) => (
-                                <h1 className="text-2xl font-bold mb-6 tracking-tight" {...props} />
-                              ),
-                              h2: ({ node, ...props }: any) => (
-                                <h2 className="text-xl font-bold mt-8 mb-4 tracking-tight" {...props} />
-                              ),
-                              h3: ({ node, ...props }: any) => (
-                                <h3 className="text-lg font-bold mt-6 mb-3 tracking-tight" {...props} />
-                              ),
-                              p: ({ node, ...props }: any) => (
-                                <p className="text-base leading-relaxed my-4" {...props} />
-                              ),
-                              ul: ({ node, ...props }: any) => (
-                                <ul className="space-y-2 my-4 list-disc list-inside" {...props} />
-                              ),
-                              ol: ({ node, ...props }: any) => (
-                                <ol className="space-y-2 my-4 list-decimal list-inside" {...props} />
-                              ),
-                              strong: ({ node, ...props }: any) => (
-                                <strong className="font-semibold" {...props} />
-                              ),
-                              code: ({ node, inline, className, children, ...props }: any) => {
-                                if (inline) {
-                                  return (
-                                    <code
-                                      className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-sm"
-                                      {...props}
-                                    >
-                                      {children}
-                                    </code>
-                                  );
-                                }
-                                return (
-                                  <code
-                                    className="block p-4 bg-muted rounded-lg text-sm font-mono overflow-x-auto"
-                                    {...props}
-                                  >
-                                    {children}
-                                  </code>
-                                );
-                              },
-                            }}
+                {/* レッスン一覧 */}
+                {!selectedLessonId && lessons.length > 0 && (
+                  <motion.div variants={itemVariants} className="mb-6">
+                    <h2 className="text-lg font-bold mb-4">レッスン一覧</h2>
+                    <div className="space-y-2">
+                      {lessons.map((lesson, index) => {
+                        const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
+                        const isContentAvailable = hasLessonContent(lesson.id);
+
+                        return (
+                          <motion.div
+                            key={lesson.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 * index }}
                           >
-                            {selectedTopic.content}
-                          </ReactMarkdown>
-                        </div>
-                      </CardContent>
-                    </Card>
+                            <Card
+                              className={cn(
+                                !isContentAvailable
+                                  ? "opacity-60 cursor-not-allowed"
+                                  : "hover:shadow-sm hover:border-primary/30 transition-all duration-200 cursor-pointer",
+                                "border-2 bg-gradient-to-r from-background to-accent/5"
+                              )}
+                              onClick={() => {
+                                if (isContentAvailable) {
+                                  handleLessonClick(lesson.id);
+                                }
+                              }}
+                            >
+                              <CardHeader className="p-3">
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="flex items-center gap-2 flex-1">
+                                    <div
+                                      className={cn(
+                                        "flex items-center justify-center w-8 h-8 rounded-full font-bold text-base",
+                                        !isContentAvailable
+                                          ? "bg-muted text-muted-foreground"
+                                          : "bg-primary/10 text-primary"
+                                      )}
+                                    >
+                                      {index + 1}
+                                    </div>
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2 mb-0.5">
+                                        <CardTitle
+                                          className={cn(
+                                            "text-base font-semibold",
+                                            !isContentAvailable && "text-muted-foreground"
+                                          )}
+                                        >
+                                          {lesson.title}
+                                        </CardTitle>
+                                        {isCompleted && (
+                                          <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                        )}
+                                        {!isContentAvailable && (
+                                          <Construction className="w-4 h-4 text-muted-foreground" />
+                                        )}
+                                      </div>
+                                      <CardDescription
+                                        className={cn(
+                                          "text-sm line-clamp-2",
+                                          !isContentAvailable && "text-muted-foreground/70"
+                                        )}
+                                      >
+                                        {lesson.description}
+                                      </CardDescription>
+                                    </div>
+                                  </div>
+                                  <div
+                                    className={cn(
+                                      "flex items-center gap-3 text-sm",
+                                      !isContentAvailable
+                                        ? "text-muted-foreground/60"
+                                        : "text-muted-foreground"
+                                    )}
+                                  >
+                                    <div className="flex items-center gap-1.5">
+                                      <Clock className="w-3.5 h-3.5" />
+                                      <span className="font-medium">{lesson.duration}分</span>
+                                    </div>
+                                    {lesson.slides > 0 && (
+                                      <div className="flex items-center gap-1.5">
+                                        <FileText className="w-3.5 h-3.5" />
+                                        <span className="font-medium">{lesson.slides}</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </CardHeader>
+                            </Card>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
                   </motion.div>
                 )}
               </motion.div>
