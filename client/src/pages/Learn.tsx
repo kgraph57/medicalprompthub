@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { LearnNavBar } from "@/components/learn/LearnNavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -160,30 +161,30 @@ export default function Learn() {
     let globalIndex = 0;
     
     return (
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-            学習トピック
-          </h2>
-          {isMobile && (
+      <div className="p-6">
+        {isMobile && (
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              学習トピック
+            </h2>
             <button
               onClick={() => setIsSidebarOpen(false)}
-              className="p-1 rounded-md hover:bg-accent"
+              className="p-1 rounded-md hover:bg-gray-100"
               aria-label="サイドバーを閉じる"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-gray-500" />
             </button>
-          )}
-        </div>
+          </div>
+        )}
         
         {sections.map((section) => {
           const sectionStartIndex = globalIndex;
           return (
-            <div key={section.id} className="mb-6">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            <div key={section.id} className="mb-8">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
                 {section.title}
               </h3>
-              <ul className="space-y-1">
+              <ul className="space-y-0.5">
                 {section.topics.map((topic, index) => {
                   const topicIndex = sectionStartIndex + index + 1;
                   globalIndex++;
@@ -193,23 +194,23 @@ export default function Learn() {
                         onClick={() => handleCourseClick(topic)}
                         disabled={topic.comingSoon}
                         className={cn(
-                          "w-full text-left px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2 group",
+                          "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
                           selectedCourseId === topic.id
-                            ? "bg-primary text-primary-foreground"
+                            ? "bg-orange-50 text-gray-900 font-medium"
                             : topic.comingSoon
-                            ? "text-muted-foreground/50 cursor-not-allowed"
-                            : "text-foreground hover:bg-accent hover:text-accent-foreground"
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                         )}
                       >
-                        <span className="text-xs text-muted-foreground group-hover:text-foreground">
+                        <span className="text-xs text-gray-500 group-hover:text-gray-700 min-w-[20px]">
                           {topicIndex}.
                         </span>
-                        <span className="flex-1">{topic.title}</span>
+                        <span className="flex-1 text-left">{topic.title}</span>
                         {topic.comingSoon && (
-                          <Lock className="w-3 h-3 text-muted-foreground" />
+                          <Lock className="w-3 h-3 text-gray-400" />
                         )}
                         {selectedCourseId === topic.id && (
-                          <ChevronRight className="w-3 h-3" />
+                          <ChevronRight className="w-3 h-3 text-gray-600" />
                         )}
                       </button>
                     </li>
@@ -224,8 +225,11 @@ export default function Learn() {
   };
 
   return (
-    <Layout>
-      <div className="flex h-[calc(100vh-3.5rem)] relative">
+    <div className="flex flex-col h-screen bg-white">
+      {/* Cursor Learn風のトップナビゲーションバー */}
+      <LearnNavBar />
+      
+      <div className="flex flex-1 overflow-hidden">
         {/* モバイル用オーバーレイ */}
         {isMobile && isSidebarOpen && (
           <>
@@ -236,13 +240,13 @@ export default function Learn() {
           </>
         )}
 
-        {/* 左サイドバー */}
+        {/* 左サイドバー - Cursor Learn風 */}
         <aside
           className={cn(
-            "w-64 flex-shrink-0 border-r border-border bg-muted/30 overflow-y-auto transition-transform duration-300 z-50",
+            "w-64 flex-shrink-0 border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 z-50",
             isMobile
               ? cn(
-                  "fixed left-0 top-0 bottom-0",
+                  "fixed left-0 top-14 bottom-0",
                   isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 )
               : "relative"
@@ -251,11 +255,11 @@ export default function Learn() {
           <SidebarContent />
         </aside>
 
-        {/* メインコンテンツエリア */}
-        <main className="flex-1 overflow-y-auto bg-background">
+        {/* メインコンテンツエリア - Cursor Learn風 */}
+        <main className="flex-1 overflow-y-auto bg-white">
           {/* モバイル用サイドバートグルボタン */}
           {isMobile && (
-            <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border px-4 py-2">
+            <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-2">
               <Button
                 variant="ghost"
                 size="icon"
@@ -268,38 +272,44 @@ export default function Learn() {
           )}
 
           {selectedTopic ? (
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div className="max-w-4xl mx-auto px-8 py-12">
               <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
               >
-                <motion.div variants={itemVariants} className="mb-6">
+                <motion.div variants={itemVariants} className="mb-8">
                   <Button
                     variant="ghost"
                     onClick={selectedLessonId ? handleBackToCourse : handleBackToList}
-                    className="mb-4"
+                    className="mb-6 text-gray-600 hover:text-gray-900"
                   >
                     ← {selectedLessonId ? "コースに戻る" : "一覧に戻る"}
                   </Button>
-                  <h1 className="text-2xl sm:text-3xl font-bold mb-4">{selectedTopic.title}</h1>
+                  <h1 className="text-4xl font-bold mb-4 text-gray-900 tracking-tight">
+                    {selectedTopic.title}
+                  </h1>
                   {selectedTopic.description && (
-                    <p className="text-muted-foreground text-base sm:text-lg mb-6">
+                    <p className="text-gray-600 text-lg mb-8 leading-relaxed">
                       {selectedTopic.description}
                     </p>
                   )}
                 </motion.div>
 
-                {/* レッスン詳細表示 */}
+                {/* レッスン詳細表示 - Cursor Learn風 */}
                 {selectedLessonId && selectedLesson && lessonContent && (
                   <motion.div variants={itemVariants} className="mb-6">
-                    <div className="mb-6">
-                      <h2 className="text-2xl font-bold mb-4">{selectedLesson.title}</h2>
+                    <div className="mb-8">
+                      <h2 className="text-3xl font-bold mb-4 text-gray-900 tracking-tight">
+                        {selectedLesson.title}
+                      </h2>
                       {selectedLesson.description && (
-                        <p className="text-muted-foreground mb-6">{selectedLesson.description}</p>
+                        <p className="text-gray-600 text-lg mb-6 leading-relaxed">
+                          {selectedLesson.description}
+                        </p>
                       )}
                     </div>
-                    <div className={UNIFIED_PROSE_CLASSES}>
+                    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-orange-600 prose-code:bg-orange-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-50 prose-pre:border prose-pre:border-gray-200">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -310,10 +320,10 @@ export default function Learn() {
                     </div>
                     {/* 次のレッスンへのナビゲーション */}
                     {nextLesson && (
-                      <div className="mt-8 pt-6 border-t">
+                      <div className="mt-12 pt-8 border-t border-gray-200">
                         <Button
                           onClick={() => handleLessonClick(nextLesson.id)}
-                          className="w-full sm:w-auto"
+                          className="bg-orange-500 hover:bg-orange-600 text-white"
                         >
                           次のレッスン: {nextLesson.title}
                           <ArrowRight className="ml-2 w-4 h-4" />
@@ -323,10 +333,10 @@ export default function Learn() {
                   </motion.div>
                 )}
 
-                {/* レッスン一覧 */}
+                {/* レッスン一覧 - Cursor Learn風 */}
                 {!selectedLessonId && lessons.length > 0 && (
                   <motion.div variants={itemVariants} className="mb-6">
-                    <h2 className="text-lg font-bold mb-4">レッスン一覧</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-gray-900">レッスン一覧</h2>
                     <div className="space-y-2">
                       {lessons.map((lesson, index) => {
                         const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
@@ -343,8 +353,8 @@ export default function Learn() {
                               className={cn(
                                 !isContentAvailable
                                   ? "opacity-60 cursor-not-allowed"
-                                  : "hover:shadow-sm hover:border-primary/30 transition-all duration-200 cursor-pointer",
-                                "border-2 bg-gradient-to-r from-background to-accent/5"
+                                  : "hover:shadow-md hover:border-orange-200 transition-all duration-200 cursor-pointer",
+                                "border border-gray-200 bg-white"
                               )}
                               onClick={() => {
                                 if (isContentAvailable) {
@@ -357,10 +367,10 @@ export default function Learn() {
                                   <div className="flex items-center gap-2 flex-1">
                                     <div
                                       className={cn(
-                                        "flex items-center justify-center w-8 h-8 rounded-full font-bold text-base",
+                                        "flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm",
                                         !isContentAvailable
-                                          ? "bg-muted text-muted-foreground"
-                                          : "bg-primary/10 text-primary"
+                                          ? "bg-gray-100 text-gray-400"
+                                          : "bg-orange-100 text-orange-600"
                                       )}
                                     >
                                       {index + 1}
@@ -369,23 +379,23 @@ export default function Learn() {
                                       <div className="flex items-center gap-2 mb-0.5">
                                         <CardTitle
                                           className={cn(
-                                            "text-base font-semibold",
-                                            !isContentAvailable && "text-muted-foreground"
+                                            "text-base font-semibold text-gray-900",
+                                            !isContentAvailable && "text-gray-400"
                                           )}
                                         >
                                           {lesson.title}
                                         </CardTitle>
                                         {isCompleted && (
-                                          <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                          <CheckCircle2 className="w-4 h-4 text-green-600" />
                                         )}
                                         {!isContentAvailable && (
-                                          <Construction className="w-4 h-4 text-muted-foreground" />
+                                          <Construction className="w-4 h-4 text-gray-400" />
                                         )}
                                       </div>
                                       <CardDescription
                                         className={cn(
-                                          "text-sm line-clamp-2",
-                                          !isContentAvailable && "text-muted-foreground/70"
+                                          "text-sm line-clamp-2 text-gray-600",
+                                          !isContentAvailable && "text-gray-400"
                                         )}
                                       >
                                         {lesson.description}
@@ -396,8 +406,8 @@ export default function Learn() {
                                     className={cn(
                                       "flex items-center gap-3 text-sm",
                                       !isContentAvailable
-                                        ? "text-muted-foreground/60"
-                                        : "text-muted-foreground"
+                                        ? "text-gray-400"
+                                        : "text-gray-500"
                                     )}
                                   >
                                     <div className="flex items-center gap-1.5">
@@ -423,18 +433,20 @@ export default function Learn() {
               </motion.div>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+            <div className="max-w-4xl mx-auto px-8 py-12">
               <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
               >
-                <motion.div variants={itemVariants} className="mb-8">
-                  <h1 className="text-3xl sm:text-4xl font-bold mb-4">Cursor Learn</h1>
-                  <p className="text-lg sm:text-xl text-muted-foreground mb-2">
+                <motion.div variants={itemVariants} className="mb-12">
+                  <h1 className="text-5xl font-bold mb-6 text-gray-900 tracking-tight">
+                    Cursor Learn
+                  </h1>
+                  <p className="text-xl text-gray-600 mb-4">
                     Cursor Learnへようこそ!
                   </p>
-                  <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+                  <p className="text-gray-700 leading-relaxed text-base">
                     このコースでは、プログラマーがAIを効果的に活用する方法を学びます。
                     AIモデルやツールを使ったソフトウェア開発に焦点を当て、
                     機械学習やカスタムモデルのトレーニングではありません。
@@ -444,52 +456,44 @@ export default function Learn() {
                 </motion.div>
 
                 {/* 動画プレイヤー部分は除外（プレースホルダーとして表示） */}
-                <motion.div variants={itemVariants} className="mb-8">
-                  <Card className="border-2 bg-muted/30">
-                    <CardContent className="pt-6">
-                      <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                        <div className="text-center text-muted-foreground">
-                          <BookOpen className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                          <p className="text-sm">動画コンテンツは今後追加予定です</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <motion.div variants={itemVariants} className="mb-12">
+                  <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
+                    <div className="text-center text-gray-500">
+                      <BookOpen className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">動画コンテンツは今後追加予定です</p>
+                    </div>
+                  </div>
                 </motion.div>
 
-                {/* アナロジー */}
+                {/* アナロジー - Cursor Learn風 */}
                 <motion.div variants={itemVariants}>
-                  <Card className="border-2">
-                    <CardHeader>
-                      <CardTitle>移動手段のアナロジー</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="mb-4 text-muted-foreground">
-                        街を移動する方法には、いくつかの選択肢があります：
-                      </p>
-                      <ol className="space-y-3 list-decimal list-inside">
-                        <li>
-                          <strong>徒歩</strong>: 無料ですが、時間がかかります。
-                        </li>
-                        <li>
-                          <strong>自転車</strong>: 少し費用がかかり、やや速いです。
-                        </li>
-                        <li>
-                          <strong>自動車</strong>: 最も高額ですが、最も速いです。
-                        </li>
-                      </ol>
-                      <p className="mt-4 text-muted-foreground">
-                        AIモデルも同様に、コスト、速度、性能に応じていろいろな選択肢があります。
-                        目的に応じて適切なモデルを選ぶことが重要です。
-                      </p>
-                    </CardContent>
-                  </Card>
+                  <div className="border border-gray-200 rounded-lg p-6 bg-white">
+                    <h3 className="text-xl font-bold mb-4 text-gray-900">移動手段のアナロジー</h3>
+                    <p className="mb-4 text-gray-700 leading-relaxed">
+                      街を移動する方法には、いくつかの選択肢があります：
+                    </p>
+                    <ol className="space-y-3 list-decimal list-inside mb-4 text-gray-700">
+                      <li>
+                        <strong className="text-gray-900">徒歩</strong>: 無料ですが、時間がかかります。
+                      </li>
+                      <li>
+                        <strong className="text-gray-900">自転車</strong>: 少し費用がかかり、やや速いです。
+                      </li>
+                      <li>
+                        <strong className="text-gray-900">自動車</strong>: 最も高額ですが、最も速いです。
+                      </li>
+                    </ol>
+                    <p className="text-gray-700 leading-relaxed">
+                      AIモデルも同様に、コスト、速度、性能に応じていろいろな選択肢があります。
+                      目的に応じて適切なモデルを選ぶことが重要です。
+                    </p>
+                  </div>
                 </motion.div>
               </motion.div>
             </div>
           )}
         </main>
       </div>
-    </Layout>
+    </div>
   );
 }
