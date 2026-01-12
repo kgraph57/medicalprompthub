@@ -161,15 +161,15 @@ export default function Learn() {
     let globalIndex = 0;
     
     return (
-      <div className="p-6">
+      <div className="p-4">
         {isMobile && (
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               学習トピック
             </h2>
             <button
               onClick={() => setIsSidebarOpen(false)}
-              className="p-1 rounded-md hover:bg-gray-100"
+              className="p-1 rounded hover:bg-gray-100"
               aria-label="サイドバーを閉じる"
             >
               <X className="w-4 h-4 text-gray-500" />
@@ -180,11 +180,11 @@ export default function Learn() {
         {sections.map((section) => {
           const sectionStartIndex = globalIndex;
           return (
-            <div key={section.id} className="mb-8">
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
+            <div key={section.id} className="mb-6">
+              <h3 className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2">
                 {section.title}
               </h3>
-              <ul className="space-y-0.5">
+              <ul className="space-y-0">
                 {section.topics.map((topic, index) => {
                   const topicIndex = sectionStartIndex + index + 1;
                   globalIndex++;
@@ -196,21 +196,24 @@ export default function Learn() {
                         className={cn(
                           "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
                           selectedCourseId === topic.id
-                            ? "bg-orange-50 text-gray-900 font-medium"
+                            ? "bg-orange-500 text-white font-medium"
                             : topic.comingSoon
                             ? "text-gray-400 cursor-not-allowed"
-                            : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                            : "text-gray-700 hover:bg-gray-100"
                         )}
                       >
-                        <span className="text-xs text-gray-500 group-hover:text-gray-700 min-w-[20px]">
+                        <span className={cn(
+                          "text-xs min-w-[18px]",
+                          selectedCourseId === topic.id ? "text-white" : "text-gray-500"
+                        )}>
                           {topicIndex}.
                         </span>
-                        <span className="flex-1 text-left">{topic.title}</span>
+                        <span className="flex-1 text-left text-sm leading-tight">{topic.title}</span>
                         {topic.comingSoon && (
-                          <Lock className="w-3 h-3 text-gray-400" />
+                          <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
                         )}
                         {selectedCourseId === topic.id && (
-                          <ChevronRight className="w-3 h-3 text-gray-600" />
+                          <ChevronRight className="w-3 h-3 text-white flex-shrink-0" />
                         )}
                       </button>
                     </li>
@@ -240,10 +243,10 @@ export default function Learn() {
           </>
         )}
 
-        {/* 左サイドバー - Helix Learn風 */}
+        {/* 左サイドバー - Cursor Learn風（約200px幅） */}
         <aside
           className={cn(
-            "w-64 flex-shrink-0 border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 z-50",
+            "w-[200px] flex-shrink-0 border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 z-50",
             isMobile
               ? cn(
                   "fixed left-0 top-14 bottom-0",
@@ -272,7 +275,7 @@ export default function Learn() {
           )}
 
           {selectedTopic ? (
-            <div className="max-w-4xl mx-auto px-8 py-12">
+            <div className="max-w-3xl mx-auto px-8 py-8">
               <motion.div
                 initial="hidden"
                 animate="visible"
@@ -282,11 +285,16 @@ export default function Learn() {
                   <Button
                     variant="ghost"
                     onClick={selectedLessonId ? handleBackToCourse : handleBackToList}
-                    className="mb-6 text-gray-600 hover:text-gray-900"
+                    className="mb-6 text-gray-600 hover:text-gray-900 -ml-2"
                   >
                     ← {selectedLessonId ? "コースに戻る" : "一覧に戻る"}
                   </Button>
-                  <h1 className="text-4xl font-bold mb-4 text-gray-900 tracking-tight">
+                  <div className="mb-2">
+                    <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      {selectedTopic.category || "AI基礎"}
+                    </span>
+                  </div>
+                  <h1 className="text-4xl font-bold mb-6 text-gray-900 tracking-tight">
                     {selectedTopic.title}
                   </h1>
                   {selectedTopic.description && (
@@ -309,11 +317,70 @@ export default function Learn() {
                         </p>
                       )}
                     </div>
-                    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-orange-600 prose-code:bg-orange-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-50 prose-pre:border prose-pre:border-gray-200">
+                    <div className="prose prose-lg max-w-none">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                        components={UNIFIED_MARKDOWN_COMPONENTS}
+                        components={{
+                          ...UNIFIED_MARKDOWN_COMPONENTS,
+                          h2: ({ node, ...props }: any) => {
+                            const title = typeof props.children === 'string' 
+                              ? props.children 
+                              : props.children?.toString() || '';
+                            const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                            return (
+                              <div className="my-8">
+                                <h2
+                                  id={id}
+                                  className="text-2xl font-bold mb-4 text-gray-900 tracking-tight border-b border-dashed border-gray-300 pb-2"
+                                  {...props}
+                                >
+                                  {props.children}
+                                </h2>
+                              </div>
+                            );
+                          },
+                          h3: ({ node, ...props }: any) => (
+                            <h3 className="text-xl font-bold mt-8 mb-3 text-gray-900 tracking-tight" {...props} />
+                          ),
+                          p: ({ node, ...props }: any) => (
+                            <p className="text-base text-gray-700 leading-relaxed my-4" {...props} />
+                          ),
+                          ul: ({ node, ...props }: any) => (
+                            <ul className="list-disc pl-6 my-4 space-y-2 text-gray-700" {...props} />
+                          ),
+                          ol: ({ node, ...props }: any) => (
+                            <ol className="list-decimal pl-6 my-4 space-y-2 text-gray-700" {...props} />
+                          ),
+                          strong: ({ node, ...props }: any) => (
+                            <strong className="font-semibold text-gray-900" {...props} />
+                          ),
+                          code: ({ node, inline, className, children, ...props }: any) => {
+                            if (inline) {
+                              return (
+                                <code
+                                  className="px-1.5 py-0.5 rounded bg-orange-50 text-orange-700 font-mono text-sm"
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              );
+                            }
+                            return (
+                              <div className="my-6 overflow-x-auto">
+                                <code
+                                  className="block p-4 bg-gray-900 text-gray-100 rounded-lg text-sm font-mono"
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              </div>
+                            );
+                          },
+                          blockquote: ({ node, ...props }: any) => (
+                            <blockquote className="border-l-4 border-orange-500 bg-orange-50 pl-4 py-2 my-6 italic text-gray-700" {...props} />
+                          ),
+                        }}
                       >
                         {lessonContent}
                       </ReactMarkdown>
@@ -433,7 +500,7 @@ export default function Learn() {
               </motion.div>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto px-8 py-12">
+            <div className="max-w-3xl mx-auto px-8 py-12">
               <motion.div
                 initial="hidden"
                 animate="visible"
