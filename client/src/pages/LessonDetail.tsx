@@ -259,7 +259,8 @@ import medicalAiEthicsLesson4Md from "@/data/courses/medical-ai-ethics/lesson-4.
 import medicalAiEthicsLesson5Md from "@/data/courses/medical-ai-ethics/lesson-5.md?raw";
 import medicalAiEthicsLesson6Md from "@/data/courses/medical-ai-ethics/lesson-6.md?raw";
 
-const lessonContent: Record<string, string> = {
+// レッスンコンテンツをエクスポートして他のコンポーネントから再利用可能にする
+export const lessonContent: Record<string, string> = {
   // ai-basicsコース
   "ai-basics-1": aiBasicsLesson1Md,
   "ai-basics-2": aiBasicsLesson2Md,
