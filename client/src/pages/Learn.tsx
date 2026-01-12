@@ -2,11 +2,11 @@ import { Layout } from "@/components/Layout";
 import { LearnNavBar } from "@/components/learn/LearnNavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { updateSEO } from "@/lib/seo";
 import { motion } from "framer-motion";
-import { ChevronRight, Lock, BookOpen, Menu, X, CheckCircle2, Construction, Clock, FileText } from "lucide-react";
+import { ChevronRight, Lock, BookOpen, Menu, X, CheckCircle2, Construction, Clock, FileText, Link as LinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -50,6 +50,7 @@ export default function Learn() {
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [sectionCounter, setSectionCounter] = useState(1);
   
   // コースデータをHelix Learn形式に変換
   const sections = organizeCoursesIntoSections();
@@ -304,7 +305,7 @@ export default function Learn() {
                   )}
                 </motion.div>
 
-                {/* レッスン詳細表示 - Helix Learn風 */}
+                {/* レッスン詳細表示 - Cursor Learn風 */}
                 {selectedLessonId && selectedLesson && lessonContent && (
                   <motion.div variants={itemVariants} className="mb-6">
                     <div className="mb-8">
@@ -328,15 +329,38 @@ export default function Learn() {
                               ? props.children 
                               : props.children?.toString() || '';
                             const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                            
+                            // セクション番号をインクリメント（レンダリング順序に基づく）
+                            const currentSectionNumber = sectionCounterRef.current;
+                            sectionCounterRef.current += 1;
+                            
+                            const copyLink = () => {
+                              const url = `${window.location.origin}${window.location.pathname}${window.location.search}#${id}`;
+                              navigator.clipboard.writeText(url);
+                            };
+                            
                             return (
-                              <div className="my-8">
-                                <h2
-                                  id={id}
-                                  className="text-2xl font-bold mb-4 text-gray-900 tracking-tight border-b border-dashed border-gray-300 pb-2"
-                                  {...props}
-                                >
-                                  {props.children}
-                                </h2>
+                              <div className="my-8 border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white text-sm font-bold flex-shrink-0">
+                                    {currentSectionNumber}
+                                  </div>
+                                  <h2
+                                    id={id}
+                                    className="text-2xl font-bold text-gray-900 tracking-tight flex-1"
+                                    {...props}
+                                  >
+                                    {props.children}
+                                  </h2>
+                                  <button
+                                    onClick={copyLink}
+                                    className="p-1.5 rounded hover:bg-gray-200 transition-colors flex-shrink-0"
+                                    aria-label="セクションへのリンクをコピー"
+                                    title="リンクをコピー"
+                                  >
+                                    <LinkIcon className="w-4 h-4 text-gray-500" />
+                                  </button>
+                                </div>
                               </div>
                             );
                           },
