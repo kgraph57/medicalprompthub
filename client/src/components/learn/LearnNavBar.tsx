@@ -31,7 +31,7 @@ export function LearnNavBar() {
             >
               ドキュメント
               {location.startsWith("/docs") && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500" />
               )}
             </Link>
             <Link
@@ -43,7 +43,7 @@ export function LearnNavBar() {
             >
               API
               {location.startsWith("/api") && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500" />
               )}
             </Link>
             <Link
@@ -55,7 +55,7 @@ export function LearnNavBar() {
             >
               学習
               {isLearnPage && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500" />
               )}
             </Link>
           </nav>
@@ -68,7 +68,7 @@ export function LearnNavBar() {
             <input
               type="text"
               placeholder="Q ドキュメントを検索..."
-              className="w-full h-9 pl-9 pr-20 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full h-9 pl-9 pr-20 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-gray-400">
               <Command className="w-3 h-3" />
@@ -132,7 +132,7 @@ export function LearnNavBar() {
               className={cn(
                 "px-3 py-2 text-sm font-medium rounded",
                 isLearnPage
-                  ? "text-gray-900 bg-orange-50"
+                  ? "text-gray-900 bg-primary-50"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               )}
               onClick={() => setIsMobileMenuOpen(false)}
