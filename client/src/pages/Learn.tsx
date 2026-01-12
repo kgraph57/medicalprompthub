@@ -21,6 +21,7 @@ import { Quiz } from "@/components/Quiz";
 import { SimpleQuiz } from "@/components/learn/SimpleQuiz";
 import { TokenizerDemo } from "@/components/learn/TokenizerDemo";
 import { lesson1Quizzes, lesson2Quizzes, lesson3Quizzes, lesson4Quizzes, lesson5Quizzes, lesson6Quizzes, lesson7Quizzes, lesson8Quizzes } from "@/data/courses/ai-basics/quizzes";
+import { lesson1Quizzes as genAiLesson1Quizzes, lesson2Quizzes as genAiLesson2Quizzes, lesson3Quizzes as genAiLesson3Quizzes, lesson4Quizzes as genAiLesson4Quizzes, lesson5Quizzes as genAiLesson5Quizzes, lesson6Quizzes as genAiLesson6Quizzes, lesson7Quizzes as genAiLesson7Quizzes, lesson8Quizzes as genAiLesson8Quizzes, lesson9Quizzes as genAiLesson9Quizzes } from "@/data/courses/generative-ai-basics/quizzes";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -56,8 +57,9 @@ export default function Learn() {
   const [isMobile, setIsMobile] = useState(false);
   const sectionCounterRef = useRef(1);
   
-  // クイズデータ（ai-basicsコースのみ実装済み）
+  // クイズデータ
   const quizzesData: Record<string, typeof lesson1Quizzes> = {
+    // ai-basicsコース
     "ai-basics-1": lesson1Quizzes,
     "ai-basics-2": lesson2Quizzes,
     "ai-basics-3": lesson3Quizzes,
@@ -66,8 +68,16 @@ export default function Learn() {
     "ai-basics-6": lesson6Quizzes,
     "ai-basics-7": lesson7Quizzes,
     "ai-basics-8": lesson8Quizzes,
-    // generative-ai-basicsコースのクイズは今後追加予定
-    // 現時点ではレッスンコンテンツのみ利用可能
+    // generative-ai-basicsコース
+    "generative-ai-1": genAiLesson1Quizzes,
+    "generative-ai-2": genAiLesson2Quizzes,
+    "generative-ai-3": genAiLesson3Quizzes,
+    "generative-ai-4": genAiLesson4Quizzes,
+    "generative-ai-5": genAiLesson5Quizzes,
+    "generative-ai-6": genAiLesson6Quizzes,
+    "generative-ai-7": genAiLesson7Quizzes,
+    "generative-ai-8": genAiLesson8Quizzes,
+    "generative-ai-9": genAiLesson9Quizzes,
   };
   
   // コースデータをHelix Learn形式に変換
