@@ -631,6 +631,136 @@ export default function Learn() {
                     モデルの仕組み、種類、制限事項を理解することで、
                     AIをより効果的に活用できるようになります。
                   </p>
+                  
+                  <div className="mt-8 space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-3 text-gray-900">このコースで学べること</h2>
+                      <ul className="space-y-2 text-gray-600 leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span><strong className="text-gray-900">AIモデルの基礎理解</strong>: トークン、コンテキスト、ハルシネーション、モデルの種類と特徴を理解します</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span><strong className="text-gray-900">実践的な活用方法</strong>: プロンプトエンジニアリング、ツール呼び出し、エージェントの使い方を実践的に学びます</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span><strong className="text-gray-900">コストとパフォーマンス</strong>: トークンと料金の仕組み、モデルの選択基準、コスト最適化を理解します</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span><strong className="text-gray-900">実践的なツール活用</strong>: ChatGPT、Claude、Geminiなどの主要AIツールの特徴と使い分け方を学びます</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-bold mb-3 text-gray-900">コースの構成</h2>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        このコースは、基礎から応用まで段階的に学習できるよう設計されています。
+                        各レッスンには、理論的な説明、実践的なデモ、理解度を確認するクイズが含まれています。
+                      </p>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                          <h3 className="font-semibold text-gray-900 mb-2">AI基礎</h3>
+                          <p className="text-sm text-gray-600">
+                            AIモデルの仕組み、トークン、コンテキスト、ハルシネーションなど、AIを使う上で知っておくべき基礎を学びます
+                          </p>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                          <h3 className="font-semibold text-gray-900 mb-2">実践ツール</h3>
+                          <p className="text-sm text-gray-600">
+                            ChatGPT、Claude、Geminiなどの主要AIツールの特徴と使い分け方を実践的に学びます
+                          </p>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                          <h3 className="font-semibold text-gray-900 mb-2">高度な活用</h3>
+                          <p className="text-sm text-gray-600">
+                            ツール呼び出し、エージェント、RAG、Fine-tuningなど、より高度な活用方法を学びます
+                          </p>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                          <h3 className="font-semibold text-gray-900 mb-2">最適化とコスト</h3>
+                          <p className="text-sm text-gray-600">
+                            トークンと料金の仕組み、モデルの選択基準、コスト最適化の方法を理解します
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-bold mb-3 text-gray-900">前提知識</h2>
+                      <p className="text-gray-600 leading-relaxed mb-3">
+                        このコースは、プログラミングの基礎知識があることを前提としていますが、
+                        AIや機械学習の専門知識は必要ありません。
+                      </p>
+                      <ul className="space-y-2 text-gray-600 leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>基本的なプログラミング経験（任意の言語）</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>ソフトウェア開発の基礎知識</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>AIや機械学習の専門知識は不要です</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-bold mb-3 text-gray-900">学習方法</h2>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        このコースは、インタラクティブな学習体験を提供します：
+                      </p>
+                      <ol className="space-y-3 list-decimal list-inside text-gray-600 leading-relaxed">
+                        <li>
+                          <strong className="text-gray-900">理論的な説明</strong>: 各概念を段階的に説明し、理解を深めます
+                        </li>
+                        <li>
+                          <strong className="text-gray-900">実践的なデモ</strong>: トークナイザーなどのインタラクティブなデモで、抽象的な概念を可視化します
+                        </li>
+                        <li>
+                          <strong className="text-gray-900">理解度の確認</strong>: 各セクションの最後にクイズで理解度を確認します
+                        </li>
+                        <li>
+                          <strong className="text-gray-900">実践的な演習</strong>: 実際のプロジェクトで使えるスキルを身につけます
+                        </li>
+                      </ol>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-bold mb-3 text-gray-900">期待される成果</h2>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        このコースを完了すると、以下のことができるようになります：
+                      </p>
+                      <ul className="space-y-2 text-gray-600 leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>AIモデルの仕組みと制限事項を理解し、適切なモデルを選択できる</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>効果的なプロンプトを書いて、AIツールを最大限に活用できる</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>トークンと料金の仕組みを理解し、コストを最適化できる</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>ツール呼び出しやエージェントなど、高度な機能を活用できる</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>実際のプロジェクトでAIを効果的に統合できる</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </motion.div>
 
                 {/* 動画プレイヤー部分は除外（プレースホルダーとして表示） */}
