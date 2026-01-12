@@ -17,6 +17,8 @@ import { getLessonsForCourse } from "@/pages/CourseDetail";
 import { hasLessonContent, getLessonContent } from "@/lib/lesson-content-loader";
 import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles";
 import { ArrowRight } from "lucide-react";
+import { Quiz } from "@/components/Quiz";
+import { lesson1Quizzes, lesson2Quizzes, lesson3Quizzes, lesson4Quizzes, lesson5Quizzes, lesson6Quizzes, lesson7Quizzes, lesson8Quizzes } from "@/data/courses/ai-basics/quizzes";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -50,10 +52,29 @@ export default function Learn() {
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [sectionCounter, setSectionCounter] = useState(1);
+  const sectionCounterRef = useRef(1);
+  
+  // クイズデータ
+  const quizzesData: Record<string, typeof lesson1Quizzes> = {
+    "ai-basics-1": lesson1Quizzes,
+    "ai-basics-2": lesson2Quizzes,
+    "ai-basics-3": lesson3Quizzes,
+    "ai-basics-4": lesson4Quizzes,
+    "ai-basics-5": lesson5Quizzes,
+    "ai-basics-6": lesson6Quizzes,
+    "ai-basics-7": lesson7Quizzes,
+    "ai-basics-8": lesson8Quizzes,
+  };
   
   // コースデータをHelix Learn形式に変換
   const sections = organizeCoursesIntoSections();
+  
+  // レッスンが変更されたらセクションカウンターをリセット
+  useEffect(() => {
+    if (selectedLessonId) {
+      sectionCounterRef.current = 1;
+    }
+  }, [selectedLessonId]);
 
   useEffect(() => {
     updateSEO({
@@ -306,20 +327,54 @@ export default function Learn() {
                 </motion.div>
 
                 {/* レッスン詳細表示 - Cursor Learn風 */}
-                {selectedLessonId && selectedLesson && lessonContent && (
-                  <motion.div variants={itemVariants} className="mb-6">
-                    <div className="mb-8">
-                      <h2 className="text-3xl font-bold mb-4 text-gray-900 tracking-tight">
-                        {selectedLesson.title}
-                      </h2>
-                      {selectedLesson.description && (
-                        <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-                          {selectedLesson.description}
-                        </p>
-                      )}
-                    </div>
-                    <div className="prose prose-lg max-w-none">
-                      <ReactMarkdown
+                {selectedLessonId && selectedLesson && lessonContent && (() => {
+                  const quizzes = selectedLessonId ? quizzesData[selectedLessonId] || [] : [];
+                  
+                  // コンテンツを[QUIZ]で分割
+                  const parts = lessonContent.split(/(\[QUIZ\])/);
+                  const elements: React.ReactNode[] = [];
+                  let quizIndex = 0;
+                  
+                  return (
+                    <motion.div variants={itemVariants} className="mb-6">
+                      <div className="mb-8">
+                        <h2 className="text-3xl font-bold mb-4 text-gray-900 tracking-tight">
+                          {selectedLesson.title}
+                        </h2>
+                        {selectedLesson.description && (
+                          <p className="text-gray-600 text-lg mb-6 leading-relaxed">
+                            {selectedLesson.description}
+                          </p>
+                        )}
+                      </div>
+                      {parts.map((part, index) => {
+                        if (part === "[QUIZ]" && quizzes.length > 0 && quizIndex < quizzes.length) {
+                          const currentQuiz = quizzes[quizIndex];
+                          quizIndex++;
+                          return (
+                            <div key={`quiz-${quizIndex}`} className="my-8">
+                              <Quiz
+                                questions={[currentQuiz]}
+                                showResults={true}
+                                allowRetry={true}
+                              />
+                            </div>
+                          );
+                        } else if (part.trim()) {
+                          // Markdownコンテンツをレンダリング
+                          let markdownContent = part.trim();
+                          
+                          // 最初のパートの場合、Markdownの最初のh1を削除
+                          if (index === 0 || (index === 2 && parts[0].trim() === "")) {
+                            const lines = markdownContent.split('\n');
+                            if (lines.length > 0 && lines[0].trim().startsWith('# ')) {
+                              markdownContent = lines.slice(1).join('\n');
+                            }
+                          }
+                          
+                          return (
+                            <div key={`content-${index}`} className="prose prose-lg max-w-none">
+                              <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw, rehypeSanitize]}
                         components={{
@@ -406,23 +461,28 @@ export default function Learn() {
                           ),
                         }}
                       >
-                        {lessonContent}
+                        {markdownContent}
                       </ReactMarkdown>
-                    </div>
-                    {/* 次のレッスンへのナビゲーション */}
-                    {nextLesson && (
-                      <div className="mt-12 pt-8 border-t border-gray-200">
-                        <Button
-                          onClick={() => handleLessonClick(nextLesson.id)}
-                          className="bg-orange-500 hover:bg-orange-600 text-white"
-                        >
-                          次のレッスン: {nextLesson.title}
-                          <ArrowRight className="ml-2 w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                      {/* 次のレッスンへのナビゲーション */}
+                      {nextLesson && (
+                        <div className="mt-12 pt-8 border-t border-gray-200">
+                          <Button
+                            onClick={() => handleLessonClick(nextLesson.id)}
+                            className="bg-orange-500 hover:bg-orange-600 text-white"
+                          >
+                            次のレッスン: {nextLesson.title}
+                            <ArrowRight className="ml-2 w-4 h-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })()}
 
                 {/* レッスン一覧 - Helix Learn風 */}
                 {!selectedLessonId && lessons.length > 0 && (
