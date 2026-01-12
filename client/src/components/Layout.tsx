@@ -172,6 +172,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           }}
         />
         <NavIcon
+          icon={<School className="w-3.5 h-3.5" />}
+          label="学習"
+          active={location.startsWith("/learn")}
+          isMobile={isMobile}
+          onClick={() => {
+            setLocation("/learn");
+            setIsMobileOpen(false);
+          }}
+        />
+        <NavIcon
           icon={<BookOpen className="w-3.5 h-3.5" />}
           label="Guides"
           active={location.startsWith("/guides")}

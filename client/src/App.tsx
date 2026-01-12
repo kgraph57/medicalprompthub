@@ -87,6 +87,7 @@ const EnglishProofreadingGuide = createLazyImport(() => import("@/pages/EnglishP
 const MARWGuide = createLazyImport(() => import("@/pages/MARWGuide"));
 const MarkdownGuide = createLazyImport(() => import("@/pages/MarkdownGuide"));
 const AILiteracy = createLazyImport(() => import("@/pages/AILiteracy"));
+const Learn = createLazyImport(() => import("@/pages/Learn"));
 
 // Loading component（アクセシビリティ改善）
 const PageLoader = () => (
@@ -179,6 +180,7 @@ function Router() {
           <Route path="/tips/:id" component={TipDetail} />
           <Route path="/legal" component={Legal} />
           <Route path="/ai-literacy" component={AILiteracy} />
+          <Route path="/learn" component={Learn} />
           <Route path="/faq" component={FAQ} />
           <Route path="/contact" component={Contact} />
           <Route path="/about" component={About} />
