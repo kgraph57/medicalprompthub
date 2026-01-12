@@ -1,5 +1,5 @@
 /**
- * Cursor Learn風のトップナビゲーションバー
+ * Helix Learn風のトップナビゲーションバー
  */
 
 import { Link, useLocation } from "wouter";

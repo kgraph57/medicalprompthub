@@ -51,7 +51,7 @@ export default function Learn() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   
-  // コースデータをCursor Learn形式に変換
+  // コースデータをHelix Learn形式に変換
   const sections = organizeCoursesIntoSections();
 
   useEffect(() => {
@@ -226,7 +226,7 @@ export default function Learn() {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      {/* Cursor Learn風のトップナビゲーションバー */}
+      {/* Helix Learn風のトップナビゲーションバー */}
       <LearnNavBar />
       
       <div className="flex flex-1 overflow-hidden">
@@ -240,7 +240,7 @@ export default function Learn() {
           </>
         )}
 
-        {/* 左サイドバー - Cursor Learn風 */}
+        {/* 左サイドバー - Helix Learn風 */}
         <aside
           className={cn(
             "w-64 flex-shrink-0 border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 z-50",
@@ -255,7 +255,7 @@ export default function Learn() {
           <SidebarContent />
         </aside>
 
-        {/* メインコンテンツエリア - Cursor Learn風 */}
+        {/* メインコンテンツエリア - Helix Learn風 */}
         <main className="flex-1 overflow-y-auto bg-white">
           {/* モバイル用サイドバートグルボタン */}
           {isMobile && (
@@ -296,7 +296,7 @@ export default function Learn() {
                   )}
                 </motion.div>
 
-                {/* レッスン詳細表示 - Cursor Learn風 */}
+                {/* レッスン詳細表示 - Helix Learn風 */}
                 {selectedLessonId && selectedLesson && lessonContent && (
                   <motion.div variants={itemVariants} className="mb-6">
                     <div className="mb-8">
@@ -333,7 +333,7 @@ export default function Learn() {
                   </motion.div>
                 )}
 
-                {/* レッスン一覧 - Cursor Learn風 */}
+                {/* レッスン一覧 - Helix Learn風 */}
                 {!selectedLessonId && lessons.length > 0 && (
                   <motion.div variants={itemVariants} className="mb-6">
                     <h2 className="text-2xl font-bold mb-6 text-gray-900">レッスン一覧</h2>
@@ -441,10 +441,10 @@ export default function Learn() {
               >
                 <motion.div variants={itemVariants} className="mb-12">
                   <h1 className="text-5xl font-bold mb-6 text-gray-900 tracking-tight">
-                    Cursor Learn
+                    Helix Learn
                   </h1>
                   <p className="text-xl text-gray-600 mb-4">
-                    Cursor Learnへようこそ!
+                    Helix Learnへようこそ!
                   </p>
                   <p className="text-gray-700 leading-relaxed text-base">
                     このコースでは、プログラマーがAIを効果的に活用する方法を学びます。
@@ -465,7 +465,7 @@ export default function Learn() {
                   </div>
                 </motion.div>
 
-                {/* アナロジー - Cursor Learn風 */}
+                {/* アナロジー - Helix Learn風 */}
                 <motion.div variants={itemVariants}>
                   <div className="border border-gray-200 rounded-lg p-6 bg-white">
                     <h3 className="text-xl font-bold mb-4 text-gray-900">移動手段のアナロジー</h3>
