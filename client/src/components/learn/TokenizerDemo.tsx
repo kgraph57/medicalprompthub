@@ -24,7 +24,7 @@ function getTokenColor(index: number): string {
     "bg-blue-200 text-blue-900",
     "bg-purple-200 text-purple-900",
     "bg-pink-200 text-pink-900",
-    "bg-orange-200 text-orange-900",
+    "bg-primary-200 text-primary-900",
     "bg-indigo-200 text-indigo-900",
   ];
   return colors[index % colors.length];

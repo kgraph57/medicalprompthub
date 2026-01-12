@@ -111,7 +111,7 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
         <Button
           onClick={handleCheck}
           disabled={!selectedAnswer || isChecked}
-          className="bg-orange-500 hover:bg-orange-600 text-white"
+          className="bg-primary-500 hover:bg-primary-600 text-white"
         >
           Check
         </Button>
