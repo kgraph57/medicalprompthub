@@ -446,12 +446,17 @@ export default function Learn() {
                   <p className="text-xl text-gray-600 mb-4">
                     Helix Learnへようこそ!
                   </p>
+                  <p className="text-gray-700 leading-relaxed text-base mb-6">
+                    Helix Learnは、医療従事者の皆様がAIを臨床、研究、教育の現場で効果的に活用するための学習プラットフォームです。
+                    このコースでは、AIモデルの仕組みから実践的な使い方まで、段階的に学ぶことができます。
+                  </p>
+                  <p className="text-gray-700 leading-relaxed text-base mb-6">
+                    AIを医療現場で活用する際に必要な基礎知識から、ChatGPTやClaudeなどの具体的なツールの使い方、
+                    医療データの扱い方、診断支援や論文作成での実践的な活用方法まで、体系的に学習できます。
+                  </p>
                   <p className="text-gray-700 leading-relaxed text-base">
-                    このコースでは、プログラマーがAIを効果的に活用する方法を学びます。
-                    AIモデルやツールを使ったソフトウェア開発に焦点を当て、
-                    機械学習やカスタムモデルのトレーニングではありません。
-                    モデルの仕組み、種類、制限事項を理解することで、
-                    AIをより効果的に活用できるようになります。
+                    機械学習やカスタムモデルのトレーニングではなく、既存のAIツールを医療業務にどう活かすかに焦点を当てています。
+                    AIの仕組み、種類、制限事項を理解することで、より安全で効果的なAI活用ができるようになります。
                   </p>
                 </motion.div>
 
@@ -465,27 +470,60 @@ export default function Learn() {
                   </div>
                 </motion.div>
 
-                {/* アナロジー - Helix Learn風 */}
+                {/* コースの特徴 - Helix Learn風 */}
+                <motion.div variants={itemVariants} className="mb-8">
+                  <div className="border border-gray-200 rounded-lg p-6 bg-white">
+                    <h3 className="text-xl font-bold mb-4 text-gray-900">このコースで学べること</h3>
+                    <ul className="space-y-3 mb-4 text-gray-700">
+                      <li className="flex items-start gap-3">
+                        <span className="text-orange-600 font-bold mt-1">•</span>
+                        <span>
+                          <strong className="text-gray-900">AIの基礎知識</strong>: AIモデルの仕組み、トークン、コンテキスト、ハルシネーションなど、医療現場でAIを使う上で知っておくべき基礎を学びます。
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-orange-600 font-bold mt-1">•</span>
+                        <span>
+                          <strong className="text-gray-900">医療AIの実践</strong>: 診断支援、症例分析、論文作成、統計解析など、医療業務での具体的なAI活用方法を実践的に学びます。
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-orange-600 font-bold mt-1">•</span>
+                        <span>
+                          <strong className="text-gray-900">ツール別ガイド</strong>: ChatGPT、Claude、Gemini、医療特化型AIなど、主要なAIツールの特徴と使い分け方を学びます。
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-orange-600 font-bold mt-1">•</span>
+                        <span>
+                          <strong className="text-gray-900">安全な活用方法</strong>: 医療データの取り扱い、プライバシー保護、ファクトチェックなど、医療現場でAIを安全に使うための知識を身につけます。
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </motion.div>
+
+                {/* アナロジー - 医療現場向け */}
                 <motion.div variants={itemVariants}>
                   <div className="border border-gray-200 rounded-lg p-6 bg-white">
-                    <h3 className="text-xl font-bold mb-4 text-gray-900">移動手段のアナロジー</h3>
+                    <h3 className="text-xl font-bold mb-4 text-gray-900">AIモデルの選択：診断ツールのアナロジー</h3>
                     <p className="mb-4 text-gray-700 leading-relaxed">
-                      街を移動する方法には、いくつかの選択肢があります：
+                      医療現場での診断ツールの選択と同様に、AIモデルにも様々な選択肢があります：
                     </p>
                     <ol className="space-y-3 list-decimal list-inside mb-4 text-gray-700">
                       <li>
-                        <strong className="text-gray-900">徒歩</strong>: 無料ですが、時間がかかります。
+                        <strong className="text-gray-900">基本的な検査</strong>: 無料または低コストのモデル。基本的な情報収集や簡単な質問応答に適しています。
                       </li>
                       <li>
-                        <strong className="text-gray-900">自転車</strong>: 少し費用がかかり、やや速いです。
+                        <strong className="text-gray-900">専門的な検査</strong>: 中程度のコストで、より詳細な分析や長文の処理が可能なモデル。症例分析や論文要約に適しています。
                       </li>
                       <li>
-                        <strong className="text-gray-900">自動車</strong>: 最も高額ですが、最も速いです。
+                        <strong className="text-gray-900">高度な診断支援</strong>: 高コストですが、最も高性能なモデル。複雑な診断支援や研究レベルの分析に適しています。
                       </li>
                     </ol>
                     <p className="text-gray-700 leading-relaxed">
-                      AIモデルも同様に、コスト、速度、性能に応じていろいろな選択肢があります。
-                      目的に応じて適切なモデルを選ぶことが重要です。
+                      患者さんの状態や診療の目的に応じて、適切なAIモデルを選ぶことが重要です。
+                      このコースでは、それぞれのモデルの特徴を理解し、医療現場での使い分け方を学びます。
                     </p>
                   </div>
                 </motion.div>
