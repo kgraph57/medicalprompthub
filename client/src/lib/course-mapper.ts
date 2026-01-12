@@ -1,5 +1,5 @@
 /**
- * コースデータをCursor Learn形式に変換するユーティリティ
+ * コースデータをHelix Learn形式に変換するユーティリティ
  */
 
 import { courses } from "@/pages/Courses";
@@ -32,7 +32,7 @@ export interface LearnSection {
 }
 
 /**
- * コースをセクションに分類してCursor Learn形式に変換
+ * コースをセクションに分類してHelix Learn形式に変換
  */
 export function organizeCoursesIntoSections(): LearnSection[] {
   const sections: LearnSection[] = [
