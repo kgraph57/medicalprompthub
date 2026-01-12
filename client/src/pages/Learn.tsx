@@ -13,7 +13,9 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { organizeCoursesIntoSections, type LearnTopic, type LearnSection } from "@/lib/course-mapper";
 import { getLessonsForCourse } from "@/pages/CourseDetail";
-import { hasLessonContent } from "@/lib/lesson-content-loader";
+import { hasLessonContent, getLessonContent } from "@/lib/lesson-content-loader";
+import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles";
+import { ArrowRight } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -102,6 +104,24 @@ export default function Learn() {
 
   // 選択されたコースのレッスン一覧を取得
   const lessons = selectedCourseId ? getLessonsForCourse(selectedCourseId) : [];
+
+  // 選択されたレッスンのコンテンツを取得
+  const selectedLesson = selectedLessonId
+    ? lessons.find((lesson) => lesson.id === selectedLessonId)
+    : null;
+  const lessonContent = selectedLessonId ? getLessonContent(selectedLessonId) : null;
+
+  // 次のレッスンを取得
+  const getNextLesson = () => {
+    if (!selectedCourseId || !selectedLessonId) return null;
+    const currentIndex = lessons.findIndex((l) => l.id === selectedLessonId);
+    if (currentIndex >= 0 && currentIndex < lessons.length - 1) {
+      return lessons[currentIndex + 1];
+    }
+    return null;
+  };
+
+  const nextLesson = getNextLesson();
 
   const handleCourseClick = (topic: LearnTopic) => {
     if (topic.comingSoon) return;
@@ -269,6 +289,39 @@ export default function Learn() {
                     </p>
                   )}
                 </motion.div>
+
+                {/* レッスン詳細表示 */}
+                {selectedLessonId && selectedLesson && lessonContent && (
+                  <motion.div variants={itemVariants} className="mb-6">
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-bold mb-4">{selectedLesson.title}</h2>
+                      {selectedLesson.description && (
+                        <p className="text-muted-foreground mb-6">{selectedLesson.description}</p>
+                      )}
+                    </div>
+                    <div className={UNIFIED_PROSE_CLASSES}>
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                        components={UNIFIED_MARKDOWN_COMPONENTS}
+                      >
+                        {lessonContent}
+                      </ReactMarkdown>
+                    </div>
+                    {/* 次のレッスンへのナビゲーション */}
+                    {nextLesson && (
+                      <div className="mt-8 pt-6 border-t">
+                        <Button
+                          onClick={() => handleLessonClick(nextLesson.id)}
+                          className="w-full sm:w-auto"
+                        >
+                          次のレッスン: {nextLesson.title}
+                          <ArrowRight className="ml-2 w-4 h-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
 
                 {/* レッスン一覧 */}
                 {!selectedLessonId && lessons.length > 0 && (
