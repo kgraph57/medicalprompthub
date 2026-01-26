@@ -10,15 +10,15 @@ const cardVariants = cva(
       variant: {
         // Default Card - Dieter Ramsの指示: ボーダー、影、角丸の3つで十分
         default:
-          "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm",
+          "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-sm",
         
         // Elevated Card - Jony Iveの指示: ホバー時に2px上に移動
         elevated:
-          "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer",
+          "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer",
         
         // Bordered Card
         bordered:
-          "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700",
+          "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700",
         
         // Ghost Card
         ghost:
@@ -102,7 +102,7 @@ const CardProDescription = React.forwardRef<
   <p
     ref={ref}
     // Tobias Frere-Jonesの指示: text-sm (14px)
-    className={cn("text-sm text-gray-600 dark:text-gray-400", className)}
+    className={cn("text-sm text-neutral-600 dark:text-neutral-400", className)}
     {...props}
   />
 ));

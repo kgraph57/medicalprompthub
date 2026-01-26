@@ -1,68 +1,41 @@
-import { ArrowRight, BookOpen, Lightbulb, GitBranch, FileText } from "lucide-react";
+import { ArrowRight, Workflow, Sparkles, LayoutGrid } from "lucide-react";
 import { useLocation } from "wouter";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 const contentTypes = [
   {
-    icon: BookOpen,
-    title: "体系的に学ぶAI活用コース",
-    description: "AIの基礎から実践まで、ステップバイステップで学べる構造化されたコース。医療現場での具体的な活用方法を習得できます。",
+    icon: Sparkles,
+    title: "Learning",
+    description: "AIの基礎から実践まで、ステップバイステップで学べる構造化されたコース。医療現場での具体的な活用方法を体系的に習得できます。",
     cta: "コースを見る",
     link: "/courses",
-    bgColor: "bg-blue-50/50",
-    iconColor: "text-blue-600",
-    borderColor: "border-blue-100",
-    examples: [
-      "AI基礎コース",
-      "プロンプトエンジニアリング",
-      "医療AI実践"
-    ]
+    bgColor: "bg-blue-50/50 dark:bg-blue-950/20",
+    iconColor: "text-blue-600 dark:text-blue-400",
+    borderColor: "border-blue-100 dark:border-blue-800",
+    highlight: "100+ lessons"
   },
   {
-    icon: Lightbulb,
-    title: "すぐに使えるAI活用Tips",
-    description: "プロンプトの書き方から高度なテクニックまで、実践的なTipsを提供。明日から使える具体的なノウハウが満載です。",
-    cta: "Tipsを見る",
-    link: "/tips",
-    bgColor: "bg-amber-50/50",
-    iconColor: "text-amber-600",
-    borderColor: "border-amber-100",
-    examples: [
-      "Few-Shotプロンプティング",
-      "Chain-of-Thought",
-      "構造化出力"
-    ]
-  },
-  {
-    icon: GitBranch,
-    title: "実務に使えるワークフローガイド",
-    description: "症例報告、論文執筆、英文校正など、実務に直結するステップバイステップガイド。複雑な業務を効率化します。",
-    cta: "ガイドを見る",
+    icon: Workflow,
+    title: "Workflow",
+    description: "症例報告、論文執筆、英文校正など、実務に直結するステップバイステップワークフロー。複雑な業務を効率化し、時間を大幅に短縮します。",
+    cta: "ワークフローを見る",
     link: "/guides",
-    bgColor: "bg-green-50/50",
-    iconColor: "text-green-600",
-    borderColor: "border-green-100",
-    examples: [
-      "症例報告作成",
-      "論文執筆支援",
-      "英文校正"
-    ]
+    bgColor: "bg-green-50/50 dark:bg-green-950/20",
+    iconColor: "text-green-600 dark:text-green-400",
+    borderColor: "border-green-100 dark:border-green-800",
+    highlight: "実務直結"
   },
   {
-    icon: FileText,
-    title: "100以上の実践的プロンプト",
-    description: "診断、研究、文書作成など、あらゆる場面で使えるプロンプトライブラリ。コピー&ペーストですぐに使えます。",
-    cta: "プロンプトを探す",
+    icon: LayoutGrid,
+    title: "Library",
+    description: "診断、研究、文書作成など、あらゆる場面で使えるプロンプトライブラリ。コピー&ペーストですぐに使える実践的なプロンプト集です。",
+    cta: "ライブラリを見る",
     link: "#prompts",
-    bgColor: "bg-blue-50/50",
-    iconColor: "text-blue-600",
-    borderColor: "border-blue-100",
-    examples: [
-      "鑑別診断",
-      "統計解析",
-      "文献レビュー"
-    ]
+    bgColor: "bg-purple-50/50 dark:bg-purple-950/20",
+    iconColor: "text-purple-600 dark:text-purple-400",
+    borderColor: "border-purple-100 dark:border-purple-800",
+    highlight: "100+ prompts"
   }
 ];
 
@@ -131,27 +104,22 @@ export function ContentShowcaseSection() {
           
           {/* パンチライン */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1]" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-            Comprehensive learning resources
+            Everything you need to master medical AI
           </h2>
           
           {/* 説明文 */}
           <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed tracking-[-0.01em]">
-            Choose from courses, guides, tips, and prompts to accelerate your medical AI journey.
+            Learn systematically, work efficiently, and access ready-to-use prompts—all in one place.
           </p>
         </motion.div>
 
-        {/* コンテンツカードグリッド */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        {/* リソースカード（1列） */}
+        <div className="space-y-6 md:space-y-8 max-w-3xl">
           {contentTypes.map((content, index) => {
             const Icon = content.icon;
             return (
               <motion.div
                 key={content.title}
-                className="group relative rounded-2xl p-6 bg-background transition-all duration-300 cursor-pointer overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.08)]"
-                style={{
-                  outline: '1px solid rgba(0, 0, 0, 0.06)',
-                  outlineOffset: '-1px',
-                }}
                 initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -160,38 +128,42 @@ export function ContentShowcaseSection() {
                   delay: isMobile ? 0 : index * 0.1,
                   ease: [0.16, 1, 0.3, 1] 
                 }}
-                whileHover={isMobile || prefersReducedMotion ? {} : { 
-                  scale: 1.02,
-                  y: -4,
-                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)"
-                }}
-                onClick={() => handleNavigation(content.link)}
               >
-                {/* カテゴリ/ラベル */}
-                <div className="flex items-center gap-2 mb-3 relative z-10">
-                  <Icon className={`w-4 h-4 ${content.iconColor}`} strokeWidth={2} />
-                  <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400 tracking-[-0.01em]">
-                    {content.title.split(' ')[0]}
-                  </span>
-                </div>
-                
-                {/* パンチライン */}
-                <h3 className="text-xl md:text-2xl font-black mb-3 text-neutral-900 dark:text-neutral-50 tracking-[-0.02em] leading-[1.1] relative z-10" style={{ fontFamily: 'Inter Display, Inter, system-ui, sans-serif' }}>
-                  {content.title}
-                </h3>
-                
-                {/* 説明文 */}
-                <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-[-0.01em] mb-4 relative z-10">
-                  {content.description}
-                </p>
+                <div className="flex items-start gap-4 md:gap-5">
+                  {/* アイコン */}
+                  <Icon className={`w-7 h-7 md:w-8 md:h-8 mt-1 ${content.iconColor}`} strokeWidth={2} />
+                  
+                  {/* コンテンツ */}
+                  <div className="flex-1">
+                    <div className="flex items-baseline gap-3 mb-2">
+                      <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-[-0.01em]">
+                        {content.title}
+                      </h3>
+                      {content.highlight && (
+                        <span className="text-sm md:text-base text-neutral-500 dark:text-neutral-400">
+                          {content.highlight}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* 説明文 */}
+                    <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-3">
+                      {content.description}
+                    </p>
 
-                {/* CTA */}
-                <a
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors duration-200 group relative z-10"
-                >
-                  Learn more
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </a>
+                    {/* CTA */}
+                    <a
+                      className="inline-flex items-center gap-1.5 text-base md:text-lg text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors font-medium"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigation(content.link);
+                      }}
+                    >
+                      Learn more
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                </div>
               </motion.div>
             );
           })}

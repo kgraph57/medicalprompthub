@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X, ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Circle, CheckCircle2, Clock, Menu, X, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import { marwGuideData } from '@/lib/marw-guide-data';
 import { CodeBlock } from '@/components/CodeBlock';
 import { updateSEO } from '@/lib/seo';
@@ -52,7 +52,7 @@ export default function MARWGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "AI論文執筆ワークフロー | Helix",
+      title: "AI論文執筆ワークフロー | HELIX",
       description: "世界標準に準拠したAI駆動型論文執筆の7段階ワークフロー。ハーバード大学、JAMA、ICMJEのガイドラインに基づき、24個の実践的プロンプト例を提供。",
       path: `/guides/marw-complete${stepId ? `/${stepId}` : ''}`,
       keywords: "AI論文執筆,MARW,医学論文,研究ワークフロー,AI活用,プロンプト"
@@ -84,9 +84,15 @@ export default function MARWGuide() {
     } else {
       setCurrentStepId('intro');
     }
-    // スクロール位置をトップにリセット（ただし、goToNextからの遷移の場合はスキップ）
-    // goToNext関数内でスクロール処理を行うため、ここではスキップ
   }, [stepId]);
+
+  // currentStepIdが変更されたらスクロール位置をリセット
+  useEffect(() => {
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      mainContent.scrollTo(0, 0);
+    }
+  }, [currentStepId]);
 
   // Markdownコンテンツを読み込み
   useEffect(() => {
@@ -174,7 +180,7 @@ export default function MARWGuide() {
       const prevStepId = allStepsInOrder[currentIndex - 1];
       setCurrentStepId(prevStepId);
       navigate(`/guides/marw-complete/${prevStepId === 'intro' ? '' : prevStepId}`);
-      // 同時にスクロール位置をトップにリセット
+      // ページトップにスクロール
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -184,26 +190,14 @@ export default function MARWGuide() {
       const nextStepId = allStepsInOrder[currentIndex + 1];
       setCurrentStepId(nextStepId);
       navigate(`/guides/marw-complete/${nextStepId}`);
-      // ページ遷移後にヘッダーにスクロール
-      setTimeout(() => {
-        const scrollToHeader = () => {
-          const header = document.getElementById('page-header');
-          if (header) {
-            const headerTop = header.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
-          } else {
-            // ヘッダーが見つからない場合は少し待って再試行
-            setTimeout(scrollToHeader, 100);
-          }
-        };
-        scrollToHeader();
-      }, 300);
+      // ページトップにスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
     <Layout>
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Mobile Table of Contents Dropdown */}
       {isSidebarOpen && (
         <>
@@ -213,18 +207,18 @@ export default function MARWGuide() {
           />
           {/* TOC Dropdown Container - positioned near the header button */}
           <div 
-            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="overflow-y-auto max-h-[calc(100vh-5rem)] p-4">
               {/* Page Top Button */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                 <button
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     setIsSidebarOpen(false);
                   }}
-                  className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                  className="w-full flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors"
                 >
                   <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
                   <span>ページトップへ</span>
@@ -251,7 +245,7 @@ export default function MARWGuide() {
                         className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                           isCurrent
                             ? 'text-blue-600 dark:text-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                            : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                         }`}
                       >
                         {isCurrent && (
@@ -276,7 +270,7 @@ export default function MARWGuide() {
         <div className="flex flex-col lg:flex-row gap-4 relative">
           {/* Right Content - Scrollable Article */}
           <main className="flex-1 min-w-0 order-2 lg:order-1">
-            <article className="zenn-article">
+            <article key={currentStepId} className="zenn-article">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -291,7 +285,7 @@ export default function MARWGuide() {
                     return (
                       <div className="mt-4 mb-8">
                         {currentStepDuration && (
-                          <div className="flex items-center gap-1.5 mb-3 text-sm text-gray-600 dark:text-gray-400">
+                          <div className="flex items-center gap-1.5 mb-3 text-sm text-neutral-600 dark:text-neutral-400">
                             <Clock className="h-4 w-4" />
                             <span>{currentStepDuration}</span>
                           </div>
@@ -388,6 +382,26 @@ export default function MARWGuide() {
                   blockquote: ({ node, ...props }) => (
                     <blockquote className="pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
                   ),
+                  table: ({ node, ...props }) => (
+                    <div className="overflow-x-auto my-8">
+                      <table className="min-w-full border-collapse border border-border rounded-lg" {...props} />
+                    </div>
+                  ),
+                  thead: ({ node, ...props }) => (
+                    <thead className="bg-muted/50" {...props} />
+                  ),
+                  tbody: ({ node, ...props }) => (
+                    <tbody className="divide-y divide-border" {...props} />
+                  ),
+                  tr: ({ node, ...props }) => (
+                    <tr className="hover:bg-muted/30 transition-colors" {...props} />
+                  ),
+                  th: ({ node, ...props }) => (
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-foreground border-b border-border" {...props} />
+                  ),
+                  td: ({ node, ...props }) => (
+                    <td className="px-4 py-3 text-sm text-foreground border-b border-border" {...props} />
+                  ),
                 }}
               >
                 {markdown}
@@ -395,27 +409,33 @@ export default function MARWGuide() {
             </article>
 
             {/* Navigation Buttons */}
-            <div className="mt-8 flex items-center justify-between gap-4">
-              {/* Previous Button */}
+            <div className="flex justify-between items-center mt-12 pt-8 border-t border-border">
               <Button
                 onClick={goToPrevious}
                 disabled={!hasPrevious}
                 variant="outline"
-                className="h-9"
+                className="flex items-center gap-2"
               >
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                前へ
+                <ArrowLeft className="w-4 h-4" />
+                前のステップ
               </Button>
 
-              {/* Next Button */}
               <Button
                 onClick={goToNext}
                 disabled={!hasNext}
-                variant="outline"
-                className="h-9"
+                className="flex items-center gap-2"
               >
-                次へ
-                <ChevronRight className="h-4 w-4 ml-2" />
+                {hasNext ? (
+                  <>
+                    次のステップ
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    完了
+                    <CheckCircle2 className="w-4 h-4" />
+                  </>
+                )}
               </Button>
             </div>
           </main>
@@ -424,14 +444,14 @@ export default function MARWGuide() {
           <aside className="hidden lg:block lg:static w-64 flex-shrink-0 order-2">
             <div className="h-full sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
               {/* Page Top Button - Zenn style */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                 <button
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className="w-full flex items-center gap-1.5
-                    text-sm text-gray-600 dark:text-gray-400
-                    hover:text-gray-900 dark:hover:text-gray-200
+                    text-sm text-neutral-600 dark:text-neutral-400
+                    hover:text-neutral-900 dark:hover:text-neutral-200
                     transition-colors
                   "
                 >
@@ -459,7 +479,7 @@ export default function MARWGuide() {
                         className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                           isCurrent
                             ? 'text-blue-600 dark:text-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                            : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                         }`}
                       >
                         {isCurrent && (

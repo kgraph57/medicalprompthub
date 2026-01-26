@@ -1,80 +1,131 @@
-import { ArrowRight, Search, Sparkles, ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface HeroSectionProps {
   searchQuery?: string;
   onSearchChange?: (value: string) => void;
 }
 
-// Linear風: 完璧なアニメーション設定
+// アニメーション設定
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] as [number, number, number, number],
-    },
-  },
-};
-
-const titleVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 30,
+    filter: "blur(12px)",
   },
   visible: {
     opacity: 1,
     y: 0,
+    filter: "blur(0px)",
     transition: {
-      duration: 0.9,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] as [number, number, number, number],
+      duration: 1,
+      ease: [0.25, 0.4, 0.25, 1],
     },
   },
 };
 
-const searchVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: 25,
-    scale: 0.98,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] as [number, number, number, number],
-    },
-  },
-};
+// アニメーションするオーブコンポーネント
+function AnimatedOrbs() {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* メインのグラデーションオーブ */}
+      <motion.div
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] rounded-full"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%)",
+          filter: "blur(60px)",
+        }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.6, 0.8, 0.6],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
 
-// マウス追従エフェクト（Linear風：より控えめに）
-function MouseFollowEffect({ x, y }: { x: any; y: any }) {
-  const background = useTransform(
-    [x, y],
-    ([latestX, latestY]) => 
-      `radial-gradient(800px circle at ${latestX}px ${latestY}px, rgba(0, 0, 0, 0.01), transparent 50%)`
+      {/* セカンダリオーブ - 紫 */}
+      <motion.div
+        className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full"
+        style={{
+          background: "radial-gradient(circle at center, rgba(139, 92, 246, 0.12) 0%, transparent 60%)",
+          filter: "blur(50px)",
+        }}
+        animate={{
+          x: [0, 30, 0],
+          y: [0, -20, 0],
+          scale: [1, 1.15, 1],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* アクセントオーブ - シアン */}
+      <motion.div
+        className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] rounded-full"
+        style={{
+          background: "radial-gradient(circle at center, rgba(6, 182, 212, 0.1) 0%, transparent 60%)",
+          filter: "blur(40px)",
+        }}
+        animate={{
+          x: [0, -20, 0],
+          y: [0, 30, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+      />
+    </div>
   );
-  
+}
+
+// グリッド背景
+function GridBackground() {
+  return (
+    <div className="absolute inset-0">
+      {/* 微細なドットパターン */}
+      <div
+        className="absolute inset-0 opacity-[0.4] dark:opacity-[0.3]"
+        style={{
+          backgroundImage: `radial-gradient(circle at center, currentColor 0.5px, transparent 0.5px)`,
+          backgroundSize: '24px 24px',
+        }}
+      />
+      {/* フェードアウトマスク */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background opacity-60" />
+    </div>
+  );
+}
+
+// マウス追従スポットライト
+function MouseSpotlight({ mouseX, mouseY }: { mouseX: any; mouseY: any }) {
+  const background = useTransform(
+    [mouseX, mouseY],
+    ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, rgba(59, 130, 246, 0.06), transparent 40%)`
+  );
+
   return (
     <motion.div
       className="absolute inset-0 pointer-events-none"
@@ -85,302 +136,141 @@ function MouseFollowEffect({ x, y }: { x: any; y: any }) {
 
 export function HeroSection({ searchQuery = "", onSearchChange }: HeroSectionProps) {
   const [, setLocation] = useLocation();
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
-  
+
+  // マウス追従
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { damping: 30, stiffness: 150 });
+  const springY = useSpring(mouseY, { damping: 30, stiffness: 150 });
+
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
-  // マウス追従エフェクト（軽量化、モバイルでは無効化）
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { damping: 40, stiffness: 200 }; // より軽量な設定
-  const x = useSpring(mouseX, springConfig);
-  const y = useSpring(mouseY, springConfig);
 
-
-  
-  // キーボードショートカット（⌘K）
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (searchInputRef.current && onSearchChange) {
-          searchInputRef.current.focus();
-          searchInputRef.current.select();
-        }
-      }
-      if (e.key === 'Escape' && searchInputRef.current) {
-        searchInputRef.current.blur();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onSearchChange]);
-
-  // マウス追従エフェクト（throttleで最適化）
-  const handleMouseMove = useMemo(() => {
-    let rafId: number | null = null;
-    return (e: React.MouseEvent<HTMLElement>) => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mouseX.set(x);
-    mouseY.set(y);
-        rafId = null;
-      });
-  };
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
   }, [mouseX, mouseY]);
 
   return (
-    <section 
-      ref={sectionRef}
-      className="relative py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 overflow-hidden min-h-[85vh] flex items-center bg-background"
-      onMouseMove={!isMobile ? handleMouseMove : undefined}
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
+      onMouseMove={!isMobile && !prefersReducedMotion ? handleMouseMove : undefined}
     >
-      {/* Linear風: 控えめな背景装飾（グリッドパターンのみ） */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* 微細なグリッドパターン */}
-        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.025]">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" className="text-neutral-900 dark:text-neutral-100" />
-          </svg>
-        </div>
-      </div>
-      
-      {/* マウス追従エフェクト（Linear風：より控えめに、モバイルでは無効化） */}
-      {!isMobile && !prefersReducedMotion && <MouseFollowEffect x={x} y={y} />}
-      
-      <motion.div 
-        className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10 w-full"
+      {/* 背景レイヤー */}
+      {!prefersReducedMotion && (
+        <>
+          <GridBackground />
+          <AnimatedOrbs />
+          {!isMobile && <MouseSpotlight mouseX={springX} mouseY={springY} />}
+        </>
+      )}
+
+      {/* コンテンツ */}
+      <motion.div
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        viewport={{ once: true }}
       >
-        {/* Linear.app風：左寄せレイアウト */}
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
-            {/* テキストコンテンツ */}
-            <div className="lg:pt-8">
-              {/* パンチライン + 説明文（Linear.app風：左寄せ） */}
-              <motion.div 
-                className="mb-6 sm:mb-8 md:mb-10"
-                variants={titleVariants}
-              >
-                {/* パンチライン（Linear.app風：大きなタイトル - 左寄せ、適度に改行） */}
-                <motion.h1 
-                  className="text-[32px] sm:text-[40px] md:text-[56px] lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-black mb-6 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-[0.95] tracking-[-0.03em] relative"
-                  style={{ 
-                    fontFamily: 'Inter Display, Inter, system-ui, sans-serif',
-                    wordBreak: 'break-word',
-                    overflowWrap: 'break-word',
-                    hyphens: 'auto',
-                    whiteSpace: 'normal',
-                    fontWeight: 900
-                  }}
-                  variants={titleVariants}
-                >
-                  {/* Linear.app風：シンプルなタイトルアニメーション（パフォーマンス最適化、モバイルでは簡略化） */}
-                        <span className="block">
-                              <motion.span
-                      className="block leading-[1.1] sm:leading-none"
-                      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={prefersReducedMotion ? {} : { duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
-                              >
-                      Helix is a purpose-built tool
-                    </motion.span>
-                                    <motion.span
-                      className="block leading-[1.1] sm:leading-none mt-1 sm:mt-0"
-                      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={prefersReducedMotion ? {} : { duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      for medical AI excellence
-                              </motion.span>
-                      </span>
-                </motion.h1>
-                
-                {/* 説明文（Linear.app風：2つの文章を別々の行に） */}
-                <motion.div 
-                  className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] xl:text-[24px] text-neutral-600 dark:text-neutral-400 mb-6 sm:mb-8 font-normal leading-[1.6] sm:leading-[1.5] tracking-[-0.01em]"
-                  variants={itemVariants}
-                  style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-                >
-                  <motion.p
-                    className="mb-2 sm:mb-0"
-                    initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: isMobile ? 0 : 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={prefersReducedMotion ? {} : { 
-                      duration: isMobile ? 0.3 : 0.7, 
-                      delay: isMobile ? 0 : 0.5,
-                      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] 
-                    }}
-                  >
-                    Meet the system for modern medical practice.
-                  </motion.p>
-                  <motion.p
-                    className="mt-0"
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.7, 
-                      delay: 0.6,
-                      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] 
-                    }}
-                  >
-                    Streamline diagnosis, research, and patient care with expert AI prompts.
-                  </motion.p>
-                </motion.div>
-
-                {/* CTAボタン（Linear.app風） */}
-                <motion.div 
-                  className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5 mt-6 sm:mt-8"
-                  variants={itemVariants}
-                >
-                  <motion.button
-                    onClick={() => setLocation('/guides')}
-                    className="group relative inline-flex items-center justify-center px-7 py-3.5 text-[15px] font-medium text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 rounded-xl transition-all duration-300 overflow-hidden"
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500 }}
-                  >
-                    {/* ホバー時のグロー効果 */}
-                    <motion.div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{
-                        background: "radial-gradient(circle at center, rgba(0, 0, 0, 0.02), transparent 70%)",
-                      }}
-                    />
-                    <span className="relative z-10">Get Started</span>
-                  </motion.button>
-                  
-                  <motion.a
-                    href="/changelog"
-                    className="group inline-flex items-center gap-2 px-0 py-3.5 text-[15px] font-medium transition-all duration-300"
-                    whileHover={{ scale: 1.02, x: 2 }}
-                    whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500 }}
-                  >
-                    <span>
-                      <span className="text-blue-500">New: Medical </span>
-                      <span className="text-cyan-500">AI 2025</span>
-                    </span>
-                    <ArrowRight className="w-4 h-4 text-neutral-900 dark:text-neutral-50 transition-transform group-hover:translate-x-1.5" />
-                  </motion.a>
-                </motion.div>
-              </motion.div>
-            </div>
-
-          </div>
-        </div>
-        
-        {/* Linear/Vercel風: 洗練された検索バー */}
-        {onSearchChange && (
-          <motion.div 
-            className="max-w-4xl mx-auto mt-8 sm:mt-12 lg:mt-16 mb-6 sm:mb-8 md:mb-10 px-2"
-            variants={searchVariants}
-          >
-            <div className="relative group">
-              {/* ホバー時のグロー効果 */}
-              <motion.div 
-                className="absolute -inset-1 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: "linear-gradient(135deg, rgba(0, 0, 0, 0.05), transparent 70%)",
-                }}
-              />
-              
-              <motion.div 
-                className="relative bg-background rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.08)] overflow-hidden"
-                style={{
-                  outline: `1px solid ${isSearchFocused ? 'rgba(0, 0, 0, 0.12)' : 'rgba(0, 0, 0, 0.06)'}`,
-                  outlineOffset: '-1px',
-                }}
-                whileHover={{ 
-                  boxShadow: "0_2px_4px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.12)",
-                  scale: 1.005,
-                }}
-                animate={{
-                  boxShadow: isSearchFocused
-                    ? "0_2px_4px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.12)"
-                    : "0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.08)",
-                }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-              >
-                <div className="flex items-center h-[56px] sm:h-[64px] md:h-[72px]">
-                  <div className="pl-5 sm:pl-6 md:pl-7 pr-3 sm:pr-4 flex-shrink-0">
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-                    >
-                      <Search className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 dark:text-neutral-500" strokeWidth={2} />
-                    </motion.div>
-                  </div>
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search for prompts..."
-                    className="flex-1 h-full pr-5 sm:pr-6 md:pr-7 text-[15px] sm:text-[16px] md:text-[17px] bg-transparent border-0 focus:outline-none focus:ring-0 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-neutral-900 dark:text-neutral-100 font-normal tracking-[-0.01em]"
-                    value={searchQuery}
-                    onChange={(e) => onSearchChange(e.target.value)}
-                    onFocus={() => setIsSearchFocused(true)}
-                    onBlur={() => setIsSearchFocused(false)}
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 400 }}
-                  />
-                  {/* キーボードショートカット表示（Linear風） */}
-                  <div className="pr-5 sm:pr-6 md:pr-7 hidden sm:flex items-center gap-1.5">
-                    <kbd className="px-2.5 py-1.5 text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 rounded-md shadow-sm">⌘</kbd>
-                    <kbd className="px-2.5 py-1.5 text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 rounded-md shadow-sm">K</kbd>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </motion.div>
-
-      {/* スクロールインジケーター（Linear風） */}
-      <motion.div
-        className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-10"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <motion.button
-          className="flex flex-col items-center gap-2 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors group"
-          aria-label="スクロールインジケーター"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+        {/* メインタイトル */}
+        <motion.h1
+          className="text-[48px] sm:text-[64px] md:text-[80px] lg:text-[96px] xl:text-[112px] font-bold leading-[0.95] tracking-[-0.04em] mb-8"
+          variants={itemVariants}
+          style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
         >
-          <span className="text-xs font-medium tracking-wider uppercase">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
+          <span className="block bg-clip-text text-transparent bg-gradient-to-b from-neutral-950 via-neutral-800 to-neutral-600 dark:from-white dark:via-neutral-100 dark:to-neutral-400">
+            Learn AI.
+          </span>
+          <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 dark:from-blue-400 dark:via-cyan-400 dark:to-teal-300">
+            Elevate Care.
+          </span>
+        </motion.h1>
+
+        {/* サブタイトル */}
+        <motion.p
+          className="text-lg sm:text-xl md:text-2xl text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto mb-12 leading-relaxed font-normal"
+          variants={itemVariants}
+        >
+          From clinical workflows to research breakthroughs.
+          <br className="hidden sm:block" />
+          Master medical AI with interactive courses and real-world prompts.
+        </motion.p>
+
+        {/* CTAボタン */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5"
+          variants={itemVariants}
+        >
+          {/* プライマリCTA */}
+          <motion.button
+            onClick={() => setLocation('/learn/start')}
+            className="group relative inline-flex items-center justify-center h-14 px-10 text-base font-semibold text-white rounded-2xl overflow-hidden transition-all duration-500"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <ChevronDown className="w-5 h-5" strokeWidth={2} />
-          </motion.div>
-        </motion.button>
+            {/* グラデーション背景 */}
+            <span className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500" />
+            {/* ホバー時のシマー効果 */}
+            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 animate-shimmer"
+                style={{ backgroundSize: '200% 100%' }} />
+            </span>
+            {/* グロー */}
+            <span className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
+            <span className="relative flex items-center gap-2">
+              Start Learning
+              <motion.svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                initial={{ x: 0 }}
+                whileHover={{ x: 3 }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </motion.svg>
+            </span>
+          </motion.button>
+
+          {/* セカンダリCTA */}
+          <motion.button
+            onClick={() => setLocation('/courses')}
+            className="group inline-flex items-center justify-center h-14 px-10 text-base font-semibold text-neutral-700 dark:text-neutral-100 bg-white/70 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 rounded-2xl border border-neutral-200/80 dark:border-white/10 backdrop-blur-xl transition-all duration-300 shadow-lg shadow-neutral-900/5"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span className="flex items-center gap-2">
+              Explore Courses
+              <svg className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </motion.button>
+        </motion.div>
+
       </motion.div>
+
+
+      {/* 下部のグラデーションフェード */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+
+      {/* シマーアニメーション用のスタイル */}
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+        .animate-shimmer {
+          animation: shimmer 3s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 }

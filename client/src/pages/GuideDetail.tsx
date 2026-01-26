@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useRoute, useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { fullPrompts } from "../lib/prompts-full";
-import { JournalFinder } from "@/components/JournalFinder";
 import { ConsentTemplates } from "@/components/ConsentTemplates";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
@@ -201,7 +200,6 @@ const guides = [
               執筆を始める前に、投稿先のジャーナルを決めることが重要です。
               ジャーナルによって、単語数制限、フォーマット、好まれるトピックが異なるからです。
             </p>
-            <JournalFinder />
             <div className="mt-4">
               <p className="font-medium mb-2">ジャーナル選定の相談</p>
               <p className="text-sm text-muted-foreground mb-2">
@@ -370,7 +368,7 @@ export default function GuideDetail() {
   useEffect(() => {
     if (guide) {
       updateSEO({
-        title: `${guide.title} | Helix`,
+        title: `${guide.title} | HELIX`,
         description: guide.description || `${guide.title}のワークフローガイド。医療従事者がAIを活用して効率的に作業を進める方法を学べます。`,
         path: `/guides/${guideId}`,
         keywords: `${guide.title},ワークフローガイド,${guide.category},医療研究,AI活用`

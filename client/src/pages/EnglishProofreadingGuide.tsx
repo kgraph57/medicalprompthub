@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X, ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Circle, CheckCircle2, Clock, Menu, X, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import { englishProofreadingGuideData } from '@/lib/english-proofreading-guide-data';
 import { CodeBlock } from '@/components/CodeBlock';
 import { updateSEO } from '@/lib/seo';
@@ -52,7 +52,7 @@ export default function EnglishProofreadingGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "英文校正ガイド | Helix",
+      title: "英文校正ガイド | HELIX",
       description: "医学論文の英文校正をAIで効率的に行う方法を段階的にサポート。AIを活用して高品質な英文を作成できます。",
       path: `/guides/english-proofreading-guide${stepId ? `/${stepId}` : ''}`,
       keywords: "英文校正,英語校正,医学論文,AI活用,英語ライティング"
@@ -84,8 +84,6 @@ export default function EnglishProofreadingGuide() {
     } else {
       setCurrentStepId('intro');
     }
-    // スクロール位置をトップにリセット（ただし、goToNextからの遷移の場合はスキップ）
-    // goToNext関数内でスクロール処理を行うため、ここではスキップ
   }, [stepId]);
 
   // Markdownコンテンツを読み込み
@@ -95,9 +93,12 @@ export default function EnglishProofreadingGuide() {
     isInReferencesSection.current = false; // マークダウン変更時に状態をリセット
   }, [currentStepId]);
 
-  // currentStepIdが変更されたらスクロール位置をトップにリセット
+  // currentStepIdが変更されたらスクロール位置をリセット
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      mainContent.scrollTo(0, 0);
+    }
   }, [currentStepId]);
 
   // 目次データを設定（サイドバーと同じ構造）- 初回マウント時とcurrentStepId変更時に実行
@@ -193,7 +194,7 @@ export default function EnglishProofreadingGuide() {
       const prevStepId = allSteps[currentIndex - 1];
       setCurrentStepId(prevStepId);
       navigate(`/guides/english-proofreading-guide/${prevStepId === 'intro' ? '' : prevStepId}`);
-      // 同時にスクロール位置をトップにリセット
+      // ページトップにスクロール
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -202,45 +203,21 @@ export default function EnglishProofreadingGuide() {
     if (isLastStep) {
       // 最後のステップに到達したら、次のガイドに遷移
       navigate(nextGuidePath);
-      // 次のページに遷移するので、少し遅延してからスクロール
-      setTimeout(() => {
-        const scrollToHeader = () => {
-          const header = document.getElementById('page-header');
-          if (header) {
-            const headerTop = header.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
-          } else {
-            // ヘッダーが見つからない場合は少し待って再試行
-            setTimeout(scrollToHeader, 100);
-          }
-        };
-        scrollToHeader();
-      }, 300);
+      // ページトップにスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // 次のステップに遷移
       const nextStepId = allSteps[currentIndex + 1];
       setCurrentStepId(nextStepId);
       navigate(`/guides/english-proofreading-guide/${nextStepId}`);
-      // ページ遷移後にヘッダーにスクロール
-      setTimeout(() => {
-        const scrollToHeader = () => {
-          const header = document.getElementById('page-header');
-          if (header) {
-            const headerTop = header.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
-          } else {
-            // ヘッダーが見つからない場合は少し待って再試行
-            setTimeout(scrollToHeader, 100);
-          }
-        };
-        scrollToHeader();
-      }, 300);
+      // ページトップにスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
     <Layout>
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Mobile Table of Contents Dropdown */}
       {isSidebarOpen && (
         <>
@@ -250,13 +227,13 @@ export default function EnglishProofreadingGuide() {
           />
           {/* TOC Dropdown Container - positioned near the header button */}
           <div 
-            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="overflow-y-auto max-h-[calc(100vh-5rem)] p-4">
               {/* 目次ヘッダー */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 font-medium">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
+                <div className="w-full flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-400 font-medium">
                   <span>目次</span>
                 </div>
               </div>
@@ -281,7 +258,7 @@ export default function EnglishProofreadingGuide() {
                         className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                           isCurrent
                             ? 'text-blue-600 dark:text-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                            : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                         }`}
                       >
                         {isCurrent && (
@@ -306,7 +283,7 @@ export default function EnglishProofreadingGuide() {
         <div className="flex flex-col lg:flex-row gap-4 relative">
           {/* Right Content - Scrollable Article */}
           <main className="flex-1 min-w-0 order-2 lg:order-1">
-            <article className="zenn-article">
+            <article key={currentStepId} className="zenn-article">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -321,7 +298,7 @@ export default function EnglishProofreadingGuide() {
                     return (
                       <div className="mt-4 mb-8">
                         {currentStepDuration && (
-                          <div className="flex items-center gap-1.5 mb-3 text-sm text-gray-600 dark:text-gray-400">
+                          <div className="flex items-center gap-1.5 mb-3 text-sm text-neutral-600 dark:text-neutral-400">
                             <Clock className="h-4 w-4" />
                             <span>{currentStepDuration}</span>
                           </div>
@@ -418,6 +395,26 @@ export default function EnglishProofreadingGuide() {
                   blockquote: ({ node, ...props }) => (
                     <blockquote className="pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
                   ),
+                  table: ({ node, ...props }) => (
+                    <div className="overflow-x-auto my-8">
+                      <table className="min-w-full border-collapse border border-border rounded-lg" {...props} />
+                    </div>
+                  ),
+                  thead: ({ node, ...props }) => (
+                    <thead className="bg-muted/50" {...props} />
+                  ),
+                  tbody: ({ node, ...props }) => (
+                    <tbody className="divide-y divide-border" {...props} />
+                  ),
+                  tr: ({ node, ...props }) => (
+                    <tr className="hover:bg-muted/30 transition-colors" {...props} />
+                  ),
+                  th: ({ node, ...props }) => (
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-foreground border-b border-border" {...props} />
+                  ),
+                  td: ({ node, ...props }) => (
+                    <td className="px-4 py-3 text-sm text-foreground border-b border-border" {...props} />
+                  ),
                 }}
               >
                 {markdown}
@@ -425,27 +422,32 @@ export default function EnglishProofreadingGuide() {
             </article>
 
             {/* Navigation Buttons */}
-            <div className="mt-8 flex items-center justify-between gap-4">
-              {/* Previous Button */}
+            <div className="flex justify-between items-center mt-12 pt-8 border-t border-border">
               <Button
                 onClick={goToPrevious}
                 disabled={!hasPrevious}
                 variant="outline"
-                className="h-9"
+                className="flex items-center gap-2"
               >
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                前へ
+                <ArrowLeft className="w-4 h-4" />
+                前のステップ
               </Button>
 
-              {/* Next Button */}
               <Button
                 onClick={goToNext}
-                disabled={false}
-                variant="outline"
-                className="h-9"
+                className="flex items-center gap-2"
               >
-                {isLastStep ? '次のガイドへ' : '次へ'}
-                <ChevronRight className="h-4 w-4 ml-2" />
+                {isLastStep ? (
+                  <>
+                    次のガイドへ
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    次のステップ
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </Button>
             </div>
           </main>
@@ -456,15 +458,15 @@ export default function EnglishProofreadingGuide() {
             w-[70%] max-w-sm lg:w-64 flex-shrink-0
             transform transition-transform duration-300 ease-in-out
             ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
-            bg-blue-900/95 dark:bg-gray-900/95 backdrop-blur-sm lg:bg-transparent
+            bg-neutral-50/95 dark:bg-neutral-900/95 backdrop-blur-sm lg:bg-transparent
             order-1 lg:order-2
             shadow-xl lg:shadow-none
           `}>
             <div className="h-full sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
               {/* 目次ヘッダー */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                 <div className="w-full flex items-center gap-1.5
-                  text-sm text-gray-600 dark:text-gray-400
+                  text-sm text-neutral-600 dark:text-neutral-400
                   font-medium
                 ">
                   <span>目次</span>
@@ -490,7 +492,7 @@ export default function EnglishProofreadingGuide() {
                         className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                           isCurrent
                             ? 'text-blue-600 dark:text-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                            : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                         }`}
                       >
                         {isCurrent && (

@@ -1082,6 +1082,16 @@ textarea:focus-visible,
   animation: skeleton-loading 1.5s ease-in-out infinite;
 }
 
+/* Cursor/Anthropic風シマーアニメーション */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* プログレッシブエンハンスメント */
 @supports (backdrop-filter: blur(10px)) {
   .backdrop-blur-glass {
@@ -1166,6 +1176,57 @@ body:not(.user-is-tabbing) *:focus {
 body.user-is-tabbing *:focus {
   outline: 2px solid var(--primary-500);
   outline-offset: 2px;
+}
+
+/* Cursor/Anthropic風フォーカスリングユーティリティ */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid rgb(59 130 246); /* blue-500 */
+  outline-offset: 2px;
+  transition: outline-offset 0.2s ease;
+}
+
+/* カード・インタラクティブ要素のフォーカス状態 */
+.interactive-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
+}
+
+.interactive-card:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px);
+}
+
+/* リンクのフォーカス状態改善 */
+a:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ボタンのフォーカス状態（Tailwindの補完） */
+button:focus-visible:not([class*="focus-visible:"]) {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+
+/* フォーカストラップ用（モーダル・ドロワー） */
+.focus-trap {
+  contain: layout;
+}
+
+/* ダークモードのフォーカスリング */
+.dark .focus-ring:focus-visible,
+.dark a:focus-visible,
+.dark button:focus-visible:not([class*="focus-visible:"]),
+.dark .interactive-card:focus-visible {
+  outline-color: rgb(96 165 250); /* blue-400 */
 }
 
 /* ========================================

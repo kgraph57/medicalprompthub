@@ -12,7 +12,7 @@ interface ShareButtonsProps {
 export function ShareButtons({ title, url, description }: ShareButtonsProps) {
   const handleShare = async () => {
     const shareData = {
-      title: `Helix - ${title}`,
+      title: `HELIX - ${title}`,
       text: description || title,
       url: url
     };
@@ -40,7 +40,7 @@ export function ShareButtons({ title, url, description }: ShareButtonsProps) {
   };
 
   const handleTwitterShare = () => {
-    const text = `${title} | Helix`;
+    const text = `${title} | HELIX`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=MedicalAI,プロンプトエンジニアリング,医療DX`;
     window.open(twitterUrl, '_blank', 'width=550,height=420');
   };

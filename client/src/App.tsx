@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import React, { lazy, Suspense, useEffect } from "react";
 import { Route, Switch, Router as WouterRouter } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { PageLoader } from "./components/PageLoader";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { PageViewTracker } from "./components/PageViewTracker";
 import { CookieConsentBanner } from "./components/CookieConsentBanner";
@@ -78,9 +79,6 @@ const Courses = createLazyImport(() => import("@/pages/Courses"));
 const CategoryCourses = createLazyImport(() => import("@/pages/CategoryCourses"));
 const CourseDetail = createLazyImport(() => import("@/pages/CourseDetail"));
 const LessonDetail = createLazyImport(() => import("@/pages/LessonDetail"));
-const JournalFinderPage = createLazyImport(() => import("@/pages/JournalFinderPage"));
-const JournalDetail = createLazyImport(() => import("@/pages/JournalDetail"));
-const JournalCompare = createLazyImport(() => import("@/pages/JournalCompare"));
 const CaseReportGuide = createLazyImport(() => import("@/pages/CaseReportGuide"));
 const PaperReadingGuide = createLazyImport(() => import("@/pages/PaperReadingGuide"));
 const EnglishProofreadingGuide = createLazyImport(() => import("@/pages/EnglishProofreadingGuide"));
@@ -88,22 +86,7 @@ const MARWGuide = createLazyImport(() => import("@/pages/MARWGuide"));
 const MarkdownGuide = createLazyImport(() => import("@/pages/MarkdownGuide"));
 const AILiteracy = createLazyImport(() => import("@/pages/AILiteracy"));
 const Learn = createLazyImport(() => import("@/pages/Learn"));
-
-// Loading component（アクセシビリティ改善）
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen" role="status" aria-live="polite">
-    <div className="text-center">
-      <div 
-        className="animate-spin rounded-full h-10 lg:h-11 w-12 border-b-2 border-primary mx-auto mb-4"
-        aria-hidden="true"
-      />
-      <p className="text-muted-foreground">
-        <span className="sr-only">読み込み中</span>
-        <span aria-hidden="true">読み込み中...</span>
-      </p>
-    </div>
-  </div>
-);
+const LearnStart = createLazyImport(() => import("@/pages/LearnStart"));
 
 // エラーフォールバックコンポーネント（Suspense用）
 const ErrorFallbackLoader = ({ error, retry }: { error: Error; retry: () => void }) => (
@@ -180,15 +163,13 @@ function Router() {
           <Route path="/tips/:id" component={TipDetail} />
           <Route path="/legal" component={Legal} />
           <Route path="/ai-literacy" component={AILiteracy} />
+          <Route path="/learn/start" component={LearnStart} />
           <Route path="/learn" component={Learn} />
           <Route path="/faq" component={FAQ} />
           <Route path="/contact" component={Contact} />
           <Route path="/about" component={About} />
           <Route path="/changelog" component={Changelog} />
           <Route path="/favorites" component={Favorites} />
-          <Route path="/journal-finder" component={JournalFinderPage} />
-          <Route path="/journal/:id" component={JournalDetail} />
-          <Route path="/journal-compare" component={JournalCompare} />
           <Route path="/404" component={NotFound} />
           {/* Final fallback route */}
           <Route component={NotFound} />

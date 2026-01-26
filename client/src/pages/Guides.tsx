@@ -1,17 +1,11 @@
 import { Layout, useToc } from "@/components/Layout";
-import { PageHeader } from "@/components/PageHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowRight, BookOpen, FileText, Microscope, ClipboardList, Mail, Image, Presentation, Search, Stethoscope, Pill, X, Lock, BarChart3 } from "lucide-react";
+import { Search, X, ChevronRight, Lock } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { updateSEO } from "@/lib/seo";
-
-type SortOption = "title-asc" | "title-desc" | "readTime-asc" | "readTime-desc";
 
 // 実装済みのガイドIDリスト
 const IMPLEMENTED_GUIDES = [
@@ -19,7 +13,6 @@ const IMPLEMENTED_GUIDES = [
   "paper-reading-efficiency",
   "english-proofreading-guide",
   "marw-complete",
-  // 新規追加ガイド
   "conference-presentation",
   "differential-diagnosis",
   "patient-explanation",
@@ -52,938 +45,607 @@ const IMPLEMENTED_GUIDES = [
   "poster-presentation",
   "clinical-reasoning",
   "research-data-management",
-  // 新規公開ガイド
   "diagram-creation-guide",
   "advanced-medical-illustration-guide",
-  "pubmed-search-guide"
+  "pubmed-search-guide",
+  // 新規追加
+  "night-shift-handover",
+  "surgical-record",
+  "outpatient-preparation",
+  "bad-news-delivery",
+  "board-exam-preparation",
+  "resident-training-plan"
 ];
 
-// Updated: 2025-12-07
+interface Guide {
+  id: string;
+  title: string;
+  description: string;
+  category: "Research" | "Presentation" | "Clinical";
+  readTime: string;
+  hasIllustrations?: boolean;
+}
+
+const guides: Guide[] = [
+  // Research - 使用頻度・時間短縮効果・人気順に並び替え
+  {
+    id: "paper-reading-efficiency",
+    hasIllustrations: true,
+    title: "論文読解効率化ガイド",
+    description: "AIツールで従来の2-3時間から約1時間に短縮",
+    category: "Research",
+    readTime: "15 min",
+  },
+  {
+    id: "pubmed-search-guide",
+    hasIllustrations: true,
+    title: "PubMed検索ガイド",
+    description: "PICOに基づいた検索式の作成からMeSH terms活用まで",
+    category: "Research",
+    readTime: "12 min",
+  },
+  {
+    id: "case-report-complete",
+    hasIllustrations: true,
+    title: "症例報告執筆ガイド: 構想から投稿まで",
+    description: "AI加速型の5ステップで、準備から投稿まで完全サポート",
+    category: "Research",
+    readTime: "60 min",
+  },
+  {
+    id: "english-proofreading-guide",
+    title: "医学英語校正ガイド",
+    description: "LLM時代の最新トレンドを反映したAIツール活用法",
+    category: "Research",
+    readTime: "20 min",
+  },
+  {
+    id: "marw-complete",
+    hasIllustrations: true,
+    title: "医療AI論文執筆ワークフロー（MARW）完全ガイド",
+    description: "世界標準に準拠したAI駆動型論文執筆の7段階ワークフロー",
+    category: "Research",
+    readTime: "45 min",
+  },
+  {
+    id: "medical-statistics-consultation",
+    hasIllustrations: true,
+    title: "医療統計・データ分析相談",
+    description: "AIを活用した医療統計の理解と分析",
+    category: "Research",
+    readTime: "45 min",
+  },
+  {
+    id: "literature-search",
+    hasIllustrations: true,
+    title: "論文検索・読解サポート",
+    description: "AIを活用した効率的な文献検索と読解",
+    category: "Research",
+    readTime: "40 min",
+  },
+  {
+    id: "data-visualization-figures",
+    title: "データ可視化・図表作成ガイド",
+    description: "論文に掲載する高品質な図表の作成方法",
+    category: "Research",
+    readTime: "18 min",
+  },
+  {
+    id: "conference-to-paper",
+    title: "学会発表から論文投稿へのワークフロー",
+    description: "学会発表の内容を効率的に論文に発展させる方法",
+    category: "Research",
+    readTime: "27 min",
+  },
+  {
+    id: "grant-application",
+    title: "グラント申請書作成ガイド",
+    description: "科研費や厚労科研などのグラント申請書の作成方法",
+    category: "Research",
+    readTime: "28 min",
+  },
+  {
+    id: "research-protocol",
+    hasIllustrations: true,
+    title: "研究計画書作成支援",
+    description: "AIを活用した質の高い研究計画書の作成",
+    category: "Research",
+    readTime: "50 min",
+  },
+  {
+    id: "ethics-review-application",
+    hasIllustrations: true,
+    title: "倫理審査申請書類作成支援",
+    description: "倫理審査申請書類の効率的な作成",
+    category: "Research",
+    readTime: "45 min",
+  },
+  {
+    id: "systematic-review-meta-analysis",
+    title: "システマティックレビュー・メタアナリシス作成ガイド",
+    description: "PRISMAガイドラインに準拠した作成方法",
+    category: "Research",
+    readTime: "35 min",
+  },
+  {
+    id: "observational-study-design",
+    title: "観察研究デザインガイド",
+    description: "コホート研究・ケースコントロール研究の設計方法",
+    category: "Research",
+    readTime: "22 min",
+  },
+  {
+    id: "clinical-trial-search",
+    hasIllustrations: true,
+    title: "臨床試験情報検索",
+    description: "関連する臨床試験情報の効率的な検索",
+    category: "Research",
+    readTime: "35 min",
+  },
+  {
+    id: "research-data-management",
+    title: "研究データ管理ガイド",
+    description: "研究データを効率的かつ安全に管理する方法",
+    category: "Research",
+    readTime: "23 min",
+  },
+  {
+    id: "medical-news-commentary",
+    title: "医療ニュース・トピック解説",
+    description: "最新の医療ニュースをわかりやすく解説",
+    category: "Research",
+    readTime: "25 min",
+  },
+  {
+    id: "board-exam-preparation",
+    hasIllustrations: true,
+    title: "専門医試験対策ガイド",
+    description: "AIを活用した効率的な専門医試験の学習戦略",
+    category: "Research",
+    readTime: "30 min",
+  },
+  {
+    id: "resident-training-plan",
+    hasIllustrations: true,
+    title: "研修医指導計画作成",
+    description: "効果的な研修医教育プログラムの設計",
+    category: "Research",
+    readTime: "25 min",
+  },
+  // Clinical - 日常業務での使用頻度・影響度順に並び替え
+  {
+    id: "night-shift-handover",
+    hasIllustrations: true,
+    title: "当直引き継ぎサマリー作成",
+    description: "効率的で漏れのない当直引き継ぎ文書の作成",
+    category: "Clinical",
+    readTime: "15 min",
+  },
+  {
+    id: "surgical-record",
+    hasIllustrations: true,
+    title: "手術記録・処置記録作成",
+    description: "正確で効率的な手術記録・処置記録の作成",
+    category: "Clinical",
+    readTime: "20 min",
+  },
+  {
+    id: "outpatient-preparation",
+    hasIllustrations: true,
+    title: "外来予習ワークフロー",
+    description: "次回外来患者の効率的な事前準備",
+    category: "Clinical",
+    readTime: "15 min",
+  },
+  {
+    id: "differential-diagnosis",
+    hasIllustrations: true,
+    title: "鑑別診断リスト生成",
+    description: "AIによる包括的な鑑別診断リストの作成",
+    category: "Clinical",
+    readTime: "30 min",
+  },
+  {
+    id: "patient-explanation",
+    title: "患者説明シナリオ作成",
+    description: "わかりやすく、配慮の行き届いた患者説明の作成",
+    category: "Clinical",
+    readTime: "40 min",
+  },
+  {
+    id: "bad-news-delivery",
+    hasIllustrations: true,
+    title: "Bad News Delivery（悪い知らせの伝え方）",
+    description: "SPIKESプロトコルに基づく患者・家族への説明",
+    category: "Clinical",
+    readTime: "25 min",
+  },
+  {
+    id: "medical-documents",
+    title: "診断書・紹介状作成支援",
+    description: "AIで医療文書作成を効率化・標準化",
+    category: "Clinical",
+    readTime: "40 min",
+  },
+  {
+    id: "consultation-email",
+    title: "専門医へのコンサルトメール作成",
+    description: "効果的なコンサルトメールの作成",
+    category: "Clinical",
+    readTime: "30 min",
+  },
+  {
+    id: "clinical-reasoning",
+    title: "臨床推論プロセスガイド",
+    description: "体系的で効率的な臨床推論の方法",
+    category: "Clinical",
+    readTime: "20 min",
+  },
+  {
+    id: "image-diagnosis-report-reading",
+    title: "画像診断レポート読解支援",
+    description: "画像診断レポートの理解を深める",
+    category: "Clinical",
+    readTime: "30 min",
+  },
+  {
+    id: "new-drug-information",
+    hasIllustrations: true,
+    title: "新薬情報収集・要約",
+    description: "最新の新薬情報を効率的に収集・要約",
+    category: "Clinical",
+    readTime: "35 min",
+  },
+  {
+    id: "guideline-comparison",
+    title: "治療ガイドライン比較",
+    description: "複数のガイドラインを比較・統合",
+    category: "Clinical",
+    readTime: "30 min",
+  },
+  {
+    id: "polypharmacy-support",
+    title: "ポリファーマシー対策支援",
+    description: "多剤併用の適正化を支援",
+    category: "Clinical",
+    readTime: "40 min",
+  },
+  {
+    id: "patient-education-materials",
+    title: "患者教育資料作成",
+    description: "わかりやすい患者教育資料の作成",
+    category: "Clinical",
+    readTime: "35 min",
+  },
+  {
+    id: "post-discharge-follow-up",
+    title: "退院後フォローアップ計画作成",
+    description: "包括的な退院後フォローアップ計画の作成",
+    category: "Clinical",
+    readTime: "35 min",
+  },
+  {
+    id: "incident-report-creation",
+    title: "インシデントレポート作成支援",
+    description: "正確で建設的なインシデントレポートの作成",
+    category: "Clinical",
+    readTime: "30 min",
+  },
+  {
+    id: "medical-safety-manual",
+    title: "医療安全マニュアル作成",
+    description: "実践的な医療安全マニュアルの作成",
+    category: "Clinical",
+    readTime: "45 min",
+  },
+  {
+    id: "infection-control-manual",
+    hasIllustrations: true,
+    title: "感染対策マニュアル作成",
+    description: "効果的な感染対策マニュアルの作成",
+    category: "Clinical",
+    readTime: "45 min",
+  },
+  {
+    id: "palliative-care-planning",
+    title: "緩和ケア計画立案支援",
+    description: "患者中心の緩和ケア計画の立案",
+    category: "Clinical",
+    readTime: "45 min",
+  },
+  {
+    id: "multilingual-medical-consultation",
+    title: "多言語医療相談支援",
+    description: "多言語での医療相談を円滑に",
+    category: "Clinical",
+    readTime: "25 min",
+  },
+  {
+    id: "rare-disease-information",
+    title: "希少疾患情報収集",
+    description: "希少疾患に関する最新情報の収集",
+    category: "Clinical",
+    readTime: "35 min",
+  },
+  // Presentation - 使用頻度・実用性順に並び替え
+  {
+    id: "conference-presentation",
+    hasIllustrations: true,
+    title: "カンファレンス発表資料作成支援",
+    description: "AIを活用した効果的なカンファレンス発表資料の作成",
+    category: "Presentation",
+    readTime: "40 min",
+  },
+  {
+    id: "conference-presentation-slides",
+    title: "学会発表スライド作成支援",
+    description: "インパクトのある学会発表スライドの作成",
+    category: "Presentation",
+    readTime: "45 min",
+  },
+  {
+    id: "poster-presentation",
+    title: "ポスター発表作成ガイド",
+    description: "学会でのポスター発表の作成方法",
+    category: "Presentation",
+    readTime: "18 min",
+  },
+  {
+    id: "diagram-creation-guide",
+    hasIllustrations: true,
+    title: "Nanobanana活用ガイド: 実践プロンプト集",
+    description: "医学図解向けの実践的なプロンプト例を紹介",
+    category: "Presentation",
+    readTime: "12 min",
+  },
+  {
+    id: "advanced-medical-illustration-guide",
+    hasIllustrations: true,
+    title: "高度な医学図解作成ガイド",
+    description: "BioRender風の高品質な医学図解やVisual Abstractを作成",
+    category: "Presentation",
+    readTime: "20 min",
+  },
+];
+
+const categoryConfig = {
+  Research: { label: "Research" },
+  Presentation: { label: "Presentation" },
+  Clinical: { label: "Clinical" },
+};
+
+// ガイドアイテムコンポーネント
+function GuideItem({ guide, index }: { guide: Guide; index: number }) {
+  const isImplemented = IMPLEMENTED_GUIDES.includes(guide.id);
+
+  const getGuidePath = (id: string) => {
+    if (id === "case-report-complete") return "/guides/case-report-complete";
+    if (id === "paper-reading-efficiency") return "/guides/paper-reading-efficiency";
+    if (id === "english-proofreading-guide") return "/guides/english-proofreading-guide";
+    return `/guides/${id}`;
+  };
+
+  const content = (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, delay: index * 0.02 }}
+      className={cn(
+        "group flex items-center justify-between gap-4 py-4 border-b border-neutral-100 dark:border-neutral-800 transition-colors duration-200",
+        isImplemented
+          ? "hover:bg-neutral-50 dark:hover:bg-neutral-900/50 cursor-pointer -mx-4 px-4"
+          : "opacity-40"
+      )}
+    >
+      <div className="flex-1 min-w-0">
+        <h3 className={cn(
+          "font-medium text-neutral-900 dark:text-neutral-100 transition-colors",
+          isImplemented && "group-hover:text-blue-600 dark:group-hover:text-blue-400"
+        )}>
+          {guide.title}
+          {!isImplemented && (
+            <Lock className="inline-block w-3.5 h-3.5 ml-2 text-neutral-400" />
+          )}
+        </h3>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1 line-clamp-1">
+          {guide.description}
+        </p>
+      </div>
+
+      {isImplemented && (
+        <ChevronRight className="flex-shrink-0 w-5 h-5 text-neutral-300 dark:text-neutral-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+      )}
+    </motion.div>
+  );
+
+  if (isImplemented) {
+    return (
+      <Link href={getGuidePath(guide.id)} style={{ textDecoration: 'none', display: 'block' }}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
+}
+
+// カテゴリセクションコンポーネント
+const INITIAL_DISPLAY_COUNT = 5; // 初期表示数
+
+function CategorySection({ category, guides, searchQuery }: { category: "Research" | "Presentation" | "Clinical"; guides: Guide[]; searchQuery: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const config = categoryConfig[category];
+
+  const filteredGuides = guides.filter(g => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      g.title.toLowerCase().includes(query) ||
+      g.description.toLowerCase().includes(query)
+    );
+  });
+
+  if (filteredGuides.length === 0) return null;
+
+  // 検索中は全て表示、そうでなければ制限
+  const hasMore = !searchQuery && filteredGuides.length > INITIAL_DISPLAY_COUNT;
+  const displayedGuides = (searchQuery || isExpanded)
+    ? filteredGuides
+    : filteredGuides.slice(0, INITIAL_DISPLAY_COUNT);
+  const remainingCount = filteredGuides.length - INITIAL_DISPLAY_COUNT;
+
+  return (
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="mb-16"
+    >
+      {/* カテゴリヘッダー */}
+      <div className="flex items-baseline gap-3 mb-2">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+          {config.label}
+        </h2>
+        <span className="text-xs text-neutral-300 dark:text-neutral-600">
+          {filteredGuides.length}
+        </span>
+      </div>
+
+      {/* ガイドリスト */}
+      <div>
+        {displayedGuides.map((guide, index) => (
+          <GuideItem key={guide.id} guide={guide} index={index} />
+        ))}
+      </div>
+
+      {/* すべて見る / 閉じる ボタン */}
+      {hasMore && (
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center gap-1"
+        >
+          {isExpanded ? (
+            <>閉じる</>
+          ) : (
+            <>他 {remainingCount} 件を見る</>
+          )}
+          <ChevronRight className={cn(
+            "w-4 h-4 transition-transform",
+            isExpanded && "rotate-90"
+          )} />
+        </motion.button>
+      )}
+    </motion.section>
+  );
+}
+
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [sortOption, setSortOption] = useState<SortOption>("title-asc");
-  const { setTocItems } = useToc(); // 目次データをクリア
+  const { setTocItems } = useToc();
 
-  // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "ワークフローガイド | Helix",
-      description: "症例報告、論文執筆、統計解析など、医療従事者が直面する複雑なタスクを段階的にサポートするワークフローガイド。AIを活用して効率的に作業を進める方法を学べます。",
+      title: "Workflow Guides | HELIX",
+      description: "AI-powered workflow guides for medical professionals. From case reports to research papers.",
       path: "/guides",
-      keywords: "ワークフローガイド,症例報告,論文執筆,統計解析,医療研究,AI活用"
+      keywords: "workflow guides, case report, research paper, medical AI"
     });
   }, []);
 
-  // 目次がないページなので、tocItemsをクリア
   useEffect(() => {
     setTocItems([]);
   }, [setTocItems]);
 
-  const guides = useMemo(() => [
-    {
-      id: "marw-complete",
-      hasIllustrations: true,
-      title: "【最新版】AI論文執筆ワークフロー:MARW完全ガイド",
-      description: "世界標準に準拠したAI駆動型論文執筆の7段階ワークフロー。ハーバード大学、JAMA、ICMJEのガイドラインに基づき、24個の実践的プロンプト例を提供。研究のアイデア創出から論文出版まで完全サポート。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-indigo-600" />,
-      readTime: "45 min read",
-      tags: ["AI Paper Writing", "Research Workflow", "MARW", "AI Tools", "Academic Writing"]
-    },
-    {
-      id: "case-report-complete",
-      hasIllustrations: true,
-      title: "【完全版】症例報告執筆ガイド:構想から投稿まで",
-      description: "読むだけで症例報告が実際にできるレベルの完全版ガイド。AI加速型の5ステップで、準備から投稿まで完全サポート。各ステップに具体的なプロンプト、AIツール活用法、チェックリストを完備。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-blue-600" />,
-      readTime: "60 min read",
-      tags: ["Case Report", "Writing", "Complete Guide", "AI Tools"]
-    },
-    {
-      id: "case-report-workflow",
-      title: "症例報告作成ワークフロー:AIを活用した効率化ガイド",
-      description: "症例報告は「マラソン」ではなく「400m走」です。CAREガイドラインチェックから投稿用カバーレター作成まで、AIプロンプトを活用して最短距離で完走するためのステップバイステップガイド。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-blue-500" />,
-      readTime: "20 min read",
-      tags: ["Case Report", "Writing", "Beginner"]
-    },
-    {
-      id: "statistical-analysis-guide",
-      title: "【初心者向け】医療統計解析:データの準備から結果の解釈まで",
-      description: "「p値って何?」からスタート。データの整理、適切な検定の選び方、Python/Rコードの生成までをサポートします。",
-      category: "Research",
-      icon: <Microscope className="h-6 w-6 text-blue-500" />,
-      readTime: "20 min read",
-      tags: ["Statistics", "Data Analysis", "Beginner"]
-    },
-    {
-      id: "conference-presentation-guide",
-      title: "【完全版】学会発表ガイド:抄録からスライド、質疑応答まで",
-      description: "初めての学会発表でも安心。魅力的な抄録の書き方、見やすいスライド構成、想定問答集の作成までをトータルサポート。",
-      category: "Presentation",
-      icon: <FileText className="h-6 w-6 text-green-500" />,
-      readTime: "15 min read",
-      tags: ["Conference", "Presentation", "Public Speaking"]
-    },
-    {
-      id: "paper-reading-efficiency",
-      hasIllustrations: true,
-      title: "【時短】論文読解効率化ガイド",
-      description: "忙しい臨床医が効率的に論文を読んで理解するための実践的なワークフロー。AIツールを活用することで、従来の2-3時間から約1時間に短縮。5ステップで準備から記録まで完全サポート。",
-      category: "Research",
-      icon: <BookOpen className="h-6 w-6 text-orange-500" />,
-      readTime: "15 min read",
-      tags: ["Paper Reading", "Literature Review", "Time-saving", "AI Tools"]
-    },
-    {
-      id: "english-proofreading-guide",
-      title: "【完全版】医学英語校正ガイド:AIツール活用からプロ校正まで",
-      description: "論文、症例報告、学会抄録、プレゼン資料まで。LLM時代の最新トレンドを反映。AIツール（Grammarly、DeepL Write、ChatGPT）の組み合わせで多くのケースに対応可能。プロ校正が必要なケースとの使い分けも徹底解説。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-violet-500" />,
-      readTime: "20 min read",
-      tags: ["English Editing", "Proofreading", "Academic Writing", "AI Tools"]
-    },
-    {
-      id: "journal-club-guide",
-      title: "【時短】論文抄読会(Journal Club)効率化ガイド",
-      description: "毎週の抄読会準備を30分で完了。論文の要約から批判的吟味、スライド作成までをAIがサポートします。",
-      category: "Research",
-      icon: <BookOpen className="h-6 w-6 text-orange-500" />,
-      readTime: "10 min read",
-      tags: ["Journal Club", "Literature Review", "Time-saving"]
-    },
-    {
-      id: "patient-explanation-guide",
-      title: "【臨床】患者説明・インフォームドコンセント(SDM)ガイド",
-      description: "「専門用語が伝わらない」を解決。難しい病状や治療法を、患者さんが納得できる言葉で伝えるための翻訳ガイド。",
-      category: "Clinical",
-      icon: <FileText className="h-6 w-6 text-teal-500" />,
-      readTime: "10 min read",
-      tags: ["Patient Communication", "SDM", "Clinical"]
-    },
-    {
-      id: "soap-note-guide",
-      title: "【臨床】診療録(SOAP形式)作成ガイド",
-      description: "構造化された診療録の書き方。主観的所見と客観的所見の分離、評価と計画の明確化で、診療の質を向上させます。",
-      category: "Clinical",
-      icon: <ClipboardList className="h-6 w-6 text-indigo-500" />,
-      readTime: "10 min read",
-      tags: ["SOAP Note", "Medical Records", "Documentation"]
-    },
-    {
-      id: "referral-letter-guide",
-      title: "【臨床】紹介状・診療情報提供書作成ガイド",
-      description: "適切な情報量、専門用語の使い方、紹介目的の明確化。失礼のない紹介状で、スムーズな診療連携を実現します。",
-      category: "Clinical",
-      icon: <Mail className="h-6 w-6 text-pink-500" />,
-      readTime: "10 min read",
-      tags: ["Referral Letter", "Medical Communication", "Documentation"]
-    },
-    {
-      id: "diagram-creation-guide",
-      hasIllustrations: true,
-      title: "【初心者向け】Nanobanana活用ガイド:実践プロンプト集",
-      description: "Nanobananaの基本的な使い方と、医学図解向けの実践的なプロンプト例を紹介。コミュニティのベストプラクティスも参照できます。",
-      category: "Presentation",
-      icon: <Image className="h-6 w-6 text-amber-500" />,
-      readTime: "12 min read",
-      tags: ["Diagram", "Visualization", "Nanobanana", "Tools"]
-    },
-    {
-      id: "advanced-medical-illustration-guide",
-      hasIllustrations: true,
-      title: "【応用編】高度な医学図解作成ガイド",
-      description: "BioRender風の高品質な医学図解やVisual Abstractを作成。世界標準のデザイン原則とプロンプトエンジニアリング技術を解説",
-      category: "Presentation",
-      icon: <Image className="h-6 w-6 text-purple-500" />,
-      readTime: "20 min read",
-      tags: ["BioRender", "Visual Abstract", "Nanobanana", "Advanced"]
-    },
-    {
-      id: "poster-presentation-guide",
-      title: "【完全版】ポスター発表作成ガイド",
-      description: "学会ポスター発表の準備を効率化。レイアウト設計、情報の優先順位、視認性の向上、質疑応答対策までをサポートします。",
-      category: "Presentation",
-      icon: <Presentation className="h-6 w-6 text-cyan-500" />,
-      readTime: "15 min read",
-      tags: ["Poster Presentation", "Visual Design", "Conference"]
-    },
-    {
-      id: "pubmed-search-guide",
-      hasIllustrations: true,
-      title: "【完全版】PubMed検索ガイド:効率的な文献検索",
-      description: "PICOに基づいた検索式の作成、MeSH termsの活用、検索結果の絞り込みまで。効率的に文献を見つけるための完全ガイド。",
-      category: "Research",
-      icon: <Search className="h-6 w-6 text-blue-500" />,
-      readTime: "12 min read",
-      tags: ["PubMed", "Literature Search", "PICO", "MeSH"]
-    },
-    {
-      id: "ebm-practice-guide",
-      title: "【完全版】エビデンスに基づいた診療(EBM)実践ガイド",
-      description: "臨床疑問の定式化(PICO)、文献検索、エビデンスの評価、臨床適用まで。EBMの5ステップを実践的に学びます。",
-      category: "Clinical",
-      icon: <Stethoscope className="h-6 w-6 text-emerald-500" />,
-      readTime: "20 min read",
-      tags: ["EBM", "Evidence-Based Medicine", "Clinical Decision Making"]
-    },
-    {
-      id: "polypharmacy-guide",
-      title: "【完全版】ポリファーマシー対策・処方見直しガイド",
-      description: "高齢者の多剤併用を適切に管理。不要な薬剤の特定、相互作用チェック、減量・中止の判断基準までをサポートします。",
-      category: "Clinical",
-      icon: <Pill className="h-6 w-6 text-rose-500" />,
-      readTime: "15 min read",
-      tags: ["Polypharmacy", "Medication Review", "Drug Safety"]
-    },
-    {
-      id: "discharge-summary-guide",
-      title: "【完全版】退院サマリー作成ガイド",
-      description: "必要な情報の選別、継続治療の明確化、フォローアップ計画。退院後の診療連携を円滑にするための完全ガイド。",
-      category: "Clinical",
-      icon: <FileText className="h-6 w-6 text-violet-500" />,
-      readTime: "10 min read",
-      tags: ["Discharge Summary", "Continuity of Care", "Documentation"]
-    },
-    // 新規追加ガイド
-    {
-      id: "conference-presentation",
-      hasIllustrations: true,
-      title: "カンファレンス発表資料作成支援",
-      description: "AIを活用した効果的なカンファレンス発表資料の作成",
-      category: "Presentation",
-      icon: <Presentation className="h-6 w-6 text-blue-500" />,
-      readTime: "40 min read",
-      tags: ["カンファレンス", "発表資料", "プレゼンテーション"]
-    },
-    {
-      id: "differential-diagnosis",
-      hasIllustrations: true,
-      title: "鑑別診断リスト生成",
-      description: "AIによる包括的な鑑別診断リストの作成",
-      category: "Clinical",
-      icon: <Stethoscope className="h-6 w-6 text-red-500" />,
-      readTime: "30 min read",
-      tags: ["鑑別診断", "診断支援"]
-    },
-    {
-      id: "patient-explanation",
-      title: "患者説明シナリオ作成",
-      description: "わかりやすく、配慮の行き届いた患者説明の作成",
-      category: "Clinical",
-      icon: <FileText className="h-6 w-6 text-green-500" />,
-      readTime: "40 min read",
-      tags: ["患者説明", "インフォームド・コンセント"]
-    },
-    {
-      id: "literature-search",
-      hasIllustrations: true,
-      title: "論文検索・読解サポート",
-      description: "AIを活用した効率的な文献検索と読解",
-      category: "Research",
-      icon: <Search className="h-6 w-6 text-blue-500" />,
-      readTime: "40 min read",
-      tags: ["文献検索", "論文読解", "エビデンス"]
-    },
-    {
-      id: "medical-documents",
-      title: "診断書・紹介状作成支援",
-      description: "AIで医療文書作成を効率化・標準化",
-      category: "Clinical",
-      icon: <FileText className="h-6 w-6 text-indigo-500" />,
-      readTime: "40 min read",
-      tags: ["診断書", "紹介状", "医療文書"]
-    },
-    {
-      id: "research-protocol",
-      hasIllustrations: true,
-      title: "研究計画書作成支援",
-      description: "AIを活用した質の高い研究計画書の作成",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-blue-600" />,
-      readTime: "50 min read",
-      tags: ["研究計画書", "研究デザイン"]
-    },
-    {
-      id: "conference-presentation-slides",
-      title: "学会発表スライド作成支援",
-      description: "インパクトのある学会発表スライドの作成",
-      category: "Presentation",
-      icon: <Presentation className="h-6 w-6 text-cyan-500" />,
-      readTime: "45 min read",
-      tags: ["学会発表", "スライド", "プレゼンテーション"]
-    },
-    {
-      id: "ethics-review-application",
-      hasIllustrations: true,
-      title: "倫理審査申請書類作成支援",
-      description: "倫理審査申請書類の効率的な作成",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-amber-500" />,
-      readTime: "45 min read",
-      tags: ["倫理審査", "研究倫理"]
-    },
-    {
-      id: "new-drug-information",
-      hasIllustrations: true,
-      title: "新薬情報収集・要約",
-      description: "最新の新薬情報を効率的に収集・要約",
-      category: "Clinical",
-      icon: <Pill className="h-6 w-6 text-pink-500" />,
-      readTime: "35 min read",
-      tags: ["新薬", "薬剤情報"]
-    },
-    {
-      id: "rare-disease-information",
-      title: "希少疾患情報収集",
-      description: "希少疾患に関する最新情報の収集",
-      category: "Clinical",
-      icon: <Microscope className="h-6 w-6 text-teal-500" />,
-      readTime: "35 min read",
-      tags: ["希少疾患", "疾患情報"]
-    },
-    {
-      id: "guideline-comparison",
-      title: "治療ガイドライン比較",
-      description: "複数のガイドラインを比較・統合",
-      category: "Clinical",
-      icon: <BookOpen className="h-6 w-6 text-orange-600" />,
-      readTime: "30 min read",
-      tags: ["ガイドライン", "エビデンス"]
-    },
-    {
-      id: "multilingual-medical-consultation",
-      title: "多言語医療相談支援",
-      description: "多言語での医療相談を円滑に",
-      category: "Clinical",
-      icon: <FileText className="h-6 w-6 text-lime-500" />,
-      readTime: "25 min read",
-      tags: ["多言語", "医療通訳"]
-    },
-    {
-      id: "medical-news-commentary",
-      title: "医療ニュース・トピック解説",
-      description: "最新の医療ニュースをわかりやすく解説",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-sky-500" />,
-      readTime: "25 min read",
-      tags: ["医療ニュース", "情報収集"]
-    },
-    {
-      id: "patient-education-materials",
-      title: "患者教育資料作成",
-      description: "わかりやすい患者教育資料の作成",
-      category: "Clinical",
-      icon: <BookOpen className="h-6 w-6 text-emerald-600" />,
-      readTime: "35 min read",
-      tags: ["患者教育", "資料作成"]
-    },
-    {
-      id: "incident-report-creation",
-      title: "インシデントレポート作成支援",
-      description: "正確で建設的なインシデントレポートの作成",
-      category: "Clinical",
-      icon: <ClipboardList className="h-6 w-6 text-rose-600" />,
-      readTime: "30 min read",
-      tags: ["インシデント", "医療安全"]
-    },
-    {
-      id: "consultation-email",
-      title: "専門医へのコンサルトメール作成",
-      description: "効果的なコンサルトメールの作成",
-      category: "Clinical",
-      icon: <Mail className="h-6 w-6 text-violet-600" />,
-      readTime: "30 min read",
-      tags: ["コンサルト", "メール"]
-    },
-    {
-      id: "clinical-trial-search",
-      hasIllustrations: true,
-      title: "臨床試験情報検索",
-      description: "関連する臨床試験情報の効率的な検索",
-      category: "Research",
-      icon: <Search className="h-6 w-6 text-blue-700" />,
-      readTime: "35 min read",
-      tags: ["臨床試験", "情報検索"]
-    },
-    {
-      id: "medical-statistics-consultation",
-      hasIllustrations: true,
-      title: "医療統計・データ分析相談",
-      description: "AIを活用した医療統計の理解と分析",
-      category: "Research",
-      icon: <Microscope className="h-6 w-6 text-blue-600" />,
-      readTime: "45 min read",
-      tags: ["統計", "データ分析"]
-    },
-    {
-      id: "image-diagnosis-report-reading",
-      title: "画像診断レポート読解支援",
-      description: "画像診断レポートの理解を深める",
-      category: "Clinical",
-      icon: <Image className="h-6 w-6 text-indigo-600" />,
-      readTime: "30 min read",
-      tags: ["画像診断", "レポート読解"]
-    },
-    {
-      id: "post-discharge-follow-up",
-      title: "退院後フォローアップ計画作成",
-      description: "包括的な退院後フォローアップ計画の作成",
-      category: "Clinical",
-      icon: <FileText className="h-6 w-6 text-teal-600" />,
-      readTime: "35 min read",
-      tags: ["退院計画", "フォローアップ"]
-    },
-    {
-      id: "medical-safety-manual",
-      title: "医療安全マニュアル作成",
-      description: "実践的な医療安全マニュアルの作成",
-      category: "Clinical",
-      icon: <ClipboardList className="h-6 w-6 text-red-600" />,
-      readTime: "45 min read",
-      tags: ["医療安全", "マニュアル"]
-    },
-    {
-      id: "infection-control-manual",
-      hasIllustrations: true,
-      title: "感染対策マニュアル作成",
-      description: "効果的な感染対策マニュアルの作成",
-      category: "Clinical",
-      icon: <Microscope className="h-6 w-6 text-green-600" />,
-      readTime: "45 min read",
-      tags: ["感染対策", "マニュアル"]
-    },
-    {
-      id: "polypharmacy-support",
-      title: "ポリファーマシー対策支援",
-      description: "多剤併用の適正化を支援",
-      category: "Clinical",
-      icon: <Pill className="h-6 w-6 text-amber-600" />,
-      readTime: "40 min read",
-      tags: ["ポリファーマシー", "薬剤管理"]
-    },
-    {
-      id: "palliative-care-planning",
-      title: "緩和ケア計画立案支援",
-      description: "患者中心の緩和ケア計画の立案",
-      category: "Clinical",
-      icon: <Stethoscope className="h-6 w-6 text-blue-700" />,
-      readTime: "45 min read",
-      tags: ["緩和ケア", "ケア計画"]
-    },
-    {
-      id: "systematic-review-meta-analysis",
-      title: "【上級者向け】システマティックレビュー・メタアナリシス作成ガイド",
-      description: "PRISMAガイドラインに準拠したシステマティックレビューとメタアナリシスの作成方法。文献検索から統計的統合、論文投稿まで完全サポート。AIツールを活用した効率的な実施方法を解説。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-purple-600" />,
-      readTime: "35 min read",
-      tags: ["Systematic Review", "Meta-analysis", "PRISMA", "Advanced", "EBM"]
-    },
-    {
-      id: "data-visualization-figures",
-      title: "【初心者向け】データ可視化・図表作成ガイド（論文用）",
-      description: "論文に掲載する高品質な図表の作成方法。適切なグラフの選択、統計的表現、Figure Legendの書き方、表の作成まで完全サポート。AIツールを活用した効率的な作成方法を解説。",
-      category: "Research",
-      icon: <BarChart3 className="h-6 w-6 text-cyan-600" />,
-      readTime: "18 min read",
-      tags: ["Data Visualization", "Figures", "Tables", "Publication", "Beginner"]
-    },
-    {
-      id: "grant-application",
-      title: "【中級者向け】グラント申請書作成ガイド（科研費・厚労科研）",
-      description: "科研費や厚労科研などのグラント申請書の作成方法。研究計画書、予算計画、研究体制、期待される成果まで完全サポート。AIツールを活用した効率的な作成方法を解説。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-amber-600" />,
-      readTime: "28 min read",
-      tags: ["Grant Application", "Funding", "Research Plan", "Intermediate"]
-    },
-    {
-      id: "poster-presentation",
-      title: "【初心者向け】ポスター発表作成ガイド",
-      description: "学会でのポスター発表の作成方法。レイアウト設計、視認性の向上、情報の整理、質疑応答対策まで完全サポート。AIツールを活用した効率的な作成方法を解説。",
-      category: "Presentation",
-      icon: <Presentation className="h-6 w-6 text-rose-600" />,
-      readTime: "18 min read",
-      tags: ["Poster Presentation", "Visual Design", "Conference", "Beginner"]
-    },
-    {
-      id: "observational-study-design",
-      title: "【中級者向け】観察研究デザインガイド",
-      description: "コホート研究・ケースコントロール研究の設計方法。研究デザインの選択、サンプルサイズ計算、バイアス対策、倫理審査申請まで完全サポート。AIツールを活用した効率的な設計方法を解説。",
-      category: "Research",
-      icon: <Microscope className="h-6 w-6 text-emerald-600" />,
-      readTime: "22 min read",
-      tags: ["Observational Study", "Study Design", "Epidemiology", "Intermediate"]
-    },
-    {
-      id: "clinical-reasoning",
-      title: "【中級者向け】臨床推論プロセス（Clinical Reasoning）ガイド",
-      description: "体系的で効率的な臨床推論の方法。仮説生成、情報収集の優先順位、診断の絞り込み、見逃し防止まで完全サポート。AIツールを活用した診断推論の質向上を解説。",
-      category: "Clinical",
-      icon: <Stethoscope className="h-6 w-6 text-emerald-600" />,
-      readTime: "20 min read",
-      tags: ["Clinical Reasoning", "Diagnosis", "Differential Diagnosis", "Intermediate"]
-    },
-    {
-      id: "research-data-management",
-      title: "【中級者向け】研究データ管理ガイド",
-      description: "研究データを効率的かつ安全に管理する方法。データ管理計画、収集と記録、保存とバックアップ、整理、共有と公開まで完全サポート。AIツールを活用した実践的な管理方法を解説。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-slate-600" />,
-      readTime: "23 min read",
-      tags: ["Data Management", "Research", "Data Storage", "Intermediate"]
-    },
-    {
-      id: "conference-to-paper",
-      title: "【実践】学会発表から論文投稿へのワークフロー",
-      description: "学会発表の内容を効率的に論文に発展させる方法。発表内容の評価、論文への展開計画、追加データの収集、論文構成の設計、執筆の効率化、ジャーナル選定まで完全サポート。",
-      category: "Research",
-      icon: <FileText className="h-6 w-6 text-indigo-600" />,
-      readTime: "27 min read",
-      tags: ["Conference to Paper", "Paper Writing", "Workflow", "Research"]
-    }
-  ], []);
-
-  // 未公開ガイドの完成通知機能
-  useEffect(() => {
-    const STORAGE_KEY = "helix_watched_guides";
-    const NOTIFICATION_PERMISSION_KEY = "helix_notification_permission_asked";
-
-    // 現在の未公開ガイドのIDを取得
-    const getUnpublishedGuideIds = (): string[] => {
-      return guides
-        .filter(guide => !IMPLEMENTED_GUIDES.includes(guide.id))
-        .map(guide => guide.id);
-    };
-
-    // ブラウザ通知を表示
-    const showNotification = (guideTitle: string, guideId: string) => {
-      if (!("Notification" in window)) {
-        return;
-      }
-
-      if (Notification.permission === "granted") {
-        const notification = new Notification("新しいガイドが公開されました！", {
-          body: `${guideTitle}が利用可能になりました。`,
-          icon: "/favicon.ico",
-          tag: `guide-${guideId}`,
-          requireInteraction: false,
-        });
-
-        notification.onclick = () => {
-          window.focus();
-          window.location.href = `/guides/${guideId}`;
-          notification.close();
-        };
-
-        // 5秒後に自動的に閉じる
-        setTimeout(() => {
-          notification.close();
-        }, 5000);
-      }
-    };
-
-    // 通知許可をリクエスト
-    const requestNotificationPermission = async () => {
-      if (!("Notification" in window)) {
-        return;
-      }
-
-      const permissionAsked = localStorage.getItem(NOTIFICATION_PERMISSION_KEY);
-      
-      if (Notification.permission === "default" && !permissionAsked) {
-        try {
-          const permission = await Notification.requestPermission();
-          localStorage.setItem(NOTIFICATION_PERMISSION_KEY, "true");
-          
-          if (permission === "granted") {
-            // 許可された場合、現在の未公開ガイドを保存
-            const currentUnpublished = getUnpublishedGuideIds();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUnpublished));
-          }
-        } catch (error) {
-          console.error("通知許可のリクエストに失敗しました:", error);
-        }
-      }
-    };
-
-    // 未公開ガイドの変更をチェック
-    const checkForNewGuides = () => {
-      const currentUnpublished = getUnpublishedGuideIds();
-      const storedUnpublished = JSON.parse(
-        localStorage.getItem(STORAGE_KEY) || "[]"
-      ) as string[];
-
-      // 以前は未公開だったが、今は公開されているガイドを探す
-      const newlyPublished = storedUnpublished.filter(
-        id => !currentUnpublished.includes(id)
-      );
-
-      if (newlyPublished.length > 0) {
-        newlyPublished.forEach(guideId => {
-          const guide = guides.find(g => g.id === guideId);
-          if (guide) {
-            showNotification(guide.title, guideId);
-          }
-        });
-      }
-
-      // 現在の未公開ガイドのリストを更新
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUnpublished));
-    };
-
-    // 初回訪問時は通知許可をリクエスト
-    requestNotificationPermission();
-
-    // 未公開ガイドの変更をチェック
-    checkForNewGuides();
-
-    // 定期的にチェック（5分ごと）
-    const intervalId = setInterval(checkForNewGuides, 5 * 60 * 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [guides]);
-
-  // フィルタリングとソート
-  const filteredAndSortedGuides = useMemo(() => {
-    let filtered = guides.filter((guide) => {
-      // 検索クエリでフィルタ
-      const matchesSearch = 
-        searchQuery === "" ||
-        guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        guide.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        guide.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      // カテゴリでフィルタ
-      const matchesCategory = selectedCategory === null || guide.category === selectedCategory;
-      
-      return matchesSearch && matchesCategory;
-    });
-
-    // 読了時間から数値を抽出するヘルパー関数
-    const extractReadTime = (readTime: string): number => {
-      const match = readTime.match(/(\d+)/);
-      return match ? parseInt(match[1], 10) : 0;
-    };
-
-    // ソート: 実装済みガイドを優先表示
-    filtered.sort((a, b) => {
-      const aImplemented = IMPLEMENTED_GUIDES.includes(a.id);
-      const bImplemented = IMPLEMENTED_GUIDES.includes(b.id);
-      
-      // 実装済みガイドを優先
-      if (aImplemented && !bImplemented) return -1;
-      if (!aImplemented && bImplemented) return 1;
-      
-      // 同じ実装状態の場合は、選択されたソートオプションで並び替え
-      switch (sortOption) {
-        case "title-asc":
-          return a.title.localeCompare(b.title, "ja");
-        case "title-desc":
-          return b.title.localeCompare(a.title, "ja");
-        case "readTime-asc":
-          return extractReadTime(a.readTime) - extractReadTime(b.readTime);
-        case "readTime-desc":
-          return extractReadTime(b.readTime) - extractReadTime(a.readTime);
-        default:
-          return 0;
-      }
-    });
-
-    return filtered;
-  }, [searchQuery, selectedCategory, sortOption]);
-
-  const categories = Array.from(new Set(guides.map(g => g.category)));
+  const researchGuides = useMemo(() => guides.filter(g => g.category === "Research"), []);
+  const presentationGuides = useMemo(() => guides.filter(g => g.category === "Presentation"), []);
+  const clinicalGuides = useMemo(() => guides.filter(g => g.category === "Clinical"), []);
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
-        {/* Linear.app風：ページヘッダー */}
-        <PageHeader
-          category="Guides"
-          title="Guides & Workflows"
-          description="実際の臨床・研究プロセスでAIプロンプトをどう組み合わせるか、実践的なワークフローを解説します。"
-        />
+      <div className="min-h-screen bg-background">
+        {/* ヒーローセクション */}
+        <section className="pt-16 sm:pt-20 lg:pt-24 pb-12">
+          <div className="max-w-3xl mx-auto px-6">
+            {/* タイトル */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 mb-4"
+            >
+              Workflow Guides
+            </motion.h1>
 
-        {/* 検索・フィルタ・ソート - Apple Style */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-1.5"
-        >
-          <div className="relative max-w-2xl my-6">
-            <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-3.5 w-3.5 z-10" />
-            <Input
-              placeholder="ガイドを検索(タイトル、説明、タグ)..."
-              className="pl-10 pr-9 h-9 lg:h-10 text-sm bg-background/50 backdrop-blur-sm border focus:border-primary/50 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <AnimatePresence>
-              {searchQuery && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1.5 rounded-full hover:bg-muted"
-                >
-                  <X className="h-5 w-5" />
-                </motion.button>
-              )}
-            </AnimatePresence>
-          </div>
+            {/* サブタイトル */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-lg text-neutral-500 dark:text-neutral-400 mb-8"
+            >
+              Step-by-step guides to accelerate your clinical and research workflows with AI.
+            </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-            {/* カテゴリフィルタ */}
-            <div className="flex flex-wrap gap-1.5 flex-1">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Badge 
-                  variant={selectedCategory === null ? "default" : "outline"}
-                  className="cursor-pointer px-3 py-1.5 text-sm font-medium hover:bg-primary/90 transition-all duration-200 rounded-full shadow-sm hover:shadow-md"
-                  onClick={() => setSelectedCategory(null)}
-                >
-                  すべて
-                </Badge>
-              </motion.div>
-              {categories.map((cat) => {
-                const categoryLabels: Record<string, string> = {
-                  "Research": "研究",
-                  "Presentation": "発表",
-                  "Clinical": "臨床"
-                };
-                return (
-                  <motion.div
-                    key={cat}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Badge
-                      variant={selectedCategory === cat ? "default" : "outline"}
-                      className="cursor-pointer px-3 py-1.5 text-sm font-medium hover:bg-primary/90 transition-all duration-200 rounded-full shadow-sm hover:shadow-md"
-                      onClick={() => setSelectedCategory(cat)}
-                    >
-                      {categoryLabels[cat] || cat}
-                    </Badge>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* ソート */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">並び替え:</span>
-              <Select value={sortOption} onValueChange={(value) => setSortOption(value as SortOption)}>
-                <SelectTrigger className="w-full sm:w-[200px] h-11 rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-200">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl">
-                  <SelectItem value="title-asc">タイトル(昇順)</SelectItem>
-                  <SelectItem value="title-desc">タイトル(降順)</SelectItem>
-                  <SelectItem value="readTime-asc">読了時間(短い順)</SelectItem>
-                  <SelectItem value="readTime-desc">読了時間(長い順)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* 結果数表示 */}
-        <AnimatePresence>
-          {filteredAndSortedGuides.length > 0 && (
+            {/* 検索 */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-sm font-medium text-muted-foreground my-6"
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {filteredAndSortedGuides.length}件のガイドが見つかりました
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                <Input
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="h-10 pl-10 pr-10 text-sm rounded-lg bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 focus:ring-1 focus:ring-neutral-300 dark:focus:ring-neutral-700"
+                />
+                <AnimatePresence>
+                  {searchQuery && (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <X className="w-4 h-4 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300" />
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
+          </div>
+        </section>
 
         {/* ガイド一覧 */}
-        <AnimatePresence mode="wait">
-          {filteredAndSortedGuides.length > 0 ? (
+        <section className="max-w-3xl mx-auto px-6 pb-20">
+          <CategorySection category="Research" guides={researchGuides} searchQuery={searchQuery} />
+          <CategorySection category="Clinical" guides={clinicalGuides} searchQuery={searchQuery} />
+          <CategorySection category="Presentation" guides={presentationGuides} searchQuery={searchQuery} />
+
+          {/* 検索結果なし */}
+          {searchQuery &&
+            !researchGuides.some(g => g.title.toLowerCase().includes(searchQuery.toLowerCase()) || g.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
+            !clinicalGuides.some(g => g.title.toLowerCase().includes(searchQuery.toLowerCase()) || g.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
+            !presentationGuides.some(g => g.title.toLowerCase().includes(searchQuery.toLowerCase()) || g.description.toLowerCase().includes(searchQuery.toLowerCase())) && (
             <motion.div
-              key="guides-grid"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="grid gap-6 md:gap-8 md:grid-cols-2"
-              style={{gridAutoRows: '1fr'}}
+              className="text-center py-16"
             >
-              {filteredAndSortedGuides.map((guide, index) => {
-                const isImplemented = IMPLEMENTED_GUIDES.includes(guide.id);
-                const categoryColors: Record<string, { border: string; badge: string; gradient: string }> = {
-                  "Research": { 
-                    border: "border-l-blue-500", 
-                    badge: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-                    gradient: "from-blue-50/50 to-transparent dark:from-blue-950/20"
-                  },
-                  "Presentation": { 
-                    border: "border-l-green-500", 
-                    badge: "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-                    gradient: "from-green-50/50 to-transparent dark:from-green-950/20"
-                  },
-                  "Clinical": { 
-                    border: "border-l-teal-500", 
-                    badge: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300",
-                    gradient: "from-teal-50/50 to-transparent dark:from-teal-950/20"
-                  },
-                };
-                const colors = categoryColors[guide.category] || categoryColors["Research"];
-                
-                const cardContent = (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.5, 
-                      delay: index * 0.05,
-                      ease: [0.22, 1, 0.36, 1]
-                    }}
-                    whileHover={isImplemented ? { y: -8, scale: 1.02 } : {}}
-                    whileTap={isImplemented ? { scale: 0.98 } : {}}
-                    className="h-full"
-                  >
-                    <Card className={cn(
-                      "h-full flex flex-col border-l-2 bg-card group overflow-hidden shadow-sm transition-all duration-200 border",
-                      colors.border,
-                      isImplemented 
-                        ? "cursor-pointer hover:shadow-md hover:border-primary/30" 
-                        : "opacity-60 cursor-not-allowed"
-                    )}>
-                      <CardHeader className="space-y-1.5 p-5 pb-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className={cn("font-medium px-2 py-0.5 rounded-md text-xs", colors.badge)}>
-                              {guide.category === "Research" ? "研究" : guide.category === "Presentation" ? "発表" : "臨床"}
-                            </Badge>
-                            {guide.hasIllustrations && (
-                              <Badge variant="outline" className="bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 font-medium px-2 py-0.5 rounded-md border-purple-300 dark:border-purple-600 text-xs">
-                                📊 図解あり
-                              </Badge>
-                            )}
-                            {!isImplemented && (
-                              <Badge variant="outline" className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 font-medium px-2 py-0.5 rounded-md border-gray-300 dark:border-gray-600 text-xs">
-                                <Lock className="h-3 w-3 mr-1" />
-                                Soon
-                              </Badge>
-                            )}
-                          </div>
-                          <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-                            <BookOpen className="h-3 w-3" />
-                            {guide.readTime}
-                          </span>
-                        </div>
-                        <CardTitle className={cn(
-                          "text-sm font-semibold leading-tight line-clamp-2 transition-colors duration-200",
-                          isImplemented && "group-hover:text-primary"
-                        )}>
-                          {guide.title}
-                        </CardTitle>
-                        <CardDescription className="text-sm leading-snug line-clamp-2">
-                          {guide.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="p-5 pt-0 space-y-3">
-                        {isImplemented ? (
-                          <div className="flex items-center text-sm font-semibold text-primary group-hover:gap-1.5 gap-1 transition-all duration-200">
-                            <span>ガイドを読む</span>
-                            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                          </div>
-                        ) : (
-                          <div className="flex items-center text-sm font-semibold text-muted-foreground gap-1">
-                            <Lock className="h-3.5 w-3.5" />
-                            <span>準備中</span>
-                          </div>
-                        )}
-                        <div className="flex flex-wrap gap-1">
-                          {guide.tags.map(tag => (
-                            <span 
-                              key={tag} 
-                              className="text-xs px-3 py-1.5 bg-background/60 dark:bg-background/40 backdrop-blur-sm rounded-full text-muted-foreground font-medium border border-border/50"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-
-                // 特別なルーティングが必要なガイド
-                const getGuidePath = (id: string) => {
-                  if (id === "case-report-complete") return "/guides/case-report-complete";
-                  if (id === "paper-reading-efficiency") return "/guides/paper-reading-efficiency";
-                  if (id === "english-proofreading-guide") return "/guides/english-proofreading-guide";
-                  return `/guides/${id}`;
-                };
-
-                return isImplemented ? (
-                  <Link 
-                    key={guide.id}
-                    href={getGuidePath(guide.id)}
-                    style={{ textDecoration: 'none', display: 'block' }}
-                  >
-                    {cardContent}
-                  </Link>
-                ) : (
-                  <div key={guide.id}>
-                    {cardContent}
-                  </div>
-                );
-              })}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="empty-state"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4 }}
-              className="text-center py-20 text-muted-foreground"
-            >
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
-              >
-                <Search className="h-10 lg:h-11 w-16 mx-auto mb-6 opacity-40" />
-              </motion.div>
-              <p className="text-xl font-semibold mb-2 text-foreground">ガイドが見つかりませんでした</p>
-              <p className="text-base mb-6">検索条件を変更してお試しください</p>
-              {(searchQuery || selectedCategory) && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedCategory(null);
-                  }}
-                  className="px-6 py-2 lg:py-2.5 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md"
-                >
-                  フィルタをリセット
-                </motion.button>
-              )}
+              <Search className="w-12 h-12 mx-auto mb-4 text-neutral-300 dark:text-neutral-600" />
+              <p className="text-lg font-medium text-neutral-600 dark:text-neutral-400 mb-2">
+                No guides found
+              </p>
+              <p className="text-neutral-500 dark:text-neutral-500">
+                Try a different search term
+              </p>
             </motion.div>
           )}
-        </AnimatePresence>
+        </section>
       </div>
     </Layout>
   );

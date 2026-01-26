@@ -45,8 +45,15 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
   const optionLabels = ["a", "b", "c", "d", "e", "f"];
 
   return (
-    <div className="my-8 p-6 border border-gray-200 rounded-lg bg-white">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900">
+    <div 
+      className="my-6 rounded-sm border p-4 border-border bg-card"
+      role="group"
+      aria-labelledby={`quiz-${question.question.slice(0, 10)}-label`}
+    >
+      <h3 
+        id={`quiz-${question.question.slice(0, 10)}-label`}
+        className="text-base font-medium mb-4 text-foreground"
+      >
         {question.question}
       </h3>
       
@@ -54,7 +61,7 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
         value={selectedAnswer}
         onValueChange={setSelectedAnswer}
         disabled={isChecked}
-        className="space-y-3 mb-6"
+        className="space-y-2 mb-4"
       >
         {question.options.map((option, index) => {
           const optionLabel = optionLabels[index];
@@ -65,11 +72,9 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
             <div
               key={index}
               className={cn(
-                "flex items-start gap-3 p-3 rounded-md border transition-colors",
-                isChecked && isCorrectOption && "bg-green-50 border-green-200",
-                isChecked && isSelected && !isCorrect && "bg-red-50 border-red-200",
-                !isChecked && isSelected && "bg-gray-50 border-gray-300",
-                !isChecked && "border-gray-200 hover:bg-gray-50"
+                "flex items-start gap-3 transition-colors",
+                isChecked && isCorrectOption && "text-green-700 dark:text-green-400",
+                isChecked && isSelected && !isCorrect && "text-red-700 dark:text-red-400"
               )}
             >
               <RadioGroupItem
@@ -80,26 +85,25 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
               <Label
                 htmlFor={`option-${index}`}
                 className={cn(
-                  "flex-1 cursor-pointer",
-                  isChecked && isCorrectOption && "text-green-700",
-                  isChecked && isSelected && !isCorrect && "text-red-700"
+                  "flex-1 cursor-pointer text-foreground",
+                  isChecked && isCorrectOption && "text-green-700 dark:text-green-400",
+                  isChecked && isSelected && !isCorrect && "text-red-700 dark:text-red-400"
                 )}
               >
-                <span className="font-medium mr-2">{optionLabel})</span>
                 {option}
               </Label>
               {isChecked && isSelected && (
                 <div className="flex-shrink-0">
                   {isCorrect ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-red-600" />
+                    <XCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
                   )}
                 </div>
               )}
               {isChecked && isCorrectOption && !isSelected && (
                 <div className="flex-shrink-0">
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
                 </div>
               )}
             </div>
@@ -111,14 +115,15 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
         <Button
           onClick={handleCheck}
           disabled={!selectedAnswer || isChecked}
-          className="bg-primary-500 hover:bg-primary-600 text-white"
+          variant="default"
+          size="sm"
         >
           Check
         </Button>
         <Button
           onClick={handleReset}
           variant="outline"
-          className="border-gray-300"
+          size="sm"
         >
           Reset
         </Button>
@@ -130,10 +135,10 @@ export function SimpleQuiz({ question }: SimpleQuizProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-4 p-4 bg-gray-50 rounded-md border border-gray-200"
+            className="mt-4 p-3 rounded-sm bg-muted/50 border border-border"
           >
-            <p className="text-sm text-gray-700 leading-relaxed">
-              <strong className="text-gray-900">解説:</strong> {question.explanation}
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">解説:</strong> {question.explanation}
             </p>
           </motion.div>
         )}

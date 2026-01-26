@@ -88,7 +88,7 @@ Abstract（抄録）とTitle（タイトル）は、論文の「顔」です。
 今回紹介したAACR Methodは、現時点での最適解ですが、AIの進化は止まりません。
 将来的には、Claude ProjectsとMCP (Model Context Protocol) を組み合わせることで、このワークフローの大部分を自動化できる可能性があります。
 
-- Elicit APIをMCP経由で呼び出し、文献検索を自動化
+- PubMed APIをMCP経由で呼び出し、文献検索を自動化
 - Zotero APIと連携し、参考文献リストを自動生成
 - CARE guidelinesをAIエージェントの思考フレームワークに組み込み、執筆精度を向上
 

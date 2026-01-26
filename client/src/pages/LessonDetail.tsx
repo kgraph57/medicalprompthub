@@ -618,7 +618,7 @@ export default function LessonDetail() {
   useEffect(() => {
     if (currentLesson && courseId) {
       updateSEO({
-        title: `${currentLesson.title} | Helix`,
+        title: `${currentLesson.title} | HELIX`,
         description: currentLesson.description || `${currentLesson.title}のレッスン。医療従事者がAIを効果的に活用するための実践的なレッスンです。`,
         path: `/courses/${courseId}/lessons/${lessonId}`,
         keywords: `${currentLesson.title},AI学習,レッスン,医療従事者,教育`
@@ -637,6 +637,47 @@ export default function LessonDetail() {
       });
     }
   }, [currentLesson, courseId, lessonId]);
+
+  // ページ遷移時にスクロール位置をリセット（即座に実行）
+  useLayoutEffect(() => {
+    // 即座にスクロール位置をリセット
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [courseId, lessonId]);
+
+  // ページ遷移時にスクロール位置をリセット（確実性のため複数回実行）
+  useEffect(() => {
+    // 即座に実行
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
+    // 次のフレームでも実行
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    
+    // 少し遅延してからも実行（DOM更新を待つ）
+    const timeout1 = setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 0);
+    
+    const timeout2 = setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 100);
+    
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+    };
+  }, [courseId, lessonId]);
 
   // ローカルストレージから完了状態を読み込む
   useEffect(() => {
@@ -683,7 +724,7 @@ export default function LessonDetail() {
       // 即座に実行
       forceScrollToTop();
     }
-  }, [lessonId]);
+  }, [courseId, lessonId]);
   
   // さらに、少し遅延してからも実行（確実性のため）
   useEffect(() => {
@@ -717,7 +758,7 @@ export default function LessonDetail() {
         clearTimeout(timeout4);
       };
     }
-  }, [lessonId]);
+  }, [courseId, lessonId]);
 
   // ページ読み込み時にURLのハッシュがある場合、そのセクションにスクロール（Zenn風）
   useEffect(() => {
@@ -1237,7 +1278,7 @@ export default function LessonDetail() {
                   )}
                 
                 {/* コンテンツ */}
-                <div className="prose prose-slate dark:prose-invert max-w-none">
+                <div key={lessonId} className="prose prose-slate dark:prose-invert max-w-none">
                   {renderContent()}
                 </div>
                 
@@ -1246,9 +1287,42 @@ export default function LessonDetail() {
                   <Button
                     variant="outline"
                     onClick={() => {
+                      // 即座にトップにスクロール（遷移前）
+                      window.scrollTo(0, 0);
+                      document.documentElement.scrollTop = 0;
+                      document.body.scrollTop = 0;
+                      
                       if (previousLesson) {
                         setLocation(`/courses/${courseId}/lessons/${previousLesson.id}`);
                       }
+                      
+                      // 遷移後にも確実にスクロール位置をリセット
+                      // useLayoutEffectとuseEffectが実行されるまでの間も確実にリセット
+                      // 複数のタイミングで実行して確実にリセット
+                      const scrollToTop = () => {
+                        window.scrollTo(0, 0);
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
+                      };
+                      
+                      // 即座に実行
+                      scrollToTop();
+                      
+                      // 次のフレームで実行
+                      requestAnimationFrame(() => {
+                        scrollToTop();
+                        requestAnimationFrame(() => {
+                          scrollToTop();
+                        });
+                      });
+                      
+                      // DOM更新を待ってから実行
+                      setTimeout(scrollToTop, 0);
+                      setTimeout(scrollToTop, 10);
+                      setTimeout(scrollToTop, 50);
+                      setTimeout(scrollToTop, 100);
+                      setTimeout(scrollToTop, 200);
+                      setTimeout(scrollToTop, 300);
                     }}
                     disabled={!previousLesson}
                     className="flex items-center gap-2"
@@ -1291,12 +1365,45 @@ export default function LessonDetail() {
                         }
                       }
                       
+                      // 即座にトップにスクロール（遷移前）
+                      window.scrollTo(0, 0);
+                      document.documentElement.scrollTop = 0;
+                      document.body.scrollTop = 0;
+                      
                       // 次のレッスンがあれば遷移
                       if (nextLesson) {
                         setLocation(`/courses/${courseId}/lessons/${nextLesson.id}`);
                       } else {
                         setLocation(`/courses/${courseId}`);
                       }
+                      
+                      // 遷移後にも確実にスクロール位置をリセット
+                      // useLayoutEffectとuseEffectが実行されるまでの間も確実にリセット
+                      // 複数のタイミングで実行して確実にリセット
+                      const scrollToTop = () => {
+                        window.scrollTo(0, 0);
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
+                      };
+                      
+                      // 即座に実行
+                      scrollToTop();
+                      
+                      // 次のフレームで実行
+                      requestAnimationFrame(() => {
+                        scrollToTop();
+                        requestAnimationFrame(() => {
+                          scrollToTop();
+                        });
+                      });
+                      
+                      // DOM更新を待ってから実行
+                      setTimeout(scrollToTop, 0);
+                      setTimeout(scrollToTop, 10);
+                      setTimeout(scrollToTop, 50);
+                      setTimeout(scrollToTop, 100);
+                      setTimeout(scrollToTop, 200);
+                      setTimeout(scrollToTop, 300);
                     }}
                     disabled={!nextLesson && currentLessonIndex === totalLessons - 1}
                     className="flex items-center gap-2"
@@ -1320,9 +1427,9 @@ export default function LessonDetail() {
             {/* サイドバー（目次） - Zenn風 */}
             <aside className="fixed lg:static inset-y-0 left-0 z-50 lg:z-0
             w-80 lg:w-80 flex-shrink-0
-            transform transition-transform duration-300 ease-in-out
+            transform transition-transform duration-200 ease-out
             -translate-x-full lg:translate-x-0
-            bg-gray-50 dark:bg-gray-900 lg:bg-transparent">
+            bg-neutral-50 dark:bg-neutral-900 lg:bg-transparent">
               <div className="h-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto p-4 lg:p-0">
                 <nav className="space-y-6">
                   {sections.length > 0 ? (

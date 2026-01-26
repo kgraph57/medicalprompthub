@@ -285,23 +285,6 @@ export const fullPrompts: Prompt[] = [
     ]
   },
   {
-    id: "res-journal-finder",
-    title: "Journal Selector",
-    description: "研究テーマや症例の内容に基づいて、投稿に適したターゲットジャーナル（投稿先候補）を提案します。",
-    category: "research",
-    template: `以下の研究（または症例報告）の内容に適した、投稿先の医学ジャーナルを3〜5つ提案してください。
-それぞれのジャーナルの特徴（Impact Factor、採択率の傾向、オープンアクセスかなど）と、なぜそのジャーナルが適しているかの理由も添えてください。
-
-# 研究タイトル/内容
-{{content}}
-# 希望条件
-{{preferences}}`,
-    inputs: [
-      { key: 'content', label: '研究内容', placeholder: '例：稀な副作用の症例報告', type: 'textarea' },
-      { key: 'preferences', label: '希望条件', placeholder: '例：症例報告を受け付けている国際誌', type: 'text' }
-    ]
-  },
-  {
     id: "aacr-data-structuring",
     title: "[AACR] Case Information Structuring",
     description: "NotebookLM用：症例情報をCARE guidelinesに沿って構造化します（AACR Method Step 1）",

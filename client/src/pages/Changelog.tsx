@@ -81,8 +81,8 @@ const typeColors = {
 export default function Changelog() {
   useEffect(() => {
     updateSEO({
-      title: "更新履歴 | Helix",
-      description: "Helixの更新履歴とリリースノート。新機能、バグ修正、改善内容を確認できます。",
+      title: "更新履歴 | HELIX",
+      description: "HELIXの更新履歴とリリースノート。新機能、バグ修正、改善内容を確認できます。",
       path: "/changelog",
       keywords: "更新履歴,Changelog,リリースノート,新機能,バグ修正"
     });
@@ -91,8 +91,8 @@ export default function Changelog() {
     addStructuredData({
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      "name": "Helix 更新履歴",
-      "description": "Helixの更新履歴",
+      "name": "HELIX 更新履歴",
+      "description": "HELIXの更新履歴",
       "url": `${BASE_URL}/changelog`,
       "mainEntity": {
         "@type": "ItemList",

@@ -67,7 +67,7 @@ const titleVariants = {
 const onboardingSteps: OnboardingStep[] = [
   {
     id: "welcome",
-    title: "Helixへようこそ",
+    title: "HELIXへようこそ",
     description: "医療従事者のためのAIプロンプトライブラリです。100以上の専門プロンプトで、臨床業務、研究、教育を効率化できます。",
     icon: <Stethoscope className="w-10 h-10 md:w-12 md:h-12 text-blue-600 dark:text-blue-400" />,
   },

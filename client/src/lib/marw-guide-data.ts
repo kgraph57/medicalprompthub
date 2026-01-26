@@ -30,7 +30,7 @@ export const marwGuideData: MARWGuide = {
     {
       id: "workflow",
       number: 1,
-      title: "MARW - Medical AI Research Workflow",
+      title: "医療AI論文執筆ワークフロー（MARW）",
       titleEn: "Medical AI Research Workflow",
       steps: [
         {

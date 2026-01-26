@@ -467,7 +467,7 @@ const guideMetadata: Record<string, {
     basePath: "/assets/guides/ai-paper-writing",
     steps: [
       { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
-      { id: "marw_workflow", title: "MARWワークフロー", file: "marw_workflow.md" },
+      { id: "marw_workflow", title: "医療AI論文執筆ワークフロー", file: "marw_workflow.md" },
       { id: "marw_stage1", title: "Stage 1: 研究計画とデータ収集", file: "marw_stage1.md" },
       { id: "marw_stage2", title: "Stage 2: データ分析と結果の解釈", file: "marw_stage2.md" },
       { id: "marw_stage3", title: "Stage 3: AIを活用した執筆", file: "marw_stage3.md" },
@@ -675,6 +675,96 @@ const guideMetadata: Record<string, {
       { id: "03-reference-step-01", title: "応用編 - ステップ1", file: "03-reference/step-01.md" },
       { id: "03-reference-step-02", title: "応用編 - ステップ2", file: "03-reference/step-02.md" }
     ]
+  },
+  // 新規追加ワークフロー
+  "night-shift-handover": {
+    title: "【実践】当直引き継ぎサマリー作成ガイド",
+    description: "効率的で漏れのない当直引き継ぎ文書の作成方法。I-PASSフレームワークに基づいた安全な引き継ぎを実現。",
+    readTime: "15 min",
+    category: "Clinical",
+    basePath: "/assets/guides/night-shift-handover",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-basics-step-01", title: "ステップ1: I-PASSフレームワークの理解", file: "01-basics/step-01.md" },
+      { id: "02-practice-step-01", title: "ステップ2: 患者情報の構造化", file: "02-practice/step-01.md" },
+      { id: "03-practice-step-02", title: "ステップ3: AIを活用した効率化", file: "03-practice/step-02.md" },
+      { id: "04-reference-step-01", title: "ステップ4: 実践的なテンプレート", file: "04-reference/step-01.md" }
+    ]
+  },
+  "surgical-record": {
+    title: "【実践】手術記録・処置記録作成ガイド",
+    description: "正確で効率的な手術記録・処置記録の作成方法。法的要件を満たしつつ、AIで作成時間を短縮。",
+    readTime: "20 min",
+    category: "Clinical",
+    basePath: "/assets/guides/surgical-record",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-basics-step-01", title: "ステップ1: 手術記録の必須要素", file: "01-basics/step-01.md" },
+      { id: "02-basics-step-02", title: "ステップ2: 処置記録の構造化", file: "02-basics/step-02.md" },
+      { id: "03-practice-step-01", title: "ステップ3: AIを活用した記録作成", file: "03-practice/step-01.md" },
+      { id: "04-practice-step-02", title: "ステップ4: 術式別テンプレート", file: "04-practice/step-02.md" },
+      { id: "05-reference-step-01", title: "ステップ5: 法的・保険請求上の注意点", file: "05-reference/step-01.md" }
+    ]
+  },
+  "outpatient-preparation": {
+    title: "【実践】外来予習ワークフロー",
+    description: "次回外来患者の効率的な事前準備方法。限られた時間で最大限の準備を行うAI活用術。",
+    readTime: "15 min",
+    category: "Clinical",
+    basePath: "/assets/guides/outpatient-preparation",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-basics-step-01", title: "ステップ1: 外来予習の基本フレームワーク", file: "01-basics/step-01.md" },
+      { id: "02-practice-step-01", title: "ステップ2: 患者情報の効率的な抽出", file: "02-practice/step-01.md" },
+      { id: "03-practice-step-02", title: "ステップ3: 予習メモの作成", file: "03-practice/step-02.md" },
+      { id: "04-reference-step-01", title: "ステップ4: 診療科別の予習ポイント", file: "04-reference/step-01.md" }
+    ]
+  },
+  "bad-news-delivery": {
+    title: "【コミュニケーション】Bad News Delivery（悪い知らせの伝え方）ガイド",
+    description: "SPIKESプロトコルに基づく患者・家族への悪い知らせの伝え方。共感的で適切なコミュニケーションを実現。",
+    readTime: "25 min",
+    category: "Clinical",
+    basePath: "/assets/guides/bad-news-delivery",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-basics-step-01", title: "ステップ1: SPIKESプロトコルの理解", file: "01-basics/step-01.md" },
+      { id: "02-basics-step-02", title: "ステップ2: 事前準備（Setting）", file: "02-basics/step-02.md" },
+      { id: "03-practice-step-01", title: "ステップ3: 患者の認識確認（Perception）", file: "03-practice/step-01.md" },
+      { id: "04-practice-step-02", title: "ステップ4: 情報提供と感情対応", file: "04-practice/step-02.md" },
+      { id: "05-reference-step-01", title: "ステップ5: 状況別シナリオ集", file: "05-reference/step-01.md" }
+    ]
+  },
+  "board-exam-preparation": {
+    title: "【キャリア】専門医試験対策ガイド",
+    description: "AIを活用した効率的な専門医試験の学習戦略。問題分析、弱点克服、暗記効率化を実現。",
+    readTime: "30 min",
+    category: "Research",
+    basePath: "/assets/guides/board-exam-preparation",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-basics-step-01", title: "ステップ1: 試験の傾向分析", file: "01-basics/step-01.md" },
+      { id: "02-basics-step-02", title: "ステップ2: 学習計画の立案", file: "02-basics/step-02.md" },
+      { id: "03-practice-step-01", title: "ステップ3: AIを活用した問題演習", file: "03-practice/step-01.md" },
+      { id: "04-practice-step-02", title: "ステップ4: 弱点の分析と克服", file: "04-practice/step-02.md" },
+      { id: "05-reference-step-01", title: "ステップ5: 暗記効率化テクニック", file: "05-reference/step-01.md" },
+      { id: "06-reference-step-02", title: "ステップ6: 試験直前の最終確認", file: "06-reference/step-02.md" }
+    ]
+  },
+  "resident-training-plan": {
+    title: "【教育】研修医指導計画作成ガイド",
+    description: "効果的な研修医教育プログラムの設計方法。目標設定、評価方法、フィードバック技法を習得。",
+    readTime: "25 min",
+    category: "Research",
+    basePath: "/assets/guides/resident-training-plan",
+    steps: [
+      { id: "00-introduction", title: "イントロダクション", file: "00-introduction.md" },
+      { id: "01-basics-step-01", title: "ステップ1: 研修目標の設定（マイルストーン）", file: "01-basics/step-01.md" },
+      { id: "02-basics-step-02", title: "ステップ2: 到達度評価の設計", file: "02-basics/step-02.md" },
+      { id: "03-practice-step-01", title: "ステップ3: 効果的なフィードバック技法", file: "03-practice/step-01.md" },
+      { id: "04-practice-step-02", title: "ステップ4: 困難な研修医への対応", file: "04-practice/step-02.md" },
+      { id: "05-reference-step-01", title: "ステップ5: AIを活用した教育資料作成", file: "05-reference/step-01.md" }
+    ]
   }
 };
 
@@ -717,7 +807,7 @@ export default function MarkdownGuide() {
   useEffect(() => {
     if (metadata) {
       updateSEO({
-        title: `${metadata.title} | Helix`,
+        title: `${metadata.title} | HELIX`,
         description: metadata.description,
         path: `/guides/${guideId}`,
         keywords: `${metadata.title},医療AI,プロンプト,ワークフロー`
@@ -843,7 +933,7 @@ export default function MarkdownGuide() {
 
   if (!metadata) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <p className="text-center text-muted-foreground">ガイドが見つかりません</p>
         </div>
@@ -892,7 +982,7 @@ export default function MarkdownGuide() {
 
   return (
     <Layout>
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Mobile Table of Contents Dropdown */}
       {isSidebarOpen && (
         <>
@@ -902,18 +992,18 @@ export default function MarkdownGuide() {
           />
           {/* TOC Dropdown Container - positioned near the header button */}
           <div 
-            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="overflow-y-auto max-h-[calc(100vh-5rem)] p-4">
               {/* Page Top Button */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                 <button
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     setIsSidebarOpen(false);
                   }}
-                  className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                  className="w-full flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors"
                 >
                   <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
                   <span>ページトップへ</span>
@@ -935,7 +1025,7 @@ export default function MarkdownGuide() {
                       className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                         isCurrent
                           ? 'text-blue-600 dark:text-blue-400'
-                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                          : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                       }`}
                     >
                       {isCurrent && (
@@ -974,7 +1064,7 @@ export default function MarkdownGuide() {
               </div>
             ) : (
               <>
-                <article className="zenn-article">
+                <article key={currentStep} className="zenn-article">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -1078,9 +1168,17 @@ export default function MarkdownGuide() {
                     blockquote: ({ node, ...props }) => (
                       <blockquote className="pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
                     ),
-                    img: ({ node, ...props }: any) => (
-                      <img className="w-full h-auto rounded-lg shadow-md my-8" {...props} />
-                    ),
+                    img: ({ node, src, ...props }: any) => {
+                      // 開発環境では /Helix/ プレフィックスを除去
+                      const isProduction = import.meta.env.PROD;
+                      let imageSrc = src;
+                      if (!isProduction && src && src.startsWith('/Helix/')) {
+                        imageSrc = src.replace('/Helix/', '/');
+                      }
+                      return (
+                        <img className="w-full h-auto rounded-lg shadow-md my-8" src={imageSrc} {...props} />
+                      );
+                    },
                   }}
                 >
                   {content}
@@ -1121,14 +1219,14 @@ export default function MarkdownGuide() {
           <aside className="hidden lg:block lg:static w-64 flex-shrink-0 order-2">
             <div className="h-full sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
               {/* Page Top Button - Zenn style */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                 <button
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className="w-full flex items-center gap-1.5
-                    text-sm text-gray-600 dark:text-gray-400
-                    hover:text-gray-900 dark:hover:text-gray-200
+                    text-sm text-neutral-600 dark:text-neutral-400
+                    hover:text-neutral-900 dark:hover:text-neutral-200
                     transition-colors
                   "
                 >
@@ -1151,7 +1249,7 @@ export default function MarkdownGuide() {
                       className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                         isCurrent
                           ? 'text-blue-600 dark:text-blue-400'
-                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                          : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                       }`}
                     >
                       {isCurrent && (

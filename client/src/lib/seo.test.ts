@@ -26,7 +26,7 @@ describe("seo", () => {
         path: "/test",
       });
 
-      expect(document.title).toBe("テストタイトル | Helix");
+      expect(document.title).toBe("テストタイトル | HELIX");
     });
 
     it("メタタグを追加・更新する", () => {

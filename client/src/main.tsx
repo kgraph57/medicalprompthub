@@ -20,9 +20,9 @@ enhanceFocusStyles();
 // Google Analytics 4はCookie同意後に初期化される（CookieConsentBannerで処理）
 
 // Error handling for root element
-console.log("[Helix] Initializing application...");
+console.log("[HELIX] Initializing application...");
 const rootElement = document.getElementById("root");
-console.log("[Helix] Root element found:", rootElement);
+console.log("[HELIX] Root element found:", rootElement);
 if (!rootElement) {
   throw new Error("Root element not found. Make sure there is a <div id='root'></div> in your HTML.");
 }

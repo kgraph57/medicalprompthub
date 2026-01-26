@@ -30,7 +30,7 @@ interface SEOData {
  * ページのSEO情報を更新
  */
 export function updateSEO(data: SEOData): void {
-  const fullTitle = `${data.title} | Helix`;
+  const fullTitle = `${data.title} | HELIX`;
   const url = `${BASE_URL}${data.path}`;
   const ogImage = data.ogImage || DEFAULT_OG_IMAGE;
 
@@ -56,16 +56,22 @@ export function updateSEO(data: SEOData): void {
   updateMetaTag("property", "og:description", data.description);
   updateMetaTag("property", "og:url", url);
   updateMetaTag("property", "og:image", ogImage);
+  updateMetaTag("property", "og:image:width", "1200");
+  updateMetaTag("property", "og:image:height", "630");
+  updateMetaTag("property", "og:image:alt", data.title);
   updateMetaTag("property", "og:type", "website");
   updateMetaTag("property", "og:locale", "ja_JP");
-  updateMetaTag("property", "og:site_name", "Helix");
+  updateMetaTag("property", "og:site_name", "HELIX");
 
   // Twitter Card
-  updateMetaTag("property", "twitter:card", "summary_large_image");
-  updateMetaTag("property", "twitter:title", fullTitle);
-  updateMetaTag("property", "twitter:description", data.description);
-  updateMetaTag("property", "twitter:image", ogImage);
-  updateMetaTag("property", "twitter:url", url);
+  updateMetaTag("name", "twitter:card", "summary_large_image");
+  updateMetaTag("name", "twitter:site", "@helix_health");
+  updateMetaTag("name", "twitter:creator", "@helix_health");
+  updateMetaTag("name", "twitter:title", fullTitle);
+  updateMetaTag("name", "twitter:description", data.description);
+  updateMetaTag("name", "twitter:image", ogImage);
+  updateMetaTag("name", "twitter:image:alt", data.title);
+  updateMetaTag("name", "twitter:url", url);
 
   // Canonical URL
   updateCanonical(url);
@@ -129,7 +135,7 @@ export function addHomeStructuredData(): void {
   addStructuredData({
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Helix",
+    "name": "HELIX",
     "description": "医療従事者のためのAIプロンプトライブラリ",
     "url": BASE_URL,
     "potentialAction": {
@@ -145,7 +151,7 @@ export function addHomeStructuredData(): void {
   addStructuredData({
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Helix",
+    "name": "HELIX",
     "url": BASE_URL,
     "logo": DEFAULT_OG_IMAGE,
     "description": "医療従事者のためのAIプロンプトライブラリ"
@@ -189,11 +195,11 @@ export function addArticleStructuredData(data: {
     "description": data.description,
     "author": {
       "@type": "Person",
-      "name": data.author || "Helix"
+      "name": data.author || "HELIX"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Helix",
+      "name": "HELIX",
       "logo": {
         "@type": "ImageObject",
         "url": DEFAULT_OG_IMAGE

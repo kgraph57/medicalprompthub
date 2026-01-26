@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Circle, CheckCircle2, Clock, Menu, X, ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Circle, CheckCircle2, Clock, Menu, X, ChevronRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import { caseReportGuideData } from '@/lib/case-report-guide-data';
 import { CodeBlock } from '@/components/CodeBlock';
 import { updateSEO } from '@/lib/seo';
@@ -48,7 +48,7 @@ export default function CaseReportGuide() {
   // SEO設定
   useEffect(() => {
     updateSEO({
-      title: "症例報告執筆ガイド | Helix",
+      title: "症例報告執筆ガイド | HELIX",
       description: "症例報告の書き方を段階的にサポート。構想から投稿まで、AIを活用して効率的に症例報告を作成できます。",
       path: `/guides/case-report-complete${stepId ? `/${stepId}` : ''}`,
       keywords: "症例報告,Case Report,論文執筆,医療研究,AI活用"
@@ -80,9 +80,15 @@ export default function CaseReportGuide() {
     } else {
       setCurrentStepId('intro');
     }
-    // スクロール位置をトップにリセット（ただし、goToNextからの遷移の場合はスキップ）
-    // goToNext関数内でスクロール処理を行うため、ここではスキップ
   }, [stepId]);
+
+  // currentStepIdが変更されたらスクロール位置をリセット
+  useEffect(() => {
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      mainContent.scrollTo(0, 0);
+    }
+  }, [currentStepId]);
 
   // Markdownコンテンツを読み込み
   useEffect(() => {
@@ -167,7 +173,7 @@ export default function CaseReportGuide() {
       const prevStepId = allSteps[currentIndex - 1];
       setCurrentStepId(prevStepId);
       navigate(`/guides/case-report-complete/${prevStepId === 'intro' ? '' : prevStepId}`);
-      // 同時にスクロール位置をトップにリセット
+      // ページトップにスクロール
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -177,26 +183,14 @@ export default function CaseReportGuide() {
       const nextStepId = allSteps[currentIndex + 1];
       setCurrentStepId(nextStepId);
       navigate(`/guides/case-report-complete/${nextStepId}`);
-      // ページ遷移後にヘッダーにスクロール
-      setTimeout(() => {
-        const scrollToHeader = () => {
-          const header = document.getElementById('page-header');
-          if (header) {
-            const headerTop = header.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: headerTop - 20, behavior: 'smooth' });
-          } else {
-            // ヘッダーが見つからない場合は少し待って再試行
-            setTimeout(scrollToHeader, 100);
-          }
-        };
-        scrollToHeader();
-      }, 300);
+      // ページトップにスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
     <Layout>
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       {/* Mobile Table of Contents Dropdown */}
       {isSidebarOpen && (
         <>
@@ -206,18 +200,18 @@ export default function CaseReportGuide() {
           />
           {/* TOC Dropdown Container - positioned near the header button */}
           <div 
-            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="fixed top-[112px] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-5rem)] bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="overflow-y-auto max-h-[calc(100vh-5rem)] p-4">
               {/* Page Top Button */}
-              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                 <button
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     setIsSidebarOpen(false);
                   }}
-                  className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                  className="w-full flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors"
                 >
                   <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
                   <span>ページトップへ</span>
@@ -248,7 +242,7 @@ export default function CaseReportGuide() {
                         className={`w-full text-left py-2 px-0 text-sm transition-colors break-words flex items-start gap-2 ${
                           isCurrent
                             ? 'text-blue-600 dark:text-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                            : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
                         }`}
                       >
                         {isCurrent && (
@@ -273,7 +267,7 @@ export default function CaseReportGuide() {
         <div className="flex flex-col lg:flex-row gap-4 relative">
           {/* Right Content - Scrollable Article */}
           <main className="flex-1 min-w-0 order-2 lg:order-1">
-            <article className="zenn-article">
+            <article key={currentStepId} className="zenn-article">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -288,7 +282,7 @@ export default function CaseReportGuide() {
                     return (
                       <div className="mt-4 mb-8">
                         {currentStepDuration && (
-                          <div className="flex items-center gap-1.5 mb-3 text-sm text-gray-600 dark:text-gray-400">
+                          <div className="flex items-center gap-1.5 mb-3 text-sm text-neutral-600 dark:text-neutral-400">
                             <Clock className="h-4 w-4" />
                             <span>{currentStepDuration}</span>
                           </div>
@@ -387,6 +381,26 @@ export default function CaseReportGuide() {
                   blockquote: ({ node, ...props }) => (
                     <blockquote className="pl-6 italic my-8 text-lg md:text-xl text-muted-foreground leading-[1.85] bg-accent/30 py-4 pr-4 rounded-r-lg" {...props} />
                   ),
+                  table: ({ node, ...props }) => (
+                    <div className="overflow-x-auto my-8">
+                      <table className="min-w-full border-collapse border border-border rounded-lg" {...props} />
+                    </div>
+                  ),
+                  thead: ({ node, ...props }) => (
+                    <thead className="bg-muted/50" {...props} />
+                  ),
+                  tbody: ({ node, ...props }) => (
+                    <tbody className="divide-y divide-border" {...props} />
+                  ),
+                  tr: ({ node, ...props }) => (
+                    <tr className="hover:bg-muted/30 transition-colors" {...props} />
+                  ),
+                  th: ({ node, ...props }) => (
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-foreground border-b border-border" {...props} />
+                  ),
+                  td: ({ node, ...props }) => (
+                    <td className="px-4 py-3 text-sm text-foreground border-b border-border" {...props} />
+                  ),
                 }}
               >
                 {markdown}
@@ -394,27 +408,33 @@ export default function CaseReportGuide() {
             </article>
 
             {/* Navigation Buttons */}
-            <div className="mt-8 flex items-center justify-between gap-4">
-              {/* Previous Button */}
+            <div className="flex justify-between items-center mt-12 pt-8 border-t border-border">
               <Button
                 onClick={goToPrevious}
                 disabled={!hasPrevious}
                 variant="outline"
-                className="h-9"
+                className="flex items-center gap-2"
               >
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                前へ
+                <ArrowLeft className="w-4 h-4" />
+                前のステップ
               </Button>
 
-              {/* Next Button */}
               <Button
                 onClick={goToNext}
                 disabled={!hasNext}
-                variant="outline"
-                className="h-9"
+                className="flex items-center gap-2"
               >
-                次へ
-                <ChevronRight className="h-4 w-4 ml-2" />
+                {hasNext ? (
+                  <>
+                    次のステップ
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    完了
+                    <CheckCircle2 className="w-4 h-4" />
+                  </>
+                )}
               </Button>
             </div>
           </main>
@@ -425,21 +445,21 @@ export default function CaseReportGuide() {
             w-[70%] max-w-sm lg:w-64 flex-shrink-0
             transform transition-transform duration-300 ease-in-out
             ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
-            bg-blue-900/95 dark:bg-gray-900/95 backdrop-blur-sm lg:bg-transparent
+            bg-blue-900/95 dark:bg-neutral-900/95 backdrop-blur-sm lg:bg-transparent
             order-1 lg:order-2
             shadow-xl lg:shadow-none
           `}>
             <div className="h-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto p-4 lg:p-0">
               {/* Page Top Button - Zenn style */}
-              <div className="mb-4 pb-4 border-b border-blue-700/30 dark:border-gray-700 lg:border-gray-200 lg:dark:border-gray-700">
+              <div className="mb-4 pb-4 border-b border-blue-700/30 dark:border-neutral-700 lg:border-neutral-200 lg:dark:border-neutral-700">
                 <button
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     setIsSidebarOpen(false);
                   }}
                   className="w-full flex items-center gap-1.5
-                    text-sm text-white/90 lg:text-gray-600 lg:dark:text-gray-400
-                    hover:text-white lg:hover:text-gray-900 lg:dark:hover:text-gray-200
+                    text-sm text-white/90 lg:text-neutral-600 lg:dark:text-neutral-400
+                    hover:text-white lg:hover:text-neutral-900 lg:dark:hover:text-neutral-200
                     transition-colors
                   "
                 >
@@ -457,9 +477,9 @@ export default function CaseReportGuide() {
                     : phase.steps;
                   
                   return (
-                  <div key={phase.id} className="bg-white/5 dark:bg-gray-800/5 lg:bg-white lg:dark:bg-gray-800 rounded-lg shadow-sm border border-blue-700/30 dark:border-gray-700 lg:border-gray-200 lg:dark:border-gray-700 p-2.5">
+                  <div key={phase.id} className="bg-white/5 dark:bg-neutral-800/5 lg:bg-white lg:dark:bg-neutral-800 rounded-lg shadow-sm border border-blue-700/30 dark:border-neutral-700 lg:border-neutral-200 lg:dark:border-neutral-700 p-2.5">
                     <div className="mb-2">
-                      <h3 className="font-semibold text-xs text-white lg:text-gray-900 lg:dark:text-white">
+                      <h3 className="font-semibold text-xs text-white lg:text-neutral-900 lg:dark:text-white">
                         {phase.title}
                       </h3>
                     </div>
@@ -476,7 +496,7 @@ export default function CaseReportGuide() {
                               {isCompleted ? (
                                 <CheckCircle2 className="h-3 w-3 text-green-400 lg:text-green-600" />
                               ) : (
-                                <Circle className="h-3 w-3 text-white/40 lg:text-gray-400" />
+                                <Circle className="h-3 w-3 text-white/40 lg:text-neutral-400" />
                               )}
                             </button>
                             <button
@@ -493,7 +513,7 @@ export default function CaseReportGuide() {
                               className={`w-full text-left px-2 py-1.5 rounded-md text-xs transition-colors break-words ${
                                 isCurrent
                                   ? 'bg-blue-700/30 dark:bg-blue-900/30 lg:bg-blue-50 lg:dark:bg-blue-900/20 text-white lg:text-blue-700 lg:dark:text-blue-300 font-medium'
-                                  : 'text-white/90 lg:text-gray-700 lg:dark:text-gray-300 hover:bg-white/10 dark:hover:bg-gray-700/20 lg:hover:bg-gray-50 lg:dark:hover:bg-gray-700'
+                                  : 'text-white/90 lg:text-neutral-700 lg:dark:text-neutral-300 hover:bg-white/10 dark:hover:bg-neutral-700/20 lg:hover:bg-neutral-50 lg:dark:hover:bg-neutral-700'
                               }`}
                             >
                               <div className="font-medium leading-tight">{step.title}</div>

@@ -1,22 +1,18 @@
-import { Layout } from "@/components/Layout";
 import { LearnNavBar } from "@/components/learn/LearnNavBar";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState, useRef } from "react";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { updateSEO } from "@/lib/seo";
 import { motion } from "framer-motion";
-import { ChevronRight, Lock, BookOpen, Menu, X, CheckCircle2, Construction, Clock, FileText, Link as LinkIcon } from "lucide-react";
+import { ChevronRight, Lock, BookOpen, X, CheckCircle2, Link as LinkIcon, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import { organizeCoursesIntoSections, type LearnTopic, type LearnSection } from "@/lib/course-mapper";
+import { organizeCoursesIntoSections, learningPaths, getCoursesForPath, type LearnTopic } from "@/lib/course-mapper";
 import { getLessonsForCourse } from "@/pages/CourseDetail";
 import { hasLessonContent, getLessonContent } from "@/lib/lesson-content-loader";
-import { UNIFIED_PROSE_CLASSES, UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles";
-import { ArrowRight } from "lucide-react";
+import { UNIFIED_MARKDOWN_COMPONENTS } from "@/lib/markdownStyles";
 import { Quiz } from "@/components/Quiz";
 import { SimpleQuiz } from "@/components/learn/SimpleQuiz";
 import { TokenizerDemo } from "@/components/learn/TokenizerDemo";
@@ -55,7 +51,9 @@ export default function Learn() {
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const sectionCounterRef = useRef(1);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(["getting-started"]));
+  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+  const mainContentRef = useRef<HTMLElement>(null);
   
   // クイズデータ
   const quizzesData: Record<string, typeof lesson1Quizzes> = {
@@ -80,19 +78,20 @@ export default function Learn() {
     "generative-ai-9": genAiLesson9Quizzes,
   };
   
-  // コースデータをHelix Learn形式に変換
+  // コースデータをHELIX Learn形式に変換
   const sections = organizeCoursesIntoSections();
   
-  // レッスンが変更されたらセクションカウンターをリセット
+  // レッスンが変更されたらスクロール位置をリセット
   useEffect(() => {
-    if (selectedLessonId) {
-      sectionCounterRef.current = 1;
+    if (selectedLessonId && mainContentRef.current) {
+      mainContentRef.current.scrollTop = 0;
     }
   }, [selectedLessonId]);
 
+
   useEffect(() => {
     updateSEO({
-      title: "学習 | Helix",
+      title: "学習 | HELIX",
       description: "AIの基礎から実践的な使い方まで、体系的に学べる学習プラットフォーム",
       path: "/learn",
       keywords: "AI学習,AI基礎,プロンプトエンジニアリング,AIリテラシー"
@@ -102,11 +101,27 @@ export default function Learn() {
     const params = new URLSearchParams(window.location.search);
     const courseId = params.get("course");
     const lessonId = params.get("lesson");
+
     if (courseId) {
       setSelectedCourseId(courseId);
-    }
-    if (lessonId) {
-      setSelectedLessonId(lessonId);
+      if (lessonId) {
+        setSelectedLessonId(lessonId);
+      }
+    } else {
+      // URLパラメータがない場合、最初のコースの最初のレッスンを自動選択
+      const firstSection = sections[0];
+      if (firstSection && firstSection.topics.length > 0) {
+        const firstTopic = firstSection.topics[0];
+        if (!firstTopic.comingSoon) {
+          const firstLessons = getLessonsForCourse(firstTopic.id);
+          if (firstLessons.length > 0 && hasLessonContent(firstLessons[0].id)) {
+            setSelectedCourseId(firstTopic.id);
+            setSelectedLessonId(firstLessons[0].id);
+            // URLも更新（履歴には追加しない）
+            window.history.replaceState({}, '', `/learn?course=${firstTopic.id}&lesson=${firstLessons[0].id}`);
+          }
+        }
+      }
     }
 
     // モバイル判定
@@ -124,6 +139,44 @@ export default function Learn() {
         .flatMap((section) => section.topics)
         .find((topic) => topic.id === selectedCourseId)
     : null;
+
+  // 選択されたコースがあるセクションを自動展開
+  useEffect(() => {
+    if (selectedCourseId) {
+      const sectionWithCourse = sections.find((section) =>
+        section.topics.some((topic) => topic.id === selectedCourseId)
+      );
+      if (sectionWithCourse) {
+        setExpandedSections((prev) => new Set([...prev, sectionWithCourse.id]));
+      }
+    }
+  }, [selectedCourseId]);
+
+  // セクションの展開/折りたたみをトグル
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(sectionId)) {
+        next.delete(sectionId);
+      } else {
+        next.add(sectionId);
+      }
+      return next;
+    });
+  };
+
+  // 学習パスの展開/折りたたみをトグル
+  const togglePath = (pathId: string) => {
+    setExpandedPaths((prev) => {
+      const next = new Set(prev);
+      if (next.has(pathId)) {
+        next.delete(pathId);
+      } else {
+        next.add(pathId);
+      }
+      return next;
+    });
+  };
 
   // コースの進捗情報をローカルストレージから読み込む
   const [courseProgress, setCourseProgress] = useState<{ completedLessons?: string[] }>(() => {
@@ -192,176 +245,327 @@ export default function Learn() {
     setLocation("/learn");
   };
 
-  const SidebarContent = () => {
-    // コースが選択されている場合は、そのコースのレッスン一覧のみを表示
-    if (selectedCourseId && lessons.length > 0) {
-      return (
-        <div className="p-4">
-          {isMobile && (
-            <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
-              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                レッスン
-              </h2>
-              <button
-                onClick={() => setIsSidebarOpen(false)}
-                className="p-1 rounded hover:bg-gray-100"
-                aria-label="サイドバーを閉じる"
-              >
-                <X className="w-4 h-4 text-gray-500" />
-              </button>
-            </div>
-          )}
-          
-          <div className="mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
-              {selectedTopic?.title || "レッスン"}
-            </h3>
-          </div>
-          
-          <ul className="space-y-0">
-            {lessons.map((lesson, index) => {
-              const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
-              const isContentAvailable = hasLessonContent(lesson.id);
-              const isSelected = selectedLessonId === lesson.id;
-              
-              return (
-                <li key={lesson.id}>
-                  <button
-                    onClick={() => {
-                      if (isContentAvailable) {
-                        handleLessonClick(lesson.id);
-                      }
-                    }}
-                    disabled={!isContentAvailable}
-                    className={cn(
-                      "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
-                      isSelected
-                        ? "bg-primary-500 text-white font-medium"
-                        : !isContentAvailable
-                        ? "text-gray-400 cursor-not-allowed"
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}
-                  >
-                    <span className={cn(
-                      "text-xs min-w-[18px]",
-                      isSelected ? "text-white" : "text-gray-500"
-                    )}>
-                      {index + 1}.
-                    </span>
-                    <span className="flex-1 text-left text-sm leading-tight">{lesson.title}</span>
-                    {isCompleted && (
-                      <CheckCircle2 className={cn(
-                        "w-3 h-3 flex-shrink-0",
-                        isSelected ? "text-white" : "text-green-600"
-                      )} />
-                    )}
-                    {!isContentAvailable && (
-                      <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                    )}
-                    {isSelected && (
-                      <ChevronRight className="w-3 h-3 text-white flex-shrink-0" />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      );
+  // コースの進捗を取得
+  const getCourseProgress = (courseId: string) => {
+    const saved = localStorage.getItem(`course-progress-${courseId}`);
+    const courseLessons = getLessonsForCourse(courseId);
+    const availableLessons = courseLessons.filter(l => hasLessonContent(l.id));
+    const total = availableLessons.length;
+
+    if (!saved || total === 0) return { completed: 0, total, percentage: 0 };
+
+    try {
+      const progress = JSON.parse(saved);
+      const completed = availableLessons.filter(l =>
+        progress.completedLessons?.includes(l.id)
+      ).length;
+      return {
+        completed,
+        total,
+        percentage: Math.round((completed / total) * 100)
+      };
+    } catch {
+      return { completed: 0, total, percentage: 0 };
     }
-    
-    // コースが選択されていない場合は、コース一覧を表示（シンプルに）
+  };
+
+  // 「はじめに」全体の進捗
+  const getGettingStartedProgress = () => {
+    const requiredCourses = ["ai-basics", "generative-ai-basics"];
+    let totalCompleted = 0;
+    let totalLessons = 0;
+
+    requiredCourses.forEach(courseId => {
+      const progress = getCourseProgress(courseId);
+      totalCompleted += progress.completed;
+      totalLessons += progress.total;
+    });
+
+    return {
+      completed: totalCompleted,
+      total: totalLessons,
+      percentage: totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0
+    };
+  };
+
+  const gettingStartedProgress = getGettingStartedProgress();
+  const isGettingStartedCompleted = gettingStartedProgress.percentage === 100;
+
+  const SidebarContent = () => {
     return (
-      <div className="p-4">
+      <div className="p-3">
         {isMobile && (
-          <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              コース
-            </h2>
+          <div className="flex items-center justify-between h-12 px-1 border-b border-neutral-200 dark:border-neutral-700">
+            <Link href="/">
+              <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight">HELIX</span>
+            </Link>
             <button
               onClick={() => setIsSidebarOpen(false)}
-              className="p-1 rounded hover:bg-gray-100"
+              className="p-1.5 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200"
               aria-label="サイドバーを閉じる"
             >
-              <X className="w-4 h-4 text-gray-500" />
+              <X className="w-5 h-5 text-neutral-500 dark:text-neutral-400" />
             </button>
           </div>
         )}
-        
-        {/* 最初の2つのコースのみを表示（シンプルに） */}
-        {sections.slice(0, 1).map((section) => {
-          // AI基礎セクションの最初の2つのコースのみを表示
-          const displayTopics = section.topics.slice(0, 2);
-          
+
+        {/* はじめにセクション */}
+        {sections.map((section) => {
+          const isExpanded = expandedSections.has(section.id);
+
           return (
-            <div key={section.id} className="mb-6">
-              <h3 className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2">
-                {section.title}
-              </h3>
-              <ul className="space-y-0">
-                {displayTopics.map((topic, index) => {
-                  return (
-                    <li key={topic.id}>
-                      <button
-                        onClick={() => handleCourseClick(topic)}
-                        disabled={topic.comingSoon}
-                        className={cn(
-                          "w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center gap-2 group",
-                          selectedCourseId === topic.id
-                            ? "bg-primary-500 text-white font-medium"
-                            : topic.comingSoon
-                            ? "text-gray-400 cursor-not-allowed"
-                            : "text-gray-700 hover:bg-gray-100"
+            <div key={section.id} className="mb-2">
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full flex items-center gap-1.5 px-2 py-1.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded transition-colors duration-200"
+              >
+                <ChevronRight className={cn(
+                  "w-3 h-3 text-neutral-400 dark:text-neutral-500 transition-transform flex-shrink-0",
+                  isExpanded && "rotate-90"
+                )} />
+                <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider flex-1">
+                  {section.title}
+                </span>
+                {/* 全体進捗表示 */}
+                <span className={cn(
+                  "text-xs font-medium",
+                  gettingStartedProgress.percentage === 100 ? "text-blue-600 dark:text-blue-400" : "text-neutral-400 dark:text-neutral-500"
+                )}>
+                  {gettingStartedProgress.percentage}%
+                </span>
+              </button>
+
+              {/* 全体進捗バー */}
+              {isExpanded && (
+                <div className="mx-2 mt-1 mb-2">
+                  <div className="h-1 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-blue-600 dark:bg-blue-500 transition-all duration-200"
+                      style={{ width: `${gettingStartedProgress.percentage}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                    {gettingStartedProgress.completed} / {gettingStartedProgress.total} レッスン完了
+                  </p>
+                </div>
+              )}
+
+              {isExpanded && (
+                <ul className="mt-1 ml-2 space-y-0.5">
+                  {section.topics.map((topic) => {
+                    const isSelected = selectedCourseId === topic.id;
+                    const topicLessons = getLessonsForCourse(topic.id);
+                    const hasContent = topicLessons.some((l) => hasLessonContent(l.id));
+                    const topicProgress = getCourseProgress(topic.id);
+
+                    return (
+                      <li key={topic.id}>
+                        <button
+                          onClick={() => {
+                            if (!topic.comingSoon && hasContent) {
+                              const firstLesson = topicLessons.find((l) => hasLessonContent(l.id));
+                              if (firstLesson) {
+                                setSelectedCourseId(topic.id);
+                                setSelectedLessonId(firstLesson.id);
+                                setLocation(`/learn?course=${topic.id}&lesson=${firstLesson.id}`);
+                                if (isMobile) setIsSidebarOpen(false);
+                              }
+                            }
+                          }}
+                          disabled={topic.comingSoon || !hasContent}
+                          className={cn(
+                            "w-full text-left px-2 py-1.5 rounded text-sm transition-colors duration-200",
+                            isSelected
+                              ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium"
+                              : topic.comingSoon || !hasContent
+                              ? "text-neutral-400 dark:text-neutral-500 cursor-not-allowed"
+                              : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                          )}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            {topicProgress.percentage === 100 ? (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                            ) : (
+                              <div className="w-3.5 h-3.5 rounded-full border-2 border-neutral-300 dark:border-neutral-600 flex-shrink-0" />
+                            )}
+                            <span className="flex-1 text-sm leading-tight truncate">{topic.shortTitle}</span>
+                            {(topic.comingSoon || !hasContent) && (
+                              <Lock className="w-3 h-3 text-neutral-400 dark:text-neutral-500 flex-shrink-0" />
+                            )}
+                          </div>
+                          {/* コース進捗バー */}
+                          {hasContent && topicProgress.total > 0 && (
+                            <div className="mt-1 ml-5">
+                              <div className="h-1 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-blue-600 dark:bg-blue-500 transition-all duration-200"
+                                  style={{ width: `${topicProgress.percentage}%` }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </button>
+
+                        {isSelected && topicLessons.length > 0 && (
+                          <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-neutral-200 dark:border-neutral-700 pl-2">
+                            {topicLessons.map((lesson, index) => {
+                              const isLessonSelected = selectedLessonId === lesson.id;
+                              const isContentAvailable = hasLessonContent(lesson.id);
+                              const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
+
+                              return (
+                                <li key={lesson.id}>
+                                  <button
+                                    onClick={() => {
+                                      if (isContentAvailable) {
+                                        handleLessonClick(lesson.id);
+                                      }
+                                    }}
+                                    disabled={!isContentAvailable}
+                                    className={cn(
+                                      "w-full text-left px-2 py-0.5 rounded text-xs transition-colors duration-200 flex items-center gap-1.5",
+                                      isLessonSelected
+                                        ? "bg-blue-600 dark:bg-blue-500 text-white"
+                                        : !isContentAvailable
+                                        ? "text-neutral-400 dark:text-neutral-500 cursor-not-allowed"
+                                        : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100"
+                                    )}
+                                  >
+                                    <span className={cn(
+                                      "min-w-[16px]",
+                                      isLessonSelected ? "text-white" : "text-neutral-400 dark:text-neutral-500"
+                                    )}>
+                                      {index + 1}.
+                                    </span>
+                                    <span className="flex-1 leading-tight truncate">{lesson.title}</span>
+                                    {isCompleted && (
+                                      <CheckCircle2 className={cn(
+                                        "w-3 h-3 flex-shrink-0",
+                                        isLessonSelected ? "text-white" : "text-blue-600 dark:text-blue-400"
+                                      )} />
+                                    )}
+                                    {!isContentAvailable && (
+                                      <Lock className="w-3 h-3 text-neutral-400 dark:text-neutral-500 flex-shrink-0" />
+                                    )}
+                                  </button>
+                                </li>
+                              );
+                            })}
+                          </ul>
                         )}
-                      >
-                        <span className={cn(
-                          "text-xs min-w-[18px]",
-                          selectedCourseId === topic.id ? "text-white" : "text-gray-500"
-                        )}>
-                          {index + 1}.
-                        </span>
-                        <span className="flex-1 text-left text-sm leading-tight">{topic.title}</span>
-                        {topic.comingSoon && (
-                          <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                        )}
-                        {selectedCourseId === topic.id && (
-                          <ChevronRight className="w-3 h-3 text-white flex-shrink-0" />
-                        )}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           );
         })}
+
+        {/* 次のステップ（はじめに完了後に表示） */}
+        {isGettingStartedCompleted && (
+          <div className="mb-2 mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+            <div className="px-2 py-1.5">
+              <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
+                次のステップ
+              </span>
+            </div>
+            <ul className="mt-1 space-y-1">
+              {learningPaths.map((path) => {
+                const isPathExpanded = expandedPaths.has(path.id);
+                const pathCourses = getCoursesForPath(path.id);
+
+                return (
+                  <li key={path.id}>
+                    <button
+                      onClick={() => togglePath(path.id)}
+                      className="w-full text-left px-2 py-1.5 rounded text-sm transition-colors duration-200 flex items-center gap-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    >
+                      <ChevronRight className={cn(
+                        "w-3 h-3 text-neutral-400 dark:text-neutral-500 transition-transform flex-shrink-0",
+                        isPathExpanded && "rotate-90"
+                      )} />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-neutral-700 dark:text-neutral-300 font-medium">{path.title}</span>
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{path.description}</p>
+                      </div>
+                    </button>
+
+                    {isPathExpanded && (
+                      <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-neutral-200 dark:border-neutral-700 pl-2">
+                        {pathCourses.map((topic) => {
+                          const topicLessons = getLessonsForCourse(topic.id);
+                          const hasContent = topicLessons.some((l) => hasLessonContent(l.id));
+                          const isSelected = selectedCourseId === topic.id;
+
+                          return (
+                            <li key={topic.id}>
+                              <button
+                                onClick={() => {
+                                  if (hasContent) {
+                                    const firstLesson = topicLessons.find((l) => hasLessonContent(l.id));
+                                    if (firstLesson) {
+                                      setSelectedCourseId(topic.id);
+                                      setSelectedLessonId(firstLesson.id);
+                                      setLocation(`/learn?course=${topic.id}&lesson=${firstLesson.id}`);
+                                      if (isMobile) setIsSidebarOpen(false);
+                                    }
+                                  }
+                                }}
+                                disabled={!hasContent}
+                                className={cn(
+                                  "w-full text-left px-2 py-0.5 rounded text-xs transition-colors duration-200",
+                                  isSelected
+                                    ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium"
+                                    : !hasContent
+                                    ? "text-neutral-400 dark:text-neutral-500 cursor-not-allowed"
+                                    : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                )}
+                              >
+                                <span className="truncate">{topic.shortTitle}</span>
+                                {!hasContent && <Lock className="w-3 h-3 text-neutral-400 dark:text-neutral-500 ml-1 inline" />}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white">
-      {/* Helix Learn風のトップナビゲーションバー */}
-      <LearnNavBar />
-      
+    <div className="flex flex-col h-screen bg-white dark:bg-neutral-900">
+      {/* Cursor Learn風のクリーンなナビゲーションバー */}
+      <LearnNavBar
+        showMenuButton={isMobile}
+        onMenuClick={() => setIsSidebarOpen(true)}
+      />
+
       <div className="flex flex-1 overflow-hidden">
         {/* モバイル用オーバーレイ */}
         {isMobile && isSidebarOpen && (
           <>
             <div
-              className="fixed inset-0 bg-black/30 z-40"
+              className="fixed inset-0 bg-black/30 dark:bg-black/50 z-40 transition-opacity duration-200"
               onClick={() => setIsSidebarOpen(false)}
             />
           </>
         )}
 
-        {/* 左サイドバー - Cursor Learn風（約200px幅） */}
+        {/* 左サイドバー - Cursor Learn風クリーンデザイン */}
         <aside
           className={cn(
-            "w-[200px] flex-shrink-0 border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 z-50",
+            "w-[240px] flex-shrink-0 border-r border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-y-auto transition-transform duration-200 z-50",
             isMobile
               ? cn(
-                  "fixed left-0 top-14 bottom-0",
+                  "fixed left-0 top-0 bottom-0",
                   isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 )
               : "relative"
@@ -370,55 +574,59 @@ export default function Learn() {
           <SidebarContent />
         </aside>
 
-        {/* メインコンテンツエリア - Helix Learn風 */}
-        <main className="flex-1 overflow-y-auto bg-white">
-          {/* モバイル用サイドバートグルボタン */}
-          {isMobile && (
-            <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSidebarOpen(true)}
-                aria-label="サイドバーを開く"
-              >
-                <Menu className="w-4 h-4" />
-              </Button>
-            </div>
-          )}
-
+        {/* メインコンテンツエリア - クリーンなライトテーマ */}
+        <main ref={mainContentRef} key={selectedLessonId || selectedCourseId || 'default'} className="flex-1 overflow-y-auto bg-white dark:bg-neutral-900">
           {selectedTopic ? (
-            <div className="max-w-3xl mx-auto px-8 py-8">
+            <div key={selectedLessonId || selectedCourseId || 'default'} className="max-w-3xl mx-auto px-6 sm:px-8 py-8">
               <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
               >
-                <motion.div variants={itemVariants} className="mb-8">
-                  <Button
-                    variant="ghost"
-                    onClick={selectedLessonId ? handleBackToCourse : handleBackToList}
-                    className="mb-6 text-gray-600 hover:text-gray-900 -ml-2"
-                  >
-                    ← {selectedLessonId ? "コースに戻る" : "一覧に戻る"}
-                  </Button>
-                  <div className="mb-2">
-                    <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-                      {selectedTopic.category || "AI基礎"}
-                    </span>
-                  </div>
-                  <h1 className="text-4xl font-bold mb-6 text-gray-900 tracking-tight">
-                    {selectedTopic.title}
-                  </h1>
-                  {selectedTopic.description && (
-                    <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                      {selectedTopic.description}
-                    </p>
-                  )}
-                </motion.div>
 
                 {/* レッスン詳細表示 - Cursor Learn風 */}
-                {selectedLessonId && selectedLesson && lessonContent && (() => {
+                {selectedLessonId && selectedLesson && lessonContent && (
+                  <div key={selectedLessonId}>
+                {(() => {
                   const quizzes = selectedLessonId ? quizzesData[selectedLessonId] || [] : [];
+                  
+                  // コードブロックコンポーネント（コピー機能付き）
+                  const CodeBlock = ({ children, ...props }: any) => {
+                    const [copied, setCopied] = useState(false);
+                    const codeText = String(children).replace(/\n$/, '');
+                    
+                    const handleCopy = async () => {
+                      try {
+                        await navigator.clipboard.writeText(codeText);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      } catch (err) {
+                        console.error('Failed to copy code:', err);
+                      }
+                    };
+                    
+                    return (
+                      <div className="my-4 relative group">
+                        <div className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
+                          <div className="overflow-x-auto">
+                            <code
+                              className="block p-3 text-neutral-700 dark:text-neutral-300 text-sm font-mono leading-normal"
+                              {...props}
+                            >
+                              {children}
+                            </code>
+                          </div>
+                          <button
+                            onClick={handleCopy}
+                            className="absolute top-2 right-2 p-1 rounded bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
+                            aria-label="コードをコピー"
+                          >
+                            {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  };
                   
                   // コンテンツを[QUIZ]で分割
                   const parts = lessonContent.split(/(\[QUIZ\])/);
@@ -428,11 +636,11 @@ export default function Learn() {
                   return (
                     <motion.div variants={itemVariants} className="mb-6">
                       <div className="mb-8">
-                        <h2 className="text-3xl font-bold mb-4 text-gray-900 tracking-tight">
+                        <h1 className="text-xl font-semibold mb-2 text-neutral-900 dark:text-neutral-100 tracking-tight">
                           {selectedLesson.title}
-                        </h2>
+                        </h1>
                         {selectedLesson.description && (
-                          <p className="text-gray-600 text-lg mb-6 leading-relaxed">
+                          <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
                             {selectedLesson.description}
                           </p>
                         )}
@@ -478,7 +686,7 @@ export default function Learn() {
                         } else if (part.trim()) {
                           // Markdownコンテンツをレンダリング
                           let markdownContent = part.trim();
-                          
+
                           // 最初のパートの場合、Markdownの最初のh1を削除
                           if (index === 0 || (index === 2 && parts[0].trim() === "")) {
                             const lines = markdownContent.split('\n');
@@ -486,6 +694,9 @@ export default function Learn() {
                               markdownContent = lines.slice(1).join('\n');
                             }
                           }
+
+                          // 絵文字を削除（Cursor風のクリーンなデザインのため）
+                          markdownContent = markdownContent.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2300}-\u{23FF}]|[\u{2B50}]|[\u{1F900}-\u{1F9FF}]|✅|✓|✔|🎯|📚|💡|⚠️|❌|❓|🔹|🔸|▶️|▸|►|🔍|📝|📌|🎓|🏆|🌟|⭐|★|☆|🔗|🔒|🔓|🔑|📊|📈|📉|🖼️|💻|🤖|🧠|🏥|💊|🩺|📋/gu, '');
                           
                           return (
                             <div key={`content-${index}`} className="prose prose-lg max-w-none">
@@ -495,84 +706,81 @@ export default function Learn() {
                         components={{
                           ...UNIFIED_MARKDOWN_COMPONENTS,
                           h2: ({ node, ...props }: any) => {
-                            const title = typeof props.children === 'string' 
-                              ? props.children 
+                            const title = typeof props.children === 'string'
+                              ? props.children
                               : props.children?.toString() || '';
                             const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-                            
-                            // セクション番号をインクリメント（レンダリング順序に基づく）
-                            const currentSectionNumber = sectionCounterRef.current;
-                            sectionCounterRef.current += 1;
-                            
-                            const copyLink = () => {
-                              const url = `${window.location.origin}${window.location.pathname}${window.location.search}#${id}`;
-                              navigator.clipboard.writeText(url);
-                            };
-                            
-                            return (
-                              <div className="my-8 border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50">
-                                <div className="flex items-center gap-3 mb-3">
-                                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-500 text-white text-sm font-bold flex-shrink-0">
-                                    {currentSectionNumber}
-                                  </div>
+
+                            // 「このレッスンで学ぶこと」はスキップ（本文に自然に統合）
+                            if (title.includes('このレッスンで学ぶこと') || title.includes('学ぶこと')) {
+                              return null;
+                            }
+
+                            // 「図解スペース」「実践演習」などは非表示
+                            if (title.includes('図解スペース') || title.includes('実践演習') || title.includes('実践課題') || title.includes('レッスン完了')) {
+                              return null;
+                            }
+
+                            // 「まとめ」セクション
+                            if (title.includes('まとめ')) {
+                              return (
+                                <div className="mt-10 mb-4 pt-6 border-t border-neutral-100 dark:border-neutral-800">
                                   <h2
                                     id={id}
-                                    className="text-2xl font-bold text-gray-900 tracking-tight flex-1"
+                                    className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight"
                                     {...props}
                                   >
                                     {props.children}
                                   </h2>
-                                  <button
-                                    onClick={copyLink}
-                                    className="p-1.5 rounded hover:bg-gray-200 transition-colors flex-shrink-0"
-                                    aria-label="セクションへのリンクをコピー"
-                                    title="リンクをコピー"
-                                  >
-                                    <LinkIcon className="w-4 h-4 text-gray-500" />
-                                  </button>
                                 </div>
-                              </div>
+                              );
+                            }
+
+                            // 通常のセクション
+                            return (
+                              <h2
+                                id={id}
+                                className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight mt-10 mb-4"
+                                {...props}
+                              >
+                                {props.children}
+                              </h2>
                             );
                           },
                           h3: ({ node, ...props }: any) => (
-                            <h3 className="text-xl font-bold mt-8 mb-3 text-gray-900 tracking-tight" {...props} />
+                            <h3 className="text-base font-medium mt-8 mb-3 text-neutral-900 dark:text-neutral-100 tracking-tight" {...props} />
                           ),
                           p: ({ node, ...props }: any) => (
-                            <p className="text-base text-gray-700 leading-relaxed my-4" {...props} />
+                            <p className="text-[15px] mb-4 leading-[1.75] text-neutral-600 dark:text-neutral-400" {...props} />
                           ),
                           ul: ({ node, ...props }: any) => (
-                            <ul className="list-disc pl-6 my-4 space-y-2 text-gray-700" {...props} />
+                            <ul className="my-4 space-y-2 text-neutral-600 dark:text-neutral-400" {...props} />
                           ),
                           ol: ({ node, ...props }: any) => (
-                            <ol className="list-decimal pl-6 my-4 space-y-2 text-gray-700" {...props} />
+                            <ol className="list-decimal pl-5 my-4 space-y-2 text-neutral-600 dark:text-neutral-400 text-[15px]" {...props} />
+                          ),
+                          li: ({ node, ...props }: any) => (
+                            <li className="text-[15px] leading-[1.75] pl-1" {...props} />
                           ),
                           strong: ({ node, ...props }: any) => (
-                            <strong className="font-semibold text-gray-900" {...props} />
+                            <strong className="font-medium text-neutral-900 dark:text-neutral-100" {...props} />
                           ),
                           code: ({ node, inline, className, children, ...props }: any) => {
                             if (inline) {
                               return (
                                 <code
-                                  className="px-1.5 py-0.5 rounded bg-primary-50 text-primary-700 font-mono text-sm"
+                                  className="px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-mono text-[0.9em]"
                                   {...props}
                                 >
                                   {children}
                                 </code>
                               );
                             }
-                            return (
-                              <div className="my-6 overflow-x-auto">
-                                <code
-                                  className="block p-4 bg-gray-900 text-gray-100 rounded-lg text-sm font-mono"
-                                  {...props}
-                                >
-                                  {children}
-                                </code>
-                              </div>
-                            );
+
+                            return <CodeBlock {...props}>{children}</CodeBlock>;
                           },
                           blockquote: ({ node, ...props }: any) => (
-                            <blockquote className="border-l-4 border-primary-500 bg-primary-50 pl-4 py-2 my-6 italic text-gray-700" {...props} />
+                            <blockquote className="my-4 pl-4 border-l-2 border-neutral-200 dark:border-neutral-700 text-[15px] text-neutral-500 dark:text-neutral-400 leading-[1.75]" {...props} />
                           ),
                         }}
                       >
@@ -585,309 +793,33 @@ export default function Learn() {
                       })}
                       {/* レッスン完了時の表示 */}
                       {nextLesson && (
-                        <div className="mt-12">
-                          <div className="bg-white border border-gray-200 rounded-lg p-6">
-                            <p className="text-gray-900 mb-4 text-center">この章を完了しました</p>
-                            <div className="flex justify-center">
-                              <Button
-                                onClick={() => handleLessonClick(nextLesson.id)}
-                                className="bg-primary-500 hover:bg-primary-600 text-white"
-                              >
-                                次のレッスンに進む
-                                <ArrowRight className="ml-2 w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
+                        <div className="mt-12 pt-6 border-t border-neutral-100 dark:border-neutral-800">
+                          <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-2">Next</p>
+                          <Link
+                            to={`/learn?course=${selectedCourseId}&lesson=${nextLesson.id}`}
+                            className="group flex items-center justify-between py-2 -mx-2 px-2 rounded hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors duration-200"
+                            onClick={() => handleLessonClick(nextLesson.id)}
+                          >
+                            <span className="text-neutral-900 dark:text-neutral-100 font-medium text-sm">{nextLesson.title}</span>
+                            <ChevronRight className="w-4 h-4 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors duration-200" />
+                          </Link>
                         </div>
                       )}
                     </motion.div>
                   );
                 })()}
-
-                {/* レッスン一覧 - Helix Learn風 */}
-                {!selectedLessonId && lessons.length > 0 && (
-                  <motion.div variants={itemVariants} className="mb-6">
-                    <h2 className="text-2xl font-bold mb-6 text-gray-900">レッスン一覧</h2>
-                    <div className="space-y-2">
-                      {lessons.map((lesson, index) => {
-                        const isCompleted = courseProgress.completedLessons?.includes(lesson.id) || false;
-                        const isContentAvailable = hasLessonContent(lesson.id);
-
-                        return (
-                          <motion.div
-                            key={lesson.id}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.1 * index }}
-                          >
-                            <Card
-                              className={cn(
-                                !isContentAvailable
-                                  ? "opacity-60 cursor-not-allowed"
-                                  : "hover:shadow-md hover:border-primary-200 transition-all duration-200 cursor-pointer",
-                                "border border-gray-200 bg-white"
-                              )}
-                              onClick={() => {
-                                if (isContentAvailable) {
-                                  handleLessonClick(lesson.id);
-                                }
-                              }}
-                            >
-                              <CardHeader className="p-3">
-                                <div className="flex items-center justify-between gap-2">
-                                  <div className="flex items-center gap-2 flex-1">
-                                    <div
-                                      className={cn(
-                                        "flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm",
-                                        !isContentAvailable
-                                          ? "bg-gray-100 text-gray-400"
-                                          : "bg-primary-100 text-primary-600"
-                                      )}
-                                    >
-                                      {index + 1}
-                                    </div>
-                                    <div className="flex-1">
-                                      <div className="flex items-center gap-2 mb-0.5">
-                                        <CardTitle
-                                          className={cn(
-                                            "text-base font-semibold text-gray-900",
-                                            !isContentAvailable && "text-gray-400"
-                                          )}
-                                        >
-                                          {lesson.title}
-                                        </CardTitle>
-                                        {isCompleted && (
-                                          <CheckCircle2 className="w-4 h-4 text-green-600" />
-                                        )}
-                                        {!isContentAvailable && (
-                                          <Construction className="w-4 h-4 text-gray-400" />
-                                        )}
-                                      </div>
-                                      <CardDescription
-                                        className={cn(
-                                          "text-sm line-clamp-2 text-gray-600",
-                                          !isContentAvailable && "text-gray-400"
-                                        )}
-                                      >
-                                        {lesson.description}
-                                      </CardDescription>
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={cn(
-                                      "flex items-center gap-3 text-sm",
-                                      !isContentAvailable
-                                        ? "text-gray-400"
-                                        : "text-gray-500"
-                                    )}
-                                  >
-                                    <div className="flex items-center gap-1.5">
-                                      <Clock className="w-3.5 h-3.5" />
-                                      <span className="font-medium">{lesson.duration}分</span>
-                                    </div>
-                                    {lesson.slides > 0 && (
-                                      <div className="flex items-center gap-1.5">
-                                        <FileText className="w-3.5 h-3.5" />
-                                        <span className="font-medium">{lesson.slides}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </CardHeader>
-                            </Card>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
+                  </div>
                 )}
+
               </motion.div>
             </div>
           ) : (
-            <div className="max-w-3xl mx-auto px-8 py-12">
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
-              >
-                <motion.div variants={itemVariants} className="mb-12">
-                  <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-gray-900 tracking-tight">
-                    Helix Learn
-                  </h1>
-                  <p className="text-lg sm:text-xl text-gray-600 mb-2">
-                    Helix Learnへようこそ!
-                  </p>
-                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base mb-6">
-                    このコースでは、プログラマーがAIを効果的に活用する方法を学びます。
-                    AIモデルやツールを使ったソフトウェア開発に焦点を当て、
-                    機械学習やカスタムモデルのトレーニングではありません。
-                    モデルの仕組み、種類、制限事項を理解することで、
-                    AIをより効果的に活用できるようになります。
-                  </p>
-                  
-                  <div className="mt-8 space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-3 text-gray-900">このコースで学べること</h2>
-                      <ul className="space-y-2 text-gray-600 leading-relaxed">
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span><strong className="text-gray-900">AIモデルの基礎理解</strong>: トークン、コンテキスト、ハルシネーション、モデルの種類と特徴を理解します</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span><strong className="text-gray-900">実践的な活用方法</strong>: プロンプトエンジニアリング、ツール呼び出し、エージェントの使い方を実践的に学びます</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span><strong className="text-gray-900">コストとパフォーマンス</strong>: トークンと料金の仕組み、モデルの選択基準、コスト最適化を理解します</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span><strong className="text-gray-900">実践的なツール活用</strong>: ChatGPT、Claude、Geminiなどの主要AIツールの特徴と使い分け方を学びます</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h2 className="text-2xl font-bold mb-3 text-gray-900">コースの構成</h2>
-                      <p className="text-gray-600 leading-relaxed mb-4">
-                        このコースは、基礎から応用まで段階的に学習できるよう設計されています。
-                        各レッスンには、理論的な説明、実践的なデモ、理解度を確認するクイズが含まれています。
-                      </p>
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <h3 className="font-semibold text-gray-900 mb-2">AI基礎</h3>
-                          <p className="text-sm text-gray-600">
-                            AIモデルの仕組み、トークン、コンテキスト、ハルシネーションなど、AIを使う上で知っておくべき基礎を学びます
-                          </p>
-                        </div>
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <h3 className="font-semibold text-gray-900 mb-2">実践ツール</h3>
-                          <p className="text-sm text-gray-600">
-                            ChatGPT、Claude、Geminiなどの主要AIツールの特徴と使い分け方を実践的に学びます
-                          </p>
-                        </div>
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <h3 className="font-semibold text-gray-900 mb-2">高度な活用</h3>
-                          <p className="text-sm text-gray-600">
-                            ツール呼び出し、エージェント、RAG、Fine-tuningなど、より高度な活用方法を学びます
-                          </p>
-                        </div>
-                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <h3 className="font-semibold text-gray-900 mb-2">最適化とコスト</h3>
-                          <p className="text-sm text-gray-600">
-                            トークンと料金の仕組み、モデルの選択基準、コスト最適化の方法を理解します
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h2 className="text-2xl font-bold mb-3 text-gray-900">前提知識</h2>
-                      <p className="text-gray-600 leading-relaxed mb-3">
-                        このコースは、プログラミングの基礎知識があることを前提としていますが、
-                        AIや機械学習の専門知識は必要ありません。
-                      </p>
-                      <ul className="space-y-2 text-gray-600 leading-relaxed">
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>基本的なプログラミング経験（任意の言語）</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>ソフトウェア開発の基礎知識</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>AIや機械学習の専門知識は不要です</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h2 className="text-2xl font-bold mb-3 text-gray-900">学習方法</h2>
-                      <p className="text-gray-600 leading-relaxed mb-4">
-                        このコースは、インタラクティブな学習体験を提供します：
-                      </p>
-                      <ol className="space-y-3 list-decimal list-inside text-gray-600 leading-relaxed">
-                        <li>
-                          <strong className="text-gray-900">理論的な説明</strong>: 各概念を段階的に説明し、理解を深めます
-                        </li>
-                        <li>
-                          <strong className="text-gray-900">実践的なデモ</strong>: トークナイザーなどのインタラクティブなデモで、抽象的な概念を可視化します
-                        </li>
-                        <li>
-                          <strong className="text-gray-900">理解度の確認</strong>: 各セクションの最後にクイズで理解度を確認します
-                        </li>
-                        <li>
-                          <strong className="text-gray-900">実践的な演習</strong>: 実際のプロジェクトで使えるスキルを身につけます
-                        </li>
-                      </ol>
-                    </div>
-
-                    <div>
-                      <h2 className="text-2xl font-bold mb-3 text-gray-900">期待される成果</h2>
-                      <p className="text-gray-600 leading-relaxed mb-4">
-                        このコースを完了すると、以下のことができるようになります：
-                      </p>
-                      <ul className="space-y-2 text-gray-600 leading-relaxed">
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>AIモデルの仕組みと制限事項を理解し、適切なモデルを選択できる</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>効果的なプロンプトを書いて、AIツールを最大限に活用できる</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>トークンと料金の仕組みを理解し、コストを最適化できる</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>ツール呼び出しやエージェントなど、高度な機能を活用できる</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary-500 mt-1">•</span>
-                          <span>実際のプロジェクトでAIを効果的に統合できる</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* 動画プレイヤー部分は除外（プレースホルダーとして表示） */}
-                <motion.div variants={itemVariants} className="mb-12">
-                  <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
-                    <div className="text-center text-gray-500">
-                      <BookOpen className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">動画コンテンツは今後追加予定です</p>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* アナロジー - Cursor Learn風 */}
-                <motion.div variants={itemVariants} className="prose prose-lg max-w-none">
-                  <h3 className="text-xl font-bold mb-4 text-gray-900">移動手段のアナロジー</h3>
-                  <p className="mb-4 text-gray-900 leading-relaxed">
-                    街を移動する方法には、いくつかの選択肢があります：
-                  </p>
-                  <ol className="space-y-3 list-decimal list-inside text-gray-900 mb-4 pl-0">
-                    <li className="pl-0">
-                      <strong className="text-gray-900">徒歩</strong>: 無料ですが、時間がかかります。
-                    </li>
-                    <li className="pl-0">
-                      <strong className="text-gray-900">自転車</strong>: 少し費用がかかり、やや速いです。
-                    </li>
-                    <li className="pl-0">
-                      <strong className="text-gray-900">自動車</strong>: 最も高額ですが、最も速いです。
-                    </li>
-                  </ol>
-                  <p className="text-gray-900 leading-relaxed">
-                    AIモデルも同様に、コスト、速度、性能に応じていろいろな選択肢があります。目的に応じて適切なモデルを選ぶことが重要です。
-                  </p>
-                </motion.div>
-              </motion.div>
+            /* フォールバック: 通常は自動的に最初のレッスンが表示される */
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <BookOpen className="w-12 h-12 mx-auto mb-4 text-neutral-300 dark:text-neutral-600" />
+                <p className="text-lg font-medium text-neutral-500 dark:text-neutral-400">左のサイドバーからコースを選択してください</p>
+              </div>
             </div>
           )}
         </main>

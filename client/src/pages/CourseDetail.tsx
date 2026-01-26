@@ -843,7 +843,7 @@ export default function CourseDetail() {
   useEffect(() => {
     if (course) {
       updateSEO({
-        title: `${course.title} | Helix`,
+        title: `${course.title} | HELIX`,
         description: course.description || `${course.title}の学習コース。医療従事者がAIを効果的に活用するための実践的なコースです。`,
         path: `/courses/${courseId}`,
         keywords: `${course.title},AI学習,コース,医療従事者,教育,レッスン,${course.category}`
@@ -857,7 +857,7 @@ export default function CourseDetail() {
         "description": course.description || `${course.title}の学習コース`,
         "provider": {
           "@type": "Organization",
-          "name": "Helix",
+          "name": "HELIX",
           "url": BASE_URL
         },
         "courseCode": course.id,
@@ -867,6 +867,11 @@ export default function CourseDetail() {
       });
     }
   }, [course, courseId]);
+
+  // ページ遷移時にスクロール位置をリセット
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [courseId]);
 
   useEffect(() => {
     // 進捗を定期的に更新

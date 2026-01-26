@@ -1,6 +1,6 @@
 /**
  * Aboutページ
- * Manus風のデザインでHelixについて紹介
+ * Manus風のデザインでHELIXについて紹介
  */
 
 import { Layout } from "@/components/Layout";
@@ -11,10 +11,10 @@ import { updateSEO } from "@/lib/seo";
 export default function About() {
   useEffect(() => {
     updateSEO({
-      title: "About Us - Helix",
-      description: "Helixのミッション、製品、ストーリーについて。医療従事者のためのAIプロンプトライブラリ。",
+      title: "About Us - HELIX",
+      description: "HELIXのミッション、製品、ストーリーについて。医療従事者のためのAIプロンプトライブラリ。",
       path: "/about",
-      keywords: "About,Helix,ミッション,医療AI,プロンプト"
+      keywords: "About,HELIX,ミッション,医療AI,プロンプト"
     });
   }, []);
 
@@ -173,7 +173,7 @@ export default function About() {
                   We don't want technology that replaces. We want technology that amplifies.
                 </p>
                 <p>
-                  Others have built the brain for AI to think. Helix is building the hands for AI to do—specifically for medicine.
+                  Others have built the brain for AI to think. HELIX is building the hands for AI to do—specifically for medicine.
                 </p>
                 <p>
                   By adding a third strand to the helix, we create something new. Human expertise and AI intelligence, woven together. Not replacing the human in healthcare, but extending human reach.
@@ -191,7 +191,7 @@ export default function About() {
                     私たちは置き換えるテクノロジーを求めているのではない。拡張するテクノロジーを求めている。
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
-                    他の人々はAIが考えるための「脳」を構築してきた。HelixはAIが「手」を動かすためのものを構築している。特に医学のために。
+                    他の人々はAIが考えるための「脳」を構築してきた。HELIXはAIが「手」を動かすためのものを構築している。特に医学のために。
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-neutral-700 dark:text-neutral-300">
                     らせんに第三の鎖を加えることで、新しいものが生まれる。人間の専門性とAIの知性が織り合わされる。医療における人間を置き換えるのではなく、人間の可能性を広げる。
@@ -207,7 +207,7 @@ export default function About() {
                     className="text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight mb-1"
                     style={{ fontFamily: '"Crimson Pro", "Lora", serif', fontWeight: 600 }}
                   >
-                    Helix
+                    HELIX
                   </h3>
                   <p 
                     className="text-xl md:text-2xl lg:text-3xl font-medium text-neutral-900 dark:text-neutral-50 tracking-tight"

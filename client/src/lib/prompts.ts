@@ -1,5 +1,8 @@
 export type PromptCategory = 'diagnosis' | 'treatment' | 'documentation' | 'medication' | 'communication' | 'literature' | 'research' | 'case-analysis' | 'education' | 'administrative' | 'shared-decision-making';
 
+// シンプル化されたカテゴリ（UI表示用）
+export type SimpleCategory = 'diagnosis' | 'treatment' | 'research' | 'documentation' | 'education';
+
 export interface Prompt {
   id: string;
   title: string;
@@ -19,6 +22,36 @@ export interface Prompt {
   tags?: string[];
 }
 
+// レガシーカテゴリから新カテゴリへのマッピング
+export const categoryMapping: Record<PromptCategory, SimpleCategory> = {
+  'diagnosis': 'diagnosis',
+  'case-analysis': 'diagnosis',
+  'treatment': 'treatment',
+  'medication': 'treatment',
+  'shared-decision-making': 'treatment',
+  'research': 'research',
+  'literature': 'research',
+  'documentation': 'documentation',
+  'communication': 'documentation',
+  'administrative': 'documentation',
+  'education': 'education',
+};
+
+// シンプル化されたカテゴリ定義（UI表示用）
+export const simpleCategories: { id: SimpleCategory; label: string; description: string; icon: string }[] = [
+  { id: 'diagnosis', label: '診断', description: '鑑別診断・症例分析', icon: '🔍' },
+  { id: 'treatment', label: '治療', description: '治療計画・薬剤・意思決定', icon: '💊' },
+  { id: 'research', label: '研究', description: '論文・文献・学会発表', icon: '📚' },
+  { id: 'documentation', label: '文書', description: '書類作成・患者対応・管理', icon: '📝' },
+  { id: 'education', label: '教育', description: '学習・OSCE・国試対策', icon: '🎓' },
+];
+
+// プロンプトのシンプルカテゴリを取得
+export function getSimpleCategory(prompt: Prompt): SimpleCategory {
+  return categoryMapping[prompt.category];
+}
+
+// レガシーカテゴリ（後方互換性のため維持）
 export const categories: { id: PromptCategory; label: string; description: string }[] = [
   { id: 'diagnosis', label: '診断支援', description: '症状や検査結果からの鑑別診断・分析' },
   { id: 'treatment', label: '治療計画', description: 'エビデンスに基づいた治療方針の立案' },

@@ -69,6 +69,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const scrollDirection = useScrollDirection();
   useKeyboardShortcuts();
 
+  // Escapeキーでメニューを閉じる
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (showPromptMenu) setShowPromptMenu(false);
+        if (isMobileOpen) setIsMobileOpen(false);
+        if (isSidebarOpen) setIsSidebarOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [showPromptMenu, isMobileOpen, isSidebarOpen]);
+
   // 画面サイズを監視して4行表示を判定
   useEffect(() => {
     const checkScreenSize = () => {
@@ -102,7 +115,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             className={cn(
-              "flex items-center gap-2 w-full px-2 py-1.5 rounded-md transition-colors",
+              "flex items-center gap-2 w-full px-2 py-1.5 rounded-md transition-colors duration-200",
+              "focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-2",
               active
                 ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -129,7 +143,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {isMobile ? (
           <button
             onClick={() => setIsMobileOpen(false)}
-            className="px-2 py-1.5 rounded-md hover:bg-accent transition-colors"
+            className="px-2 py-1.5 rounded-md hover:bg-accent transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-2"
             aria-label="サイドバーを閉じる"
           >
             <X className="w-3.5 h-3.5 text-muted-foreground" />
@@ -137,7 +151,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         ) : (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="px-2 py-1.5 rounded-md hover:bg-accent transition-colors"
+            className="px-2 py-1.5 rounded-md hover:bg-accent transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-2"
             aria-label={isExpanded ? "サイドバーを折りたたむ" : "サイドバーを展開"}
           >
             {isExpanded ? (
@@ -177,7 +191,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           active={location.startsWith("/learn")}
           isMobile={isMobile}
           onClick={() => {
-            setLocation("/learn");
+            setLocation("/learn/start");
             setIsMobileOpen(false);
           }}
         />
@@ -221,7 +235,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         setShowPromptMenu(false);
                         setIsMobileOpen(false);
                       }}
-                      className="w-full flex items-center gap-1.5 px-1.5 py-1 rounded-md hover:bg-accent transition-colors text-left"
+                      className="w-full flex items-center gap-1.5 px-1.5 py-1 rounded-md hover:bg-accent transition-colors duration-200 text-left focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-1"
                       role="menuitem"
                       aria-label={`${category.label}カテゴリを開く`}
                     >
@@ -346,25 +360,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <main id="main-content" className="flex-1 overflow-y-auto" role="main" aria-label="メインコンテンツ">
             {/* ヘッダー - 全ページで表示 */}
             <header
-              className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border"
+              className="sticky top-0 z-30 bg-background border-b border-border w-full"
             >
-              <div className="flex items-center px-4 h-14 relative">
+              <div className="flex h-12 w-full items-center px-6 lg:pr-0">
                 {/* モバイル: メニューボタン */}
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsMobileOpen(true)}
                   aria-label="メニューを開く"
-                  className="lg:hidden h-7 w-7 absolute left-4"
+                  className="lg:hidden h-7 w-7 -ml-2"
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
                 {/* ロゴ - 中央配置（モバイル）または左配置（デスクトップ） */}
                 <Link href="/" className={cn(
-                  "absolute lg:static lg:translate-x-0",
-                  isMobile ? "left-1/2 -translate-x-1/2" : "left-4"
+                  "lg:static lg:translate-x-0",
+                  isMobile ? "mx-auto" : ""
                 )}>
-                  <h1 className="text-lg font-bold text-primary">Helix</h1>
+                  <h1 className="text-lg font-bold text-primary">HELIX</h1>
                 </Link>
               </div>
             </header>
@@ -413,7 +427,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                       {/* 左側: 一覧に戻るボタン */}
                       <Link href={backLink}>
                         <button
-                          className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer"
+                          className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors cursor-pointer"
                           aria-label={backLabel}
                           type="button"
                         >
@@ -427,8 +441,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         <button
                           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                           className={cn(
-                            "inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors cursor-pointer px-0 py-0",
-                            isSidebarOpen && "text-gray-900 dark:text-gray-100"
+                            "inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors cursor-pointer px-0 py-0",
+                            isSidebarOpen && "text-neutral-900 dark:text-neutral-100"
                           )}
                           aria-label="目次"
                           type="button"
@@ -448,18 +462,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         onClick={() => setIsSidebarOpen(false)}
                       />
                       <div 
-                        className="fixed top-[calc(3.5rem+58px)] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-8rem)] bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                        className="fixed top-[calc(3.5rem+58px)] right-4 z-[100] lg:hidden w-[350px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-8rem)] bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="overflow-y-auto max-h-[calc(100vh-5rem)] p-4">
                           {/* ページトップボタン */}
-                          <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                          <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                             <button
                               onClick={() => {
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                                 setIsSidebarOpen(false);
                               }}
-                              className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                              className="w-full flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors"
                             >
                               <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
                               <span>ページトップへ</span>
@@ -507,7 +521,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                       indent,
                                       item.isActive
                                         ? "text-blue-600 dark:text-blue-400 font-medium"
-                                        : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+                                        : "text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100"
                                     )}
                                     style={{
                                       lineHeight: '1.6',
@@ -525,7 +539,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                               })}
                             </nav>
                           ) : (
-                            <div className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
+                            <div className="text-sm text-neutral-500 dark:text-neutral-400 text-center py-8">
                               目次データを読み込み中...
                             </div>
                           )
@@ -551,7 +565,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   onClick={() => setIsSidebarOpen(false)}
                 />
                 <aside 
-                  className="fixed top-14 right-0 h-[calc(100vh-3.5rem)] w-[320px] bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 z-50 lg:block hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] overflow-hidden"
+                  className="fixed top-14 right-0 h-[calc(100vh-3.5rem)] w-[320px] bg-white dark:bg-neutral-900 border-l border-neutral-200 dark:border-neutral-700 z-50 lg:block hidden shadow-[0_0_20px_rgba(0,0,0,0.1)] overflow-hidden"
                   style={{
                     animation: 'slideInRight 0.3s ease-out',
                   }}
@@ -559,12 +573,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div className="h-full overflow-y-auto">
                     <div className="p-4">
                       {/* ページトップボタン */}
-                      <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <div className="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
                         <button
                           onClick={() => {
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                           }}
-                          className="w-full flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                          className="w-full flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors"
                         >
                           <ChevronRight className="h-4 w-4 rotate-[-90deg] flex-shrink-0" />
                           <span>ページトップへ</span>
@@ -607,7 +621,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                   indent,
                                   item.isActive
                                     ? "text-blue-600 dark:text-blue-400 font-medium"
-                                    : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+                                    : "text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100"
                                 )}
                                 style={{
                                   lineHeight: '1.6',
@@ -628,7 +642,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                           })}
                         </nav>
                       ) : (
-                        <div className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
+                        <div className="text-sm text-neutral-500 dark:text-neutral-400 text-center py-8">
                           目次データを読み込み中...
                         </div>
                       );

@@ -117,7 +117,7 @@ export function SafetyWarningModal() {
             </motion.div>
             <motion.div variants={itemVariants}>
               <DialogDescription className="text-sm text-neutral-600 dark:text-neutral-400 leading-snug">
-                Helixをご利用いただく前に、以下の重要事項を必ずお読みください。
+                HELIXをご利用いただく前に、以下の重要事項を必ずお読みください。
               </DialogDescription>
             </motion.div>
           </DialogHeader>

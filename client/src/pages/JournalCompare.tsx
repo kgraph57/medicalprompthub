@@ -13,7 +13,7 @@ export default function JournalCompare() {
 
   useEffect(() => {
     updateSEO({
-      title: "ジャーナル比較 | Helix",
+      title: "ジャーナル比較 | HELIX",
       description: "複数の医学雑誌を比較。インパクトファクター、レビュー速度、投稿要件などを並べて比較できます。",
       path: "/journal-compare",
       keywords: "ジャーナル比較,医学雑誌,インパクトファクター,論文投稿"

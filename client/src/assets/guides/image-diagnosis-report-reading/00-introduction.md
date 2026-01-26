@@ -246,4 +246,3 @@ A (評価 - 画像診断に基づく):
 
 1.  [画像診断レポートの読み方と臨床への応用](https://example.com/imaging_report_guide) - 〇〇医学会
 2.  [肺炎の画像診断ガイドライン](https://example.com/pneumonia_guideline) - 〇〇感染症学会
-3.  [AIを活用した医療文書作成のベストプラクティス](https://example.com/ai_medical_documentation) - Manus AI Research

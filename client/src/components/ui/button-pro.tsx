@@ -15,15 +15,15 @@ const buttonVariants = cva(
         
         // Secondary Button - Dieter Ramsの指示: 控えめだが存在感がある
         secondary:
-          "bg-white text-gray-700 border border-gray-300 shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow-md hover:scale-[1.02] active:bg-gray-100 active:shadow-sm active:scale-[0.98] dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:border-gray-600",
-        
+          "bg-white text-neutral-700 border border-neutral-300 shadow-sm hover:bg-neutral-50 hover:border-neutral-400 hover:shadow-md hover:scale-[1.02] active:bg-neutral-100 active:shadow-sm active:scale-[0.98] dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:border-neutral-600",
+
         // Outline Button
         outline:
-          "border border-gray-300 bg-transparent hover:bg-gray-100 hover:border-gray-400 hover:shadow-sm hover:scale-[1.02] active:bg-gray-200 active:scale-[0.98] dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:border-gray-600",
-        
+          "border border-neutral-300 bg-transparent hover:bg-neutral-100 hover:border-neutral-400 hover:shadow-sm hover:scale-[1.02] active:bg-neutral-200 active:scale-[0.98] dark:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:border-neutral-600",
+
         // Ghost Button
         ghost:
-          "hover:bg-gray-100 hover:text-gray-900 hover:scale-[1.02] active:bg-gray-200 active:scale-[0.98] dark:hover:bg-gray-800 dark:hover:text-gray-100",
+          "hover:bg-neutral-100 hover:text-neutral-900 hover:scale-[1.02] active:bg-neutral-200 active:scale-[0.98] dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
         
         // Link Button
         link:

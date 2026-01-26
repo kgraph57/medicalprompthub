@@ -34,7 +34,7 @@ const getCategoryStyle = (categoryId: string) => {
     'communication': { bg: 'bg-cyan-50 dark:bg-cyan-950/20', text: 'text-cyan-700 dark:text-cyan-400', border: 'border-cyan-200 dark:border-cyan-800' },
     'research': { bg: 'bg-violet-50 dark:bg-violet-950/20', text: 'text-violet-700 dark:text-violet-400', border: 'border-violet-200 dark:border-violet-800' },
   };
-  return styles[categoryId] || { bg: 'bg-gray-50 dark:bg-gray-950/20', text: 'text-gray-700 dark:text-gray-400', border: 'border-gray-200 dark:border-gray-800' };
+  return styles[categoryId] || { bg: 'bg-neutral-50 dark:bg-neutral-950/20', text: 'text-neutral-700 dark:text-neutral-400', border: 'border-neutral-200 dark:border-neutral-800' };
 };
 
 export function FeaturedPromptsSection({ prompts }: FeaturedPromptsSectionProps) {

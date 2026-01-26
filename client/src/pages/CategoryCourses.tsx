@@ -103,7 +103,7 @@ export default function CategoryCourses() {
   useEffect(() => {
     if (category) {
       updateSEO({
-        title: `${categoryLabels[category] || category} | コース一覧 | Helix`,
+        title: `${categoryLabels[category] || category} | コース一覧 | HELIX`,
         description: categoryDescriptions[category] || `${category}カテゴリの学習コース一覧。`,
         path: `/courses/category/${categoryId}`,
         keywords: `${category},AI学習,コース,医療従事者,教育`

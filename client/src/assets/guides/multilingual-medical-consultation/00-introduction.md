@@ -238,6 +238,5 @@ AIは万能ではないため、限界を認識し、専門家との連携を最
 
 本ガイドは、医療AIの最新動向と多言語コミュニケーションの課題に関する一般的な知識に基づいて作成されました。
 
-[1] Manus AI. (2025). *医療AIワークフローガイドシリーズ*.
-[2] World Health Organization. *Health and migration*. (General reference for multilingual health challenges).
-[3] American Medical Informatics Association. *Clinical Documentation and EHR Integration*. (General reference for structured data in EMR).
+[1] World Health Organization. *Health and migration*. (General reference for multilingual health challenges).
+[2] American Medical Informatics Association. *Clinical Documentation and EHR Integration*. (General reference for structured data in EMR).
